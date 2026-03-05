@@ -94,20 +94,29 @@ throw new MarketNotFoundException(slug);
 public <T extends Identifiable> Map<Long, T> indexById(Collection<T> items) { ... }
 ```
 
-## Project Structure (Maven/Gradle)
+## Project Structure (Hexagonal / Ports & Adapters)
 
 ```
 src/main/java/com/example/app/
-  config/
-  controller/
-  service/
-  repository/
   domain/
-  dto/
-  util/
+    model/          # Entities, value objects, aggregates (NO framework annotations)
+    port/
+      in/           # Input port interfaces (use case contracts)
+      out/          # Output port interfaces (repository, external service contracts)
+    event/          # Domain events
+  application/
+    usecase/        # Use case implementations (@Transactional here)
+  adapter/
+    in/
+      web/          # REST controllers + request/response DTOs
+      messaging/    # Message consumers
+    out/
+      persistence/  # JPA entities, Spring Data repos, mappers
+      client/       # External API clients
+  config/           # Spring @Configuration, bean wiring only
 src/main/resources/
   application.yml
-src/test/java/... (mirrors main)
+src/test/java/...   # mirrors main
 ```
 
 ## Formatting and Style

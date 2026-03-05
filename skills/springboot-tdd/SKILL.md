@@ -23,41 +23,46 @@ TDD guidance for Spring Boot services with 80%+ coverage (unit + integration).
 
 ## Unit Tests (JUnit 5 + Mockito)
 
+In hexagonal architecture, unit-test use cases by mocking **output port interfaces** — not JPA classes:
+
 ```java
 @ExtendWith(MockitoExtension.class)
-class MarketServiceTest {
-  @Mock MarketRepository repo;
-  @InjectMocks MarketService service;
+class CreateMarketUseCaseTest {
+  @Mock MarketRepository marketRepository;   // output port interface
+  @InjectMocks CreateMarketService createMarket;
 
   @Test
-  void createsMarket() {
-    CreateMarketRequest req = new CreateMarketRequest("name", "desc", Instant.now(), List.of("cat"));
-    when(repo.save(any())).thenAnswer(inv -> inv.getArgument(0));
+  void create_savesMarket_andReturnsIt() {
+    var command = new CreateMarketCommand("name", "name-slug");
+    when(marketRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-    Market result = service.create(req);
+    Market result = createMarket.create(command);
 
     assertThat(result.name()).isEqualTo("name");
-    verify(repo).save(any());
+    verify(marketRepository).save(any());
   }
 }
 ```
 
 Patterns:
 - Arrange-Act-Assert
+- Mock output ports (interfaces), never persistence adapters directly
 - Avoid partial mocks; prefer explicit stubbing
 - Use `@ParameterizedTest` for variants
 
 ## Web Layer Tests (MockMvc)
 
+Mock the **input port interface**, not the use case class:
+
 ```java
 @WebMvcTest(MarketController.class)
 class MarketControllerTest {
   @Autowired MockMvc mockMvc;
-  @MockBean MarketService marketService;
+  @MockBean ListMarketsUseCase listMarkets;   // input port interface
 
   @Test
   void returnsMarkets() throws Exception {
-    when(marketService.list(any())).thenReturn(Page.empty());
+    when(listMarkets.list(any())).thenReturn(Page.empty());
 
     mockMvc.perform(get("/api/markets"))
         .andExpect(status().isOk())

@@ -188,3 +188,107 @@ func testReadError() async {
 - Testing error handling paths that are hard to trigger in real environments
 - Building modules that need to work in app, test, and SwiftUI preview contexts
 - Apps using Swift concurrency (actors, structured concurrency) that need testable architecture
+
+## This IS Hexagonal Architecture
+
+The patterns in this skill are hexagonal (ports & adapters) and DDD — just in Swift idioms:
+
+| Swift Pattern | Hexagonal / DDD Concept |
+|---|---|
+| Small, focused `protocol` (e.g., `FileAccessorProviding`) | Output Port — defines what the domain needs |
+| `DefaultFileAccessor` (real implementation) | Outbound Adapter — production implementation |
+| `MockFileAccessor` (test implementation) | Test Adapter — injected in tests |
+| `actor SyncManager` (injects protocols) | Use Case / Application Service — orchestrates domain + ports |
+| Domain `struct` with `let` properties | Value Object — immutable, no framework imports |
+| Domain function `throws` domain errors | Domain behavior enforcing invariants |
+
+### Full Hexagonal Example — Domain + Use Case + Adapters
+
+```swift
+// MARK: — Domain (no imports from UIKit, Foundation networking, SwiftData)
+
+struct Market: Identifiable, Sendable {
+    let id: UUID
+    let name: String
+    let slug: String
+    let status: MarketStatus
+}
+
+enum MarketStatus: String, Sendable { case draft, active }
+
+enum MarketError: Error {
+    case invalidName, alreadyPublished(String)
+}
+
+func createMarket(name: String, slug: String) throws -> Market {
+    guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+        throw MarketError.invalidName
+    }
+    return Market(id: UUID(), name: name, slug: slug, status: .draft)
+}
+
+func publishMarket(_ market: Market) throws -> Market {
+    guard market.status == .draft else { throw MarketError.alreadyPublished(market.slug) }
+    return Market(id: market.id, name: market.name, slug: market.slug, status: .active)
+}
+
+// MARK: — Output Port (defined in domain)
+
+protocol MarketRepository: Sendable {
+    func save(_ market: Market) async throws -> Market
+    func findBySlug(_ slug: String) async throws -> Market?
+}
+
+// MARK: — Use Case (depends only on port interface)
+
+actor CreateMarketUseCase {
+    private let repository: any MarketRepository
+
+    init(repository: any MarketRepository) {  // inject output port
+        self.repository = repository
+    }
+
+    func execute(name: String, slug: String) async throws -> Market {
+        let market = try createMarket(name: name, slug: slug)  // domain logic
+        return try await repository.save(market)               // via port
+    }
+}
+
+// MARK: — Outbound Adapter (production implementation)
+
+actor CoreDataMarketRepository: MarketRepository {
+    // ... CoreData implementation, satisfies MarketRepository implicitly
+}
+
+// MARK: — Test Adapter (injected in tests)
+
+final class MockMarketRepository: MarketRepository, @unchecked Sendable {
+    var saved: [Market] = []
+    func save(_ market: Market) async throws -> Market {
+        saved.append(market)
+        return market
+    }
+    func findBySlug(_ slug: String) async throws -> Market? { nil }
+}
+
+// MARK: — Test
+
+@Test("CreateMarketUseCase saves a valid market")
+func testCreateMarket() async throws {
+    let repo = MockMarketRepository()
+    let useCase = CreateMarketUseCase(repository: repo)
+
+    let market = try await useCase.execute(name: "Test", slug: "test")
+
+    #expect(market.name == "Test")
+    #expect(repo.saved.count == 1)
+}
+
+@Test("CreateMarketUseCase rejects blank name")
+func testBlankName() async {
+    let useCase = CreateMarketUseCase(repository: MockMarketRepository())
+    await #expect(throws: MarketError.self) {
+        try await useCase.execute(name: "", slug: "slug")
+    }
+}
+```

@@ -140,15 +140,24 @@ See the `/claw` command documentation for full details.
 
 ### Architecture: Two-Prompt System
 
-```
-PROMPT 1 (Orchestrator)              PROMPT 2 (Sub-Agents)
-┌─────────────────────┐             ┌──────────────────────┐
-│ Parse spec file      │             │ Receive full context  │
-│ Scan output dir      │  deploys   │ Read assigned number  │
-│ Plan iteration       │────────────│ Follow spec exactly   │
-│ Assign creative dirs │  N agents  │ Generate unique output │
-│ Manage waves         │             │ Save to output dir    │
-└─────────────────────┘             └──────────────────────┘
+```plantuml
+@startuml
+package "Prompt 1 — Orchestrator" {
+  [Parse spec file]
+  [Scan output dir]
+  [Plan iteration]
+  [Assign creative dirs]
+  [Manage waves]
+}
+package "Prompt 2 — Sub-Agents (×N)" {
+  [Receive full context]
+  [Read assigned number]
+  [Follow spec exactly]
+  [Generate unique output]
+  [Save to output dir]
+}
+[Manage waves] -right-> [Receive full context] : deploys N agents
+@enduml
 ```
 
 ### The Pattern
@@ -209,23 +218,29 @@ Don't rely on agents to self-differentiate. The orchestrator **assigns** each ag
 
 ### Core Loop
 
-```
-┌─────────────────────────────────────────────────────┐
-│  CONTINUOUS CLAUDE ITERATION                        │
-│                                                     │
-│  1. Create branch (continuous-claude/iteration-N)   │
-│  2. Run claude -p with enhanced prompt              │
-│  3. (Optional) Reviewer pass — separate claude -p   │
-│  4. Commit changes (claude generates message)       │
-│  5. Push + create PR (gh pr create)                 │
-│  6. Wait for CI checks (poll gh pr checks)          │
-│  7. CI failure? → Auto-fix pass (claude -p)         │
-│  8. Merge PR (squash/merge/rebase)                  │
-│  9. Return to main → repeat                         │
-│                                                     │
-│  Limit by: --max-runs N | --max-cost $X             │
-│            --max-duration 2h | completion signal     │
-└─────────────────────────────────────────────────────┘
+```plantuml
+@startuml
+start
+:Create branch (continuous-claude/iteration-N);
+:Run claude -p with enhanced prompt;
+:Reviewer pass (optional);
+:Commit changes;
+:Push + create PR;
+:Wait for CI checks;
+if (CI failure?) then (yes)
+  :Auto-fix pass — claude -p;
+  -> back to wait;
+  :Wait for CI checks;
+endif
+:Merge PR;
+-> repeat;
+:Return to main;
+stop
+note right
+  Limit by: --max-runs N | --max-cost $X
+  --max-duration 2h | completion signal
+end note
+@enduml
 ```
 
 ### Installation
@@ -379,31 +394,21 @@ done
 
 ### Architecture Overview
 
-```
-RFC/PRD Document
-       │
-       ▼
-  DECOMPOSITION (AI)
-  Break RFC into work units with dependency DAG
-       │
-       ▼
-┌──────────────────────────────────────────────────────┐
-│  RALPH LOOP (up to 3 passes)                         │
-│                                                      │
-│  For each DAG layer (sequential, by dependency):     │
-│                                                      │
-│  ┌── Quality Pipelines (parallel per unit) ───────┐  │
-│  │  Each unit in its own worktree:                │  │
-│  │  Research → Plan → Implement → Test → Review   │  │
-│  │  (depth varies by complexity tier)             │  │
-│  └────────────────────────────────────────────────┘  │
-│                                                      │
-│  ┌── Merge Queue ─────────────────────────────────┐  │
-│  │  Rebase onto main → Run tests → Land or evict │  │
-│  │  Evicted units re-enter with conflict context  │  │
-│  └────────────────────────────────────────────────┘  │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+```plantuml
+@startuml
+start
+:RFC/PRD Document;
+:Decomposition (AI)\nBreak into work units + dependency DAG;
+partition "Ralph Loop (up to 3 passes)" {
+  partition "Quality Pipelines — parallel per unit, each in own worktree" {
+    :Research → Plan → Implement → Test → Review\n(depth varies by complexity tier);
+  }
+  partition "Merge Queue" {
+    :Rebase onto main → Run tests → Land or evict\nEvicted units re-enter with conflict context;
+  }
+}
+stop
+@enduml
 ```
 
 ### RFC Decomposition
@@ -469,16 +474,25 @@ Each stage runs in its own agent process with its own context window:
 
 After quality pipelines complete, units enter the merge queue:
 
-```
-Unit branch
-    │
-    ├─ Rebase onto main
-    │   └─ Conflict? → EVICT (capture conflict context)
-    │
-    ├─ Run build + tests
-    │   └─ Fail? → EVICT (capture test output)
-    │
-    └─ Pass → Fast-forward main, push, delete branch
+```plantuml
+@startuml
+start
+:Unit Branch;
+:Rebase onto main;
+if (Conflict?) then (yes)
+  :EVICT — capture conflict context;
+  stop
+else (no)
+  :Run build + tests;
+  if (Fail?) then (yes)
+    :EVICT — capture test output;
+    stop
+  else (no)
+    :Fast-forward main\npush, delete branch;
+    stop
+  endif
+endif
+@enduml
 ```
 
 **File Overlap Intelligence:**
@@ -545,16 +559,32 @@ Pipeline stages for the same unit **share** a worktree, preserving state (contex
 
 ### Decision Matrix
 
-```
-Is the task a single focused change?
-├─ Yes → Sequential Pipeline or NanoClaw
-└─ No → Is there a written spec/RFC?
-         ├─ Yes → Do you need parallel implementation?
-         │        ├─ Yes → Ralphinho (DAG orchestration)
-         │        └─ No → Continuous Claude (iterative PR loop)
-         └─ No → Do you need many variations of the same thing?
-                  ├─ Yes → Infinite Agentic Loop (spec-driven generation)
-                  └─ No → Sequential Pipeline with de-sloppify
+```plantuml
+@startuml
+start
+if (Single focused change?) then (yes)
+  :Sequential Pipeline\nor NanoClaw;
+  stop
+else (no)
+  if (Written spec/RFC?) then (yes)
+    if (Need parallel implementation?) then (yes)
+      :Ralphinho\n(DAG orchestration);
+      stop
+    else (no)
+      :Continuous Claude\n(iterative PR loop);
+      stop
+    endif
+  else (no)
+    if (Many variations of the same thing?) then (yes)
+      :Infinite Agentic Loop\n(spec-driven generation);
+      stop
+    else (no)
+      :Sequential Pipeline\n+ de-sloppify;
+      stop
+    endif
+  endif
+endif
+@enduml
 ```
 
 ### Combining Patterns

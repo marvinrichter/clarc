@@ -36,6 +36,17 @@ When invoked:
 - **Missing sync.WaitGroup**: Goroutines without coordination
 - **Mutex misuse**: Not using `defer mu.Unlock()`
 
+### HIGH -- Architecture Violations
+- **Business logic in handler**: `internal/handler/` contains domain rules (status checks, calculations) → move to `internal/domain/`
+- **Handler accesses repository directly**: Handler calls `repository.Find(...)` instead of going through use case in `internal/app/` → violation
+- **Domain imports framework packages**: `internal/domain/` imports `database/sql`, `net/http`, or ORM packages → domain must be pure Go, zero external imports
+- **Interface defined in provider package**: Repository interface defined in `internal/repository/` instead of in `internal/app/` where it is consumed → reverses Go convention ("define interfaces where used")
+- **Anemic domain type**: Domain struct has only fields and no methods — business logic leaked into service functions → add behavior to the type (e.g., `market.Publish()`)
+- **Use case contains domain rules**: `if market.Status != "DRAFT"` in service function → belongs in `market.Publish()` method on the domain type
+- **Missing sentinel domain errors**: Inline `errors.New("not found")` everywhere instead of package-level `var ErrNotFound = errors.New(...)` → callers can't use `errors.Is`
+- **Plain-text HTTP errors**: `http.Error(w, "not found", 404)` or `w.WriteHeader(404)` without `application/problem+json` body → replace with `writeProblem()` helper (RFC 7807: `type`, `title`, `status`, `detail`, `instance` fields, `Content-Type: application/problem+json`)
+- **Wrong Content-Type on errors**: Error responses using `application/json` or `text/plain` instead of `application/problem+json`
+
 ### HIGH -- Code Quality
 - **Large functions**: Over 50 lines
 - **Deep nesting**: More than 4 levels

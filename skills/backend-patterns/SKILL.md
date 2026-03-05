@@ -69,34 +69,40 @@ class SupabaseMarketRepository implements MarketRepository {
 }
 ```
 
-### Service Layer Pattern
+### Use Case Pattern (Hexagonal)
+
+For services with real domain logic, use the hexagonal ports & adapters pattern. The use case depends on output port interfaces, not concrete adapters:
 
 ```typescript
-// Business logic separated from data access
-class MarketService {
-  constructor(private marketRepo: MarketRepository) {}
+// domain/port/in/SearchMarketsUseCase.ts — input port
+interface SearchMarketsUseCase {
+  execute(query: string, limit?: number): Promise<Market[]>
+}
 
-  async searchMarkets(query: string, limit: number = 10): Promise<Market[]> {
-    // Business logic
-    const embedding = await generateEmbedding(query)
-    const results = await this.vectorSearch(embedding, limit)
+// domain/port/out/MarketRepository.ts — output port
+interface MarketRepository {
+  findByIds(ids: string[]): Promise<Market[]>
+}
 
-    // Fetch full data
+// application/usecase/SearchMarketsService.ts — use case implementation
+class SearchMarketsService implements SearchMarketsUseCase {
+  constructor(
+    private readonly marketRepo: MarketRepository,    // output port
+    private readonly vectorSearch: VectorSearchPort,  // output port
+  ) {}
+
+  async execute(query: string, limit = 10): Promise<Market[]> {
+    const embedding = await this.vectorSearch.embed(query)
+    const results = await this.vectorSearch.search(embedding, limit)
     const markets = await this.marketRepo.findByIds(results.map(r => r.id))
 
-    // Sort by similarity
-    return markets.sort((a, b) => {
-      const scoreA = results.find(r => r.id === a.id)?.score || 0
-      const scoreB = results.find(r => r.id === b.id)?.score || 0
-      return scoreA - scoreB
-    })
-  }
-
-  private async vectorSearch(embedding: number[], limit: number) {
-    // Vector search implementation
+    const scoreMap = new Map(results.map(r => [r.id, r.score]))
+    return markets.sort((a, b) => (scoreMap.get(b.id!) ?? 0) - (scoreMap.get(a.id!) ?? 0))
   }
 }
 ```
+
+For simple CRUD without domain complexity, a direct service class is acceptable. For anything with business rules, invariants, or multiple collaborators, use hexagonal. See skill: `hexagonal-typescript` for full patterns.
 
 ### Middleware Pattern
 
@@ -263,55 +269,72 @@ async function getMarketWithCache(id: string): Promise<Market> {
 
 ## Error Handling Patterns
 
-### Centralized Error Handler
+### RFC 7807 / RFC 9457 Problem Details (Standard)
+
+All HTTP error responses MUST use `Content-Type: application/problem+json` and the RFC 7807 schema.
+Do NOT use `{ error: "..." }` or `{ success: false, error: "..." }` — use `ProblemDetails`:
 
 ```typescript
-class ApiError extends Error {
-  constructor(
-    public statusCode: number,
-    public message: string,
-    public isOperational = true
-  ) {
-    super(message)
-    Object.setPrototypeOf(this, ApiError.prototype)
-  }
+// Standard error interface — replaces ApiError
+export interface ProblemDetails {
+  type: string       // URI identifying the problem type (link to docs)
+  title: string      // Short, stable summary
+  status: number     // HTTP status code (mirrors response status)
+  detail?: string    // Occurrence-specific explanation
+  instance?: string  // URI of this specific occurrence
+  [key: string]: unknown  // Extension fields (e.g., errors[], traceId)
 }
 
-export function errorHandler(error: unknown, req: Request): Response {
-  if (error instanceof ApiError) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: error.statusCode })
-  }
-
+// Next.js API Route error handler
+export function errorHandler(error: unknown, request: Request): Response {
   if (error instanceof z.ZodError) {
-    return NextResponse.json({
-      success: false,
-      error: 'Validation failed',
-      details: error.errors
-    }, { status: 400 })
+    const body: ProblemDetails = {
+      type: 'https://api.example.com/problems/validation-failed',
+      title: 'Validation Failed',
+      status: 400,
+      detail: 'One or more fields failed validation.',
+      errors: error.errors.map(e => ({ field: e.path.join('.'), detail: e.message })),
+    }
+    return NextResponse.json(body, {
+      status: 400,
+      headers: { 'Content-Type': 'application/problem+json' },
+    })
   }
 
-  // Log unexpected errors
-  console.error('Unexpected error:', error)
+  if (error instanceof NotFoundError) {
+    const body: ProblemDetails = {
+      type: 'https://api.example.com/problems/not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: error.message,
+      instance: new URL(request.url).pathname,
+    }
+    return NextResponse.json(body, {
+      status: 404,
+      headers: { 'Content-Type': 'application/problem+json' },
+    })
+  }
 
-  return NextResponse.json({
-    success: false,
-    error: 'Internal server error'
-  }, { status: 500 })
+  console.error('Unexpected error:', error)
+  const body: ProblemDetails = { type: 'about:blank', title: 'Internal Server Error', status: 500 }
+  return NextResponse.json(body, {
+    status: 500,
+    headers: { 'Content-Type': 'application/problem+json' },
+  })
 }
 
 // Usage
 export async function GET(request: Request) {
   try {
     const data = await fetchData()
-    return NextResponse.json({ success: true, data })
+    return NextResponse.json(data)
   } catch (error) {
     return errorHandler(error, request)
   }
 }
 ```
+
+See skill: `problem-details` for the full RFC 7807/9457 field reference and per-language examples.
 
 ### Retry with Exponential Backoff
 

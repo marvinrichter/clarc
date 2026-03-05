@@ -6,7 +6,9 @@ origin: ECC
 
 # JPA/Hibernate Patterns
 
-Use for data modeling, repositories, and performance tuning in Spring Boot.
+Use for persistence adapter implementation and performance tuning in Spring Boot.
+
+> **DDD/Hexagonal context**: JPA entities in this skill live in `adapter/out/persistence/` — they are **persistence models**, not domain entities. Domain entities live in `domain/model/` and contain zero JPA annotations. A `MarketMapper` translates between the two. Never expose `MarketEntity` (JPA) outside the persistence adapter.
 
 ## When to Activate
 
@@ -148,4 +150,6 @@ spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 - Prefer `@DataJpaTest` with Testcontainers to mirror production
 - Assert SQL efficiency using logs: set `logging.level.org.hibernate.SQL=DEBUG` and `logging.level.org.hibernate.orm.jdbc.bind=TRACE` for parameter values
 
-**Remember**: Keep entities lean, queries intentional, and transactions short. Prevent N+1 with fetch strategies and projections, and index for your read/write paths.
+**Remember**: JPA entities are persistence adapters — keep them separate from domain entities. Keep queries intentional, transactions short, and N+1 eliminated. Index for your actual read/write paths.
+
+For domain entity modeling (Aggregates, Value Objects), see skill: `ddd-java`.

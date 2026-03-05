@@ -1,6 +1,6 @@
 ---
 name: springboot-patterns
-description: Spring Boot architecture patterns, REST API design, layered services, data access, caching, async processing, and logging. Use for Java Spring Boot backend work.
+description: Spring Boot architecture patterns, REST API design, hexagonal (ports & adapters) architecture, data access, caching, async processing, and logging. Use for Java Spring Boot backend work.
 origin: ECC
 ---
 
@@ -11,7 +11,7 @@ Spring Boot architecture and API patterns for scalable, production-grade service
 ## When to Activate
 
 - Building REST APIs with Spring MVC or WebFlux
-- Structuring controller → service → repository layers
+- Structuring adapters → use cases → domain (hexagonal / ports & adapters)
 - Configuring Spring Data JPA, caching, or async processing
 - Adding validation, exception handling, or pagination
 - Setting up profiles for dev/staging/production environments
@@ -55,22 +55,55 @@ public interface MarketRepository extends JpaRepository<MarketEntity, Long> {
 }
 ```
 
-## Service Layer with Transactions
+## Use Case (Application Service) with Transactions
+
+Use cases implement input ports and depend on output ports — no JPA or Spring framework imports in domain:
 
 ```java
-@Service
-public class MarketService {
-  private final MarketRepository repo;
+// domain/port/in/CreateMarketUseCase.java
+public interface CreateMarketUseCase {
+  Market create(CreateMarketCommand command);
+}
 
-  public MarketService(MarketRepository repo) {
-    this.repo = repo;
+// domain/port/out/MarketRepository.java
+public interface MarketRepository {
+  Market save(Market market);
+  Optional<Market> findBySlug(String slug);
+}
+
+// application/usecase/CreateMarketService.java — implements input port, uses output port
+@Transactional
+public class CreateMarketService implements CreateMarketUseCase {
+  private final MarketRepository marketRepository;  // output port interface
+
+  public CreateMarketService(MarketRepository marketRepository) {
+    this.marketRepository = marketRepository;
   }
 
-  @Transactional
-  public Market create(CreateMarketRequest request) {
-    MarketEntity entity = MarketEntity.from(request);
-    MarketEntity saved = repo.save(entity);
-    return Market.from(saved);
+  @Override
+  public Market create(CreateMarketCommand command) {
+    var market = Market.create(command.name(), command.slug());
+    return marketRepository.save(market);
+  }
+}
+
+// adapter/out/persistence/JpaMarketRepository.java — implements output port
+@Repository
+class JpaMarketRepository implements MarketRepository {
+  private final MarketJpaRepository jpaRepo;
+
+  JpaMarketRepository(MarketJpaRepository jpaRepo) {
+    this.jpaRepo = jpaRepo;
+  }
+
+  @Override
+  public Market save(Market market) {
+    return MarketMapper.toDomain(jpaRepo.save(MarketMapper.toEntity(market)));
+  }
+
+  @Override
+  public Optional<Market> findBySlug(String slug) {
+    return jpaRepo.findBySlug(slug).map(MarketMapper::toDomain);
   }
 }
 ```
@@ -91,32 +124,81 @@ public record MarketResponse(Long id, String name, MarketStatus status) {
 }
 ```
 
-## Exception Handling
+## Exception Handling (RFC 7807 / RFC 9457 Problem Details)
+
+Spring Boot 3 has native RFC 7807 support via `ProblemDetail`. Enable it in `application.yml`:
+
+```yaml
+spring:
+  mvc:
+    problemdetails:
+      enabled: true   # auto-maps built-in exceptions to ProblemDetail
+```
+
+This automatically handles `MethodArgumentNotValidException`, `NoResourceFoundException`, etc.
+For domain exceptions, add a `@RestControllerAdvice`:
 
 ```java
-@ControllerAdvice
-class GlobalExceptionHandler {
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex) {
-    String message = ex.getBindingResult().getFieldErrors().stream()
-        .map(e -> e.getField() + ": " + e.getDefaultMessage())
-        .collect(Collectors.joining(", "));
-    return ResponseEntity.badRequest().body(ApiError.validation(message));
+@RestControllerAdvice
+class ProblemDetailsAdvice {
+
+  @ExceptionHandler(MarketNotFoundException.class)
+  ProblemDetail handleNotFound(MarketNotFoundException ex, HttpServletRequest req) {
+    ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    pd.setType(URI.create("https://api.example.com/problems/not-found"));
+    pd.setTitle("Not Found");
+    pd.setProperty("instance", req.getRequestURI());
+    return pd;  // Spring sets Content-Type: application/problem+json automatically
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  ProblemDetail handleValidation(ConstraintViolationException ex, HttpServletRequest req) {
+    ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+    pd.setType(URI.create("https://api.example.com/problems/validation-failed"));
+    pd.setTitle("Validation Failed");
+    pd.setDetail("One or more fields failed validation.");
+    pd.setProperty("instance", req.getRequestURI());
+    pd.setProperty("errors", ex.getConstraintViolations().stream()
+        .map(v -> Map.of("field", v.getPropertyPath().toString(), "detail", v.getMessage()))
+        .toList());
+    return pd;
   }
 
   @ExceptionHandler(AccessDeniedException.class)
-  ResponseEntity<ApiError> handleAccessDenied() {
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiError.of("Forbidden"));
+  ProblemDetail handleAccessDenied(HttpServletRequest req) {
+    ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+    pd.setType(URI.create("https://api.example.com/problems/forbidden"));
+    pd.setTitle("Forbidden");
+    pd.setProperty("instance", req.getRequestURI());
+    return pd;
   }
 
   @ExceptionHandler(Exception.class)
-  ResponseEntity<ApiError> handleGeneric(Exception ex) {
-    // Log unexpected errors with stack traces
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(ApiError.of("Internal server error"));
+  ProblemDetail handleGeneric(Exception ex, HttpServletRequest req) {
+    log.error("unhandled exception uri={}", req.getRequestURI(), ex);
+    ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    pd.setType(URI.create("about:blank"));
+    pd.setTitle("Internal Server Error");
+    return pd;
   }
 }
 ```
+
+Response example:
+```
+HTTP/1.1 404 Not Found
+Content-Type: application/problem+json
+
+{
+  "type": "https://api.example.com/problems/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Market 'crypto-btc' not found.",
+  "instance": "/api/markets/crypto-btc"
+}
+```
+
+See skill: `problem-details` for the full RFC 7807/9457 reference and multi-language examples.
 
 ## Caching
 
@@ -311,4 +393,4 @@ Use Spring’s `@Scheduled` or integrate with queues (e.g., Kafka, SQS, RabbitMQ
 - Use `@Transactional(readOnly = true)` for queries
 - Enforce null-safety via `@NonNull` and `Optional` where appropriate
 
-**Remember**: Keep controllers thin, services focused, repositories simple, and errors handled centrally. Optimize for maintainability and testability.
+**Remember**: Keep domain framework-free, use cases focused on business logic, adapters thin (map only), and errors handled centrally. Dependency arrows always point inward — toward domain. Optimize for testability and replaceability of adapters.

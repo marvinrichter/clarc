@@ -731,4 +731,156 @@ Product.objects.filter(stock=0).delete()
 | Signals | Event-driven actions |
 | Middleware | Request/response processing |
 
+## DDD Patterns in Django
+
+> **Why not hexagonal?** Django's ORM models intentionally couple domain and persistence — they are both the data model and the persistence model. Separating them (hexagonal) means fighting the framework: no `save()`, no querysets, manual mappers everywhere. Use DDD concepts *within* Django's conventions instead.
+
+### Apps as Bounded Contexts
+
+Each Django app = one Bounded Context. Apps should be self-contained with their own models, views, and services:
+
+```
+apps/
+  markets/         ← Market bounded context
+    models.py      # Market, MarketStatus — the aggregate root
+    services.py    # Use cases (business operations)
+    views.py       # Inbound adapter (HTTP)
+    serializers.py # DTO mapping
+  orders/          ← Order bounded context
+    models.py      # Order, OrderLine — separate aggregate root
+    services.py
+```
+
+Cross-app references: use IDs or signals, not direct model imports where possible.
+
+### Fat Models — Behavior in the Model
+
+Django models with business behavior are DDD-aligned. Logic belongs in the model, not in the view or serializer:
+
+```python
+# apps/markets/models.py
+from django.db import models
+from django.core.exceptions import ValidationError
+
+
+class Market(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[("DRAFT", "Draft"), ("ACTIVE", "Active"), ("SUSPENDED", "Suspended")],
+        default="DRAFT",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # ✅ Domain behavior on the model — not in the view
+    def publish(self) -> None:
+        """Publish the market. Raises ValidationError if not in DRAFT state."""
+        if self.status != "DRAFT":
+            raise ValidationError(f"Cannot publish market '{self.slug}': status is {self.status}")
+        self.status = "ACTIVE"
+        self.save(update_fields=["status"])
+
+    def suspend(self, reason: str) -> None:
+        if self.status != "ACTIVE":
+            raise ValidationError(f"Cannot suspend market '{self.slug}': not active")
+        self.status = "SUSPENDED"
+        self.save(update_fields=["status"])
+        MarketSuspendedEvent.objects.create(market=self, reason=reason)
+
+    class Meta:
+        db_table = "markets"
+```
+
+### Service Layer as Use Cases
+
+Services orchestrate multi-step operations, transactions, and cross-model coordination:
+
+```python
+# apps/markets/services.py
+from django.db import transaction
+from .models import Market
+
+
+def create_market(name: str, slug: str, created_by_id: int) -> Market:
+    """Use case: create a new market and notify the creator."""
+    if not name.strip():
+        raise ValueError("Market name is required")
+
+    with transaction.atomic():
+        market = Market.objects.create(name=name, slug=slug)
+        # Notify — use signal or direct call
+        _notify_market_created(market, created_by_id)
+    return market
+
+
+def publish_market(slug: str) -> Market:
+    """Use case: publish a draft market."""
+    market = Market.objects.select_for_update().get(slug=slug)
+    market.publish()  # domain behavior on the model
+    return market
+
+
+def _notify_market_created(market: Market, user_id: int) -> None:
+    # Internal helper — not a use case
+    pass
+```
+
+### Custom QuerySet as Repository Queries
+
+```python
+# apps/markets/models.py
+class MarketQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(status="ACTIVE")
+
+    def draft(self):
+        return self.filter(status="DRAFT")
+
+    def by_slug(self, slug: str):
+        return self.filter(slug=slug)
+
+
+class Market(models.Model):
+    objects = MarketQuerySet.as_manager()
+    # ...
+
+
+# Usage — reads like domain language
+active_markets = Market.objects.active().order_by("-created_at")[:20]
+```
+
+### Domain Events via Django Signals
+
+```python
+# apps/markets/signals.py
+from django.dispatch import Signal, receiver
+from django.db.models.signals import post_save
+
+market_published = Signal()  # custom domain event signal
+
+
+@receiver(market_published)
+def on_market_published(sender, market, **kwargs):
+    """Listener — lives in adapter (e.g., send notification)."""
+    send_notification.delay(market.id)
+
+
+# In Market.publish():
+def publish(self) -> None:
+    if self.status != "DRAFT":
+        raise ValidationError(...)
+    self.status = "ACTIVE"
+    self.save(update_fields=["status"])
+    market_published.send(sender=self.__class__, market=self)  # raise event
+```
+
+### Violation Checklist
+
+- [ ] Business logic in views/serializers → move to model methods or services
+- [ ] Direct `Market.objects` queries in views → move to service or custom QuerySet
+- [ ] `market.status = "ACTIVE"` in view without calling `market.publish()` → bypasses invariants
+- [ ] Cross-app model imports without ID-based decoupling → increases coupling between contexts
+- [ ] `transaction.atomic()` missing for multi-step operations → consistency risk
+
 Remember: Django provides many shortcuts, but for production applications, structure and organization matter more than concise code. Build for maintainability.

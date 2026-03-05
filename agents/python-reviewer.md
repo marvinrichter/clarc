@@ -85,13 +85,25 @@ Fix: What to change
 
 ## Framework Checks
 
-- **Django**: `select_related`/`prefetch_related` for N+1, `atomic()` for multi-step, migrations
-- **FastAPI**: CORS config, Pydantic validation, response models, no blocking in async
-- **Flask**: Proper error handlers, CSRF protection
+### FastAPI — Hexagonal Architecture Violations (HIGH)
+- **Domain imports FastAPI/SQLAlchemy**: `domain/` files import from `fastapi`, `sqlalchemy`, or any ORM → domain must be pure Python (`@dataclass`, stdlib only)
+- **Router calls repository directly**: FastAPI route function calls `db.query(Market)` instead of going through a use case → violation
+- **Pydantic schema in domain**: Pydantic `BaseModel` in `domain/` package → validation belongs in `adapter/in_/http/` only
+- **Missing Protocol for output port**: Concrete SQLAlchemy class injected directly into use case instead of `Protocol` interface → breaks testability
+- **Anemic domain model**: Domain dataclasses are plain data bags with no behavior functions; all logic in use case → move invariants to factory/behavior functions
+- **Non-RFC 7807 error format**: `raise HTTPException(status_code=422, detail="...")` returns `{ "detail": "..." }` not RFC 7807 → use `@app.exception_handler` returning `JSONResponse` with `Content-Type: application/problem+json` and `type`/`title`/`status`/`detail` fields
+- **Wrong Content-Type on errors**: Error responses using `application/json` instead of `application/problem+json`
+
+### Django — DDD Violations (HIGH)
+- **Business logic in view**: `if market.status != "DRAFT": market.status = "ACTIVE"` in view/serializer → belongs in `market.publish()` model method
+- **Direct status mutation**: `market.status = "ACTIVE"; market.save()` bypassing model method → use `market.publish()` to enforce invariants
+- **Missing `transaction.atomic()`**: Multi-step DB operations without transaction boundary → data consistency risk
+- **Query logic in view**: `Market.objects.filter(status="ACTIVE")` in view → belongs in custom QuerySet method or service
+- **Cross-app model direct import**: `from apps.orders.models import Order` in `apps.markets` → decouple via signals or IDs where possible
 
 ## Reference
 
-For detailed Python patterns, security examples, and code samples, see skill: `python-patterns`.
+For detailed Python patterns, security examples, and code samples, see skill: `python-patterns` (hexagonal FastAPI) and `django-patterns` (Django DDD).
 
 ---
 

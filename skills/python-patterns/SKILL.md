@@ -500,32 +500,291 @@ async def fetch_all(urls: list[str]) -> dict[str, str]:
 
 ## Package Organization
 
-### Standard Project Layout
+### Hexagonal Project Layout (FastAPI / Clean Python)
+
+For services with real domain logic, use hexagonal structure. `Protocol` is the natural fit for ports in Python:
 
 ```
-myproject/
-├── src/
-│   └── mypackage/
-│       ├── __init__.py
-│       ├── main.py
-│       ├── api/
-│       │   ├── __init__.py
-│       │   └── routes.py
-│       ├── models/
-│       │   ├── __init__.py
-│       │   └── user.py
-│       └── utils/
-│           ├── __init__.py
-│           └── helpers.py
-├── tests/
-│   ├── __init__.py
-│   ├── conftest.py
-│   ├── test_api.py
-│   └── test_models.py
-├── pyproject.toml
-├── README.md
-└── .gitignore
+src/
+  domain/
+    model/          # Pure Python dataclasses — zero framework imports
+      market.py     # Market, MarketStatus, create_market(), publish_market()
+      money.py      # Money, add_money() — value object
+    port/
+      in_/          # Input port ABCs / Protocols
+        use_cases.py
+      out/          # Output port Protocols
+        repositories.py
+    event/          # Domain event dataclasses
+  application/
+    use_cases/      # Use case implementations
+      create_market.py
+  adapter/
+    in_/
+      http/         # FastAPI routers + Pydantic request/response models
+    out/
+      persistence/  # SQLAlchemy/Prisma repositories implementing output ports
+      client/       # External API clients
+  config/
+    container.py    # DI wiring (manual or with dependency-injector)
+tests/
+  unit/             # Test use cases with mocked ports — no DB, no HTTP
+  integration/      # Test adapters against real infrastructure
 ```
+
+### Domain Model — Zero Framework Imports
+
+```python
+# domain/model/market.py
+from __future__ import annotations
+from dataclasses import dataclass, replace
+from enum import Enum
+
+
+class MarketStatus(Enum):
+    DRAFT = "DRAFT"
+    ACTIVE = "ACTIVE"
+
+
+class InvalidMarketError(Exception):
+    pass
+
+
+class MarketAlreadyPublishedError(Exception):
+    pass
+
+
+@dataclass(frozen=True)
+class Market:
+    id: str | None
+    name: str
+    slug: str
+    status: MarketStatus = MarketStatus.DRAFT
+
+
+def create_market(name: str, slug: str) -> Market:
+    """Factory — enforces creation invariants."""
+    if not name or not name.strip():
+        raise InvalidMarketError("name is required")
+    return Market(id=None, name=name.strip(), slug=slug)
+
+
+def publish_market(market: Market) -> Market:
+    """Behavior function — returns new immutable Market."""
+    if market.status != MarketStatus.DRAFT:
+        raise MarketAlreadyPublishedError(f"Market {market.slug} is already published")
+    return replace(market, status=MarketStatus.ACTIVE)
+```
+
+### Output Port — Protocol (Structural Typing)
+
+```python
+# domain/port/out/repositories.py
+from typing import Protocol
+from domain.model.market import Market, MarketStatus
+
+
+class MarketRepository(Protocol):
+    async def save(self, market: Market) -> Market: ...
+    async def find_by_slug(self, slug: str) -> Market | None: ...
+    async def find_all(
+        self, status: MarketStatus | None = None, limit: int = 20, offset: int = 0
+    ) -> list[Market]: ...
+```
+
+### Use Case Implementation
+
+```python
+# application/use_cases/create_market.py
+from domain.model.market import Market, create_market
+from domain.port.out.repositories import MarketRepository
+
+
+class CreateMarketUseCase:
+    def __init__(self, repository: MarketRepository) -> None:  # output port injected
+        self._repository = repository
+
+    async def execute(self, name: str, slug: str) -> Market:
+        market = create_market(name, slug)           # domain logic
+        return await self._repository.save(market)  # persistence via port
+```
+
+### Inbound Adapter — FastAPI Router
+
+```python
+# adapter/in_/http/market_router.py
+from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel, field_validator
+from application.use_cases.create_market import CreateMarketUseCase
+from domain.model.market import InvalidMarketError
+
+router = APIRouter(prefix="/markets", tags=["markets"])
+
+
+class CreateMarketRequest(BaseModel):
+    name: str
+    slug: str
+
+    @field_validator("slug")
+    @classmethod
+    def validate_slug(cls, v: str) -> str:
+        import re
+        if not re.match(r"^[a-z0-9-]+$", v):
+            raise ValueError("slug must be lowercase alphanumeric with hyphens")
+        return v
+
+
+class MarketResponse(BaseModel):
+    name: str
+    slug: str
+    status: str
+
+
+def create_market_router(use_case: CreateMarketUseCase) -> APIRouter:
+    @router.post("/", status_code=status.HTTP_201_CREATED, response_model=MarketResponse)
+    async def create_market(body: CreateMarketRequest) -> MarketResponse:
+        # Let domain errors propagate — RFC 7807 handler catches them (registered below)
+        market = await use_case.execute(body.name, body.slug)
+        return MarketResponse(name=market.name, slug=market.slug, status=market.status.value)
+    return router
+```
+
+### Error Handling — RFC 7807 / RFC 9457 Problem Details
+
+All HTTP errors must use `Content-Type: application/problem+json`. Register exception handlers on app startup:
+
+```python
+# adapter/in_/http/exception_handlers.py
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from domain.model.market import InvalidMarketError, MarketAlreadyPublishedError
+
+
+def problem_response(status: int, type_: str, title: str,
+                     detail: str | None = None, instance: str | None = None,
+                     **extensions) -> JSONResponse:
+    body = {
+        "type": type_,
+        "title": title,
+        "status": status,
+        **({"detail": detail} if detail else {}),
+        **({"instance": instance} if instance else {}),
+        **extensions,
+    }
+    return JSONResponse(content=body, status_code=status,
+                        headers={"Content-Type": "application/problem+json"})
+
+
+def register_exception_handlers(app: FastAPI) -> None:
+
+    @app.exception_handler(RequestValidationError)
+    async def handle_validation(request: Request, exc: RequestValidationError) -> JSONResponse:
+        return problem_response(
+            400,
+            "https://api.example.com/problems/validation-failed",
+            "Validation Failed",
+            detail="One or more fields failed validation.",
+            instance=str(request.url),
+            errors=[{"field": ".".join(str(l) for l in e["loc"]), "detail": e["msg"]}
+                    for e in exc.errors()],
+        )
+
+    @app.exception_handler(InvalidMarketError)
+    async def handle_invalid_market(request: Request, exc: InvalidMarketError) -> JSONResponse:
+        return problem_response(
+            422,
+            "https://api.example.com/problems/invalid-market",
+            "Invalid Market",
+            detail=str(exc),
+            instance=str(request.url),
+        )
+
+    @app.exception_handler(MarketAlreadyPublishedError)
+    async def handle_already_published(request: Request, exc: MarketAlreadyPublishedError) -> JSONResponse:
+        return problem_response(
+            409,
+            "https://api.example.com/problems/already-published",
+            "Already Published",
+            detail=str(exc),
+            instance=str(request.url),
+        )
+
+    @app.exception_handler(Exception)
+    async def handle_generic(request: Request, exc: Exception) -> JSONResponse:
+        return problem_response(500, "about:blank", "Internal Server Error")
+```
+
+See skill: `problem-details` for the full RFC 7807/9457 specification and field reference.
+
+### DI Wiring — FastAPI Dependency Injection or Manual
+
+```python
+# config/container.py
+from sqlalchemy.ext.asyncio import AsyncSession
+from adapter.out.persistence.market_repo import SqlAlchemyMarketRepository
+from application.use_cases.create_market import CreateMarketUseCase
+
+
+def get_create_market_use_case(session: AsyncSession) -> CreateMarketUseCase:
+    repo = SqlAlchemyMarketRepository(session)  # outbound adapter
+    return CreateMarketUseCase(repo)            # use case with injected port
+
+
+# In FastAPI app setup:
+# register_exception_handlers(app)
+# app.include_router(create_market_router(get_create_market_use_case(session)))
+```
+
+### Testing Use Cases (Mock the Protocol)
+
+```python
+# tests/unit/test_create_market.py
+import pytest
+from unittest.mock import AsyncMock, MagicMock
+from application.use_cases.create_market import CreateMarketUseCase
+from domain.model.market import Market, MarketStatus, InvalidMarketError
+
+
+class MockMarketRepository:
+    """Inline mock satisfying MarketRepository Protocol."""
+    def __init__(self):
+        self.saved: list[Market] = []
+
+    async def save(self, market: Market) -> Market:
+        saved = Market(id="market-1", name=market.name, slug=market.slug, status=market.status)
+        self.saved.append(saved)
+        return saved
+
+    async def find_by_slug(self, slug: str) -> Market | None:
+        return None
+
+    async def find_all(self, status=None, limit=20, offset=0) -> list[Market]:
+        return []
+
+
+@pytest.mark.asyncio
+async def test_create_market_saves_and_returns():
+    repo = MockMarketRepository()
+    use_case = CreateMarketUseCase(repo)
+
+    market = await use_case.execute("Test Market", "test-market")
+
+    assert market.name == "Test Market"
+    assert len(repo.saved) == 1
+
+
+@pytest.mark.asyncio
+async def test_create_market_rejects_blank_name():
+    use_case = CreateMarketUseCase(MockMarketRepository())
+
+    with pytest.raises(InvalidMarketError):
+        await use_case.execute("", "slug")
+```
+
+> **Note**: This hexagonal structure is for FastAPI and clean Python backends. For **Django**, do not use this structure — Django's ORM couples domain and persistence by design. See skill: `django-patterns` for Django-specific DDD patterns.
+
+### Standard Project Layout (Simple Scripts / Libraries)
 
 ### Import Conventions
 
