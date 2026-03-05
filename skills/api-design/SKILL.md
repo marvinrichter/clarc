@@ -10,12 +10,49 @@ Conventions and best practices for designing consistent, developer-friendly REST
 
 ## When to Activate
 
-- Designing new API endpoints
-- Reviewing existing API contracts
-- Adding pagination, filtering, or sorting
+- **Before writing any implementation** — design the contract first, code second
+- Designing new API endpoints or changing existing ones
+- Reviewing existing API contracts for consistency
+- Adding pagination, filtering, or sorting to an endpoint
 - Implementing error handling for APIs
 - Planning API versioning strategy
 - Building public or partner-facing APIs
+
+> For the full Contract-First workflow (spec writing, code generation, CI breaking-change detection, Pact): see skill `api-contract`.
+
+## Contract-First Principle
+
+**Write the OpenAPI spec before writing any implementation code.**
+
+```plantuml
+@startuml
+:Write spec\napi/v1/openapi.yaml;
+note right
+  REST → OpenAPI 3.1
+  Events → AsyncAPI 3.0
+end note
+:Lint spec\nspectral lint;
+:Generate types / stubs\nfrom spec;
+note right
+  TS: openapi-typescript
+  Go: oapi-codegen
+  Java: openapi-generator
+  Python: datamodel-codegen
+end note
+:Implement business logic only;
+:Validate in CI\nschemathesis + oasdiff;
+@enduml
+```
+
+The spec is the public contract. Consumers depend on it. Code is a private implementation detail.
+
+- Never generate the spec from code (annotations, reflection) — it will drift
+- Never write request/response types by hand — generate them from the spec
+- Any breaking change requires a new API version (`/api/v2/`)
+
+See skill `api-contract` for the complete toolchain and CI setup.
+
+---
 
 ## Resource Design
 
@@ -98,12 +135,20 @@ POST   /api/v1/auth/refresh
 # BAD: 200 for everything
 { "status": 200, "success": false, "error": "Not found" }
 
-# GOOD: Use HTTP status codes semantically
+# GOOD: Use HTTP status codes semantically + RFC 7807 body
 HTTP/1.1 404 Not Found
-{ "error": { "code": "not_found", "message": "User not found" } }
+Content-Type: application/problem+json
+
+{
+  "type": "https://api.example.com/problems/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "User abc-123 not found.",
+  "instance": "/api/v1/users/abc-123"
+}
 
 # BAD: 500 for validation errors
-# GOOD: 400 or 422 with field-level details
+# GOOD: 400 or 422 with field-level details (RFC 7807 errors extension)
 
 # BAD: 200 for created resources
 # GOOD: 201 with Location header
@@ -148,51 +193,58 @@ Location: /api/v1/users/abc-123
 }
 ```
 
-### Error Response
+### Error Response — RFC 7807 / RFC 9457 Problem Details
+
+All error responses MUST use `Content-Type: application/problem+json` and the standard fields:
 
 ```json
+HTTP/1.1 400 Bad Request
+Content-Type: application/problem+json
+
 {
-  "error": {
-    "code": "validation_error",
-    "message": "Request validation failed",
-    "details": [
-      {
-        "field": "email",
-        "message": "Must be a valid email address",
-        "code": "invalid_format"
-      },
-      {
-        "field": "age",
-        "message": "Must be between 0 and 150",
-        "code": "out_of_range"
-      }
-    ]
-  }
+  "type": "https://api.example.com/problems/validation-failed",
+  "title": "Validation Failed",
+  "status": 400,
+  "detail": "One or more fields failed validation.",
+  "instance": "/api/v1/users",
+  "errors": [
+    { "field": "email", "detail": "must be a valid email address" },
+    { "field": "age",   "detail": "must be between 0 and 150" }
+  ]
 }
 ```
+
+| Field | Required | Description |
+|---|---|---|
+| `type` | Recommended | URI identifying the problem type. `about:blank` if no docs exist yet. |
+| `title` | Recommended | Stable, human-readable summary (don't interpolate dynamic data). |
+| `status` | Yes | HTTP status code mirrored in the body. |
+| `detail` | Optional | Occurrence-specific explanation for the client. |
+| `instance` | Optional | URI of this specific occurrence (e.g., request path or ID). |
+| `errors` | Extension | RFC 9457 array for multiple sub-problems (validation errors). |
+
+See skill: `problem-details` for full specification and per-language implementation.
 
 ### Response Envelope Variants
 
 ```typescript
-// Option A: Envelope with data wrapper (recommended for public APIs)
+// Success responses: return the resource (or data wrapper for public APIs)
 interface ApiResponse<T> {
   data: T;
   meta?: PaginationMeta;
   links?: PaginationLinks;
 }
 
-interface ApiError {
-  error: {
-    code: string;
-    message: string;
-    details?: FieldError[];
-  };
+// Error responses: always RFC 7807 ProblemDetails — never { success: false, error: "..." }
+interface ProblemDetails {
+  type: string;         // URI — link to docs
+  title: string;        // Short, stable summary
+  status: number;       // HTTP status mirrored
+  detail?: string;      // Occurrence-specific detail
+  instance?: string;    // URI of this occurrence
+  [key: string]: unknown; // Extension fields
 }
-
-// Option B: Flat response (simpler, common for internal APIs)
-// Success: just return the resource directly
-// Error: return error object
-// Distinguish by HTTP status code
+// Content-Type for errors: application/problem+json (NOT application/json)
 ```
 
 ## Pagination
@@ -334,14 +386,17 @@ X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1640000000
 
-# When exceeded
+# When exceeded — RFC 7807 body
 HTTP/1.1 429 Too Many Requests
+Content-Type: application/problem+json
 Retry-After: 60
+
 {
-  "error": {
-    "code": "rate_limit_exceeded",
-    "message": "Rate limit exceeded. Try again in 60 seconds."
-  }
+  "type": "https://api.example.com/problems/too-many-requests",
+  "title": "Too Many Requests",
+  "status": 429,
+  "detail": "Rate limit exceeded. Try again in 60 seconds.",
+  "retryAfter": 60
 }
 ```
 
@@ -409,69 +464,29 @@ const createUserSchema = z.object({
   name: z.string().min(1).max(100),
 });
 
+const PROBLEM_CONTENT_TYPE = "application/problem+json";
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parsed = createUserSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json({
-      error: {
-        code: "validation_error",
-        message: "Request validation failed",
-        details: parsed.error.issues.map(i => ({
-          field: i.path.join("."),
-          message: i.message,
-          code: i.code,
-        })),
-      },
-    }, { status: 422 });
+      type: "https://api.example.com/problems/validation-failed",
+      title: "Validation Failed",
+      status: 422,
+      detail: "One or more fields failed validation.",
+      errors: parsed.error.issues.map(i => ({ field: i.path.join("."), detail: i.message })),
+    }, { status: 422, headers: { "Content-Type": PROBLEM_CONTENT_TYPE } });
   }
 
   const user = await createUser(parsed.data);
 
   return NextResponse.json(
     { data: user },
-    {
-      status: 201,
-      headers: { Location: `/api/v1/users/${user.id}` },
-    },
+    { status: 201, headers: { Location: `/api/v1/users/${user.id}` } },
   );
 }
-```
-
-### Python (Django REST Framework)
-
-```python
-from rest_framework import serializers, viewsets, status
-from rest_framework.response import Response
-
-class CreateUserSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    name = serializers.CharField(max_length=100)
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "email", "name", "created_at"]
-
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_serializer_class(self):
-        if self.action == "create":
-            return CreateUserSerializer
-        return UserSerializer
-
-    def create(self, request):
-        serializer = CreateUserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = UserService.create(**serializer.validated_data)
-        return Response(
-            {"data": UserSerializer(user).data},
-            status=status.HTTP_201_CREATED,
-            headers={"Location": f"/api/v1/users/{user.id}"},
-        )
 ```
 
 ### Go (net/http)
@@ -480,12 +495,16 @@ class UserViewSet(viewsets.ModelViewSet):
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
     var req CreateUserRequest
     if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-        writeError(w, http.StatusBadRequest, "invalid_json", "Invalid request body")
+        writeProblem(w, r, http.StatusBadRequest,
+            "https://api.example.com/problems/bad-request", "Bad Request",
+            "Invalid request body.")
         return
     }
 
     if err := req.Validate(); err != nil {
-        writeError(w, http.StatusUnprocessableEntity, "validation_error", err.Error())
+        writeProblem(w, r, http.StatusUnprocessableEntity,
+            "https://api.example.com/problems/validation-failed", "Validation Failed",
+            err.Error())
         return
     }
 
@@ -493,15 +512,31 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         switch {
         case errors.Is(err, domain.ErrEmailTaken):
-            writeError(w, http.StatusConflict, "email_taken", "Email already registered")
+            writeProblem(w, r, http.StatusConflict,
+                "https://api.example.com/problems/email-taken", "Email Taken",
+                "This email is already registered.")
         default:
-            writeError(w, http.StatusInternalServerError, "internal_error", "Internal error")
+            writeProblem(w, r, http.StatusInternalServerError,
+                "about:blank", "Internal Server Error", "")
         }
         return
     }
 
     w.Header().Set("Location", fmt.Sprintf("/api/v1/users/%s", user.ID))
-    writeJSON(w, http.StatusCreated, map[string]any{"data": user})
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusCreated)
+    json.NewEncoder(w).Encode(map[string]any{"data": user})
+}
+
+// writeProblem writes an RFC 7807 Problem Details response.
+func writeProblem(w http.ResponseWriter, r *http.Request, status int,
+                  type_, title, detail string) {
+    w.Header().Set("Content-Type", "application/problem+json")
+    w.WriteHeader(status)
+    json.NewEncoder(w).Encode(map[string]any{
+        "type": type_, "title": title, "status": status,
+        "detail": detail, "instance": r.RequestURI,
+    })
 }
 ```
 
@@ -513,11 +548,14 @@ Before shipping a new endpoint:
 - [ ] Correct HTTP method used (GET for reads, POST for creates, etc.)
 - [ ] Appropriate status codes returned (not 200 for everything)
 - [ ] Input validated with schema (Zod, Pydantic, Bean Validation)
-- [ ] Error responses follow standard format with codes and messages
+- [ ] Error responses use RFC 7807 Problem Details (`Content-Type: application/problem+json`, `type`/`title`/`status` fields)
 - [ ] Pagination implemented for list endpoints (cursor or offset)
 - [ ] Authentication required (or explicitly marked as public)
 - [ ] Authorization checked (user can only access their own resources)
 - [ ] Rate limiting configured
 - [ ] Response does not leak internal details (stack traces, SQL errors)
 - [ ] Consistent naming with existing endpoints (camelCase vs snake_case)
-- [ ] Documented (OpenAPI/Swagger spec updated)
+- [ ] OpenAPI spec written **before** implementation (`api/v1/openapi.yaml`)
+- [ ] Spec linted (`spectral lint`) with zero errors
+- [ ] Types/stubs generated from spec — not hand-written
+- [ ] Breaking change detection configured in CI (`oasdiff`)

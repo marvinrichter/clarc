@@ -8,7 +8,7 @@ origin: ECC
 
 Systematizes the "search for existing solutions before implementing" workflow.
 
-## Trigger
+## When to Activate
 
 Use this skill when:
 - Starting a new feature that likely has existing solutions

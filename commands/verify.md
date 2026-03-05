@@ -1,3 +1,7 @@
+---
+description: Run comprehensive build, type, lint, test, and git verification on the codebase.
+---
+
 # Verification Command
 
 Run comprehensive verification on current codebase state.

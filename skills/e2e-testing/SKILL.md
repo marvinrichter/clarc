@@ -8,6 +8,15 @@ origin: ECC
 
 Comprehensive Playwright patterns for building stable, fast, and maintainable E2E test suites.
 
+## When to Activate
+
+- Writing or running Playwright E2E tests
+- Setting up E2E test infrastructure for a new project
+- Diagnosing or fixing flaky tests
+- Configuring CI/CD pipelines for E2E testing
+- Implementing the Page Object Model pattern
+- Managing test artifacts (screenshots, videos, traces)
+
 ## Test File Organization
 
 ```

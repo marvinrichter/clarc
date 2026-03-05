@@ -5,6 +5,12 @@ description: Translate visa application documents (images) to English and create
 
 You are helping translate visa application documents for visa applications.
 
+## When to Activate
+
+- User provides an image file path of a visa application document
+- User asks to translate a visa document or official foreign-language document to English
+- User needs a bilingual PDF with the original and the English translation side by side
+
 ## Instructions
 
 When the user provides an image file path, AUTOMATICALLY execute the following steps WITHOUT asking for confirmation:

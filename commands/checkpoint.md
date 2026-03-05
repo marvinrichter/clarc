@@ -1,3 +1,7 @@
+---
+description: Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.
+---
+
 # Checkpoint Command
 
 Create or verify a checkpoint in your workflow.
