@@ -3,12 +3,15 @@
 #
 # Usage:
 #   ./install.sh [--target <claude|cursor>] <language> [<language> ...]
+#   ./install.sh --check [<language> ...]
 #
 # Examples:
 #   ./install.sh typescript
 #   ./install.sh typescript python golang
 #   ./install.sh --target cursor typescript
 #   ./install.sh --target cursor typescript python golang
+#   ./install.sh --check                    # check common + all installed langs
+#   ./install.sh --check typescript python  # check specific languages
 #
 # Targets:
 #   claude  (default) — Install rules to ~/.claude/rules/
@@ -36,6 +39,7 @@ RULES_DIR="$SCRIPT_DIR/rules"
 # --- Parse flags ---
 TARGET="claude"
 PROJECT_LOCAL=false
+CHECK_ONLY=false
 
 while [[ $# -gt 0 ]]; do
     case "${1:-}" in
@@ -53,22 +57,77 @@ while [[ $# -gt 0 ]]; do
             PROJECT_LOCAL=true
             shift
             ;;
+        --check)
+            # Compare installed rules against repo version — do not install anything
+            CHECK_ONLY=true
+            shift
+            ;;
         *)
             break
             ;;
     esac
 done
 
-if [[ "$TARGET" != "claude" && "$TARGET" != "cursor" ]]; then
+if [[ "$CHECK_ONLY" == false && "$TARGET" != "claude" && "$TARGET" != "cursor" ]]; then
     echo "Error: unknown target '$TARGET'. Must be 'claude' or 'cursor'." >&2
     exit 1
+fi
+
+# --- Check mode: compare installed rules against repo ---
+if [[ "$CHECK_ONLY" == true ]]; then
+    GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
+    any_diff=false
+
+    # Determine which languages to check
+    if [[ $# -eq 0 ]]; then
+        # No languages specified: check common + all repo languages that are installed
+        langs_to_check=("common")
+        for dir in "$RULES_DIR"/*/; do
+            name="$(basename "$dir")"
+            [[ "$name" == "common" ]] && continue
+            [[ -d "$GLOBAL_RULES_DIR/$name" ]] && langs_to_check+=("$name")
+        done
+    else
+        langs_to_check=("common" "$@")
+    fi
+
+    for lang in "${langs_to_check[@]}"; do
+        src="$RULES_DIR/$lang"
+        dest="$GLOBAL_RULES_DIR/$lang"
+        if [[ ! -d "$src" ]]; then
+            echo "[$lang] NOT IN REPO (skipping)"
+            continue
+        fi
+        if [[ ! -d "$dest" ]]; then
+            echo "[$lang] NOT INSTALLED"
+            any_diff=true
+            continue
+        fi
+        diff_out="$(diff -rq "$src" "$dest" 2>/dev/null || true)"
+        if [[ -z "$diff_out" ]]; then
+            echo "[$lang] Up to date"
+        else
+            echo "[$lang] DIFFERS:"
+            echo "$diff_out" | sed 's/^/  /'
+            any_diff=true
+        fi
+    done
+
+    if [[ "$any_diff" == true ]]; then
+        echo ""
+        echo "Re-run without --check to update installed rules."
+        exit 1
+    fi
+    exit 0
 fi
 
 # --- Usage ---
 if [[ $# -eq 0 ]]; then
     echo "Usage: $0 [--target <claude|cursor>] [--project] <language> [<language> ...]"
+    echo "       $0 --check [<language> ...]"
     echo ""
     echo "Flags:"
+    echo "  --check    Compare installed rules against repo version (read-only)"
     echo "  --project  Install language rules into <cwd>/.claude/rules/ (project-local)"
     echo "             Common rules always go to ~/.claude/rules/common/ (global)"
     echo ""
