@@ -1,5 +1,14 @@
 # Workflow - Multi-Model Collaborative Development
 
+> **Prerequisites — check before starting**
+> Before running any phase of this workflow, verify the required external tools are available:
+> ```bash
+> ls ~/.claude/bin/codeagent-wrapper 2>/dev/null && echo "OK" || echo "MISSING"
+> ```
+> If `codeagent-wrapper` is **MISSING**: stop immediately and inform the user:
+> *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` + `/tdd` instead for a native Claude workflow."*
+> Do **not** attempt to execute any subsequent phases without this binary present.
+
 Multi-model collaborative development workflow (Research → Ideation → Plan → Execute → Optimize → Review), with intelligent routing: Frontend → Gemini, Backend → Codex.
 
 Structured development workflow with quality gates, MCP services, and multi-model collaboration.

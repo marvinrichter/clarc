@@ -1,12 +1,19 @@
 ---
 name: continuous-learning
-description: Automatically extract reusable patterns from Claude Code sessions and save them as learned skills for future use.
+description: "v1 — Session-end holistic pattern extraction. Runs once per session via SessionEnd hook, saves to ~/.claude/skills/learned/. Complements continuous-learning-v2 (per-tool instinct capture). See continuous-learning-v2 for the instinct-based system."
 origin: ECC
 ---
 
-# Continuous Learning Skill
+# Continuous Learning — v1 (Session-End Analysis)
 
-Automatically evaluates Claude Code sessions on end to extract reusable patterns that can be saved as learned skills.
+> **v1 and v2 are complementary, not redundant.**
+> - **v1 (this skill)**: Holistic end-of-session analysis → saves full skill patterns to `~/.claude/skills/learned/`
+> - **v2**: Per-tool atomic instinct capture → confidence-scored instincts in `~/.claude/homunculus/`
+>
+> Both hooks are active. Use `/learn` or `/learn-eval` for manual mid-session extraction.
+> For the instinct-based system, see: [continuous-learning-v2](../continuous-learning-v2/SKILL.md)
+
+Automatically evaluates Claude Code sessions at end to extract reusable patterns that can be saved as learned skills.
 
 ## When to Activate
 
@@ -116,4 +123,4 @@ Homunculus v2 takes a more sophisticated approach:
 4. **Domain tagging** - code-style, testing, git, debugging, etc.
 5. **Evolution path** - Cluster related instincts into skills/commands
 
-See: `/Users/affoon/Documents/tasks/12-continuous-learning-v2.md` for full spec.
+See: [continuous-learning-v2/SKILL.md](../continuous-learning-v2/SKILL.md) for the full instinct-based spec.
