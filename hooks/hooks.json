@@ -125,6 +125,18 @@
         "description": "Check for console.log in modified files after each response"
       }
     ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/notification-handler.js\""
+          }
+        ],
+        "description": "Log notifications and suggest /compact on context pressure"
+      }
+    ],
     "SessionEnd": [
       {
         "matcher": "*",

@@ -26,7 +26,8 @@ const { execFileSync } = require('child_process');
 const LOG_PATH = path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'hooks.log');
 const MAX_LOG_BYTES = 500 * 1024; // 500KB
 const KEEP_LINES = 5000;
-const SLOW_HOOK_THRESHOLD_MS = 3000; // warn if a single hook invocation exceeds this
+// Override via CLAUDE_HOOK_SLOW_MS env var (e.g. for slow CI machines)
+const SLOW_HOOK_THRESHOLD_MS = Number(process.env.CLAUDE_HOOK_SLOW_MS) || 3000;
 
 /**
  * Append a single log entry (NDJSON).
