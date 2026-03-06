@@ -69,6 +69,7 @@
     "scripts/claw.js",
     "scripts/setup-package-manager.js",
     "scripts/skill-create-output.js",
+    "scripts/sync-instincts.js",
     "skills/",
     "AGENTS.md",
     ".claude-plugin/plugin.json",
@@ -83,6 +84,9 @@
     "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc-install typescript\\n  Docs: https://github.com/affaan-m/everything-claude-code\\n'",
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "claw": "node scripts/claw.js",
+    "instincts:push": "node scripts/sync-instincts.js push",
+    "instincts:pull": "node scripts/sync-instincts.js pull",
+    "instincts:status": "node scripts/sync-instincts.js status",
     "test": "node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node tests/run-all.js"
   },
   "devDependencies": {
