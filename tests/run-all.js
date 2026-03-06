@@ -23,11 +23,14 @@ const testFiles = [
   'ci/validators.test.js',
   'scripts/claw.test.js',
   'scripts/setup-package-manager.test.js',
-  'scripts/skill-create-output.test.js'
+  'scripts/skill-create-output.test.js',
+  'evals/agents.eval.js',
+  'evals/commands.eval.js',
+  'evals/skills.eval.js'
 ];
 
 const BOX_W = 58; // inner width between ║ delimiters
-const boxLine = (s) => `║${s.padEnd(BOX_W)}║`;
+const boxLine = s => `║${s.padEnd(BOX_W)}║`;
 
 console.log('╔' + '═'.repeat(BOX_W) + '╗');
 console.log(boxLine('           Everything Claude Code - Test Suite'));
