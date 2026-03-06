@@ -10,40 +10,137 @@
  * burning context on stale information from other projects.
  */
 
-const {
-  getSessionsDir,
-  getLearnedSkillsDir,
-  findFiles,
-  ensureDir,
-  readFile,
-  log,
-  output,
-  getProjectName,
-} = require('../lib/utils');
+const { spawnSync } = require('child_process');
+const { getSessionsDir, getLearnedSkillsDir, findFiles, ensureDir, readFile, log, output, getProjectName } = require('../lib/utils');
 const { getPackageManager, getSelectionPrompt } = require('../lib/package-manager');
 const { listAliases } = require('../lib/session-aliases');
 const { detectProjectType } = require('../lib/project-detect');
 
 const MAX_INJECT_CHARS = 3000;
 
+// Stop words to ignore when extracting git-log keywords
+const STOP_WORDS = new Set([
+  'a',
+  'an',
+  'the',
+  'and',
+  'or',
+  'but',
+  'in',
+  'on',
+  'at',
+  'to',
+  'for',
+  'of',
+  'with',
+  'by',
+  'from',
+  'up',
+  'as',
+  'is',
+  'it',
+  'its',
+  'be',
+  'are',
+  'was',
+  'were',
+  'been',
+  'has',
+  'have',
+  'had',
+  'do',
+  'does',
+  'did',
+  'will',
+  'would',
+  'could',
+  'should',
+  'may',
+  'might',
+  'shall',
+  'can',
+  'not',
+  'no',
+  'fix',
+  'add',
+  'update',
+  'remove',
+  'change',
+  'use',
+  'move',
+  'make',
+  'get',
+  'set',
+  'run',
+  'feat',
+  'chore',
+  'docs',
+  'test',
+  'refactor',
+  'perf',
+  'ci'
+]);
+
+/**
+ * Extract meaningful keywords from recent git commit messages.
+ * Returns a Set of lowercase tokens weighted by frequency (TF-style).
+ * Falls back gracefully if git is unavailable.
+ */
+function extractGitKeywords(cwd, limit = 30) {
+  try {
+    const result = spawnSync('git', ['log', '--oneline', `-${limit}`], {
+      cwd,
+      stdio: 'pipe',
+      encoding: 'utf8',
+      timeout: 3000
+    });
+    if (result.status !== 0 || !result.stdout) return new Map();
+
+    const freq = new Map();
+    for (const line of result.stdout.split('\n')) {
+      // Strip commit hash prefix
+      const message = line.replace(/^[0-9a-f]+ /, '').toLowerCase();
+      for (const token of message.split(/[\s:/()\-_,.[\]{}'"!?]+/)) {
+        if (token.length < 3 || STOP_WORDS.has(token)) continue;
+        freq.set(token, (freq.get(token) || 0) + 1);
+      }
+    }
+    return freq;
+  } catch {
+    return new Map();
+  }
+}
+
+/**
+ * Score a line by how many git-derived keywords it contains.
+ * Weights higher-frequency keywords more (TF-style).
+ */
+function scoreLine(line, keywordFreq) {
+  const lower = line.toLowerCase();
+  let score = 0;
+  for (const [token, freq] of keywordFreq) {
+    if (lower.includes(token)) score += Math.log(1 + freq);
+  }
+  return score;
+}
+
 /**
  * Filter session content to lines relevant to the current project.
  *
  * Strategy (in priority order):
  *  1. Lines that contain the project name (most specific signal)
- *  2. If fewer than 10 matching lines, fall back to the last N lines
- *     (most recent context is most likely to be relevant)
- *  3. Cap total output at MAX_INJECT_CHARS
+ *  2. TF-IDF-style scoring using keywords from recent git commits
+ *     (top-scored lines are more likely to be relevant to current work)
+ *  3. Fall back to the last N lines (most recent context)
+ *  4. Cap total output at MAX_INJECT_CHARS
  */
-function filterSessionContent(content, projectName) {
+function filterSessionContent(content, projectName, cwd) {
   if (!content || content.includes('[Session context goes here]')) return null;
 
   const lines = content.split('\n');
 
   // Always cap regardless of strategy
-  const cap = (text) => text.length > MAX_INJECT_CHARS
-    ? '...(truncated)\n' + text.slice(text.length - MAX_INJECT_CHARS)
-    : text;
+  const cap = text => (text.length > MAX_INJECT_CHARS ? '...(truncated)\n' + text.slice(text.length - MAX_INJECT_CHARS) : text);
 
   // Fast path: content is short enough to inject as-is
   if (content.length <= MAX_INJECT_CHARS) return content;
@@ -57,7 +154,22 @@ function filterSessionContent(content, projectName) {
     }
   }
 
-  // Strategy 2: keep the most recent lines (tail of the file)
+  // Strategy 2: TF-IDF scoring from recent git commit keywords
+  const keywordFreq = extractGitKeywords(cwd || process.cwd());
+  if (keywordFreq.size > 0) {
+    const scored = lines
+      .map((line, idx) => ({ line, idx, score: scoreLine(line, keywordFreq) }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    if (scored.length >= 5) {
+      // Re-sort by original index to preserve narrative order
+      const top = scored.slice(0, 60).sort((a, b) => a.idx - b.idx);
+      return cap(top.map(({ line }) => line).join('\n'));
+    }
+  }
+
+  // Strategy 3: keep the most recent lines (tail of the file)
   const tail = lines.slice(-150).join('\n');
   return cap(tail);
 }
@@ -82,7 +194,7 @@ async function main() {
     log(`[SessionStart] Latest: ${latest.path}`);
 
     const raw = readFile(latest.path);
-    const filtered = filterSessionContent(raw, projectName);
+    const filtered = filterSessionContent(raw, projectName, process.cwd());
     if (filtered) {
       const charCount = filtered.length;
       log(`[SessionStart] Injecting ${charCount} chars of session context (project: ${projectName || 'unknown'})`);

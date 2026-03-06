@@ -91,6 +91,16 @@
         "description": "TypeScript check after editing .ts/.tsx files"
       },
       {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck-rust.js\""
+          }
+        ],
+        "description": "Rust cargo check after editing .rs files"
+      },
+      {
         "matcher": "*",
         "hooks": [
           {

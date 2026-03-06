@@ -77,7 +77,9 @@ function validateCommands() {
     // Process line-by-line so ALL command refs per line are captured
     // (previous anchored regex /^.*`\/...`.*$/gm only matched the last ref per line)
     for (const line of contentNoCodeBlocks.split('\n')) {
+      // Skip lines describing expected output or HTTP URL paths (not slash commands)
       if (/creates:|would create:/i.test(line)) continue;
+      if (/\bexpose\b|(?:\bon|\bat)\s+`\/|\b(GET|POST|PUT|DELETE|PATCH)\b|\bendpoint\b|\bhandler\b|\broute\b|\bscrape\b|\bpromhttp\b/i.test(line)) continue;
       const lineRefs = line.matchAll(/`\/([a-z][-a-z0-9]*)`/g);
       for (const match of lineRefs) {
         const refName = match[1];

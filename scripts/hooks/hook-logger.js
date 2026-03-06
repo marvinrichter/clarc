@@ -23,13 +23,10 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const LOG_PATH = path.join(
-  process.env.HOME || process.env.USERPROFILE || '',
-  '.claude',
-  'hooks.log'
-);
+const LOG_PATH = path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'hooks.log');
 const MAX_LOG_BYTES = 500 * 1024; // 500KB
 const KEEP_LINES = 5000;
+const SLOW_HOOK_THRESHOLD_MS = 3000; // warn if a single hook invocation exceeds this
 
 /**
  * Append a single log entry (NDJSON).
@@ -43,7 +40,7 @@ function logHook(hookName, tool, target, exitCode, durationMs) {
       tool,
       target: target ? path.basename(target) : null,
       exit: exitCode,
-      ms: Math.round(durationMs),
+      ms: Math.round(durationMs)
     });
 
     // Rotate if over size limit
@@ -59,6 +56,10 @@ function logHook(hookName, tool, target, exitCode, durationMs) {
     }
 
     fs.appendFileSync(LOG_PATH, entry + '\n', 'utf8');
+
+    if (durationMs > SLOW_HOOK_THRESHOLD_MS) {
+      process.stderr.write(`[Hook] ⚠ Slow hook: ${hookName} took ${Math.round(durationMs)}ms (threshold: ${SLOW_HOOK_THRESHOLD_MS}ms)\n`);
+    }
   } catch {
     // Logging must never break hook execution
   }
@@ -90,7 +91,9 @@ if (require.main === module) {
       const parsed = JSON.parse(data);
       tool = parsed.tool_name || parsed.tool || 'unknown';
       target = parsed.tool_input?.file_path || parsed.tool_input?.command?.slice(0, 60) || null;
-    } catch { /* pass */ }
+    } catch {
+      /* pass */
+    }
 
     const start = Date.now();
     let exitCode = 0;
@@ -100,7 +103,7 @@ if (require.main === module) {
       const result = execFileSync(process.execPath, [scriptPath], {
         input: data,
         stdio: ['pipe', 'pipe', 'inherit'],
-        timeout: 30000,
+        timeout: 30000
       });
       stdout = result.toString();
     } catch (err) {

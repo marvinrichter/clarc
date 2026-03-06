@@ -87,6 +87,8 @@
     "claw": "node scripts/claw.js",
     "instincts:push": "node scripts/sync-instincts.js push",
     "instincts:pull": "node scripts/sync-instincts.js pull",
+    "instincts:push:md": "node scripts/sync-instincts.js push --md",
+    "instincts:pull:md": "node scripts/sync-instincts.js pull --md",
     "instincts:status": "node scripts/sync-instincts.js status",
     "test": "node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node tests/run-all.js",
     "hooks:summary": "node scripts/hooks-summary.js",
