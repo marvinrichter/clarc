@@ -1,13 +1,12 @@
 {
-  "name": "everything-claude-code",
+  "name": "clarc",
   "version": "1.7.0",
-  "description": "Complete collection of battle-tested Claude Code configs from an Anthropic hackathon winner - agents, skills, hooks, and rules evolved over 10+ months of intensive daily use",
+  "description": "Production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.",
   "author": {
-    "name": "Affaan Mustafa",
-    "url": "https://x.com/affaanmustafa"
+    "name": "Marvin Richter"
   },
-  "homepage": "https://github.com/affaan-m/everything-claude-code",
-  "repository": "https://github.com/affaan-m/everything-claude-code",
+  "homepage": "https://github.com/marvinrichter/clarc",
+  "repository": "https://github.com/marvinrichter/clarc",
   "license": "MIT",
   "keywords": [
     "claude-code",

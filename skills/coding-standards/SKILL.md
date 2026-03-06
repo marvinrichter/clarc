@@ -1,12 +1,16 @@
 ---
 name: coding-standards
-description: Universal coding standards, best practices, and patterns for TypeScript, JavaScript, React, and Node.js development.
+description: TypeScript, JavaScript, React, and Node.js coding standards with concrete code examples. Deep reference for TS/React-specific patterns. For language-agnostic principles (immutability, error handling, file organization), see rules/common/coding-style.md which is always active.
 origin: ECC
 ---
 
 # Coding Standards & Best Practices
 
-Universal coding standards applicable across all projects.
+> **Scope**: TypeScript, JavaScript, React, and Node.js specific patterns with code examples.
+> **Universal principles** (immutability, error handling, file organization, quality checklist) are defined in `rules/common/coding-style.md` — always active, not repeated here.
+> **For TypeScript type system patterns**, see: [typescript-patterns](../typescript-patterns/SKILL.md) and [typescript-patterns-advanced](../typescript-patterns-advanced/SKILL.md)
+
+Concrete coding standards and patterns for TypeScript/React projects.
 
 ## When to Activate
 
@@ -528,3 +532,8 @@ setTimeout(callback, DEBOUNCE_DELAY_MS)
 ```
 
 **Remember**: Code quality is not negotiable. Clear, maintainable code enables rapid development and confident refactoring.
+
+---
+
+> For TypeScript type system, generics, discriminated unions, and advanced patterns: [typescript-patterns](../typescript-patterns/SKILL.md) | [typescript-patterns-advanced](../typescript-patterns-advanced/SKILL.md)
+> For universal principles (language-agnostic): `rules/common/coding-style.md`

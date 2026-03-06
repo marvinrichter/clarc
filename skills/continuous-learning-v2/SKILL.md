@@ -357,7 +357,6 @@ v2.1 is fully compatible with v2.0 and v1:
 
 - [Skill Creator](https://skill-creator.app) - Generate instincts from repo history
 - Homunculus - Community project that inspired the v2 instinct-based architecture (atomic observations, confidence scoring, instinct evolution pipeline)
-- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Continuous learning section
 
 ---
 

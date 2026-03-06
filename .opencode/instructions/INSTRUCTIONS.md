@@ -1,4 +1,4 @@
-# Everything Claude Code - OpenCode Instructions
+# clarc - OpenCode Instructions
 
 This document consolidates the core rules and guidelines from the Claude Code configuration for use with OpenCode.
 

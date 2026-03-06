@@ -8,7 +8,7 @@ origin: ECC
 
 > **Scope**: Data pipeline design, transformation (dbt), and orchestration (Dagster).
 > For analytics and dashboards built on top of these pipelines, see [analytics-workflow](../analytics-workflow/SKILL.md).
-> For data warehouse query patterns, see [clickhouse-io](../clickhouse-io/SKILL.md) and [postgres-patterns](../postgres-patterns/SKILL.md).
+> For analytical query patterns, see [duckdb-patterns](../duckdb-patterns/SKILL.md) and [postgres-patterns](../postgres-patterns/SKILL.md).
 
 ## When to Activate
 
@@ -342,5 +342,5 @@ dim_<entity_in_plural>       # dim_users, dim_products
 
 - [analytics-workflow](../analytics-workflow/SKILL.md) — dashboards and product metrics on top of these pipelines
 - [database-migrations](../database-migrations/SKILL.md) — schema changes for source databases
-- [clickhouse-io](../clickhouse-io/SKILL.md) — analytical query patterns
+- [duckdb-patterns](../duckdb-patterns/SKILL.md) — embedded OLAP, Parquet queries, analytical SQL
 - [postgres-patterns](../postgres-patterns/SKILL.md) — source database patterns

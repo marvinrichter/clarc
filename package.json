@@ -1,7 +1,7 @@
 {
-  "name": "ecc-universal",
+  "name": "clarc",
   "version": "1.7.0",
-  "description": "Complete collection of battle-tested Claude Code configs — agents, skills, hooks, commands, and rules evolved over 10+ months of intensive daily use by an Anthropic hackathon winner",
+  "description": "Production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.",
   "keywords": [
     "claude-code",
     "ai",
@@ -25,17 +25,16 @@
     "slides"
   ],
   "author": {
-    "name": "Affaan Mustafa",
-    "url": "https://x.com/affaanmustafa"
+    "name": "Marvin Richter"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/affaan-m/everything-claude-code.git"
+    "url": "git+https://github.com/marvinrichter/clarc.git"
   },
-  "homepage": "https://github.com/affaan-m/everything-claude-code#readme",
+  "homepage": "https://github.com/marvinrichter/clarc#readme",
   "bugs": {
-    "url": "https://github.com/affaan-m/everything-claude-code/issues"
+    "url": "https://github.com/marvinrichter/clarc/issues"
   },
   "files": [
     ".agents/",
@@ -79,10 +78,10 @@
     "scripts/hooks-summary.js"
   ],
   "bin": {
-    "ecc-install": "install.sh"
+    "clarc-install": "install.sh"
   },
   "scripts": {
-    "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc-install typescript\\n  Docs: https://github.com/affaan-m/everything-claude-code\\n'",
+    "postinstall": "echo '\\n  clarc installed!\\n  Run: npx clarc-install typescript\\n'",
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "claw": "node scripts/claw.js",
     "instincts:push": "node scripts/sync-instincts.js push",

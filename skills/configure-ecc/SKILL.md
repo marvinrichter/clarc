@@ -1,12 +1,12 @@
 ---
 name: configure-ecc
-description: Interactive installer for Everything Claude Code — guides users through selecting and installing skills and rules to user-level or project-level directories, verifies paths, and optionally optimizes installed files.
+description: Interactive installer for clarc — guides users through selecting and installing skills and rules to user-level or project-level directories, verifies paths, and optionally optimizes installed files.
 origin: ECC
 ---
 
-# Configure Everything Claude Code (ECC)
+# Configure clarc (ECC)
 
-An interactive, step-by-step installation wizard for the Everything Claude Code project. Uses `AskUserQuestion` to guide users through selective installation of skills and rules, then verifies correctness and offers optimization.
+An interactive, step-by-step installation wizard for the clarc project. Uses `AskUserQuestion` to guide users through selective installation of skills and rules, then verifies correctness and offers optimization.
 
 ## When to Activate
 
@@ -28,8 +28,8 @@ This skill must be accessible to Claude Code before activation. Two ways to boot
 Before any installation, clone the latest ECC source to `/tmp`:
 
 ```bash
-rm -rf /tmp/everything-claude-code
-git clone https://github.com/affaan-m/everything-claude-code.git /tmp/everything-claude-code
+rm -rf /tmp/clarc
+git clone https://github.com/marvinrichter/clarc.git /tmp/clarc
 ```
 
 Set `ECC_ROOT=/tmp/everything-claude-code` as the source for all subsequent copy operations.
@@ -88,7 +88,7 @@ There are 27 skills organized into 4 categories. Use `AskUserQuestion` with `mul
 Question: "Which skill categories do you want to install?"
 Options:
   - "Framework & Language" — "Django, Spring Boot, Go, Python, Java, Frontend, Backend patterns"
-  - "Database" — "PostgreSQL, ClickHouse, JPA/Hibernate patterns"
+  - "Database" — "PostgreSQL, DuckDB, JPA/Hibernate patterns"
   - "Workflow & Quality" — "TDD, verification, learning, security review, compaction"
   - "All skills" — "Install every available skill"
 ```
@@ -123,7 +123,7 @@ For each selected category, print the full list of skills below and ask the user
 
 | Skill | Description |
 |-------|-------------|
-| `clickhouse-io` | ClickHouse patterns, query optimization, analytics, data engineering |
+| `duckdb-patterns` | Embedded OLAP, Parquet/CSV querying, dbt-duckdb, analytical SQL without infrastructure |
 | `jpa-patterns` | JPA/Hibernate entity design, relationships, query optimization, transactions |
 | `postgres-patterns` | PostgreSQL query optimization, schema design, indexing, security |
 

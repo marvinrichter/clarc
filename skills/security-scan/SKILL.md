@@ -6,7 +6,7 @@ origin: ECC
 
 # Security Scan Skill
 
-Audit your Claude Code configuration for security issues using [AgentShield](https://github.com/affaan-m/agentshield).
+Audit your Claude Code configuration for security issues using [AgentShield](https://github.com/affaan-m/agentshield) or manual review patterns.
 
 ## When to Activate
 
@@ -120,7 +120,7 @@ Creates:
 Add to your CI pipeline:
 
 ```yaml
-- uses: affaan-m/agentshield@v1
+- uses: affaan-m/agentshield@v1  # third-party tool, see github.com/affaan-m/agentshield
   with:
     path: '.'
     min-severity: 'medium'

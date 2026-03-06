@@ -168,7 +168,3 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 - `/instinct-import` - Import generated instincts
 - `/instinct-status` - View learned instincts
 - `/evolve` - Cluster instincts into skills/agents
-
----
-
-*Part of [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)*

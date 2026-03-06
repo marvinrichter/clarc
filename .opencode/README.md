@@ -1,15 +1,15 @@
-# OpenCode ECC Plugin
+# OpenCode clarc Plugin
 
 > ⚠️ This README is specific to OpenCode usage.  
-> If you installed ECC via npm (e.g. `npm install opencode-ecc`), refer to the root README instead.
+> If you installed clarc via npm (e.g. `npm install opencode-ecc`), refer to the root README instead.
 
-Everything Claude Code (ECC) plugin for OpenCode - agents, commands, hooks, and skills.
+clarc (clarc) plugin for OpenCode - agents, commands, hooks, and skills.
 
 ## Installation
 
 ## Installation Overview
 
-There are two ways to use Everything Claude Code (ECC):
+There are two ways to use clarc (clarc):
 
 1. **npm package (recommended for most users)**  
    Install via npm/bun/yarn and use the `ecc-install` CLI to set up rules and agents.
@@ -22,20 +22,20 @@ Choose the method that matches your workflow below.
 ### Option 1: npm Package
 
 ```bash
-npm install ecc-universal
+npm install clarc
 ```
 
 Add to your `opencode.json`:
 
 ```json
 {
-  "plugin": ["ecc-universal"]
+  "plugin": ["clarc"]
 }
 ```
 After installation, the `ecc-install` CLI becomes available:
 
 ```bash
-npx ecc-install typescript
+npx clarc-install typescript
 ```
 
 ### Option 2: Direct Use
@@ -43,8 +43,8 @@ npx ecc-install typescript
 Clone and run OpenCode in the repository:
 
 ```bash
-git clone https://github.com/affaan-m/everything-claude-code
-cd everything-claude-code
+git clone https://github.com/marvinrichter/clarc
+cd clarc
 opencode
 ```
 
@@ -132,7 +132,7 @@ OpenCode has 20+ additional events not available in Claude Code.
 
 ## Skills
 
-The default OpenCode config loads 11 curated ECC skills via the `instructions` array:
+The default OpenCode config loads 11 curated clarc skills via the `instructions` array:
 
 - coding-standards
 - backend-patterns

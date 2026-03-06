@@ -61,11 +61,6 @@
       "url": "https://observability.mcp.cloudflare.com/mcp",
       "description": "Cloudflare observability/logs"
     },
-    "clickhouse": {
-      "type": "http",
-      "url": "https://mcp.clickhouse.cloud/mcp",
-      "description": "ClickHouse analytics queries"
-    },
     "exa-web-search": {
       "command": "npx",
       "args": ["-y", "exa-mcp-server"],

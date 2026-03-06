@@ -25,7 +25,7 @@
 
 set -euo pipefail
 
-# Resolve symlinks — needed when invoked as `ecc-install` via npm/bun bin symlink
+# Resolve symlinks — needed when invoked as `clarc-install` via npm/bun bin symlink
 SCRIPT_PATH="$0"
 while [ -L "$SCRIPT_PATH" ]; do
     link_dir="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"

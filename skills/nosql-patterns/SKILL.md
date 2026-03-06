@@ -24,7 +24,8 @@ origin: ECC
 | Documents with highly variable schema | MongoDB | Flexible schema |
 | Serverless, auto-scaling, single-digit ms latency | DynamoDB | AWS-native, infinite scale |
 | Ephemeral data, sessions, rate limiting, pub/sub | Redis | In-memory, TTL built-in |
-| Time-series (metrics, events) | TimescaleDB or ClickHouse | Optimized for append + range |
+| Analytical queries, Parquet/CSV files, local OLAP | DuckDB | Embedded, zero infra, columnar |
+| Time-series (metrics, events) | TimescaleDB | Optimized for append + range queries |
 | Graph relationships | Neo4j or Postgres + pgvector | Purpose-built |
 
 **Default: Postgres.** Only switch to NoSQL when there's a specific, concrete reason.

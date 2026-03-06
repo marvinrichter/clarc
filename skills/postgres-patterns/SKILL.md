@@ -139,7 +139,7 @@ SELECT pg_reload_conf();
 ## Related
 
 - Agent: `database-reviewer` - Full database review workflow
-- Skill: `clickhouse-io` - ClickHouse analytics patterns
+- Skill: `duckdb-patterns` - Embedded OLAP and analytical query patterns
 - Skill: `backend-patterns` - API and backend patterns
 
 ---

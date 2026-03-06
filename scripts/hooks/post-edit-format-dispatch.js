@@ -25,17 +25,17 @@ process.stdin.on('data', chunk => {
 });
 
 const EXT_MAP = {
-  '.js':    'post-edit-format.js',
-  '.jsx':   'post-edit-format.js',
-  '.ts':    'post-edit-format.js',
-  '.tsx':   'post-edit-format.js',
-  '.mjs':   'post-edit-format.js',
-  '.cjs':   'post-edit-format.js',
-  '.py':    'post-edit-format-python.js',
-  '.go':    'post-edit-format-go.js',
-  '.java':  'post-edit-format-java.js',
+  '.js': 'post-edit-format.js',
+  '.jsx': 'post-edit-format.js',
+  '.ts': 'post-edit-format.js',
+  '.tsx': 'post-edit-format.js',
+  '.mjs': 'post-edit-format.js',
+  '.cjs': 'post-edit-format.js',
+  '.py': 'post-edit-format-python.js',
+  '.go': 'post-edit-format-go.js',
+  '.java': 'post-edit-format-java.js',
   '.swift': 'post-edit-format-swift.js',
-  '.rs':    'post-edit-format-rust.js',
+  '.rs': 'post-edit-format-rust.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -78,22 +78,38 @@ process.stdin.on('end', () => {
       // 2. Dispatch to language-specific formatter
       const script = EXT_MAP[ext];
       if (script) {
-        const pluginRoot =
-          process.env.CLAUDE_PLUGIN_ROOT ||
-          path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
+        const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
         const scriptPath = path.join(pluginRoot, 'scripts', 'hooks', script);
 
         try {
           const out = execFileSync(process.execPath, [scriptPath], {
             input: data,
             stdio: ['pipe', 'pipe', 'pipe'],
-            timeout: 20000,
+            timeout: 20000
           });
           logHook('post-edit-format-dispatch', 'Edit', filePath, 0, Date.now() - start);
           process.stdout.write(out);
           process.exit(0);
-        } catch {
-          // Formatter failed or not installed — pass through
+        } catch (err) {
+          // Formatter failed — report clearly so Claude can react
+          const reason = (err.stderr || err.message || 'unknown error').toString().trim().split('\n')[0];
+          const ext = path.extname(filePath).toLowerCase();
+          const formatterHint =
+            {
+              '.js': 'biome / prettier',
+              '.jsx': 'biome / prettier',
+              '.ts': 'biome / prettier',
+              '.tsx': 'biome / prettier',
+              '.mjs': 'biome / prettier',
+              '.cjs': 'biome / prettier',
+              '.py': 'ruff',
+              '.go': 'goimports / gofmt',
+              '.java': 'google-java-format / spotless',
+              '.swift': 'swift-format / swiftformat',
+              '.rs': 'rustfmt'
+            }[ext] || 'formatter';
+          console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
+          console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);
           exitCode = 1;
         }
       }

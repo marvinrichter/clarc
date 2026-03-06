@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Claude Code plugin** - a collection of production-ready agents, skills, hooks, commands, rules, and MCP configurations. The project provides battle-tested workflows for software development using Claude Code.
+**clarc** is a production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.
 
 ## Running Tests
 
@@ -49,12 +49,11 @@ The project is organized into several core components:
 - Skill format: Markdown with clear sections for when to use, how it works, examples
 - Hook format: JSON with matcher conditions and command/notification hooks
 
-## Contributing
+## File formats
 
-Follow the formats in CONTRIBUTING.md:
-- Agents: Markdown with frontmatter (name, description, tools, model)
-- Skills: Clear sections (When to Use, How It Works, Examples)
-- Commands: Markdown with description frontmatter
+- Agents: Markdown with YAML frontmatter (name, description, tools, model)
+- Skills: `SKILL.md` with frontmatter + sections (When to Activate, patterns, examples)
+- Commands: Markdown with `description` frontmatter
 - Hooks: JSON with matcher and hooks array
 
 File naming: lowercase with hyphens (e.g., `python-reviewer.md`, `tdd-workflow.md`)

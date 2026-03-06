@@ -1,7 +1,7 @@
 {
-  "name": "ecc-universal",
+  "name": "clarc",
   "version": "1.7.0",
-  "description": "Everything Claude Code (ECC) plugin for OpenCode - agents, commands, hooks, and skills",
+  "description": "clarc plugin for OpenCode — agents, commands, hooks, and skills",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -43,16 +43,16 @@
     "hooks",
     "automation"
   ],
-  "author": "affaan-m",
+  "author": "Marvin Richter",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/affaan-m/everything-claude-code.git"
+    "url": "git+https://github.com/marvinrichter/clarc.git"
   },
   "bugs": {
-    "url": "https://github.com/affaan-m/everything-claude-code/issues"
+    "url": "https://github.com/marvinrichter/clarc/issues"
   },
-  "homepage": "https://github.com/affaan-m/everything-claude-code#readme",
+  "homepage": "https://github.com/marvinrichter/clarc#readme",
   "publishConfig": {
     "access": "public"
   },
