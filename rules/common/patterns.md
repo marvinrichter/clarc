@@ -24,8 +24,22 @@ Encapsulate data access behind a consistent interface:
 
 ### API Response Format
 
-Use a consistent envelope for all API responses:
-- Include a success/status indicator
-- Include the data payload (nullable on error)
-- Include an error message field (nullable on success)
-- Include metadata for paginated responses (total, page, limit)
+Use different shapes for success and error responses:
+
+**Success responses** — envelope pattern:
+```
+{ "data": <payload>, "meta": { "total": N, "page": N, "limit": N } }
+```
+- `data` contains the payload (object or array)
+- `meta` is included for paginated responses (total, page, limit)
+- No `success` flag needed — HTTP status code communicates success
+
+**Error responses** — RFC 7807 Problem Details (`Content-Type: application/problem+json`):
+```
+{ "type": "https://...", "title": "Validation Error", "status": 422, "detail": "...", "instance": "/api/v1/users/123" }
+```
+- Use `application/problem+json` content type, not `application/json`
+- Clients can switch on `type` without string-matching `message` fields
+- `detail` is human-readable; `type` URI is machine-readable
+
+> **Why separate shapes?** Enveloping errors in `{ success: false, error: "..." }` makes client error handling fragile (string matching). RFC 7807 gives errors a stable, typed contract. See `skills/api-design` for implementation examples.

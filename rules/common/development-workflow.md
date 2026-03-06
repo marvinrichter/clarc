@@ -2,7 +2,35 @@
 
 > This file extends [common/git-workflow.md](./git-workflow.md) with the full feature development process that happens before git operations.
 
-The Feature Implementation Workflow describes the development pipeline: research, planning, TDD, code review, and then committing to git.
+The full workflow covers two phases: **Product Discovery** (is this the right thing to build?) and **Feature Implementation** (how to build it well).
+
+---
+
+## Product Discovery Phase
+
+> Run this phase for new features whose value or approach is not yet clear. Skip for bug fixes, refactors, chores, and features with well-defined requirements.
+
+-3. **Idea Capture** — `/idea <description>`
+   - Structures the raw idea: problem statement, target user, success metric
+   - Asks clarifying questions if gaps exist
+   - Output: `docs/ideas/YYYY-MM-DD-<name>.md`
+
+-2. **Evaluation** — `/evaluate <name>`
+   - Delegates to **product-evaluator** agent (model: Opus)
+   - Assesses: problem clarity, user fit, technical feasibility, alternatives, opportunity cost
+   - Produces explicit Go / No-Go / Modify recommendation
+   - Output: `docs/evals/YYYY-MM-DD-<name>-eval.md`
+   - **Stop here if No-Go.** Do not proceed to implementation.
+
+-1. **Solution Design** — `/explore <name>` → `/prd <name>`
+   - `/explore` delegates to **solution-designer** agent: generates 2-4 options, trade-off analysis, Architecture Decision Record
+   - `/prd` synthesizes idea + eval + ADR into a full Product Requirements Document
+   - Output: `docs/decisions/<name>-adr.md` + `docs/specs/<name>-prd.md`
+   - The PRD is directly consumed by `/overnight`, `/plan`, and `/tdd`
+
+See skill `product-lifecycle` for the full decision criteria and document templates.
+
+---
 
 ## Feature Implementation Workflow
 
@@ -42,3 +70,29 @@ The Feature Implementation Workflow describes the development pipeline: research
    - Detailed commit messages
    - Follow conventional commits format
    - See [git-workflow.md](./git-workflow.md) for commit message format and PR process
+
+---
+
+## Architecture Documentation
+
+Architecture is documented using **arc42 + C4 diagrams** as the single standard.
+
+**Document location:** `docs/architecture/arc42.md` + `docs/architecture/diagrams/*.puml`
+
+**Commands:**
+- `/arc42` — generate full arc42 document for the current project (first time)
+- `/arc42 section-N` — update a specific section after structural changes
+- `/arc42 decisions` — rebuild the ADR index in Section 9
+
+**When to update arc42:**
+
+| Change | Update which section |
+|--------|---------------------|
+| New external service integrated | Section 3 (Context) |
+| New container added (service, DB, queue) | Section 5 (Building Blocks) |
+| Infrastructure or cloud topology changes | Section 7 (Deployment) |
+| New cross-cutting pattern established | Section 8 (Cross-cutting Concepts) |
+| ADR accepted (from `/explore`) | Section 9 — add to index |
+| New quality SLO defined | Section 10 (Quality Requirements) |
+
+**ADR flow:** `/explore` → `docs/decisions/YYYY-MM-DD-<name>-adr.md` → add to arc42 Section 9 index → `/arc42 decisions` to rebuild automatically.

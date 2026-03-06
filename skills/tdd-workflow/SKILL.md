@@ -8,6 +8,8 @@ origin: ECC
 
 This skill ensures all code development follows TDD principles with comprehensive test coverage.
 
+> **Agent counterpart:** Use the `tdd-guide` agent for interactive, step-by-step TDD guidance during feature development. This skill provides the reference patterns and examples; the agent enforces the workflow.
+
 ## When to Activate
 
 - Writing new features or functionality

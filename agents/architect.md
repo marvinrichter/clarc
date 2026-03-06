@@ -105,41 +105,31 @@ For each design decision, document:
 
 ## Architecture Decision Records (ADRs)
 
-For significant architectural decisions, create ADRs:
+For significant architectural decisions, create ADRs following the `adr-writing` skill.
+ADRs are saved to `docs/decisions/` and indexed in arc42 Section 9.
 
-```markdown
-# ADR-001: Use Redis for Semantic Search Vector Storage
+Run `/explore <idea>` to generate an ADR through the solution-designer agent.
 
-## Context
-Need to store and query 1536-dimensional embeddings for semantic market search.
+## Architecture Documentation Standard
 
-## Decision
-Use Redis Stack with vector search capability.
+All architecture documentation follows **arc42 + C4**:
 
-## Consequences
+- `docs/architecture/arc42.md` — the living architecture document (12 sections)
+- `docs/architecture/diagrams/*.puml` — C4 diagrams (Context, Container, Component, Deployment)
 
-### Positive
-- Fast vector similarity search (<10ms)
-- Built-in KNN algorithm
-- Simple deployment
-- Good performance up to 100K vectors
+Run `/arc42` to generate or update the architecture document.
+Run `/arc42 section-N` to update a specific section after architectural changes.
 
-### Negative
-- In-memory storage (expensive for large datasets)
-- Single point of failure without clustering
-- Limited to cosine similarity
+**arc42 sections at a glance:**
+- Section 3: System context (C4 Level 1) — what the system does and who uses it
+- Section 5: Building blocks (C4 Level 2+3) — containers and components
+- Section 6: Runtime view — sequence diagrams for key flows
+- Section 7: Deployment view — infrastructure and deployment topology
+- Section 8: Cross-cutting concepts — logging, security, error handling, caching
+- Section 9: Architecture decisions — index of all ADRs
 
-### Alternatives Considered
-- **PostgreSQL pgvector**: Slower, but persistent storage
-- **Pinecone**: Managed service, higher cost
-- **Weaviate**: More features, more complex setup
-
-## Status
-Accepted
-
-## Date
-2025-01-15
-```
+When producing design proposals, structure output using the relevant arc42 sections.
+For trade-off analysis, follow the `adr-writing` skill template (context → decision → consequences → alternatives considered).
 
 ## System Design Checklist
 
