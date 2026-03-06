@@ -1,7 +1,6 @@
 ---
 name: graphql-patterns
 description: "GraphQL API patterns: schema-first design, resolvers, DataLoader for N+1 prevention, subscriptions, error handling, pagination, auth, and performance. For TypeScript with Apollo Server or Pothos."
-origin: ECC
 ---
 
 # GraphQL Patterns Skill

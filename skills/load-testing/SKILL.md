@@ -1,7 +1,6 @@
 ---
 name: load-testing
 description: "Load and performance testing with k6 (TypeScript/Go/any HTTP) and Locust (Python). Covers test types (smoke, load, stress, spike, soak), SLO thresholds, CI integration, and interpreting results."
-origin: ECC
 ---
 
 # Load Testing Skill

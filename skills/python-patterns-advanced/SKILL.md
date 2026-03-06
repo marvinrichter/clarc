@@ -1,7 +1,6 @@
 ---
 name: python-patterns-advanced
 description: Advanced Python patterns — concurrency (threading, multiprocessing, async/await), hexagonal architecture with FastAPI, RFC 7807 error handling, memory optimization, pyproject.toml tooling, and anti-patterns. Extends python-patterns.
-origin: ECC
 ---
 
 # Python Advanced Patterns

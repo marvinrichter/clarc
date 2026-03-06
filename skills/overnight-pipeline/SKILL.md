@@ -1,7 +1,6 @@
 ---
 name: overnight-pipeline
 description: "Autonomous overnight development pipeline. Analyzes a feature idea and selects the right pipeline pattern (Sequential, Continuous Claude, Ralphinho, or Infinite Loop). Generates all required files and waits for user confirmation before starting."
-origin: ECC
 ---
 
 # Overnight Pipeline Skill

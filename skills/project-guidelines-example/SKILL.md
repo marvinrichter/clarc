@@ -1,7 +1,6 @@
 ---
 name: project-guidelines-example
 description: "Example project-specific skill template based on a real production application."
-origin: ECC
 ---
 
 # Project Guidelines Skill (Example)

@@ -1,7 +1,6 @@
 ---
 name: duckdb-patterns
 description: "DuckDB patterns for embedded OLAP analytics: in-process SQL on Parquet/CSV/JSON files, window functions, ASOF joins, dbt-duckdb integration, Dagster assets, Python/Node.js APIs, and performance tuning. Zero infrastructure required — analytical power without a server."
-origin: clarc
 ---
 
 # DuckDB Patterns

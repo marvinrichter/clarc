@@ -1,7 +1,6 @@
 ---
 name: release-management
 description: "Release management: semantic versioning, conventional commits → CHANGELOG, git tagging, GitHub Releases, pre-release testing, and rollback procedures. Use /release to automate the process."
-origin: ECC
 ---
 
 # Release Management Skill

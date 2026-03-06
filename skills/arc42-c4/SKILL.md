@@ -1,7 +1,6 @@
 ---
 name: arc42-c4
 description: "arc42 architecture documentation template (all 12 sections) combined with C4 diagrams (Context, Container, Component, Deployment) in PlantUML. The standard for architecture documentation in this setup. Maps each section to the Claude skills that help fill it."
-origin: ECC
 ---
 
 # arc42 + C4 Skill

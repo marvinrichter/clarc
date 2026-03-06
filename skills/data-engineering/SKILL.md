@@ -1,7 +1,6 @@
 ---
 name: data-engineering
 description: "Data engineering patterns: dbt for SQL transformation (models, tests, incremental), Dagster for orchestration (assets, jobs, sensors), data quality checks, warehouse patterns (BigQuery/Snowflake/Redshift), and modern data stack setup. Covers the ELT pipeline from raw ingestion to analytics-ready models."
-origin: ECC
 ---
 
 # Data Engineering

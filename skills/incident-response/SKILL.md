@@ -1,7 +1,6 @@
 ---
 name: incident-response
 description: "Incident response process: severity levels, on-call workflow, runbook templates, communication guidelines (status page, Slack), blameless post-mortems, and resolution checklists."
-origin: ECC
 ---
 
 # Incident Response Skill

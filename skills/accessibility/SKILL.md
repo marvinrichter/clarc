@@ -1,7 +1,6 @@
 ---
 name: accessibility
 description: "Web accessibility (a11y) patterns: WCAG 2.2 compliance, semantic HTML, ARIA roles and attributes, keyboard navigation, focus management, screen reader testing, color contrast, and accessible component patterns for forms, modals, and menus."
-origin: ECC
 ---
 
 # Accessibility (a11y) Skill

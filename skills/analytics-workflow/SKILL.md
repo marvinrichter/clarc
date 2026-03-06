@@ -1,7 +1,6 @@
 ---
 name: analytics-workflow
 description: "Data & product analytics workflow: event taxonomy design, instrumentation (Segment, PostHog, Mixpanel, Amplitude, GA4), analytics pipelines, funnel and retention analysis, and dashboard design. Complements observability (infrastructure metrics) with product/user behavior tracking."
-origin: ECC
 ---
 
 # Analytics Workflow

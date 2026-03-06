@@ -1,7 +1,6 @@
 ---
 name: idea-discovery
 description: "How to proactively find product ideas: three distinct modes — Inbound (analyze user feedback), Outbound (competitive web research), and Creative (structured ideation). Connects discovery tools to the product lifecycle pipeline."
-origin: ECC
 ---
 
 # Idea Discovery Skill

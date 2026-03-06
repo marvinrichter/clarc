@@ -1,7 +1,6 @@
 ---
 name: auth-patterns
 description: "Authentication and authorization implementation patterns: JWT, sessions (httpOnly cookies), OAuth2/OIDC, API keys, RBAC, and MFA. Covers TypeScript, Python, Go, and Java with security-hardened code examples."
-origin: ECC
 ---
 
 # Auth Patterns Skill

@@ -1,7 +1,6 @@
 ---
 name: springboot-patterns
 description: Spring Boot architecture patterns, REST API design, hexagonal (ports & adapters) architecture, data access, caching, async processing, and logging. Use for Java Spring Boot backend work.
-origin: ECC
 ---
 
 # Spring Boot Development Patterns

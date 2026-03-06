@@ -1,7 +1,6 @@
 ---
 name: multi-tenancy
 description: "Multi-tenancy patterns for SaaS: row-level security (Postgres RLS), schema-per-tenant, tenant context middleware, data isolation testing, and migration strategies. Helps prevent cross-tenant data leaks."
-origin: ECC
 ---
 
 # Multi-Tenancy Skill

@@ -1,7 +1,6 @@
 ---
 name: slo-workflow
 description: "SLI/SLO/SLA and error budget workflow: define service level indicators, set objectives, calculate error budgets, implement burn rate alerting, and use error budgets to gate risky deployments. Covers Prometheus, Datadog, and Google SRE methodology."
-origin: ECC
 ---
 
 # SLO Workflow

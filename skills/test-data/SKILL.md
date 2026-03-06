@@ -1,7 +1,6 @@
 ---
 name: test-data
 description: "Test data management patterns: factory functions, fixtures, database seeders, test isolation strategies, and safely anonymizing production data for testing. Covers TypeScript, Python, and Go."
-origin: ECC
 ---
 
 # Test Data Skill

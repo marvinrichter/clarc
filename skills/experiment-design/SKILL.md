@@ -1,7 +1,6 @@
 ---
 name: experiment-design
 description: "A/B testing and experimentation workflow: hypothesis design, metric selection, sample size calculation, statistical significance, common pitfalls (peeking, SRM, novelty effect), and experiment lifecycle. Complements feature-flags (implementation) with statistical rigor."
-origin: ECC
 ---
 
 # Experiment Design

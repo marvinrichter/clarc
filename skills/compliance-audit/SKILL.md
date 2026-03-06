@@ -1,7 +1,6 @@
 ---
 name: compliance-audit
 description: "Compliance and audit-log workflow: immutable audit trail design, SOC 2 / ISO 27001 / HIPAA / PCI-DSS control mapping, access control reviews, data lineage, and compliance automation in CI/CD. Complements gdpr-privacy and security-review."
-origin: ECC
 ---
 
 # Compliance & Audit Log

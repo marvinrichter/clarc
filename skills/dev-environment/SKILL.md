@@ -1,7 +1,6 @@
 ---
 name: dev-environment
 description: "Local development environment patterns: runtime version pinning with mise/asdf, environment variables with direnv, Dev Containers for consistent team environments, Docker Compose for local services, and pre-commit hooks."
-origin: ECC
 ---
 
 # Dev Environment Skill

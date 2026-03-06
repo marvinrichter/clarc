@@ -1,7 +1,6 @@
 ---
 name: python-testing
 description: Python testing strategies using pytest, TDD methodology, fixtures, mocking, and parametrization. Core testing fundamentals.
-origin: ECC
 ---
 
 # Python Testing Patterns

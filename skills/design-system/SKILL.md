@@ -1,7 +1,6 @@
 ---
 name: design-system
 description: "Design system architecture: design tokens (color, spacing, typography, radius), component library layers (Primitive → Composite → Pattern), theming with CSS Custom Properties and Tailwind, Storybook documentation, and dark mode. The foundation for consistent UI across an entire product."
-origin: ECC
 ---
 
 # Design System Skill

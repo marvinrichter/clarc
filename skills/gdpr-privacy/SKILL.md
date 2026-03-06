@@ -1,7 +1,6 @@
 ---
 name: gdpr-privacy
 description: "GDPR and data privacy implementation patterns: Right to Erasure, data retention policies, PII detection and anonymization, consent management, Data Subject Access Requests (DSAR), audit logs, and data minimization. Required for any EU-facing product."
-origin: ECC
 ---
 
 # GDPR & Data Privacy Skill

@@ -1,7 +1,6 @@
 ---
 name: rust-testing
 description: Rust testing patterns — unit tests with mockall, integration tests with sqlx transactions, HTTP handler testing (axum), benchmarks (criterion), property tests (proptest), fuzzing, and CI with cargo-nextest.
-origin: ECC
 ---
 
 # Rust Testing Patterns

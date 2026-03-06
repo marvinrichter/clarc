@@ -1,7 +1,6 @@
 ---
 name: golang-testing
 description: Go testing patterns including table-driven tests, subtests, test helpers, and golden files. Core TDD methodology with idiomatic Go practices.
-origin: ECC
 ---
 
 # Go Testing Patterns

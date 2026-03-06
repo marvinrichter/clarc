@@ -1,7 +1,6 @@
 ---
 name: motion-animation
 description: "Motion and animation patterns for web: CSS transitions for simple interactions, Framer Motion for complex orchestrated animations, meaningful vs. decorative motion, prefers-reduced-motion (WCAG 2.3), page transitions, and layout animations. Motion should communicate, not decorate."
-origin: ECC
 ---
 
 # Motion & Animation Skill

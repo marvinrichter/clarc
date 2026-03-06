@@ -1,7 +1,6 @@
 ---
 name: django-patterns-advanced
 description: Advanced Django patterns — service layer, caching, signals, middleware, performance optimization (N+1, bulk ops), and DDD patterns (fat models, bounded contexts, domain events). Extends django-patterns.
-origin: ECC
 ---
 
 # Django Advanced Patterns

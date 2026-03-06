@@ -1,7 +1,6 @@
 ---
 name: react-native-patterns
 description: "React Native patterns: navigation (Expo Router), platform-specific code, local storage, push notifications (Expo), performance optimization, network handling, and bridging native APIs. For Expo-based React Native apps."
-origin: ECC
 ---
 
 # React Native Patterns Skill

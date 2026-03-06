@@ -1,7 +1,6 @@
 ---
 name: figma-to-code
 description: "Figma-to-code workflow: extracting design tokens from Figma Variables, syncing tokens with Style Dictionary, reading Figma files via API, handoff conventions, and maintaining parity between design and implementation. For teams with a designer."
-origin: ECC
 ---
 
 # Figma-to-Code Skill

@@ -1,7 +1,6 @@
 ---
 name: swift-patterns-advanced
 description: Advanced Swift patterns — property wrappers, result builders, Combine basics, opaque & existential types, macro system, advanced generics, and performance optimization. Extends swift-patterns.
-origin: ECC
 ---
 
 # Swift Patterns — Advanced

@@ -1,7 +1,6 @@
 ---
 name: rust-patterns
 description: Idiomatic Rust patterns, ownership idioms, async with Tokio, error handling with thiserror/anyhow, testing strategies, and hexagonal architecture in Rust.
-origin: ECC
 ---
 
 # Rust Patterns

@@ -1,7 +1,6 @@
 ---
 name: async-patterns
 description: "Asynchronous processing patterns: job queues (BullMQ, Celery, asynq), scheduled cron jobs, event-driven pub/sub, dead letter queues, retry with exponential backoff, and idempotency. Covers TypeScript, Python, and Go."
-origin: ECC
 ---
 
 # Async Patterns Skill

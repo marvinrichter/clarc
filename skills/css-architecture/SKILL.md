@@ -1,7 +1,6 @@
 ---
 name: css-architecture
 description: "CSS architecture for modern web apps: Tailwind conventions and when to break them, CSS Modules for complex components, responsive design system with container queries, fluid typography, and avoiding the most common Tailwind pitfalls."
-origin: ECC
 ---
 
 # CSS Architecture Skill

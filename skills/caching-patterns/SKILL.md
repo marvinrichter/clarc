@@ -1,7 +1,6 @@
 ---
 name: caching-patterns
 description: "Caching strategy patterns: Cache-Aside, Write-Through, Write-Behind, TTL design, cache invalidation, Redis patterns, CDN caching, HTTP cache headers, and cache stampede prevention. Caching is both a performance and correctness problem."
-origin: ECC
 ---
 
 # Caching Patterns Skill

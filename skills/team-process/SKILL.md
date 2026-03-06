@@ -1,7 +1,6 @@
 ---
 name: team-process
 description: "Engineering team process patterns: OKR definition and scoring, sprint planning and retros, roadmap structuring (now/next/later), feature breakdown into user stories with acceptance criteria, and engineering metrics (DORA, velocity). For product lifecycle see product-lifecycle skill."
-origin: ECC
 ---
 
 # Team Process

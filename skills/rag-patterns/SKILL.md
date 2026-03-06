@@ -1,7 +1,6 @@
 ---
 name: rag-patterns
 description: "RAG (Retrieval-Augmented Generation) architecture patterns: chunking strategies, embedding models, vector stores (pgvector, Pinecone), retrieval pipelines, reranking, prompt engineering, evaluation, and LLM caching. The reference for building AI features on top of your own data."
-origin: ECC
 ---
 
 # RAG Patterns Skill

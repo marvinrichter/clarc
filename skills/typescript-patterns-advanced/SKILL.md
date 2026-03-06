@@ -1,7 +1,6 @@
 ---
 name: typescript-patterns-advanced
 description: Advanced TypeScript — mapped types, template literal types, conditional types, infer, type guards, decorators, async patterns, testing with Vitest/Jest, and performance. Extends typescript-patterns.
-origin: ECC
 ---
 
 # TypeScript Patterns — Advanced

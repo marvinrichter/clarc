@@ -1,7 +1,6 @@
 ---
 name: python-testing-advanced
 description: Advanced Python testing — async testing with pytest-asyncio, exception/side-effect testing, test organization, common patterns (API, database, class methods), pytest configuration, and CLI reference. Extends python-testing.
-origin: ECC
 ---
 
 # Python Testing — Advanced Patterns

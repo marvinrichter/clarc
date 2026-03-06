@@ -1,7 +1,6 @@
 ---
 name: nosql-patterns
 description: "NoSQL database patterns: MongoDB document design (embedding vs. referencing), DynamoDB single-table design with access patterns, Redis as primary store, and when to use each NoSQL database vs. Postgres."
-origin: ECC
 ---
 
 # NoSQL Patterns Skill

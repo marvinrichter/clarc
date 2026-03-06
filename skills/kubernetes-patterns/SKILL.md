@@ -1,7 +1,6 @@
 ---
 name: kubernetes-patterns
 description: "Production Kubernetes patterns: Deployments, Services, Ingress, HPA, resource limits, health probes, ConfigMap/Secret management, Helm charts, namespaces, and IaC with Terraform/Pulumi. Prevents the most common k8s production failures."
-origin: ECC
 ---
 
 # Kubernetes Patterns Skill

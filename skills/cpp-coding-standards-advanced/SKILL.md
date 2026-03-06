@@ -1,7 +1,6 @@
 ---
 name: cpp-coding-standards-advanced
 description: Advanced C++ standards — concurrency (CP.*), templates & C++20 concepts (T.*), standard library (SL.*), enumerations (Enum.*), source files & naming (SF.*/NL.*), performance (Per.*), and a full quick-reference checklist. Extends cpp-coding-standards.
-origin: ECC
 ---
 
 # C++ Coding Standards — Advanced

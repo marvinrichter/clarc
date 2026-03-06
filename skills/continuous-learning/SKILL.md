@@ -1,7 +1,6 @@
 ---
 name: continuous-learning
 description: "v1 — Session-end holistic pattern extraction. Runs once per session via SessionEnd hook, saves to ~/.claude/skills/learned/. Complements continuous-learning-v2 (per-tool instinct capture). See continuous-learning-v2 for the instinct-based system."
-origin: ECC
 ---
 
 # Continuous Learning — v1 (Session-End Analysis)

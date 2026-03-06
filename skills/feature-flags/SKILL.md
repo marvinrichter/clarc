@@ -1,7 +1,6 @@
 ---
 name: feature-flags
 description: "Feature flag patterns for safe feature rollout without deployment: boolean flags, percentage rollouts, user targeting, and flag lifecycle. Covers LaunchDarkly, Unleash, homegrown Redis-based, and trunk-based development."
-origin: ECC
 ---
 
 # Feature Flags Skill

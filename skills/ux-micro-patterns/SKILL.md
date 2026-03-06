@@ -1,7 +1,6 @@
 ---
 name: ux-micro-patterns
 description: "UX micro-patterns for every product state: Empty States, Loading States (skeleton screens, spinners, optimistic UI), Error States, Success States, Confirmation Dialogs, Onboarding Flows, and Progressive Disclosure. These patterns apply to every feature — done wrong, they're the biggest source of user confusion."
-origin: ECC
 ---
 
 # UX Micro-Patterns Skill

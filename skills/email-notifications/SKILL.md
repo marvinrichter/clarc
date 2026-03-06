@@ -1,7 +1,6 @@
 ---
 name: email-notifications
 description: "Email and notification architecture: transactional email with Resend/SendGrid, React Email templates, notification preferences (channel, frequency, opt-out), delivery tracking, in-app notifications, and push notifications. Covers the full notification stack."
-origin: ECC
 ---
 
 # Email & Notifications Skill

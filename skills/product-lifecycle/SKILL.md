@@ -1,7 +1,6 @@
 ---
 name: product-lifecycle
 description: "Full product development lifecycle from raw idea to shipped implementation. Covers idea capture, evaluation (Go/No-Go), solution design (ADR), PRD writing, and handoff to the implementation pipeline. Prevents building the wrong thing."
-origin: ECC
 ---
 
 # Product Lifecycle Skill

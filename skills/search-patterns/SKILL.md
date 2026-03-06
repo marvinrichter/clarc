@@ -1,7 +1,6 @@
 ---
 name: search-patterns
 description: "Search implementation patterns: full-text search with Postgres tsvector, Typesense for production search, Elasticsearch for complex analytics, faceted search, autocomplete, typo tolerance, vector/semantic search, and relevance tuning."
-origin: ECC
 ---
 
 # Search Patterns Skill

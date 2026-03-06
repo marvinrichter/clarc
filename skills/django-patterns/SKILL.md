@@ -1,7 +1,6 @@
 ---
 name: django-patterns
 description: Django architecture patterns, REST API design with DRF, ORM best practices. Core patterns for project structure, models, QuerySets, and ViewSets.
-origin: ECC
 ---
 
 # Django Development Patterns

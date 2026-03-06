@@ -1,7 +1,6 @@
 ---
 name: webhook-patterns
 description: "Webhook patterns for receiving, verifying (HMAC), and idempotently processing third-party events. Covers Stripe, GitHub, and generic webhook patterns, delivery guarantees, retry handling, and testing."
-origin: ECC
 ---
 
 # Webhook Patterns Skill

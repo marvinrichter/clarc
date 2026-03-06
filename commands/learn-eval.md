@@ -33,7 +33,6 @@ Look for:
 name: pattern-name
 description: "Under 130 characters"
 user-invocable: false
-origin: auto-extracted
 ---
 
 # [Descriptive Pattern Name]

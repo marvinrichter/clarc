@@ -1,7 +1,6 @@
 ---
 name: cpp-coding-standards
 description: C++ coding standards (C++ Core Guidelines). Core rules for philosophy, interfaces, functions, classes, resource management, error handling, and immutability.
-origin: ECC
 ---
 
 # C++ Coding Standards (C++ Core Guidelines)

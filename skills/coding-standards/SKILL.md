@@ -1,7 +1,6 @@
 ---
 name: coding-standards
 description: TypeScript, JavaScript, React, and Node.js coding standards with concrete code examples. Deep reference for TS/React-specific patterns. For language-agnostic principles (immutability, error handling, file organization), see rules/common/coding-style.md which is always active.
-origin: ECC
 ---
 
 # Coding Standards & Best Practices

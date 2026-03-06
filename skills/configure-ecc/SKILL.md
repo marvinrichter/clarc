@@ -1,7 +1,6 @@
 ---
 name: configure-ecc
 description: Interactive installer for clarc — guides users through selecting and installing skills and rules to user-level or project-level directories, verifies paths, and optionally optimizes installed files.
-origin: ECC
 ---
 
 # Configure clarc (ECC)

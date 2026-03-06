@@ -1,7 +1,6 @@
 ---
 name: swift-patterns
 description: Core Swift patterns — value vs reference types, protocols, generics, optionals, Result, error handling, Codable, and module organization. Foundation for all Swift development.
-origin: ECC
 ---
 
 # Swift Patterns

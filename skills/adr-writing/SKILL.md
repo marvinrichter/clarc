@@ -1,7 +1,6 @@
 ---
 name: adr-writing
 description: "Architecture Decision Records (ADRs): when to write one, the standard template, how to document rejected alternatives with real reasoning, how to supersede outdated ADRs, and how to maintain a living ADR index. The reference for technical documentation that actually gets read."
-origin: ECC
 ---
 
 # ADR Writing Skill

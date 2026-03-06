@@ -1,7 +1,6 @@
 ---
 name: typescript-patterns
 description: TypeScript patterns — type system best practices, strict mode, utility types, generics, discriminated unions, error handling with Result types, and module organization. Core patterns for production TypeScript.
-origin: ECC
 ---
 
 # TypeScript Patterns

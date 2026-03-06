@@ -1,7 +1,6 @@
 ---
 name: state-management
 description: "Frontend state management patterns: TanStack Query for server state, Zustand for client state, URL state, form state with React Hook Form, and when to use what. Prevents over-engineering and the most common state bugs."
-origin: ECC
 ---
 
 # State Management Skill

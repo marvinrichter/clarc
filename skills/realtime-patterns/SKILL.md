@@ -1,7 +1,6 @@
 ---
 name: realtime-patterns
 description: "Real-time communication patterns: WebSocket with reconnection and presence, Server-Sent Events (SSE) for one-way streaming, long polling fallback, room-based pub/sub, connection state management, and operational concerns for real-time at scale."
-origin: ECC
 ---
 
 # Real-Time Patterns Skill

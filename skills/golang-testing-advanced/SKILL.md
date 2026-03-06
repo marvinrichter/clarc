@@ -1,7 +1,6 @@
 ---
 name: golang-testing-advanced
 description: Advanced Go testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage, HTTP handler testing with httptest, best practices, and CI/CD integration. Extends golang-testing.
-origin: ECC
 ---
 
 # Go Testing — Advanced Patterns

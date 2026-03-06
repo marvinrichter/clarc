@@ -1,7 +1,6 @@
 ---
 name: pricing-strategy
 description: "SaaS pricing strategy patterns: value metric selection, usage-based vs. seat-based vs. flat-rate models, freemium conversion, pricing page design, packaging tiers, and the analytics to improve pricing. For product and technical founders."
-origin: ECC
 ---
 
 # Pricing Strategy Skill

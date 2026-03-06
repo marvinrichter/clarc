@@ -1,7 +1,6 @@
 ---
 name: ci-cd-patterns
 description: "CI/CD pipeline patterns with GitHub Actions: build/test/lint workflows, environment gates, caching, security scanning, Docker builds, and deployment automation. Includes templates for TypeScript, Python, Go, and Java."
-origin: ECC
 ---
 
 # CI/CD Patterns Skill
