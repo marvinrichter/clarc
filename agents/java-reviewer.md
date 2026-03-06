@@ -1,6 +1,6 @@
 ---
 name: java-reviewer
-description: Expert Java code reviewer specializing in idiomatic Java 17+, Spring Boot patterns, security, JPA, and performance. Use for all Java code changes. MUST BE USED for Java/Spring Boot projects.
+description: Expert Java code reviewer specializing in idiomatic Java 21+, Spring Boot patterns, security, JPA, and performance. Use for all Java code changes. MUST BE USED for Java/Spring Boot projects.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
 ---

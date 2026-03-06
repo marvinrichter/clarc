@@ -228,7 +228,7 @@ services:
 
 ```dockerfile
 # 1. Use specific tags (never :latest)
-FROM node:22.12-alpine3.20
+FROM node:22.12-alpine3.21
 
 # 2. Run as non-root
 RUN addgroup -g 1001 -S app && adduser -S app -u 1001

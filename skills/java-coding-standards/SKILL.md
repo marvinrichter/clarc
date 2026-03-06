@@ -12,7 +12,7 @@ Standards for readable, maintainable Java (17+) code in Spring Boot services.
 
 - Writing or reviewing Java code in Spring Boot projects
 - Enforcing naming, immutability, or exception handling conventions
-- Working with records, sealed classes, or pattern matching (Java 17+)
+- Working with records, sealed classes, or pattern matching (Java 21+)
 - Reviewing use of Optional, streams, or generics
 - Structuring packages and project layout
 
@@ -152,5 +152,31 @@ log.error("failed_fetch_market slug={}", slug, ex);
 - JUnit 5 + AssertJ for fluent assertions
 - Mockito for mocking; avoid partial mocks where possible
 - Favor deterministic tests; no hidden sleeps
+
+## Java 21 Features to Prefer
+
+Use these Java 21 LTS features in new code:
+
+```java
+// Virtual Threads (Project Loom) — for I/O-bound concurrency
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    executor.submit(() -> callExternalApi());
+}
+
+// Pattern matching in switch (stable in 21)
+String describe(Object obj) {
+    return switch (obj) {
+        case Integer i -> "int: " + i;
+        case String s when s.isBlank() -> "blank string";
+        case String s -> "string: " + s;
+        default -> "other";
+    };
+}
+
+// Sequenced collections (Java 21)
+SequencedCollection<String> items = new ArrayList<>(List.of("a", "b", "c"));
+items.getFirst(); // instead of items.get(0)
+items.getLast();  // instead of items.get(items.size() - 1)
+```
 
 **Remember**: Keep code intentional, typed, and observable. Optimize for maintainability over micro-optimizations unless proven necessary.
