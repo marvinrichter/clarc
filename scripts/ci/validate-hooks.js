@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate hooks.json schema
+ * Validate hooks.json schema and referenced script existence
  */
 
 const fs = require('fs');
@@ -8,7 +8,36 @@ const path = require('path');
 const vm = require('vm');
 
 const HOOKS_FILE = path.join(__dirname, '../../hooks/hooks.json');
+const REPO_ROOT = path.join(__dirname, '../..');
 const VALID_EVENTS = ['PreToolUse', 'PostToolUse', 'PreCompact', 'SessionStart', 'SessionEnd', 'Stop', 'Notification', 'SubagentStop'];
+
+/**
+ * Extract the absolute script path from a hook command string.
+ * Handles:
+ *   node "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/foo.js"
+ *   ${CLAUDE_PLUGIN_ROOT}/skills/foo/hooks/observe.sh
+ * Returns resolved path or null if not determinable.
+ */
+function resolveScriptPath(command) {
+  if (typeof command !== 'string') return null;
+
+  // node "..." pattern
+  const nodeMatch = command.match(/node\s+"([^"]+)"/);
+  if (nodeMatch) {
+    const raw = nodeMatch[1]
+      .replace('${CLAUDE_PLUGIN_ROOT}', REPO_ROOT)
+      .replace('$CLAUDE_PLUGIN_ROOT', REPO_ROOT);
+    return path.resolve(raw);
+  }
+
+  // Direct shell script: ${CLAUDE_PLUGIN_ROOT}/path/to/script.sh
+  const shellMatch = command.match(/^\$\{?CLAUDE_PLUGIN_ROOT\}?\/(.+)$/);
+  if (shellMatch) {
+    return path.resolve(path.join(REPO_ROOT, shellMatch[1]));
+  }
+
+  return null;
+}
 
 /**
  * Validate a single hook entry has required fields and valid inline JS
@@ -47,6 +76,13 @@ function validateHookEntry(hook, label) {
         console.error(`ERROR: ${label} has invalid inline JS: ${syntaxErr.message}`);
         hasErrors = true;
       }
+    }
+
+    // Check that referenced script files exist
+    const scriptPath = resolveScriptPath(hook.command);
+    if (scriptPath && !fs.existsSync(scriptPath)) {
+      console.error(`ERROR: ${label} references missing script: ${path.relative(REPO_ROOT, scriptPath)}`);
+      hasErrors = true;
     }
   }
 

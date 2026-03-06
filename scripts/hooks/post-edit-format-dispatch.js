@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * PostToolUse Hook: Dispatch to the correct formatter based on file extension.
+ * PostToolUse Hook: Dispatch formatting + console.log check in a single process.
  *
- * Replaces 5 individual format hooks with a single router, eliminating
- * unnecessary Node.js process starts for non-matching file types.
- * Only one child process starts per Edit — the right one for the file type.
+ * Replaces 6 individual Edit hooks (5 formatters + console-warn) with one router:
+ *  - Routes to the correct formatter by file extension (no-op for unknown types)
+ *  - Inline console.log warning for JS/TS files (no child process needed)
  *
  * Logs each invocation to ~/.claude/hooks.log for observability.
  */
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 const { logHook } = require('./hook-logger');
 
@@ -24,18 +25,38 @@ process.stdin.on('data', chunk => {
 });
 
 const EXT_MAP = {
-  '.js': 'post-edit-format.js',
-  '.jsx': 'post-edit-format.js',
-  '.ts': 'post-edit-format.js',
-  '.tsx': 'post-edit-format.js',
-  '.mjs': 'post-edit-format.js',
-  '.cjs': 'post-edit-format.js',
-  '.py': 'post-edit-format-python.js',
-  '.go': 'post-edit-format-go.js',
-  '.java': 'post-edit-format-java.js',
+  '.js':    'post-edit-format.js',
+  '.jsx':   'post-edit-format.js',
+  '.ts':    'post-edit-format.js',
+  '.tsx':   'post-edit-format.js',
+  '.mjs':   'post-edit-format.js',
+  '.cjs':   'post-edit-format.js',
+  '.py':    'post-edit-format-python.js',
+  '.go':    'post-edit-format-go.js',
+  '.java':  'post-edit-format-java.js',
   '.swift': 'post-edit-format-swift.js',
-  '.rs': 'post-edit-format-rust.js'
+  '.rs':    'post-edit-format-rust.js',
 };
+
+const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
+
+/** Warn about console.log occurrences inline (no child process). */
+function warnConsoleLogs(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const matches = [];
+    content.split('\n').forEach((line, idx) => {
+      if (/console\.log/.test(line)) matches.push(`${idx + 1}: ${line.trim()}`);
+    });
+    if (matches.length > 0) {
+      console.error(`[Hook] WARNING: console.log found in ${filePath}`);
+      matches.slice(0, 5).forEach(m => console.error(m));
+      console.error('[Hook] Remove console.log before committing');
+    }
+  } catch {
+    // File unreadable — pass through
+  }
+}
 
 process.stdin.on('end', () => {
   const start = Date.now();
@@ -48,17 +69,25 @@ process.stdin.on('end', () => {
 
     if (filePath) {
       const ext = path.extname(filePath).toLowerCase();
-      const script = EXT_MAP[ext];
 
+      // 1. Inline console.log check for JS/TS (no subprocess)
+      if (JS_TS_EXTS.has(ext)) {
+        warnConsoleLogs(filePath);
+      }
+
+      // 2. Dispatch to language-specific formatter
+      const script = EXT_MAP[ext];
       if (script) {
-        const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
+        const pluginRoot =
+          process.env.CLAUDE_PLUGIN_ROOT ||
+          path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
         const scriptPath = path.join(pluginRoot, 'scripts', 'hooks', script);
 
         try {
           const out = execFileSync(process.execPath, [scriptPath], {
             input: data,
             stdio: ['pipe', 'pipe', 'pipe'],
-            timeout: 20000
+            timeout: 20000,
           });
           logHook('post-edit-format-dispatch', 'Edit', filePath, 0, Date.now() - start);
           process.stdout.write(out);

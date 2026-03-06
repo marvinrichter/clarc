@@ -75,7 +75,8 @@
     ".claude-plugin/plugin.json",
     ".claude-plugin/README.md",
     "install.sh",
-    "llms.txt"
+    "llms.txt",
+    "scripts/hooks-summary.js"
   ],
   "bin": {
     "ecc-install": "install.sh"
@@ -87,7 +88,9 @@
     "instincts:push": "node scripts/sync-instincts.js push",
     "instincts:pull": "node scripts/sync-instincts.js pull",
     "instincts:status": "node scripts/sync-instincts.js status",
-    "test": "node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node tests/run-all.js"
+    "test": "node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node tests/run-all.js",
+    "hooks:summary": "node scripts/hooks-summary.js",
+    "hooks:errors": "node scripts/hooks-summary.js --errors"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

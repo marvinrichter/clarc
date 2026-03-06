@@ -5,8 +5,9 @@
  * Cross-platform (Windows, macOS, Linux)
  *
  * Runs when a new Claude session starts. Loads the most recent session
- * summary into Claude's context via stdout, and reports available
- * sessions and learned skills.
+ * summary into Claude's context via stdout, filtered to content relevant
+ * to the current project. Injects at most 3000 characters to avoid
+ * burning context on stale information from other projects.
  */
 
 const {
@@ -16,11 +17,50 @@ const {
   ensureDir,
   readFile,
   log,
-  output
+  output,
+  getProjectName,
 } = require('../lib/utils');
 const { getPackageManager, getSelectionPrompt } = require('../lib/package-manager');
 const { listAliases } = require('../lib/session-aliases');
 const { detectProjectType } = require('../lib/project-detect');
+
+const MAX_INJECT_CHARS = 3000;
+
+/**
+ * Filter session content to lines relevant to the current project.
+ *
+ * Strategy (in priority order):
+ *  1. Lines that contain the project name (most specific signal)
+ *  2. If fewer than 10 matching lines, fall back to the last N lines
+ *     (most recent context is most likely to be relevant)
+ *  3. Cap total output at MAX_INJECT_CHARS
+ */
+function filterSessionContent(content, projectName) {
+  if (!content || content.includes('[Session context goes here]')) return null;
+
+  const lines = content.split('\n');
+
+  // Always cap regardless of strategy
+  const cap = (text) => text.length > MAX_INJECT_CHARS
+    ? '...(truncated)\n' + text.slice(text.length - MAX_INJECT_CHARS)
+    : text;
+
+  // Fast path: content is short enough to inject as-is
+  if (content.length <= MAX_INJECT_CHARS) return content;
+
+  // Strategy 1: project-specific lines
+  if (projectName) {
+    const keyword = projectName.toLowerCase();
+    const relevant = lines.filter(l => l.toLowerCase().includes(keyword));
+    if (relevant.length >= 10) {
+      return cap(relevant.join('\n'));
+    }
+  }
+
+  // Strategy 2: keep the most recent lines (tail of the file)
+  const tail = lines.slice(-150).join('\n');
+  return cap(tail);
+}
 
 async function main() {
   const sessionsDir = getSessionsDir();
@@ -30,6 +70,9 @@ async function main() {
   ensureDir(sessionsDir);
   ensureDir(learnedDir);
 
+  // Detect current project for relevance filtering
+  const projectName = getProjectName ? getProjectName() : null;
+
   // Check for recent session files (last 7 days)
   const recentSessions = findFiles(sessionsDir, '*-session.tmp', { maxAge: 7 });
 
@@ -38,11 +81,12 @@ async function main() {
     log(`[SessionStart] Found ${recentSessions.length} recent session(s)`);
     log(`[SessionStart] Latest: ${latest.path}`);
 
-    // Read and inject the latest session content into Claude's context
-    const content = readFile(latest.path);
-    if (content && !content.includes('[Session context goes here]')) {
-      // Only inject if the session has actual content (not the blank template)
-      output(`Previous session summary:\n${content}`);
+    const raw = readFile(latest.path);
+    const filtered = filterSessionContent(raw, projectName);
+    if (filtered) {
+      const charCount = filtered.length;
+      log(`[SessionStart] Injecting ${charCount} chars of session context (project: ${projectName || 'unknown'})`);
+      output(`Previous session summary:\n${filtered}`);
     }
   }
 

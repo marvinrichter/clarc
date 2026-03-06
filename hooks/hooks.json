@@ -78,7 +78,7 @@
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-dispatch.js\""
           }
         ],
-        "description": "Auto-format after edits: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat)"
+        "description": "Auto-format + console.log check after edits: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat), Rust (rustfmt)"
       },
       {
         "matcher": "Edit",
@@ -89,16 +89,6 @@
           }
         ],
         "description": "TypeScript check after editing .ts/.tsx files"
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-console-warn.js\""
-          }
-        ],
-        "description": "Warn about console.log statements after edits"
       },
       {
         "matcher": "*",
