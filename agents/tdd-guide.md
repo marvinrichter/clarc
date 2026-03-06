@@ -21,8 +21,21 @@ You are a Test-Driven Development (TDD) specialist who ensures all code is devel
 Write a failing test that describes the expected behavior.
 
 ### 2. Run Test -- Verify it FAILS
+
+Detect the project's package manager and run tests accordingly:
+
 ```bash
-npm test
+# JavaScript/TypeScript (use whichever lock file is present)
+npm test       # package-lock.json
+pnpm test      # pnpm-lock.yaml
+yarn test      # yarn.lock
+bun test       # bun.lockb
+
+# Other languages
+./mvnw test    # Java (Maven)
+./gradlew test # Java (Gradle)
+pytest         # Python
+go test ./...  # Go
 ```
 
 ### 3. Write Minimal Implementation (GREEN)
@@ -34,9 +47,20 @@ Only enough code to make the test pass.
 Remove duplication, improve names, optimize -- tests must stay green.
 
 ### 6. Verify Coverage
+
 ```bash
-npm run test:coverage
+# JavaScript/TypeScript
+npm run test:coverage    # swap npm for pnpm/yarn/bun as appropriate
 # Required: 80%+ branches, functions, lines, statements
+
+# Java
+./mvnw verify            # JaCoCo report in target/site/jacoco/
+
+# Python
+pytest --cov=app --cov-report=term-missing
+
+# Go
+go test -cover ./...
 ```
 
 ## Test Types Required

@@ -47,22 +47,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/suggest-compact.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/suggest-compact.js\"",
+            "async": true,
+            "timeout": 5
           }
         ],
         "description": "Suggest manual compaction at logical intervals"
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/hooks/observe.sh",
-            "async": true,
-            "timeout": 10
-          }
-        ],
-        "description": "Capture tool use observations for continuous learning"
       }
     ],
     "PreCompact": [
@@ -130,7 +120,7 @@
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-python.js\""
           }
         ],
-        "description": "Auto-format Python files after edits (ruff format or black, auto-detected)"
+        "description": "Auto-format Python files after edits (ruff format)"
       },
       {
         "matcher": "Edit",
@@ -151,6 +141,16 @@
           }
         ],
         "description": "TypeScript check after editing .ts/.tsx files"
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-java.js\""
+          }
+        ],
+        "description": "Auto-format Java files after edits (google-java-format preferred, spotless fallback)"
       },
       {
         "matcher": "Edit",

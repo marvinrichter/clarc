@@ -151,6 +151,25 @@ cd everything-claude-code
 
 For manual install instructions see the README in the `rules/` folder.
 
+### Step 2b: Set `CLAUDE_PLUGIN_ROOT` (Required for Hooks)
+
+> ⚠️ **Important:** Hooks reference scripts via `${CLAUDE_PLUGIN_ROOT}`. Without this variable the format, typecheck, and session hooks will silently do nothing.
+
+Add to your shell profile (`~/.zshrc`, `~/.bashrc`, or `~/.profile`):
+
+```bash
+# Point to wherever you cloned/installed the plugin
+export CLAUDE_PLUGIN_ROOT="$HOME/.claude/plugins/everything-claude-code"
+```
+
+If you installed via the marketplace plugin system, the path is typically set automatically. To verify:
+
+```bash
+echo $CLAUDE_PLUGIN_ROOT
+# Should output the plugin directory, e.g. /Users/you/.claude/plugins/everything-claude-code
+ls "$CLAUDE_PLUGIN_ROOT/scripts/hooks/"   # Should list hook scripts
+```
+
 ### Step 3: Start Using
 
 ```bash
