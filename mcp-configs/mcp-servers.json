@@ -81,7 +81,7 @@
     },
     "magic": {
       "command": "npx",
-      "args": ["-y", "@magicuidesign/mcp@latest"],
+      "args": ["-y", "@magicuidesign/mcp@1.0.6"],
       "description": "Magic UI components"
     },
     "filesystem": {
