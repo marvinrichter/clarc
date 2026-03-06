@@ -399,7 +399,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:14
+        image: postgres:17-alpine
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -409,10 +409,10 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 

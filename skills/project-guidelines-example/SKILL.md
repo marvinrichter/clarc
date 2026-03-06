@@ -42,7 +42,7 @@ Reference this skill when working on the specific project it's designed for. Pro
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                         Backend                             │
-│  FastAPI + Python 3.11 + Pydantic                          │
+│  FastAPI + Python 3.13 + Pydantic                          │
 │  Deployed: Cloud Run                                       │
 └─────────────────────────────────────────────────────────────┘
                               │

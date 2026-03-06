@@ -120,7 +120,7 @@ CMD ["node", "dist/server.js"]
 ### Multi-Stage Dockerfile (Go)
 
 ```dockerfile
-FROM golang:1.22-alpine AS builder
+FROM golang:1.24-alpine AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
@@ -142,19 +142,19 @@ CMD ["/server"]
 ### Multi-Stage Dockerfile (Python/Django)
 
 ```dockerfile
-FROM python:3.12-slim AS builder
+FROM python:3.13-slim AS builder
 WORKDIR /app
 RUN pip install --no-cache-dir uv
 COPY requirements.txt .
 RUN uv pip install --system --no-cache -r requirements.txt
 
-FROM python:3.12-slim AS runner
+FROM python:3.13-slim AS runner
 WORKDIR /app
 
 RUN useradd -r -u 1001 appuser
 USER appuser
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . .
 

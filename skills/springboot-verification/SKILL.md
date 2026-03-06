@@ -95,7 +95,7 @@ Test against a real database instead of H2:
 class UserRepositoryIntegrationTest {
 
   @Container
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine")
       .withDatabaseName("testdb");
 
   @DynamicPropertySource

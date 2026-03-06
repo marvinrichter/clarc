@@ -141,7 +141,7 @@ Run only infrastructure services locally — run the app code natively (better h
 # docker-compose.dev.yml
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     environment: { POSTGRES_DB: appdb, POSTGRES_USER: app, POSTGRES_PASSWORD: app }
     ports: ['5432:5432']
     volumes: [postgres_data:/var/lib/postgresql/data]

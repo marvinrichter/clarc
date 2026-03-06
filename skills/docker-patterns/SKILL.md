@@ -44,7 +44,7 @@ services:
     command: npm run dev
 
   db:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     ports:
       - "5432:5432"
     environment:

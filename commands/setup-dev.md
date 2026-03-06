@@ -30,7 +30,7 @@ Create `docker-compose.dev.yml` for local development services only (not the app
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     environment:
       POSTGRES_DB: appdb
       POSTGRES_USER: app
