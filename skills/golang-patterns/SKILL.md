@@ -938,6 +938,61 @@ issues:
   exclude-use-default: false
 ```
 
+## Standard Library: slices and maps (Go 1.21+)
+
+The `slices` and `maps` packages replace most hand-rolled slice/map utilities. Prefer these over manual loops.
+
+```go
+import (
+    "cmp"
+    "maps"
+    "slices"
+)
+
+// --- slices ---
+
+// Contains (replaces manual loop)
+if slices.Contains(ids, targetID) { ... }
+
+// Sort (type-safe, no less-func boilerplate)
+slices.Sort(names)                              // ordered types
+slices.SortFunc(users, func(a, b User) int {   // custom comparator
+    return cmp.Compare(a.Name, b.Name)
+})
+
+// Binary search on sorted slice
+i, found := slices.BinarySearch(sorted, "target")
+
+// Deduplicate (requires sorted input)
+unique := slices.Compact(slices.Clone(items))
+
+// Filter in-place (Go 1.23+)
+items = slices.DeleteFunc(items, func(x Item) bool { return x.Expired() })
+
+// Reverse
+slices.Reverse(items)
+
+// Max / Min
+max := slices.Max(scores)
+
+// --- maps ---
+
+// Collect all keys or values
+keys := slices.Collect(maps.Keys(m))     // order not guaranteed — sort if needed
+vals := slices.Collect(maps.Values(m))
+
+// Shallow clone
+clone := maps.Clone(original)
+
+// Delete matching entries
+maps.DeleteFunc(m, func(k string, v int) bool { return v == 0 })
+```
+
+> **Note**: `maps.Keys` / `maps.Values` return iterators (Go 1.23 range-over-func). Use `slices.Collect` to materialise them into a slice, or range over them directly:
+> ```go
+> for k := range maps.Keys(m) { ... }
+> ```
+
 ## Quick Reference: Go Idioms
 
 | Idiom | Description |

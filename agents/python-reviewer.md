@@ -9,7 +9,7 @@ You are a senior Python code reviewer ensuring high standards of Pythonic code a
 
 When invoked:
 1. Run `git diff -- '*.py'` to see recent Python file changes
-2. Run static analysis tools if available (ruff, mypy, pylint, black --check)
+2. Run static analysis tools if available (ruff, mypy, pylint, ruff format --check)
 3. Focus on modified `.py` files
 4. Begin review immediately
 
@@ -30,7 +30,7 @@ When invoked:
 ### HIGH — Type Hints
 - Public functions without type annotations
 - Using `Any` when specific types are possible
-- Missing `Optional` for nullable parameters
+- Using `Optional[X]` instead of modern `X | None` syntax (Python 3.10+)
 
 ### HIGH — Pythonic Patterns
 - Use list comprehensions over C-style loops
@@ -63,7 +63,7 @@ When invoked:
 ```bash
 mypy .                                     # Type checking
 ruff check .                               # Fast linting
-black --check .                            # Format check
+ruff format --check .                      # Format check
 bandit -r .                                # Security scan
 pytest --cov=app --cov-report=term-missing # Test coverage
 ```
