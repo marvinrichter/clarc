@@ -127,6 +127,26 @@
         "hooks": [
           {
             "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-python.js\""
+          }
+        ],
+        "description": "Auto-format Python files after edits (ruff format or black, auto-detected)"
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-go.js\""
+          }
+        ],
+        "description": "Auto-format Go files after edits (goimports preferred, gofmt fallback)"
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck.js\""
           }
         ],
