@@ -7,14 +7,10 @@
  * - YYYY-MM-DD-<short-id>-session.tmp (new format)
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const {
-  getSessionsDir,
-  readFile,
-  log
-} = require('./utils');
+import { getSessionsDir, readFile, log } from './utils.js';
 
 // Session filename pattern: YYYY-MM-DD-[short-id]-session.tmp
 // The short-id is optional (old format) and can be 8+ alphanumeric characters
@@ -425,7 +421,7 @@ function sessionExists(sessionPath) {
   }
 }
 
-module.exports = {
+export {
   parseSessionFilename,
   getSessionPath,
   getSessionContent,

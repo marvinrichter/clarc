@@ -3,15 +3,10 @@
  * Manages session aliases stored in ~/.claude/session-aliases.json
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const {
-  getClaudeDir,
-  ensureDir,
-  readFile,
-  log
-} = require('./utils');
+import { getClaudeDir, ensureDir, readFile, log } from './utils.js';
 
 // Aliases file path
 function getAliasesPath() {
@@ -465,7 +460,7 @@ function cleanupAliases(sessionExists) {
   };
 }
 
-module.exports = {
+export {
   getAliasesPath,
   loadAliases,
   saveAliases,

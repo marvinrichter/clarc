@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { readStdin, runExistingHook, transformToClaude } = require('./adapter');
+import { readStdin, runExistingHook, transformToClaude } from './adapter.js';
 readStdin().then(raw => {
   try {
     const input = JSON.parse(raw);

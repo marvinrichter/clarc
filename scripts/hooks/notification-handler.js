@@ -12,9 +12,9 @@
  *   { notification: { type: string, message?: string, ... } }
  */
 
-const fs = require('fs');
-const path = require('path');
-const { log } = require('../lib/utils');
+import fs from 'fs';
+import path from 'path';
+import { log } from '../lib/utils.js';
 
 const MAX_STDIN = 256 * 1024;
 let data = '';

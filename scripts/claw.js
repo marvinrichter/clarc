@@ -13,11 +13,12 @@
 
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const { spawnSync } = require('child_process');
-const readline = require('readline');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { spawnSync } from 'child_process';
+import readline from 'readline';
+import { fileURLToPath } from 'url';
 
 // ─── Session name validation ────────────────────────────────────────────────
 
@@ -245,7 +246,7 @@ function main() {
 
 // ─── Exports & CLI Entry ────────────────────────────────────────────────────
 
-module.exports = {
+export {
   getClawDir,
   getSessionPath,
   listSessions,
@@ -262,6 +263,6 @@ module.exports = {
   main
 };
 
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }

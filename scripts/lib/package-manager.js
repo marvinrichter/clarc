@@ -5,9 +5,9 @@
  * Supports: npm, pnpm, yarn, bun
  */
 
-const fs = require('fs');
-const path = require('path');
-const { commandExists, getClaudeDir, readFile, writeFile } = require('./utils');
+import fs from 'fs';
+import path from 'path';
+import { commandExists, getClaudeDir, readFile, writeFile } from './utils.js';
 
 // Package manager definitions
 const PACKAGE_MANAGERS = {
@@ -415,7 +415,7 @@ function getCommandPattern(action) {
   return `(${patterns.join('|')})`;
 }
 
-module.exports = {
+export {
   PACKAGE_MANAGERS,
   DETECTION_PRIORITY,
   getPackageManager,

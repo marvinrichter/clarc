@@ -12,15 +12,7 @@
  *   node scripts/setup-package-manager.js --project bun
  */
 
-const {
-  PACKAGE_MANAGERS,
-  getPackageManager,
-  setPreferredPackageManager,
-  setProjectPackageManager,
-  getAvailablePackageManagers,
-  detectFromLockFile,
-  detectFromPackageJson
-} = require('./lib/package-manager');
+import { PACKAGE_MANAGERS, getPackageManager, setPreferredPackageManager, setProjectPackageManager, getAvailablePackageManagers, detectFromLockFile, detectFromPackageJson } from './lib/package-manager.js';
 
 function showHelp() {
   console.log(`

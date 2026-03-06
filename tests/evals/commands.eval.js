@@ -10,8 +10,10 @@
  * Run with: node tests/evals/commands.eval.js
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const COMMANDS_DIR = path.join(__dirname, '../../commands');
 

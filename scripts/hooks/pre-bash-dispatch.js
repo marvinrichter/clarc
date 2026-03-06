@@ -13,7 +13,7 @@
  * Logs each invocation to ~/.claude/hooks.log for observability.
  */
 
-const { logHook } = require('./hook-logger');
+import { logHook } from './hook-logger.js';
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';

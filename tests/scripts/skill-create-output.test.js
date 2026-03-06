@@ -6,9 +6,9 @@
  * Run with: node tests/scripts/skill-create-output.test.js
  */
 
-const assert = require('assert');
+import assert from 'assert';
 // Import the module
-const { SkillCreateOutput } = require('../../scripts/skill-create-output');
+import { SkillCreateOutput, demo } from '../../scripts/skill-create-output.js';
 
 // We also need to test the un-exported helpers by requiring the source
 // and extracting them from the module scope. Since they're not exported,
@@ -474,7 +474,7 @@ function runTests() {
   console.log('\ndemo export (Round 68):');
 
   if (test('module exports demo function alongside SkillCreateOutput', () => {
-    const mod = require('../../scripts/skill-create-output');
+    const mod = { SkillCreateOutput, demo };
     assert.ok(mod.demo, 'Should export demo function');
     assert.strictEqual(typeof mod.demo, 'function', 'demo should be a function');
     assert.ok(mod.SkillCreateOutput, 'Should also export SkillCreateOutput');

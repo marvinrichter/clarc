@@ -7,11 +7,13 @@
  * Run with: node tests/ci/validators.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { execFileSync } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const validatorsDir = path.join(__dirname, '..', '..', 'scripts', 'ci');
 

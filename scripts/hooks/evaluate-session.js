@@ -12,15 +12,11 @@
  * - UserPromptSubmit runs every message (heavy, adds latency)
  */
 
-const path = require('path');
-const fs = require('fs');
-const {
-  getLearnedSkillsDir,
-  ensureDir,
-  readFile,
-  countInFile,
-  log
-} = require('../lib/utils');
+import path from 'path';
+import fs from 'fs';
+import { getLearnedSkillsDir, ensureDir, readFile, countInFile, log } from '../lib/utils.js';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Read hook input from stdin (Claude Code provides transcript_path via stdin JSON)
 const MAX_STDIN = 1024 * 1024;
@@ -69,7 +65,7 @@ async function main() {
 
       if (config.learned_skills_path) {
         // Handle ~ in path
-        learnedSkillsPath = config.learned_skills_path.replace(/^~/, require('os').homedir());
+        learnedSkillsPath = config.learned_skills_path.replace(/^~/, os.homedir());
       }
     } catch (err) {
       log(`[ContinuousLearning] Failed to parse config: ${err.message}, using defaults`);

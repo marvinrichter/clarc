@@ -8,8 +8,8 @@
  * formats it with rustfmt. Fails silently if rustfmt is not installed.
  */
 
-const { execFileSync } = require('child_process');
-const path = require('path');
+import { execFileSync } from 'child_process';
+import path from 'path';
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';

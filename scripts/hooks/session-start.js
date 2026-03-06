@@ -10,11 +10,11 @@
  * burning context on stale information from other projects.
  */
 
-const { spawnSync } = require('child_process');
-const { getSessionsDir, getLearnedSkillsDir, findFiles, ensureDir, readFile, log, output, getProjectName } = require('../lib/utils');
-const { getPackageManager, getSelectionPrompt } = require('../lib/package-manager');
-const { listAliases } = require('../lib/session-aliases');
-const { detectProjectType } = require('../lib/project-detect');
+import { spawnSync } from 'child_process';
+import { getSessionsDir, getLearnedSkillsDir, findFiles, ensureDir, readFile, log, output, getProjectName } from '../lib/utils.js';
+import { getPackageManager, getSelectionPrompt } from '../lib/package-manager.js';
+import { listAliases } from '../lib/session-aliases.js';
+import { detectProjectType } from '../lib/project-detect.js';
 
 const MAX_INJECT_CHARS = 3000;
 

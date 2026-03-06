@@ -7,11 +7,13 @@
  * Run with: node tests/hooks/suggest-compact.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { spawnSync } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const compactScript = path.join(__dirname, '..', '..', 'scripts', 'hooks', 'suggest-compact.js');
 

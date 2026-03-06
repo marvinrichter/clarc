@@ -4,11 +4,14 @@
  * Run with: node tests/hooks/hooks.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { spawn } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { spawn } from 'child_process';
+import { fileURLToPath, pathToFileURL } from 'url';
+import * as utils from '../../scripts/lib/utils.js';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Test helper
 function test(name, fn) {
@@ -275,7 +278,6 @@ async function runTests() {
       const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
       // Get the expected session ID (project name fallback)
-      const utils = require('../../scripts/lib/utils');
       const expectedId = utils.getSessionIdShort();
       const sessionFile = path.join(sessionsDir, `${today}-${expectedId}-session.tmp`);
 
@@ -1709,13 +1711,13 @@ async function runTests() {
   // ─── Round 23: Bug fixes & high-priority gap coverage ───
 
   // Helper: create a patched evaluate-session.js wrapper that resolves
-  // require('../lib/utils') to the real utils.js and uses a custom config path
+  // import('../lib/utils.js') to the real utils.js and uses a custom config path
   const realUtilsPath = path.resolve(__dirname, '..', '..', 'scripts', 'lib', 'utils.js');
   function createEvalWrapper(testDir, configPath) {
     const wrapperScript = path.join(testDir, 'eval-wrapper.js');
     let src = fs.readFileSync(path.join(scriptsDir, 'evaluate-session.js'), 'utf8');
-    // Patch require to use absolute path (the temp dir doesn't have ../lib/utils)
-    src = src.replace(/require\('\.\.\/lib\/utils'\)/, `require(${JSON.stringify(realUtilsPath)})`);
+    // Patch ESM import to use file:// URL (the temp dir doesn't have ../lib/utils.js)
+    src = src.replace(/from '\.\.\/lib\/utils\.js'/, `from '${pathToFileURL(realUtilsPath).href}'`);
     // Patch config file path to point to our test config
     src = src.replace(/const configFile = path\.join\(scriptDir.*?config\.json'\);/, `const configFile = ${JSON.stringify(configPath)};`);
     fs.writeFileSync(wrapperScript, src);
@@ -1866,7 +1868,6 @@ async function runTests() {
       fs.mkdirSync(sessionsDir, { recursive: true });
 
       // Get the expected filename
-      const utils = require('../../scripts/lib/utils');
       const today = utils.getDateString();
 
       // Create a pre-existing session file with known timestamp
@@ -1896,8 +1897,6 @@ async function runTests() {
       const testDir = createTestDir();
       const sessionsDir = path.join(testDir, '.claude', 'sessions');
       fs.mkdirSync(sessionsDir, { recursive: true });
-
-      const utils = require('../../scripts/lib/utils');
       const today = utils.getDateString();
 
       const shortId = 'update02';
@@ -1934,8 +1933,6 @@ async function runTests() {
       const testDir = createTestDir();
       const sessionsDir = path.join(testDir, '.claude', 'sessions');
       fs.mkdirSync(sessionsDir, { recursive: true });
-
-      const utils = require('../../scripts/lib/utils');
       const today = utils.getDateString();
 
       const shortId = 'update03';
@@ -3959,9 +3956,9 @@ Some random content without the expected ### Context to Load section
       // utils.js line 215: setTimeout fires because stdin 'end' never arrives.
       // Line 225: data.trim() is empty → resolves with {}.
       // Exercises: removeAllListeners, process.stdin.unref(), and the empty-data timeout resolution.
-      const script = 'const u=require("./scripts/lib/utils");u.readStdinJson({timeoutMs:100}).then(d=>{process.stdout.write(JSON.stringify(d));process.exit(0)})';
+      const script = 'import("./scripts/lib/utils.js").then((u)=>u.readStdinJson({timeoutMs:100})).then(d=>{process.stdout.write(JSON.stringify(d));process.exit(0)})';
       return new Promise((resolve, reject) => {
-        const child = spawn('node', ['-e', script], {
+        const child = spawn('node', ['--input-type=module', '-e', script], {
           cwd: path.resolve(__dirname, '..', '..'),
           stdio: ['pipe', 'pipe', 'pipe']
         });
@@ -3993,9 +3990,9 @@ Some random content without the expected ### Context to Load section
     await asyncTest('readStdinJson resolves with {} when timeout fires with invalid partial JSON', async () => {
       // utils.js lines 224-228: setTimeout fires, data.trim() is non-empty,
       // JSON.parse(data) throws → catch at line 226 resolves with {}.
-      const script = 'const u=require("./scripts/lib/utils");u.readStdinJson({timeoutMs:100}).then(d=>{process.stdout.write(JSON.stringify(d));process.exit(0)})';
+      const script = 'import("./scripts/lib/utils.js").then((u)=>u.readStdinJson({timeoutMs:100})).then(d=>{process.stdout.write(JSON.stringify(d));process.exit(0)})';
       return new Promise((resolve, reject) => {
-        const child = spawn('node', ['-e', script], {
+        const child = spawn('node', ['--input-type=module', '-e', script], {
           cwd: path.resolve(__dirname, '..', '..'),
           stdio: ['pipe', 'pipe', 'pipe']
         });
@@ -4193,8 +4190,8 @@ Some random content without the expected ### Context to Load section
   console.log('\nRound 98: hook-logger.js:');
 
   if (
-    test('exports logHook function', () => {
-      const { logHook } = require(path.join(scriptsDir, 'hook-logger'));
+    await asyncTest('exports logHook function', async () => {
+      const { logHook } = await import(pathToFileURL(path.join(scriptsDir, 'hook-logger.js')).href);
       assert.strictEqual(typeof logHook, 'function', 'logHook should be a function');
     })
   )
@@ -4202,8 +4199,8 @@ Some random content without the expected ### Context to Load section
   else failed++;
 
   if (
-    test('logHook does not throw on valid args', () => {
-      const { logHook } = require(path.join(scriptsDir, 'hook-logger'));
+    await asyncTest('logHook does not throw on valid args', async () => {
+      const { logHook } = await import(pathToFileURL(path.join(scriptsDir, 'hook-logger.js')).href);
       // Use a temp HOME to avoid polluting real log
       const testDir = createTestDir();
       const original = process.env.HOME;
@@ -4220,13 +4217,11 @@ Some random content without the expected ### Context to Load section
   else failed++;
 
   if (
-    test('CLAUDE_HOOK_SLOW_MS env var is respected', () => {
+    await asyncTest('CLAUDE_HOOK_SLOW_MS env var is respected', async () => {
       // The threshold constant is read at module load time — test indirectly via log output
       // by checking the module loads without error under the env var
-      assert.doesNotThrow(() => {
-        const mod = require(path.join(scriptsDir, 'hook-logger'));
-        assert.ok(mod.logHook, 'Module should export logHook');
-      });
+      const mod = await import(pathToFileURL(path.join(scriptsDir, 'hook-logger.js')).href);
+      assert.ok(mod.logHook, 'Module should export logHook');
     })
   )
     passed++;

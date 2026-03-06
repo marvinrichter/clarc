@@ -10,9 +10,9 @@
  * Fails silently if no formatter is found or installed.
  */
 
-const { execFileSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execFileSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 const MAX_STDIN = 1024 * 1024; // 1MB limit
 let data = '';

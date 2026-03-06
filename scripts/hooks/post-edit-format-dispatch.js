@@ -9,10 +9,10 @@
  * Logs each invocation to ~/.claude/hooks.log for observability.
  */
 
-const { execFileSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const { logHook } = require('./hook-logger');
+import { execFileSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { logHook } from './hook-logger.js';
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';

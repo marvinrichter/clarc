@@ -19,9 +19,10 @@
  *   The logger auto-rotates when the file exceeds 500KB.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execFileSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 const LOG_PATH = path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'hooks.log');
 const MAX_LOG_BYTES = 500 * 1024; // 500KB
@@ -70,7 +71,7 @@ function logHook(hookName, tool, target, exitCode, durationMs) {
  * CLI mode: wrap another hook script and log its result.
  * Usage: node hook-logger.js <hook-name> <path-to-script.js>
  */
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const [, , hookName, scriptPath] = process.argv;
 
   if (!hookName || !scriptPath) {
@@ -120,4 +121,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { logHook };
+export { logHook };

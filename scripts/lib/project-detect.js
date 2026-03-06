@@ -7,8 +7,8 @@
  * Resolves: https://github.com/affaan-m/everything-claude-code/issues/293
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Language detection rules.
@@ -414,7 +414,7 @@ function detectProjectType(projectDir) {
   };
 }
 
-module.exports = {
+export {
   detectProjectType,
   LANGUAGE_RULES,
   FRAMEWORK_RULES,

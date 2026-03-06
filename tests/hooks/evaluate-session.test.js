@@ -7,11 +7,13 @@
  * Run with: node tests/hooks/evaluate-session.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { spawnSync } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const evaluateScript = path.join(__dirname, '..', '..', 'scripts', 'hooks', 'evaluate-session.js');
 
@@ -366,7 +368,7 @@ function runTests() {
   if (test('uses learned_skills_path from config with ~ expansion', () => {
     // evaluate-session.js lines 69-72:
     //   if (config.learned_skills_path) {
-    //     learnedSkillsPath = config.learned_skills_path.replace(/^~/, require('os').homedir());
+    //     learnedSkillsPath = config.learned_skills_path.replace(/^~/, os.homedir());
     //   }
     // This branch was never tested — only the parse error (Round 85) and default path.
     const configPath = path.join(__dirname, '..', '..', 'skills', 'continuous-learning', 'config.json');

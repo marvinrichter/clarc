@@ -3,9 +3,11 @@
  * Validate hooks.json schema and referenced script existence
  */
 
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
+import fs from 'fs';
+import path from 'path';
+import vm from 'vm';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const HOOKS_FILE = path.join(__dirname, '../../hooks/hooks.json');
 const REPO_ROOT = path.join(__dirname, '../..');

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { readStdin } = require('./adapter');
+import { readStdin } from './adapter.js';
 readStdin().then(raw => {
   try {
     const input = JSON.parse(raw);

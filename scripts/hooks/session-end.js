@@ -9,19 +9,9 @@
  * to a session file for cross-session continuity.
  */
 
-const path = require('path');
-const fs = require('fs');
-const {
-  getSessionsDir,
-  getDateString,
-  getTimeString,
-  getSessionIdShort,
-  ensureDir,
-  readFile,
-  writeFile,
-  replaceInFile,
-  log
-} = require('../lib/utils');
+import path from 'path';
+import fs from 'fs';
+import { getSessionsDir, getDateString, getTimeString, getSessionIdShort, ensureDir, readFile, writeFile, replaceInFile, log } from '../lib/utils.js';
 
 /**
  * Extract a meaningful summary from the session transcript.

@@ -4,22 +4,12 @@
  * Run with: node tests/lib/project-detect.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
 
-const {
-  detectProjectType,
-  LANGUAGE_RULES,
-  FRAMEWORK_RULES,
-  getPackageJsonDeps,
-  getPythonDeps,
-  getGoDeps,
-  getRustDeps,
-  getComposerDeps,
-  getElixirDeps
-} = require('../../scripts/lib/project-detect');
+import { detectProjectType, LANGUAGE_RULES, FRAMEWORK_RULES, getPackageJsonDeps, getPythonDeps, getGoDeps, getRustDeps, getComposerDeps, getElixirDeps } from '../../scripts/lib/project-detect.js';
 
 // Test helper
 function test(name, fn) {

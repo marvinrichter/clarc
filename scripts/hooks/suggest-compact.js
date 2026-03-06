@@ -13,13 +13,9 @@
  * - Compact after completing a milestone, before starting next
  */
 
-const fs = require('fs');
-const path = require('path');
-const {
-  getTempDir,
-  writeFile,
-  log
-} = require('../lib/utils');
+import fs from 'fs';
+import path from 'path';
+import { getTempDir, writeFile, log } from '../lib/utils.js';
 
 async function main() {
   // Track tool call count (increment in a temp file)

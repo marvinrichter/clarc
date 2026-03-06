@@ -6,11 +6,13 @@
  * Run with: node tests/integration/hooks.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { spawn } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Test helper
 function _test(name, fn) {

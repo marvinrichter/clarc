@@ -15,9 +15,9 @@
  *   - Total hooks fired and wall time spent
  */
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 const LOG_PATH = path.join(os.homedir(), '.claude', 'hooks.log');
 

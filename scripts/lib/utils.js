@@ -3,10 +3,10 @@
  * Works on Windows, macOS, and Linux
  */
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const { execSync, spawnSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { execSync, spawnSync } from 'child_process';
 
 // Platform detection
 const isWindows = process.platform === 'win32';
@@ -483,7 +483,7 @@ function grepFile(filePath, pattern) {
   return results;
 }
 
-module.exports = {
+export {
   // Platform info
   isWindows,
   isMacOS,

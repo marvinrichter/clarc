@@ -14,17 +14,9 @@
  *   { session_id, transcript_path, hook_event_name }
  */
 
-const fs = require('fs');
-const path = require('path');
-const {
-  getSessionsDir,
-  getDateTimeString,
-  getTimeString,
-  findFiles,
-  ensureDir,
-  appendFile,
-  log
-} = require('../lib/utils');
+import fs from 'fs';
+import path from 'path';
+import { getSessionsDir, getDateTimeString, getTimeString, findFiles, ensureDir, appendFile, log } from '../lib/utils.js';
 
 const MAX_STDIN = 256 * 1024;
 let data = '';

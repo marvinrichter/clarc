@@ -6,11 +6,13 @@
  * Run with: node tests/scripts/setup-package-manager.test.js
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { execFileSync } = require('child_process');
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { execFileSync, spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const SCRIPT = path.join(__dirname, '..', '..', 'scripts', 'setup-package-manager.js');
 
@@ -313,7 +315,7 @@ function runTests() {
     const tmpDir = path.join(os.tmpdir(), `spm-test-project-${Date.now()}`);
     fs.mkdirSync(tmpDir, { recursive: true });
     try {
-      const result = require('child_process').spawnSync('node', [SCRIPT, '--project', 'npm'], {
+      const result = spawnSync('node', [SCRIPT, '--project', 'npm'], {
         encoding: 'utf8',
         stdio: ['pipe', 'pipe', 'pipe'],
         env: { ...process.env },
@@ -372,7 +374,7 @@ function runTests() {
     try {
       // Make CWD read-only so .claude/ dir creation fails with EACCES
       fs.chmodSync(tmpDir, 0o555);
-      const result = require('child_process').spawnSync('node', [SCRIPT, '--project', 'npm'], {
+      const result = spawnSync('node', [SCRIPT, '--project', 'npm'], {
         encoding: 'utf8',
         stdio: ['pipe', 'pipe', 'pipe'],
         env: { ...process.env },

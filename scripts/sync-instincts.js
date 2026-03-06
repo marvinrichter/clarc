@@ -31,11 +31,13 @@
  *   node scripts/sync-instincts.js status
  */
 
-const { spawnSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-const readline = require('readline');
+import { spawnSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+import readline from 'readline';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const REPO_ROOT = process.cwd();
 const YAML_DIR = path.join(REPO_ROOT, '.claude', 'instincts');

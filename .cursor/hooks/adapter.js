@@ -5,13 +5,15 @@
  * then delegates to existing scripts/hooks/*.js
  */
 
-const { execFileSync } = require('child_process');
-const path = require('path');
+import { execFileSync } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const MAX_STDIN = 1024 * 1024;
 
 function readStdin() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     let data = '';
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', chunk => {
@@ -30,18 +32,18 @@ function transformToClaude(cursorInput, overrides = {}) {
     tool_input: {
       command: cursorInput.command || cursorInput.args?.command || '',
       file_path: cursorInput.path || cursorInput.file || '',
-      ...overrides.tool_input,
+      ...overrides.tool_input
     },
     tool_output: {
       output: cursorInput.output || cursorInput.result || '',
-      ...overrides.tool_output,
+      ...overrides.tool_output
     },
     _cursor: {
       conversation_id: cursorInput.conversation_id,
       hook_event_name: cursorInput.hook_event_name,
       workspace_roots: cursorInput.workspace_roots,
-      model: cursorInput.model,
-    },
+      model: cursorInput.model
+    }
   };
 }
 
@@ -52,11 +54,11 @@ function runExistingHook(scriptName, stdinData) {
       input: typeof stdinData === 'string' ? stdinData : JSON.stringify(stdinData),
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 15000,
-      cwd: process.cwd(),
+      cwd: process.cwd()
     });
   } catch (e) {
     if (e.status === 2) process.exit(2); // Forward blocking exit code
   }
 }
 
-module.exports = { readStdin, getPluginRoot, transformToClaude, runExistingHook };
+export { readStdin, getPluginRoot, transformToClaude, runExistingHook };

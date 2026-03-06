@@ -4,8 +4,10 @@
  * and have valid cross-references to other commands, agents, and skills.
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ROOT_DIR = path.join(__dirname, '../..');
 const COMMANDS_DIR = path.join(ROOT_DIR, 'commands');
