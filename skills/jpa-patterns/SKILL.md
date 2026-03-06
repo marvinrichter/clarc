@@ -24,7 +24,8 @@ Use for persistence adapter implementation and performance tuning in Spring Boot
 ```java
 @Entity
 @Table(name = "markets", indexes = {
-  @Index(name = "idx_markets_slug", columnList = "slug", unique = true)
+  @Index(name = "idx_markets_slug",       columnList = "slug",             unique = true),
+  @Index(name = "idx_markets_status_ts",  columnList = "status, created_at")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class MarketEntity {
@@ -38,10 +39,15 @@ public class MarketEntity {
   private String slug;
 
   @Enumerated(EnumType.STRING)
-  private MarketStatus status = MarketStatus.ACTIVE;
+  @Column(nullable = false, length = 20)
+  private MarketStatus status = MarketStatus.DRAFT;
 
-  @CreatedDate private Instant createdAt;
+  @CreatedDate  private Instant createdAt;
   @LastModifiedDate private Instant updatedAt;
+
+  // Always initialize collection fields — prevents NullPointerException
+  @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PositionEntity> positions = new ArrayList<>();
 }
 ```
 
@@ -52,103 +58,308 @@ Enable auditing:
 class JpaConfig {}
 ```
 
-## Relationships and N+1 Prevention
+## Relationships
+
+### @OneToMany / @ManyToOne (Bidirectional)
 
 ```java
+// Parent side
 @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
 private List<PositionEntity> positions = new ArrayList<>();
+
+// Convenience methods to keep both sides in sync
+public void addPosition(PositionEntity pos) {
+    positions.add(pos);
+    pos.setMarket(this);
+}
+
+public void removePosition(PositionEntity pos) {
+    positions.remove(pos);
+    pos.setMarket(null);
+}
+
+// Child side
+@ManyToOne(fetch = FetchType.LAZY)   // Always LAZY on @ManyToOne
+@JoinColumn(name = "market_id", nullable = false)
+private MarketEntity market;
 ```
 
-- Default to lazy loading; use `JOIN FETCH` in queries when needed
-- Avoid `EAGER` on collections; use DTO projections for read paths
+### @ManyToMany
 
 ```java
-@Query("select m from MarketEntity m left join fetch m.positions where m.id = :id")
-Optional<MarketEntity> findWithPositions(@Param("id") Long id);
+@Entity
+public class UserEntity {
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
+}
+
+// Use Set for @ManyToMany to avoid duplicate rows and better performance
+```
+
+### @OneToOne (Shared Primary Key)
+
+```java
+@Entity
+public class UserProfileEntity {
+    @Id
+    private Long id;  // Same as UserEntity.id
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private UserEntity user;
+}
+```
+
+## N+1 Prevention
+
+```java
+// N+1 BAD: separate query per market to load positions
+List<MarketEntity> markets = repo.findAll();
+markets.forEach(m -> m.getPositions().size());  // N additional queries!
+
+// GOOD: fetch join in JPQL
+@Query("select m from MarketEntity m left join fetch m.positions where m.status = :status")
+List<MarketEntity> findActiveWithPositions(@Param("status") MarketStatus status);
+
+// GOOD: @EntityGraph for selective loading
+@EntityGraph(attributePaths = {"positions", "categories"})
+List<MarketEntity> findByStatus(MarketStatus status);
+
+// GOOD: DTO projection — no entity loading at all
+@Query("""
+    select new com.example.MarketSummaryDto(m.id, m.name, m.status, count(p))
+    from MarketEntity m left join m.positions p
+    where m.status = :status
+    group by m.id, m.name, m.status
+""")
+List<MarketSummaryDto> findSummaries(@Param("status") MarketStatus status);
 ```
 
 ## Repository Patterns
 
+### Spring Data Query Methods
+
 ```java
 public interface MarketRepository extends JpaRepository<MarketEntity, Long> {
-  Optional<MarketEntity> findBySlug(String slug);
+    // Derived queries
+    Optional<MarketEntity> findBySlug(String slug);
+    List<MarketEntity> findByStatusOrderByCreatedAtDesc(MarketStatus status);
+    long countByStatus(MarketStatus status);
+    boolean existsBySlug(String slug);
 
-  @Query("select m from MarketEntity m where m.status = :status")
-  Page<MarketEntity> findByStatus(@Param("status") MarketStatus status, Pageable pageable);
+    // JPQL — prefer over native SQL for portability
+    @Query("select m from MarketEntity m where m.status = :status")
+    Page<MarketEntity> findByStatus(@Param("status") MarketStatus status, Pageable pageable);
+
+    // Bulk update — bypass entity loading
+    @Modifying
+    @Query("update MarketEntity m set m.status = :status where m.id in :ids")
+    int updateStatusForIds(@Param("status") MarketStatus status, @Param("ids") List<Long> ids);
 }
 ```
 
-- Use projections for lightweight queries:
+### Interface-Based Projections
+
 ```java
+// Column projections — only fetch what you need
 public interface MarketSummary {
-  Long getId();
-  String getName();
-  MarketStatus getStatus();
+    Long getId();
+    String getName();
+    MarketStatus getStatus();
+    Instant getCreatedAt();
 }
-Page<MarketSummary> findAllBy(Pageable pageable);
+
+Page<MarketSummary> findAllProjectedBy(Pageable pageable);
+```
+
+### Record-Based Projections (Java 16+)
+
+```java
+public record MarketDto(Long id, String name, MarketStatus status) {}
+
+@Query("select new com.example.MarketDto(m.id, m.name, m.status) from MarketEntity m")
+List<MarketDto> findAllAsDto();
 ```
 
 ## Transactions
 
-- Annotate service methods with `@Transactional`
-- Use `@Transactional(readOnly = true)` for read paths to optimize
-- Choose propagation carefully; avoid long-running transactions
+```java
+// Service layer: @Transactional on methods
+@Service
+@Transactional(readOnly = true)  // Default readOnly for all methods
+public class MarketQueryService {
+
+    public Page<MarketSummary> findAll(Pageable pageable) {
+        return repo.findAllProjectedBy(pageable);
+    }
+
+    @Transactional  // Override for write methods
+    public Market updateStatus(Long id, MarketStatus newStatus) {
+        MarketEntity entity = repo.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Market " + id));
+        entity.setStatus(newStatus);  // Dirty checking — no explicit save() needed
+        return mapper.toDomain(entity);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        if (!repo.existsById(id)) throw new EntityNotFoundException("Market " + id);
+        repo.deleteById(id);
+    }
+}
+```
+
+### Transaction Propagation
 
 ```java
-@Transactional
-public Market updateStatus(Long id, MarketStatus status) {
-  MarketEntity entity = repo.findById(id)
-      .orElseThrow(() -> new EntityNotFoundException("Market"));
-  entity.setStatus(status);
-  return Market.from(entity);
+// REQUIRED (default): join existing or create new
+@Transactional(propagation = Propagation.REQUIRED)
+
+// REQUIRES_NEW: always create new (independent transaction)
+// Use for audit logging that must persist even if outer tx rolls back
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+
+// NOT_SUPPORTED: suspend outer transaction
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+```
+
+## Optimistic Locking
+
+Prevent lost updates in concurrent writes:
+
+```java
+@Entity
+public class MarketEntity {
+    @Version
+    private Long version;  // Hibernate increments on every update
+    // Throws OptimisticLockException if stale version detected
 }
+```
+
+## Soft Deletes
+
+```java
+@Entity
+@SQLDelete(sql = "UPDATE markets SET deleted_at = now() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")  // Hibernate 6.3+; was @Where in older versions
+public class MarketEntity {
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
+}
+
+// repo.delete(entity)  → sets deleted_at, doesn't physically delete
+// repo.findAll()       → automatically filters out deleted rows
 ```
 
 ## Pagination
 
 ```java
+// Offset pagination
 PageRequest page = PageRequest.of(pageNumber, pageSize, Sort.by("createdAt").descending());
-Page<MarketEntity> markets = repo.findByStatus(MarketStatus.ACTIVE, page);
+Page<MarketEntity> result = repo.findByStatus(MarketStatus.ACTIVE, page);
+
+// Page response metadata
+result.getTotalElements();
+result.getTotalPages();
+result.hasNext();
+
+// Keyset/cursor pagination for deep pages (more efficient)
+@Query("""
+    select m from MarketEntity m
+    where m.status = :status
+      and (m.createdAt < :cursor or (m.createdAt = :cursor and m.id < :lastId))
+    order by m.createdAt desc, m.id desc
+""")
+List<MarketEntity> findPage(
+    @Param("status") MarketStatus status,
+    @Param("cursor") Instant cursor,
+    @Param("lastId") Long lastId,
+    Pageable pageable
+);
 ```
 
-For cursor-like pagination, include `id > :lastId` in JPQL with ordering.
+## Batch Operations
+
+```java
+// Batch insert
+@Transactional
+public void bulkCreate(List<MarketEntity> entities) {
+    repo.saveAll(entities);  // With hibernate.jdbc.batch_size=50
+}
+
+// Efficient bulk update — no entity loading
+@Transactional
+public void deactivateExpired(Instant cutoff) {
+    int updated = repo.updateStatusForIds(MarketStatus.CLOSED, findExpiredIds(cutoff));
+    log.info("Deactivated {} expired markets", updated);
+}
+```
 
 ## Indexing and Performance
 
-- Add indexes for common filters (`status`, `slug`, foreign keys)
-- Use composite indexes matching query patterns (`status, created_at`)
-- Avoid `select *`; project only needed columns
-- Batch writes with `saveAll` and `hibernate.jdbc.batch_size`
+```java
+// Composite index matching common query patterns
+@Table(name = "markets", indexes = {
+    @Index(columnList = "status"),                     // filter by status
+    @Index(columnList = "status, created_at DESC"),    // status + sort by date
+    @Index(columnList = "user_id, status"),            // per-user filtered list
+    @Index(columnList = "slug", unique = true),        // slug lookup
+})
+```
+
+Config for N+1 detection in development:
+```yaml
+# application-dev.yml
+spring.jpa.properties:
+  hibernate.generate_statistics: true
+logging.level:
+  org.hibernate.SQL: DEBUG
+  org.hibernate.orm.jdbc.bind: TRACE
+```
 
 ## Connection Pooling (HikariCP)
 
-Recommended properties:
-```
-spring.datasource.hikari.maximum-pool-size=20
-spring.datasource.hikari.minimum-idle=5
-spring.datasource.hikari.connection-timeout=30000
-spring.datasource.hikari.validation-timeout=5000
-```
+```yaml
+spring.datasource.hikari:
+  maximum-pool-size: 20      # cpu_cores * 2 + disk_spindles (rule of thumb)
+  minimum-idle: 5
+  connection-timeout: 30000  # 30s — fail fast
+  idle-timeout: 600000       # 10m
+  max-lifetime: 1800000      # 30m — must be < DB timeout
+  validation-timeout: 5000
+  # PostgreSQL specific
+  data-source-properties:
+    applicationName: my-service
 
-For PostgreSQL LOB handling, add:
+# PostgreSQL LOB handling
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
 ```
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
-```
-
-## Caching
-
-- 1st-level cache is per EntityManager; avoid keeping entities across transactions
-- For read-heavy entities, consider second-level cache cautiously; validate eviction strategy
 
 ## Migrations
 
-- Use Flyway or Liquibase; never rely on Hibernate auto DDL in production
-- Keep migrations idempotent and additive; avoid dropping columns without plan
+- Use Flyway or Liquibase; never rely on `hibernate.ddl-auto=create` in production
+- Name migrations: `V{version}__{description}.sql` (e.g., `V002__add_market_slug_index.sql`)
+- Migrations are additive — never rename/drop columns without a plan
+- Test migrations in CI against a real database (Testcontainers)
+
+```yaml
+spring.flyway:
+  enabled: true
+  locations: classpath:db/migration
+  baseline-on-migrate: true   # For existing databases
+```
 
 ## Testing Data Access
 
-- Prefer `@DataJpaTest` with Testcontainers to mirror production
-- Assert SQL efficiency using logs: set `logging.level.org.hibernate.SQL=DEBUG` and `logging.level.org.hibernate.orm.jdbc.bind=TRACE` for parameter values
+- Use `@DataJpaTest` with Testcontainers (`@ServiceConnection`)
+- Assert N+1 with Hibernate statistics in tests
+- Use `TestEntityManager.flush()` to flush before querying
 
 **Remember**: JPA entities are persistence adapters — keep them separate from domain entities. Keep queries intentional, transactions short, and N+1 eliminated. Index for your actual read/write paths.
 
