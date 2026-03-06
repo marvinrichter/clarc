@@ -55,7 +55,7 @@ When determining which package manager to use, the following order is checked:
 ### package.json
 ```json
 {
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@10.30.3"
 }
 ```
 

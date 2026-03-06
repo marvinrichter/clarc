@@ -86,9 +86,9 @@ Use `about:blank` as `type` when no problem-type documentation exists yet — th
 
 ## Implementation by Language
 
-### Spring Boot 3 (Java/Kotlin)
+### Spring Boot 4 (Java/Kotlin)
 
-Spring Boot 3.x has native RFC 7807 support — no custom classes needed.
+Spring Boot 4.x has native RFC 7807 support — no custom classes needed.
 
 **Enable in `application.yml`:**
 ```yaml

@@ -37,7 +37,7 @@ package com.example.market.service;
 
 ## Immutability
 
-- Prefer `record` for pure data carriers (Java 21+)
+- Prefer `record` for pure data carriers (Java 25+)
 - Use `final` fields; no setters unless framework requires it
 - Collections: return unmodifiable views (`List.copyOf`, `Collections.unmodifiableList`)
 

@@ -126,7 +126,7 @@ public record MarketResponse(Long id, String name, MarketStatus status) {
 
 ## Exception Handling (RFC 7807 / RFC 9457 Problem Details)
 
-Spring Boot 3 has native RFC 7807 support via `ProblemDetail`. Enable it in `application.yml`:
+Spring Boot 4 has native RFC 7807 support via `ProblemDetail`. Enable it in `application.yml`:
 
 ```yaml
 spring:
@@ -388,7 +388,7 @@ Use Spring’s `@Scheduled` or integrate with queues (e.g., Kafka, SQS, RabbitMQ
 ## Production Defaults
 
 - Prefer constructor injection, avoid field injection
-- Enable `spring.mvc.problemdetails.enabled=true` for RFC 7807 errors (Spring Boot 3+)
+- Enable `spring.mvc.problemdetails.enabled=true` for RFC 7807 errors (Spring Boot 4+)
 - Configure HikariCP pool sizes for workload, set timeouts
 - Use `@Transactional(readOnly = true)` for queries
 - Enforce null-safety via `@NonNull` and `Optional` where appropriate

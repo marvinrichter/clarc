@@ -84,13 +84,13 @@ v2: 100% of traffic
 
 ```dockerfile
 # Stage 1: Install dependencies
-FROM node:22-alpine AS deps
+FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --production=false
 
 # Stage 2: Build
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -98,7 +98,7 @@ RUN npm run build
 RUN npm prune --production
 
 # Stage 3: Production image
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 RUN addgroup -g 1001 -S appgroup && adduser -S appuser -u 1001
@@ -120,14 +120,14 @@ CMD ["node", "dist/server.js"]
 ### Multi-Stage Dockerfile (Go)
 
 ```dockerfile
-FROM golang:1.24-alpine AS builder
+FROM golang:1.26-alpine AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /server ./cmd/server
 
-FROM alpine:3.21 AS runner
+FROM alpine:3.23 AS runner
 RUN apk --no-cache add ca-certificates
 RUN adduser -D -u 1001 appuser
 USER appuser
@@ -142,19 +142,19 @@ CMD ["/server"]
 ### Multi-Stage Dockerfile (Python/Django)
 
 ```dockerfile
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 WORKDIR /app
 RUN pip install --no-cache-dir uv
 COPY requirements.txt .
 RUN uv pip install --system --no-cache -r requirements.txt
 
-FROM python:3.13-slim AS runner
+FROM python:3.14-slim AS runner
 WORKDIR /app
 
 RUN useradd -r -u 1001 appuser
 USER appuser
 
-COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . .
 
@@ -169,7 +169,7 @@ CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers
 
 ```
 # GOOD practices
-- Use specific version tags (node:22-alpine, not node:latest)
+- Use specific version tags (node:24-alpine, not node:latest)
 - Multi-stage builds to minimize image size
 - Run as non-root user
 - Copy dependency files first (layer caching)
@@ -205,7 +205,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run lint

@@ -44,7 +44,7 @@ services:
     command: npm run dev
 
   db:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     ports:
       - "5432:5432"
     environment:
@@ -61,7 +61,7 @@ services:
       retries: 5
 
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     ports:
       - "6379:6379"
     volumes:
@@ -82,13 +82,13 @@ volumes:
 
 ```dockerfile
 # Stage: dependencies
-FROM node:22-alpine AS deps
+FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # Stage: dev (hot reload, debug tools)
-FROM node:22-alpine AS dev
+FROM node:24-alpine AS dev
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -96,14 +96,14 @@ EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 # Stage: build
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build && npm prune --production
 
 # Stage: production (minimal image)
-FROM node:22-alpine AS production
+FROM node:24-alpine AS production
 WORKDIR /app
 RUN addgroup -g 1001 -S appgroup && adduser -S appuser -u 1001
 USER appuser
@@ -228,7 +228,7 @@ services:
 
 ```dockerfile
 # 1. Use specific tags (never :latest)
-FROM node:22.12-alpine3.21
+FROM node:24-alpine3.23
 
 # 2. Run as non-root
 RUN addgroup -g 1001 -S app && adduser -S app -u 1001

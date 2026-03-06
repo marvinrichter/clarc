@@ -85,8 +85,8 @@ packages:
     "prettier": "^3.0.0"
   },
   "engines": {
-    "node": ">=22",
-    "pnpm": ">=9"
+    "node": ">=24",
+    "pnpm": ">=10"
   }
 }
 ```
@@ -270,7 +270,7 @@ export default createConfig(['./tsconfig.json']);
   },
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
-    "typescript": "^5.7.0"
+    "typescript": "^5.9.0"
   },
   "peerDependencies": {
     "react": "^18 || ^19"
@@ -387,11 +387,11 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile

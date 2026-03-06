@@ -1,6 +1,6 @@
 ---
 name: ddd-java
-description: Domain-Driven Design tactical patterns for Java 21+. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in Java Spring Boot services.
+description: Domain-Driven Design tactical patterns for Java 25+. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in Java Spring Boot services.
 ---
 
 # Domain-Driven Design for Java

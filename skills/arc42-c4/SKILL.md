@@ -177,8 +177,8 @@ System_Boundary(system, "<System Name>") {
   Container(web, "Web Application", "Next.js 15", "Server-side rendered frontend. Serves UI, handles auth sessions.")
   Container(api, "API Server", "Node.js + Express", "REST API. Business logic, auth, data access.")
   Container(worker, "Background Worker", "BullMQ", "Processes async jobs: emails, webhooks, heavy computation.")
-  ContainerDb(db, "Database", "PostgreSQL 17 + pgvector", "Primary data store. RLS for tenant isolation.")
-  ContainerDb(cache, "Cache / Queue", "Redis 7", "Session store, job queue, rate limiting.")
+  ContainerDb(db, "Database", "PostgreSQL 18 + pgvector", "Primary data store. RLS for tenant isolation.")
+  ContainerDb(cache, "Cache / Queue", "Redis 8", "Session store, job queue, rate limiting.")
   Container(storage, "File Storage", "S3 / Cloudflare R2", "User uploads and generated assets.")
 }
 
@@ -305,10 +305,10 @@ Deployment_Node(k8s, "Kubernetes Cluster", "AWS EKS / GCP GKE") {
 
 Deployment_Node(aws, "AWS / GCP", "Managed Services") {
   Deployment_Node(db_node, "RDS / Cloud SQL") {
-    ContainerDb(db, "PostgreSQL 17", "Multi-AZ, automated backups")
+    ContainerDb(db, "PostgreSQL 18", "Multi-AZ, automated backups")
   }
   Deployment_Node(cache_node, "ElastiCache / Memorystore") {
-    ContainerDb(redis, "Redis 7", "Cluster mode")
+    ContainerDb(redis, "Redis 8", "Cluster mode")
   }
   Deployment_Node(storage_node, "S3 / R2") {
     Container(s3, "Object Storage", "Versioned, lifecycle policies")

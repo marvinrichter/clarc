@@ -125,7 +125,7 @@ Maven snippet:
 <plugin>
   <groupId>org.jacoco</groupId>
   <artifactId>jacoco-maven-plugin</artifactId>
-  <version>0.8.12</version>
+  <version>0.8.15</version>
   <executions>
     <execution>
       <goals><goal>prepare-agent</goal></goals>

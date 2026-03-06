@@ -95,7 +95,7 @@ Read all `process.env.*` / `os.environ` / `os.Getenv` calls in the codebase to e
 ```json
 {
   "name": "<project-name>",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },

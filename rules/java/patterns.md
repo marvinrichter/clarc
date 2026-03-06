@@ -42,7 +42,7 @@ CreateMarketRequest.builder().name("Test").status(ACTIVE).build();
 
 ## Records for Data Transfer
 
-Use Java records (17+) for immutable DTOs and value objects:
+Use Java records (25+) for immutable DTOs and value objects:
 
 ```java
 public record MarketDto(Long id, String name, MarketStatus status) {
