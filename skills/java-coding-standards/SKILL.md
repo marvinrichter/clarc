@@ -158,12 +158,13 @@ log.error("failed_fetch_market slug={}", slug, ex);
 Use these Java 25 LTS features in new code:
 
 ```java
-// Virtual Threads (Project Loom) — for I/O-bound concurrency
+// Virtual Threads (Project Loom, stable since Java 21) — for I/O-bound concurrency
+// In Spring Boot 4: enable via spring.threads.virtual.enabled=true in application.yml
 try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
     executor.submit(() -> callExternalApi());
 }
 
-// Pattern matching in switch (stable in 21)
+// Pattern matching in switch (stable since Java 21)
 String describe(Object obj) {
     return switch (obj) {
         case Integer i -> "int: " + i;
@@ -173,7 +174,25 @@ String describe(Object obj) {
     };
 }
 
-// Sequenced collections (Java 21+)
+// Unnamed variables _ (stable since Java 22, JEP 456) — discard unused bindings
+try {
+    return compute();
+} catch (IOException _) {   // exception variable intentionally unused
+    return Optional.empty();
+}
+
+// Also in patterns — ignore fields you don't need:
+if (obj instanceof Point(int x, _)) {   // y coordinate unused
+    return x;
+}
+
+// Unnamed patterns in switch:
+return switch (shape) {
+    case Circle c -> c.area();
+    case Rectangle _ -> 0;   // rectangles handled elsewhere
+};
+
+// Sequenced collections (stable since Java 21)
 SequencedCollection<String> items = new ArrayList<>(List.of("a", "b", "c"));
 items.getFirst(); // instead of items.get(0)
 items.getLast();  // instead of items.get(items.size() - 1)

@@ -73,53 +73,53 @@ def get_value(dictionary: dict, key: str) -> Any:
 
 ## Type Hints
 
-### Basic Type Annotations
+### Type Annotations (Python 3.13+)
+
+Use built-in generic types directly — no `typing` imports needed for basic annotations:
 
 ```python
-from typing import Optional, List, Dict, Any
+from typing import Any
 
 def process_user(
     user_id: str,
-    data: Dict[str, Any],
+    data: dict[str, Any],
     active: bool = True
-) -> Optional[User]:
+) -> User | None:
     """Process a user and return the updated User or None."""
     if not active:
         return None
     return User(user_id, data)
-```
 
-### Modern Type Hints (Python 3.9+)
-
-```python
-# Python 3.9+ - Use built-in types
 def process_items(items: list[str]) -> dict[str, int]:
     return {item: len(item) for item in items}
-
-# Python 3.8 and earlier - Use typing module
-from typing import List, Dict
-
-def process_items(items: List[str]) -> Dict[str, int]:
-    return {item: len(item) for item in items}
 ```
 
-### Type Aliases and TypeVar
+### Type Aliases and Generics (Python 3.12+)
 
 ```python
-from typing import TypeVar, Union
+from typing import Any
 
-# Type alias for complex types
-JSON = Union[dict[str, Any], list[Any], str, int, float, bool, None]
+# Type alias (PEP 695 — Python 3.12+)
+type JSON = dict[str, Any] | list[Any] | str | int | float | bool | None
 
 def parse_json(data: str) -> JSON:
     return json.loads(data)
 
-# Generic types
-T = TypeVar('T')
-
-def first(items: list[T]) -> T | None:
+# Generic functions with new syntax (Python 3.12+)
+def first[T](items: list[T]) -> T | None:
     """Return the first item or None if list is empty."""
     return items[0] if items else None
+
+# Generic classes (Python 3.12+)
+class Stack[T]:
+    def __init__(self) -> None:
+        self._items: list[T] = []
+
+    def push(self, item: T) -> None:
+        self._items.append(item)
+
+    def pop(self) -> T:
+        return self._items.pop()
 ```
 
 ### Protocol-Based Duck Typing
@@ -879,13 +879,12 @@ result = buffer.getvalue()
 ### Essential Commands
 
 ```bash
-# Code formatting
-black .
-isort .
+# Code formatting (ruff replaces black + isort)
+ruff format .
+ruff check --fix .
 
 # Linting
 ruff check .
-pylint mypackage/
 
 # Type checking
 mypy .
@@ -898,7 +897,6 @@ bandit -r .
 
 # Dependency management
 pip-audit
-safety check
 ```
 
 ### pyproject.toml Configuration
@@ -907,31 +905,31 @@ safety check
 [project]
 name = "mypackage"
 version = "1.0.0"
-requires-python = ">=3.9"
+requires-python = ">=3.13"
 dependencies = [
-    "requests>=2.31.0",
-    "pydantic>=2.0.0",
+    "requests>=2.32.0",
+    "pydantic>=2.10.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
-    "mypy>=1.5.0",
+    "pytest>=8.3.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.0",
+    "mypy>=1.15.0",
 ]
-
-[tool.black]
-line-length = 88
-target-version = ['py39']
 
 [tool.ruff]
 line-length = 88
+
+[tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
 
+[tool.ruff.format]
+# ruff format replaces black — no [tool.black] needed
+
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -952,8 +950,8 @@ addopts = "--cov=mypackage --cov-report=term-missing"
 | Type hints | Annotate function signatures |
 | Dataclasses | For data containers with auto-generated methods |
 | `__slots__` | For memory optimization |
-| f-strings | For string formatting (Python 3.6+) |
-| `pathlib.Path` | For path operations (Python 3.4+) |
+| f-strings | For string formatting |
+| `pathlib.Path` | For path operations |
 | `enumerate` | For index-element pairs in loops |
 
 ## Anti-Patterns to Avoid

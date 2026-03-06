@@ -247,7 +247,6 @@ func FetchAll(ctx context.Context, urls []string) ([][]byte, error) {
     results := make([][]byte, len(urls))
 
     for i, url := range urls {
-        i, url := i, url // Capture loop variables
         g.Go(func() error {
             data, err := FetchWithTimeout(ctx, url)
             if err != nil {

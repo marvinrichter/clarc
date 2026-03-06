@@ -389,6 +389,13 @@ Use Spring’s `@Scheduled` or integrate with queues (e.g., Kafka, SQS, RabbitMQ
 
 - Prefer constructor injection, avoid field injection
 - Enable `spring.mvc.problemdetails.enabled=true` for RFC 7807 errors (Spring Boot 4+)
+- Enable virtual threads for I/O-bound throughput (Spring Boot 4+):
+  ```yaml
+  spring:
+    threads:
+      virtual:
+        enabled: true   # Tomcat + @Async + @Scheduled all use virtual threads
+  ```
 - Configure HikariCP pool sizes for workload, set timeouts
 - Use `@Transactional(readOnly = true)` for queries
 - Enforce null-safety via `@NonNull` and `Optional` where appropriate

@@ -58,7 +58,7 @@ Mock the **input port interface**, not the use case class:
 @WebMvcTest(MarketController.class)
 class MarketControllerTest {
   @Autowired MockMvc mockMvc;
-  @MockBean ListMarketsUseCase listMarkets;   // input port interface
+  @MockitoBean ListMarketsUseCase listMarkets;   // input port interface — @MockitoBean replaces @MockBean in Spring Boot 4
 
   @Test
   void returnsMarkets() throws Exception {
