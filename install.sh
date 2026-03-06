@@ -33,16 +33,31 @@ done
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
 RULES_DIR="$SCRIPT_DIR/rules"
 
-# --- Parse --target flag ---
+# --- Parse flags ---
 TARGET="claude"
-if [[ "${1:-}" == "--target" ]]; then
-    if [[ -z "${2:-}" ]]; then
-        echo "Error: --target requires a value (claude or cursor)" >&2
-        exit 1
-    fi
-    TARGET="$2"
-    shift 2
-fi
+PROJECT_LOCAL=false
+
+while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+        --target)
+            if [[ -z "${2:-}" ]]; then
+                echo "Error: --target requires a value (claude or cursor)" >&2
+                exit 1
+            fi
+            TARGET="$2"
+            shift 2
+            ;;
+        --project)
+            # Install language rules into <cwd>/.claude/rules/ instead of ~/.claude/rules/
+            # Common rules still go to ~/.claude/rules/common/ (always global)
+            PROJECT_LOCAL=true
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
 
 if [[ "$TARGET" != "claude" && "$TARGET" != "cursor" ]]; then
     echo "Error: unknown target '$TARGET'. Must be 'claude' or 'cursor'." >&2
@@ -51,7 +66,11 @@ fi
 
 # --- Usage ---
 if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 [--target <claude|cursor>] <language> [<language> ...]"
+    echo "Usage: $0 [--target <claude|cursor>] [--project] <language> [<language> ...]"
+    echo ""
+    echo "Flags:"
+    echo "  --project  Install language rules into <cwd>/.claude/rules/ (project-local)"
+    echo "             Common rules always go to ~/.claude/rules/common/ (global)"
     echo ""
     echo "Targets:"
     echo "  claude  (default) — Install rules to ~/.claude/rules/"
@@ -66,20 +85,21 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-# --- Claude target (existing behavior) ---
+# --- Claude target ---
 if [[ "$TARGET" == "claude" ]]; then
-    DEST_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
-
-    # Warn if destination already exists (user may have local customizations)
-    if [[ -d "$DEST_DIR" ]] && [[ "$(ls -A "$DEST_DIR" 2>/dev/null)" ]]; then
-        echo "Note: $DEST_DIR/ already exists. Existing files will be overwritten."
-        echo "      Back up any local customizations before proceeding."
+    # --project: lang rules go to <cwd>/.claude/rules/, common stays global
+    if [[ "$PROJECT_LOCAL" == true ]]; then
+        GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
+        LANG_DEST_DIR="$(pwd)/.claude/rules"
+    else
+        GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
+        LANG_DEST_DIR="$GLOBAL_RULES_DIR"
     fi
 
-    # Always install common rules
-    echo "Installing common rules -> $DEST_DIR/common/"
-    mkdir -p "$DEST_DIR/common"
-    cp -r "$RULES_DIR/common/." "$DEST_DIR/common/"
+    # Always install common rules globally
+    echo "Installing common rules -> $GLOBAL_RULES_DIR/common/"
+    mkdir -p "$GLOBAL_RULES_DIR/common"
+    cp -r "$RULES_DIR/common/." "$GLOBAL_RULES_DIR/common/"
 
     # Install each requested language
     for lang in "$@"; do
@@ -93,12 +113,17 @@ if [[ "$TARGET" == "claude" ]]; then
             echo "Warning: rules/$lang/ does not exist, skipping." >&2
             continue
         fi
-        echo "Installing $lang rules -> $DEST_DIR/$lang/"
-        mkdir -p "$DEST_DIR/$lang"
-        cp -r "$lang_dir/." "$DEST_DIR/$lang/"
+        echo "Installing $lang rules -> $LANG_DEST_DIR/$lang/"
+        mkdir -p "$LANG_DEST_DIR/$lang"
+        cp -r "$lang_dir/." "$LANG_DEST_DIR/$lang/"
     done
 
-    echo "Done. Rules installed to $DEST_DIR/"
+    if [[ "$PROJECT_LOCAL" == true ]]; then
+        echo "Done. Common rules -> $GLOBAL_RULES_DIR/common/  |  Lang rules -> $LANG_DEST_DIR/"
+        echo "Tip: commit $LANG_DEST_DIR/ to share rules with your team."
+    else
+        echo "Done. Rules installed to $LANG_DEST_DIR/"
+    fi
 fi
 
 # --- Cursor target ---
