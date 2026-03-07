@@ -1,68 +1,16 @@
 ---
-description: Review code for quality, security, and maintainability
-agent: code-reviewer
-subtask: true
+description: Comprehensive code review — delegates to code-reviewer agent which routes to language specialists (typescript, go, python, java, swift, rust, cpp, ruby, elixir).
 ---
 
-# Code Review Command
+# Code Review
 
-Review code changes for quality, security, and maintainability: $ARGUMENTS
+Immediately invoke the **code-reviewer** agent to review changed files.
 
-## Your Task
+The code-reviewer agent:
+1. Detects changed file languages (`git diff --staged` + `git diff`)
+2. Routes each language to its specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, rust-reviewer, cpp-reviewer, ruby-reviewer, elixir-reviewer)
+3. Runs parallel reviews when multiple languages are changed
+4. Falls back to universal security + quality checks for unsupported languages
+5. Produces a combined report with severity (CRITICAL / HIGH / MEDIUM / LOW) and verdict
 
-1. **Get changed files**: Run `git diff --name-only HEAD`
-2. **Analyze each file** for issues
-3. **Generate structured report**
-4. **Provide actionable recommendations**
-
-## Check Categories
-
-### Security Issues (CRITICAL)
-- [ ] Hardcoded credentials, API keys, tokens
-- [ ] SQL injection vulnerabilities
-- [ ] XSS vulnerabilities
-- [ ] Missing input validation
-- [ ] Insecure dependencies
-- [ ] Path traversal risks
-- [ ] Authentication/authorization flaws
-
-### Code Quality (HIGH)
-- [ ] Functions > 50 lines
-- [ ] Files > 800 lines
-- [ ] Nesting depth > 4 levels
-- [ ] Missing error handling
-- [ ] console.log statements
-- [ ] TODO/FIXME comments
-- [ ] Missing JSDoc for public APIs
-
-### Best Practices (MEDIUM)
-- [ ] Mutation patterns (use immutable instead)
-- [ ] Unnecessary complexity
-- [ ] Missing tests for new code
-- [ ] Accessibility issues (a11y)
-- [ ] Performance concerns
-
-### Style (LOW)
-- [ ] Inconsistent naming
-- [ ] Missing type annotations
-- [ ] Formatting issues
-
-## Report Format
-
-For each issue found:
-
-```
-**[SEVERITY]** file.ts:123
-Issue: [Description]
-Fix: [How to fix]
-```
-
-## Decision
-
-- **CRITICAL or HIGH issues**: Block commit, require fixes
-- **MEDIUM issues**: Recommend fixes before merge
-- **LOW issues**: Optional improvements
-
----
-
-**IMPORTANT**: Never approve code with security vulnerabilities!
+If specific files or a scope are provided via `$ARGUMENTS`, pass them as context to the agent.

@@ -1,44 +1,16 @@
 ---
-description: Comprehensive security and quality review of uncommitted changes.
+description: Comprehensive code review — delegates to code-reviewer agent which routes to language specialists (typescript, go, python, java, swift, rust, cpp, ruby, elixir).
 ---
 
 # Code Review
 
-Comprehensive security and quality review of uncommitted changes:
+Immediately invoke the **code-reviewer** agent to review changed files.
 
-1. Get changed files: git diff --name-only HEAD
+The code-reviewer agent:
+1. Detects changed file languages (`git diff --staged` + `git diff`)
+2. Routes each language to its specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, rust-reviewer, cpp-reviewer, ruby-reviewer, elixir-reviewer)
+3. Runs parallel reviews when multiple languages are changed
+4. Falls back to universal security + quality checks for unsupported languages
+5. Produces a combined report with severity (CRITICAL / HIGH / MEDIUM / LOW) and verdict
 
-2. For each changed file, check for:
-
-**Security Issues (CRITICAL):**
-- Hardcoded credentials, API keys, tokens
-- SQL injection vulnerabilities
-- XSS vulnerabilities  
-- Missing input validation
-- Insecure dependencies
-- Path traversal risks
-
-**Code Quality (HIGH):**
-- Functions > 50 lines
-- Files > 800 lines
-- Nesting depth > 4 levels
-- Missing error handling
-- console.log statements
-- TODO/FIXME comments
-- Missing JSDoc for public APIs
-
-**Best Practices (MEDIUM):**
-- Mutation patterns (use immutable instead)
-- Emoji usage in code/comments
-- Missing tests for new code
-- Accessibility issues (a11y)
-
-3. Generate report with:
-   - Severity: CRITICAL, HIGH, MEDIUM, LOW
-   - File location and line numbers
-   - Issue description
-   - Suggested fix
-
-4. Block commit if CRITICAL or HIGH issues found
-
-Never approve code with security vulnerabilities!
+If specific files or a scope are provided via `$ARGUMENTS`, pass them as context to the agent.
