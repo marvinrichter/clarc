@@ -1,6 +1,6 @@
 ---
 name: verification-loop
-description: "A comprehensive verification system for Claude Code sessions."
+description: "Run build → type-check → lint → tests in sequence; fail fast and fix each error before continuing; repeat until all quality gates pass. Use after significant code changes and before creating a PR."
 ---
 
 # Verification Loop Skill

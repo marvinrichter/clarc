@@ -1,5 +1,5 @@
 ---
-description: Analyze instincts and suggest or generate evolved structures
+description: Cluster accumulated instincts into skills, commands, or agents — runs conflict detection first, groups instincts by trigger domain, scores clusters by confidence, and writes evolved files with --generate.
 agent: build
 ---
 
