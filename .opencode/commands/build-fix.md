@@ -1,5 +1,5 @@
 ---
-description: Fix build and TypeScript errors with minimal changes
+description: Incrementally fix build and type errors with minimal, safe changes.
 agent: build-error-resolver
 subtask: true
 ---

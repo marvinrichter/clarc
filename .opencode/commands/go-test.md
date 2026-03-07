@@ -1,5 +1,5 @@
 ---
-description: Go TDD workflow with table-driven tests
+description: Enforce TDD workflow for Go. Write table-driven tests first, then implement. Verify 80%+ coverage with go test -cover.
 agent: tdd-guide
 subtask: true
 ---

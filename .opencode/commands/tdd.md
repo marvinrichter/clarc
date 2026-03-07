@@ -1,5 +1,5 @@
 ---
-description: Enforce TDD workflow with 80%+ coverage
+description: Enforce test-driven development workflow. Scaffold interfaces, generate tests FIRST, then implement minimal code to pass. Ensure 80%+ coverage.
 agent: tdd-guide
 subtask: true
 ---

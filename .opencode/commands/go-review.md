@@ -1,5 +1,5 @@
 ---
-description: Go code review for idiomatic patterns
+description: Comprehensive Go code review for idiomatic patterns, concurrency safety, error handling, and security. Invokes the go-reviewer agent.
 agent: go-reviewer
 subtask: true
 ---

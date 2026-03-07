@@ -1,5 +1,5 @@
 ---
-description: Run verification loop to validate implementation
+description: Run comprehensive build, type, lint, test, and git verification on the codebase.
 agent: build
 ---
 

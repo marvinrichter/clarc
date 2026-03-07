@@ -1,5 +1,5 @@
 ---
-description: Configure package manager preference
+description: Configure your preferred package manager (npm/pnpm/yarn/bun)
 agent: build
 ---
 

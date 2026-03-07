@@ -1,5 +1,5 @@
 ---
-description: Save verification state and progress checkpoint
+description: Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.
 agent: build
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: Remove dead code and consolidate duplicates
+description: Safely identify and remove dead code with test verification at every step.
 agent: refactor-cleaner
 subtask: true
 ---

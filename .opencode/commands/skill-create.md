@@ -1,5 +1,5 @@
 ---
-description: Generate skills from git history analysis
+description: Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.
 agent: build
 ---
 

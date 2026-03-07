@@ -1,5 +1,5 @@
 ---
-description: Import instincts from external sources
+description: Import instincts from file or URL into project/global scope
 agent: build
 ---
 

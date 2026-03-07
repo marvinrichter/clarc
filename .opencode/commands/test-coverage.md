@@ -1,5 +1,5 @@
 ---
-description: Analyze and improve test coverage
+description: Analyze test coverage, identify gaps, and generate missing tests to reach 80%+ coverage.
 agent: tdd-guide
 subtask: true
 ---

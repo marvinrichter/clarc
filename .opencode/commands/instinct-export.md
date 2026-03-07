@@ -1,5 +1,5 @@
 ---
-description: Export instincts for sharing
+description: Export instincts from project/global scope to a file
 agent: build
 ---
 

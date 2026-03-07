@@ -1,5 +1,5 @@
 ---
-description: Update codemaps for codebase navigation
+description: Analyze the codebase structure and generate token-lean architecture documentation in docs/CODEMAPS/.
 agent: doc-updater
 subtask: true
 ---

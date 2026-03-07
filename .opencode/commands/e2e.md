@@ -1,5 +1,5 @@
 ---
-description: Generate and run E2E tests with Playwright
+description: Generate and run end-to-end tests with Playwright. Creates test journeys, runs tests, captures screenshots/videos/traces, and uploads artifacts.
 agent: e2e-runner
 subtask: true
 ---

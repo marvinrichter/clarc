@@ -1,5 +1,5 @@
 ---
-description: Promote project instincts to global scope
+description: Promote project-scoped instincts to global scope
 agent: build
 ---
 

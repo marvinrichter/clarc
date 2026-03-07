@@ -1,5 +1,5 @@
 ---
-description: Update documentation for recent changes
+description: Sync documentation with the codebase, generating from source-of-truth files.
 agent: doc-updater
 subtask: true
 ---
