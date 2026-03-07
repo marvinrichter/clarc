@@ -16,7 +16,8 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.ts`, `.tsx`, `.js`, `.mjs` | **typescript-reviewer** |
 | `.go` | **go-reviewer** |
 | `.py` | **python-reviewer** |
-| `.java`, `.kt` | **java-reviewer** |
+| `.java` | **java-reviewer** |
+| `.kt`, `.kts` | **kotlin-reviewer** |
 | `.swift` | **swift-reviewer** |
 | `.rs` | **rust-reviewer** |
 | `.cpp`, `.cc`, `.cxx`, `.h`, `.hpp` | **cpp-reviewer** |
