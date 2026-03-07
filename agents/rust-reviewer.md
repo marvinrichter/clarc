@@ -40,6 +40,13 @@ When invoked:
 - **Error type design**: `String` as error type — use `thiserror` for library errors, `anyhow` for applications
 - **Lost error context**: Bare `?` without `.context("...")` from `anyhow` where context would help debugging
 
+### HIGH — Architecture
+
+- **Business logic in handler**: HTTP handler (Axum, Actix) contains domain rules or data transformations — move to service/domain layer
+- **Concrete type instead of trait**: Dependencies injected as concrete structs instead of `dyn Trait` or generic bounds — breaks testability and hexagonal boundaries
+- **Missing error boundary**: Public library API returning `anyhow::Error` directly — use typed domain errors with `thiserror` so callers can pattern-match
+- **Domain imports framework**: Domain types or functions importing `axum`, `sqlx`, `diesel`, or HTTP types — domain must be pure Rust, zero framework imports
+
 ### HIGH — Performance
 
 - **Unnecessary cloning**: `.clone()` where borrowing suffices
@@ -59,30 +66,29 @@ When invoked:
 - **Builder pattern**: Constructors with 4+ parameters — consider builder
 - **Error granularity**: Single catch-all error variant where callers need to distinguish cases
 
-## OUTPUT FORMAT
+## Diagnostic Commands
 
+```bash
+cargo clippy -- -D warnings
+cargo audit
+cargo test
 ```
-## Rust Code Review
 
-### CRITICAL
-- [file.rs:line] Issue description — fix suggestion
+## Output Format
 
-### HIGH
-- [file.rs:line] Issue description — fix suggestion
-
-### MEDIUM / STYLE
-- [file.rs:line] Issue description — fix suggestion
-
-### Clippy Summary
-[paste relevant clippy warnings or "No warnings"]
-
-## Review Summary
-
-| Severity | Count | Status |
-|---|---|---|
-| CRITICAL | 0 | pass |
-| HIGH | 1 | warn |
-| MEDIUM | 2 | info |
-
-Verdict: WARNING — 1 HIGH issue should be resolved before merge.
+```text
+[SEVERITY] Issue title
+File: path/to/file.rs:42
+Issue: Description
+Fix: What to change
 ```
+
+## Approval Criteria
+
+- **Approve**: No CRITICAL or HIGH issues
+- **Warning**: MEDIUM issues only (can merge with caution)
+- **Block**: CRITICAL or HIGH issues found
+
+## Reference
+
+For Rust patterns, async architecture, and code examples, see skills: `rust-patterns`, `rust-testing`.
