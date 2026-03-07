@@ -242,7 +242,7 @@ After migration, ALL 23 commands are available:
 | `/e2e` | Generate E2E tests |
 | `/refactor-clean` | Remove dead code |
 | `/orchestrate` | Multi-agent workflow |
-| `/learn` | Extract patterns mid-session |
+| `/learn-eval` | Extract patterns with quality gate |
 | `/checkpoint` | Save verification state |
 | `/verify` | Run verification loop |
 | `/eval` | Run evaluation |

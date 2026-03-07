@@ -110,7 +110,7 @@ Agents are delegated automatically based on what you're doing. You can also invo
 ### Learning & evolution
 
 ```
-/learn         Extract reusable patterns from the current session
+/learn-eval    Extract reusable patterns with quality gate + save-location decision
 /evolve        Promote instincts into permanent skills
 /instinct-status   Show what the system has learned
 /sessions      Browse session history and snapshots
@@ -142,8 +142,8 @@ Skills are loaded on-demand when Claude detects they're relevant. They encode do
 
 clarc gets better the more you use it. There are two learning mechanisms:
 
-**Session learning** (`/learn`)
-At the end of a session, extracts recurring patterns, friction points, and solved problems into instinct files. These become part of your personal context in future sessions.
+**Session learning** (`/learn-eval`)
+At the end of a session, extracts recurring patterns, friction points, and solved problems into instinct files — with a quality gate and save-location decision (global vs. project-scoped) before writing. These become part of your personal context in future sessions.
 
 **Instinct evolution** (`/evolve`)
 Analyzes accumulated instincts and promotes stable, high-signal ones into permanent skills. Closes the loop from observation → codified knowledge.

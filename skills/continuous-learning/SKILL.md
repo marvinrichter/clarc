@@ -8,7 +8,7 @@ version: 1.0.0-deprecated
 
 > **This skill has been superseded by [continuous-learning-v2](../continuous-learning-v2/SKILL.md).**
 >
-> Use `/learn` or `/learn-eval` commands — they invoke the active v2 system.
+> Use `/learn-eval` command — it invokes the active v2 system with a quality gate.
 
 ## Why v2 Replaces v1
 
@@ -25,6 +25,5 @@ version: 1.0.0-deprecated
 
 Replace any reference to this skill with:
 - **`continuous-learning-v2`** — for the instinct system architecture
-- **`/learn`** — for manual session-end pattern extraction
-- **`/learn-eval`** — for extraction with quality gate before saving
+- **`/learn-eval`** — for manual session-end pattern extraction with quality gate before saving
 - **`/instinct-status`** — to view captured instincts

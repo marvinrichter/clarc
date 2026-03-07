@@ -79,7 +79,7 @@ opencode
 | `/e2e` | E2E tests |
 | `/refactor-clean` | Remove dead code |
 | `/orchestrate` | Multi-agent workflow |
-| `/learn` | Extract patterns |
+| `/learn-eval` | Extract patterns (with quality gate) |
 | `/checkpoint` | Save progress |
 | `/verify` | Verification loop |
 | `/eval` | Evaluation |
