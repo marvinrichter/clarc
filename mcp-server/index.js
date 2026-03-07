@@ -259,7 +259,7 @@ function detectProjectTypeSync(dir) {
   const SKILL_MAP = {
     typescript: ['typescript-patterns', 'typescript-coding-standards'],
     python: ['python-patterns', 'python-testing'],
-    golang: ['golang-patterns', 'golang-testing'],
+    golang: ['go-patterns', 'go-testing'],
     ruby: ['ruby-patterns', 'ruby-testing'],
     elixir: ['elixir-patterns', 'elixir-testing'],
     rust: ['rust-patterns', 'rust-testing'],
