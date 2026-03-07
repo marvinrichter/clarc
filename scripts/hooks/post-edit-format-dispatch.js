@@ -40,7 +40,10 @@ const EXT_MAP = {
   '.cc': 'post-edit-format-cpp.js',
   '.cxx': 'post-edit-format-cpp.js',
   '.h': 'post-edit-format-cpp.js',
-  '.hpp': 'post-edit-format-cpp.js'
+  '.hpp': 'post-edit-format-cpp.js',
+  '.sh': 'post-edit-format-bash.js',
+  '.bash': 'post-edit-format-bash.js',
+  '.zsh': 'post-edit-format-bash.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -116,7 +119,10 @@ process.stdin.on('end', () => {
               '.cc': 'clang-format',
               '.cxx': 'clang-format',
               '.h': 'clang-format',
-              '.hpp': 'clang-format'
+              '.hpp': 'clang-format',
+              '.sh': 'shfmt',
+              '.bash': 'shfmt',
+              '.zsh': 'shfmt'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);

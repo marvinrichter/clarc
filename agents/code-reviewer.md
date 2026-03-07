@@ -23,6 +23,7 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.rb`, `.rake` | **ruby-reviewer** |
 | `.ex`, `.exs` | **elixir-reviewer** |
 | `.sql`, `.prisma` | **database-reviewer** |
+| `.sh`, `.bash`, `.zsh` | **bash-reviewer** |
 | `prompts/`, `*.prompt.md`, `*.prompt.txt` | **prompt-reviewer** |
 
 If changed files span multiple languages, invoke each relevant specialist in parallel.
