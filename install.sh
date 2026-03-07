@@ -158,6 +158,102 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
+# --- Continuous Learning prompt ---
+# Asks (or uses --enable-learning flag) to patch ~/.claude/settings.json
+# with the observe.sh PostToolUse hook and set observer.enabled: true.
+enable_learning_prompt() {
+    if [[ "$LEARNING_FLAG_SET" == true && "$ENABLE_LEARNING" == false ]]; then
+        return 0
+    fi
+
+    if [[ "$LEARNING_FLAG_SET" == false ]]; then
+        echo ""
+        echo "Enable continuous learning? (Captures tool use patterns to build instincts)"
+        printf "  Enable? [y/N] "
+        read -r answer < /dev/tty
+        case "$answer" in
+            [yY]|[yY][eE][sS]) ENABLE_LEARNING=true ;;
+            *) ENABLE_LEARNING=false ;;
+        esac
+    fi
+
+    if [[ "$ENABLE_LEARNING" == false ]]; then
+        return 0
+    fi
+
+    local settings_file="${HOME}/.claude/settings.json"
+    local config_json="${SCRIPT_DIR}/skills/continuous-learning-v2/config.json"
+    local observe_hook="${SCRIPT_DIR}/skills/continuous-learning-v2/hooks/observe.sh"
+
+    # Patch settings.json using Node (already a dependency)
+    if command -v node >/dev/null 2>&1; then
+        node - "$settings_file" "$observe_hook" <<'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+
+const settingsPath = process.argv[2];
+const observeHook = process.argv[3];
+
+let settings = {};
+try {
+    settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+} catch {
+    // Start fresh if missing or malformed
+}
+
+if (!settings.hooks) settings.hooks = {};
+if (!settings.hooks.PostToolUse) settings.hooks.PostToolUse = [];
+
+// Check if observe.sh is already registered
+const alreadyAdded = settings.hooks.PostToolUse.some(entry =>
+    Array.isArray(entry.hooks) &&
+    entry.hooks.some(h => typeof h.command === 'string' && h.command.includes('observe.sh'))
+);
+
+if (!alreadyAdded) {
+    settings.hooks.PostToolUse.push({
+        "matcher": "*",
+        "hooks": [{
+            "type": "command",
+            "command": `"${observeHook}"`,
+            "async": true,
+            "timeout": 10
+        }],
+        "description": "Capture tool use results for continuous learning"
+    });
+    fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n', 'utf8');
+    console.log('  Patched ~/.claude/settings.json with observe.sh hook.');
+} else {
+    console.log('  observe.sh hook already registered in ~/.claude/settings.json.');
+}
+NODEEOF
+    else
+        echo "  Warning: Node.js not found — cannot patch settings.json automatically."
+        echo "  Add observe.sh manually to ~/.claude/settings.json PostToolUse hooks."
+    fi
+
+    # Patch config.json observer.enabled: true
+    if [[ -f "$config_json" ]]; then
+        node - "$config_json" <<'NODEEOF'
+const fs = require('fs');
+const p = process.argv[2];
+try {
+    const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+    cfg.observer = cfg.observer || {};
+    cfg.observer.enabled = true;
+    fs.writeFileSync(p, JSON.stringify(cfg, null, 2) + '\n', 'utf8');
+    console.log('  Set observer.enabled: true in config.json.');
+} catch(e) {
+    console.error('  Warning: Could not patch config.json:', e.message);
+}
+NODEEOF
+    fi
+
+    echo ""
+    echo "Learning enabled. Run /instinct-status to see learned patterns."
+}
+
 # --- Claude target ---
 if [[ "$TARGET" == "claude" ]]; then
     # --project: lang rules go to <cwd>/.claude/rules/, common stays global
@@ -337,99 +433,3 @@ if [[ "$TARGET" == "opencode" ]]; then
     echo "Done. OpenCode configs installed to $OC_DEST/"
     echo "Tip: Add .opencode/ to your project's .gitignore or commit it for team sharing."
 fi
-
-# --- Continuous Learning prompt ---
-# Asks (or uses --enable-learning flag) to patch ~/.claude/settings.json
-# with the observe.sh PostToolUse hook and set observer.enabled: true.
-enable_learning_prompt() {
-    if [[ "$LEARNING_FLAG_SET" == true && "$ENABLE_LEARNING" == false ]]; then
-        return 0
-    fi
-
-    if [[ "$LEARNING_FLAG_SET" == false ]]; then
-        echo ""
-        echo "Enable continuous learning? (Captures tool use patterns to build instincts)"
-        printf "  Enable? [y/N] "
-        read -r answer < /dev/tty
-        case "$answer" in
-            [yY]|[yY][eE][sS]) ENABLE_LEARNING=true ;;
-            *) ENABLE_LEARNING=false ;;
-        esac
-    fi
-
-    if [[ "$ENABLE_LEARNING" == false ]]; then
-        return 0
-    fi
-
-    local settings_file="${HOME}/.claude/settings.json"
-    local config_json="${SCRIPT_DIR}/skills/continuous-learning-v2/config.json"
-    local observe_hook="${SCRIPT_DIR}/skills/continuous-learning-v2/hooks/observe.sh"
-
-    # Patch settings.json using Node (already a dependency)
-    if command -v node >/dev/null 2>&1; then
-        node - "$settings_file" "$observe_hook" <<'NODEEOF'
-const fs = require('fs');
-const path = require('path');
-
-const settingsPath = process.argv[2];
-const observeHook = process.argv[3];
-
-let settings = {};
-try {
-    settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-} catch {
-    // Start fresh if missing or malformed
-}
-
-if (!settings.hooks) settings.hooks = {};
-if (!settings.hooks.PostToolUse) settings.hooks.PostToolUse = [];
-
-// Check if observe.sh is already registered
-const alreadyAdded = settings.hooks.PostToolUse.some(entry =>
-    Array.isArray(entry.hooks) &&
-    entry.hooks.some(h => typeof h.command === 'string' && h.command.includes('observe.sh'))
-);
-
-if (!alreadyAdded) {
-    settings.hooks.PostToolUse.push({
-        "matcher": "*",
-        "hooks": [{
-            "type": "command",
-            "command": `"${observeHook}"`,
-            "async": true,
-            "timeout": 10
-        }],
-        "description": "Capture tool use results for continuous learning"
-    });
-    fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
-    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n', 'utf8');
-    console.log('  Patched ~/.claude/settings.json with observe.sh hook.');
-} else {
-    console.log('  observe.sh hook already registered in ~/.claude/settings.json.');
-}
-NODEEOF
-    else
-        echo "  Warning: Node.js not found — cannot patch settings.json automatically."
-        echo "  Add observe.sh manually to ~/.claude/settings.json PostToolUse hooks."
-    fi
-
-    # Patch config.json observer.enabled: true
-    if [[ -f "$config_json" ]]; then
-        node - "$config_json" <<'NODEEOF'
-const fs = require('fs');
-const p = process.argv[2];
-try {
-    const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
-    cfg.observer = cfg.observer || {};
-    cfg.observer.enabled = true;
-    fs.writeFileSync(p, JSON.stringify(cfg, null, 2) + '\n', 'utf8');
-    console.log('  Set observer.enabled: true in config.json.');
-} catch(e) {
-    console.error('  Warning: Could not patch config.json:', e.message);
-}
-NODEEOF
-    fi
-
-    echo ""
-    echo "Learning enabled. Run /instinct-status to see learned patterns."
-}
