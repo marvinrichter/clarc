@@ -304,16 +304,17 @@ is created. On subsequent logins, the existing account is used.
 
 | Step | Model | Reason |
 |------|-------|--------|
-| Plan | `claude-opus-4-5` | Deep architectural reasoning |
-| API Contract | `claude-sonnet-4-6` | Standard, fast |
-| Implement | `claude-sonnet-4-6` | Fast, capable |
-| De-Sloppify | `claude-haiku-4-5` | Simple pattern matching |
-| Verify | `claude-haiku-4-5` | Runs commands, interprets output |
-| Commit | `claude-haiku-4-5` | Summarization task |
+| Plan | Claude Opus (most capable tier) | Deep architectural reasoning |
+| API Contract | Claude Sonnet (balanced tier) | Standard, fast |
+| Implement | Claude Sonnet (balanced tier) | Fast, capable |
+| De-Sloppify | Claude Haiku (fast tier) | Simple pattern matching |
+| Verify | Claude Haiku (fast tier) | Runs commands, interprets output |
+| Commit | Claude Haiku (fast tier) | Summarization task |
 
 For large/complex features, upgrade Implement to Opus:
 ```bash
-claude -p --model claude-opus-4-5 "Implement the payment reconciliation logic..."
+# Use current Claude Opus model ID from anthropic.com/api
+claude -p --model <claude-opus-model-id> "Implement the payment reconciliation logic..."
 ```
 
 ---

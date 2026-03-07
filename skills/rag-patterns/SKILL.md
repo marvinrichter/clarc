@@ -233,7 +233,7 @@ async function rerank(
   const scores = await Promise.all(
     chunks.map(async (chunk) => {
       const response = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',  // cheap + fast for scoring
+        model: 'claude-haiku-latest',  // fast tier — cheap + fast for scoring
         max_tokens: 10,
         messages: [{
           role: 'user',
@@ -276,7 +276,7 @@ ANSWER:`;
 
 // Always set a reasonable max_tokens to control cost
 const response = await anthropic.messages.create({
-  model: 'claude-sonnet-4-6',
+  model: 'claude-sonnet-latest',  // balanced tier
   max_tokens: 1024,
   messages: [{ role: 'user', content: buildRAGPrompt(query, topChunks) }],
 });
@@ -337,7 +337,7 @@ interface RAGEvalResult {
 }
 
 // Use LLM-as-judge for each metric (0-1 scale)
-// Recommended: RAGAS library for Python, or implement with claude-haiku-4-5
+// Recommended: RAGAS library for Python, or implement with Claude Haiku (fast tier)
 ```
 
 ---

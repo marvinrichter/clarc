@@ -72,7 +72,7 @@ app.post('/api/v1/chat', authenticate, async (req, res) => {
   res.flushHeaders();
 
   const stream = await anthropic.messages.stream({
-    model: 'claude-sonnet-4-6',
+    model: 'claude-sonnet-latest',  // balanced tier
     max_tokens: 1024,
     messages: req.body.messages,
   });

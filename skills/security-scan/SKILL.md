@@ -86,7 +86,7 @@ This will:
 - Tighten wildcard permissions to scoped alternatives
 - Never modify manual-only suggestions
 
-### Opus 4.6 Deep Analysis
+### Claude Opus Deep Analysis
 
 Run the adversarial three-agent pipeline for deeper analysis:
 

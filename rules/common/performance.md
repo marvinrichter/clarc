@@ -2,20 +2,23 @@
 
 ## Model Selection Strategy
 
-**Haiku 4.5** (90% of Sonnet capability, 3x cost savings):
+**Claude Haiku** (fast/lightweight tier — ~3x cost savings vs Sonnet):
 - Lightweight agents with frequent invocation
 - Pair programming and code generation
 - Worker agents in multi-agent systems
 
-**Sonnet 4.6** (Best coding model):
+**Claude Sonnet** (balanced tier — default for coding):
 - Main development work
 - Orchestrating multi-agent workflows
 - Complex coding tasks
 
-**Opus 4.5** (Deepest reasoning):
+**Claude Opus** (most capable tier — deepest reasoning):
 - Complex architectural decisions
 - Maximum reasoning requirements
 - Research and analysis tasks
+
+> Do not hardcode model version numbers (e.g. `claude-sonnet-4-6`) in rules, agents, or skills.
+> Use tier names here; check [Anthropic API docs](https://docs.anthropic.com/api) for current model IDs.
 
 ## Context Window Management
 

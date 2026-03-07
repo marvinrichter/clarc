@@ -21,8 +21,8 @@ Patterns for controlling LLM API costs while maintaining quality. Combines model
 Automatically select cheaper models for simple tasks, reserving expensive models for complex ones.
 
 ```python
-MODEL_SONNET = "claude-sonnet-4-6"
-MODEL_HAIKU = "claude-haiku-4-5-20251001"
+MODEL_SONNET = "claude-sonnet-latest"   # Balanced tier — check anthropic.com/api for current ID
+MODEL_HAIKU = "claude-haiku-latest"    # Fast/lightweight tier — check anthropic.com/api for current ID
 
 _SONNET_TEXT_THRESHOLD = 10_000  # chars
 _SONNET_ITEM_THRESHOLD = 30     # items
@@ -154,9 +154,9 @@ def process(text: str, config: Config, tracker: CostTracker) -> tuple[Result, Co
 
 | Model | Input ($/1M tokens) | Output ($/1M tokens) | Relative Cost |
 |-------|---------------------|----------------------|---------------|
-| Haiku 4.5 | $0.80 | $4.00 | 1x |
-| Sonnet 4.6 | $3.00 | $15.00 | ~4x |
-| Opus 4.5 | $15.00 | $75.00 | ~19x |
+| Claude Haiku (fast tier) | $0.80 | $4.00 | 1x |
+| Claude Sonnet (balanced tier) | $3.00 | $15.00 | ~4x |
+| Claude Opus (most capable tier) | $15.00 | $75.00 | ~19x |
 
 ## Best Practices
 
