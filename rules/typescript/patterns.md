@@ -11,18 +11,14 @@ paths:
 
 ## API Response Format
 
-```typescript
-interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
-  meta?: {
-    total: number
-    page: number
-    limit: number
-  }
-}
-```
+Follow the standard defined in [common/patterns.md](../common/patterns.md):
+
+- **Success**: `{ "data": <payload>, "meta": { "total": N, "page": N, "limit": N } }` envelope pattern
+- **Errors**: RFC 7807 `application/problem+json` — use `{ type, title, status, detail, instance }`
+
+Never use `{ success: boolean, error: string }` — this pattern is explicitly prohibited by the common standard.
+
+For TypeScript implementation examples, see skill: `nodejs-backend-patterns`.
 
 ## Custom Hooks Pattern
 
