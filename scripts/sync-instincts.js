@@ -66,7 +66,7 @@ function runCli(args, opts = {}) {
   }
   return spawnSync(python, [CLI, ...args], {
     stdio: opts.silent ? 'pipe' : 'inherit',
-    cwd: REPO_ROOT,
+    cwd: REPO_ROOT
   });
 }
 
@@ -77,7 +77,9 @@ function runCli(args, opts = {}) {
  */
 function getProjectInstinctsDir() {
   const r = spawnSync('git', ['remote', 'get-url', 'origin'], {
-    stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT,
+    stdio: 'pipe',
+    encoding: 'utf8',
+    cwd: REPO_ROOT
   });
   const remoteUrl = r.stdout?.trim();
   if (!remoteUrl) return null;
@@ -89,13 +91,18 @@ function getProjectInstinctsDir() {
 function fileHash(filePath) {
   try {
     return crypto.createHash('sha256').update(fs.readFileSync(filePath, 'utf8')).digest('hex').slice(0, 12);
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 
 function confirm(question) {
   return new Promise(resolve => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    rl.question(question, answer => { rl.close(); resolve(answer.trim().toLowerCase()); });
+    rl.question(question, answer => {
+      rl.close();
+      resolve(answer.trim().toLowerCase());
+    });
   });
 }
 
@@ -150,7 +157,7 @@ switch (command) {
     console.log('  git push');
     process.exit(0);
   }
-
+  // falls through
   case 'pull': {
     if (useMd) {
       // Legacy: import from single .md file
@@ -161,7 +168,10 @@ switch (command) {
       }
       console.log(`\nPreviewing merge from ${SHARED_FILE}...\n`);
       const dryRun = runCli(['import', SHARED_FILE, '--dry-run']);
-      if (dryRun.status !== 0) { console.error('Preview failed. Aborting.'); process.exit(dryRun.status ?? 1); }
+      if (dryRun.status !== 0) {
+        console.error('Preview failed. Aborting.');
+        process.exit(dryRun.status ?? 1);
+      }
       if (skipConfirm) {
         console.log('\n--yes flag set, proceeding with import...\n');
         process.exit(runCli(['import', SHARED_FILE]).status ?? 0);
@@ -169,7 +179,10 @@ switch (command) {
       confirm('\nImport these instincts? [y/N] ').then(answer => {
         if (answer === 'y' || answer === 'yes') {
           process.exit(runCli(['import', SHARED_FILE]).status ?? 0);
-        } else { console.log('Aborted.'); process.exit(0); }
+        } else {
+          console.log('Aborted.');
+          process.exit(0);
+        }
       });
       break;
     }
@@ -194,9 +207,14 @@ switch (command) {
     for (const file of yamlFiles) {
       const filePath = path.join(YAML_DIR, file);
       const dryRun = runCli(['import', filePath, '--dry-run']);
-      if (dryRun.status !== 0) { anyFailed = true; }
+      if (dryRun.status !== 0) {
+        anyFailed = true;
+      }
     }
-    if (anyFailed) { console.error('\nPreview had errors. Aborting import.'); process.exit(1); }
+    if (anyFailed) {
+      console.error('\nPreview had errors. Aborting import.');
+      process.exit(1);
+    }
 
     if (skipConfirm) {
       console.log('\n--yes flag set, proceeding with import...\n');
@@ -216,7 +234,10 @@ switch (command) {
             if (r.status !== 0) exitCode = r.status ?? 1;
           }
           process.exit(exitCode);
-        } else { console.log('Aborted. No changes made.'); process.exit(0); }
+        } else {
+          console.log('Aborted. No changes made.');
+          process.exit(0);
+        }
       });
     }
     break;
@@ -238,7 +259,7 @@ switch (command) {
       console.log(`  Files         : ${files.length}`);
       if (files.length > 0) {
         const stats = files.map(f => fs.statSync(path.join(YAML_DIR, f)));
-        const newest = stats.reduce((a, b) => a.mtime > b.mtime ? a : b);
+        const newest = stats.reduce((a, b) => (a.mtime > b.mtime ? a : b));
         console.log(`  Last modified : ${newest.mtime.toISOString()}`);
       }
     }
@@ -254,7 +275,7 @@ switch (command) {
     console.log('\nRun "pull" to preview and load into your local instinct store.');
     process.exit(0);
   }
-
+  // falls through
   default:
     console.log('Usage: node scripts/sync-instincts.js <push|pull|status> [--yes] [--md]');
     console.log('');

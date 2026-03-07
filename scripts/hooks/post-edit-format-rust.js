@@ -9,7 +9,6 @@
  */
 
 import { execFileSync } from 'child_process';
-import path from 'path';
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';
@@ -31,7 +30,7 @@ process.stdin.on('end', () => {
         const rustfmt = process.platform === 'win32' ? 'rustfmt.exe' : 'rustfmt';
         execFileSync(rustfmt, [filePath], {
           stdio: ['pipe', 'pipe', 'pipe'],
-          timeout: 15000,
+          timeout: 15000
         });
       } catch {
         // rustfmt not installed or file has syntax errors — non-blocking

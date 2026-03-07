@@ -380,7 +380,7 @@ from mypackage.utils import format_name
 # pip install isort
 ```
 
-### __init__.py for Package Exports
+### `__init__.py` for Package Exports
 
 ```python
 # mypackage/__init__.py
@@ -397,7 +397,7 @@ __all__ = ["User", "Post", "format_name"]
 
 ## Memory and Performance
 
-### Using __slots__ for Memory Efficiency
+### Using `__slots__` for Memory Efficiency
 
 ```python
 # Bad: Regular class uses __dict__ (more memory)

@@ -163,7 +163,6 @@ npm run dev
 | `npm run db:migrate` | Apply database migrations |
 | `npm run db:seed` | Seed database with sample data |
 | `npm run db:studio` | Open database GUI |
-```
 
 ### 6. Create .mise.toml (if not exists)
 

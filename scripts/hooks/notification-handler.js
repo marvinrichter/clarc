@@ -63,7 +63,7 @@ function buildWeeklyDigest(claudeDir) {
         if (stat.mtimeMs < cutoff) continue;
         const obj = JSON.parse(fs.readFileSync(fpath, 'utf8'));
         const desc = obj.description || obj.pattern || obj.instinct || entry.replace('.json', '');
-        const conf = obj.confidence != null ? ` (conf: ${obj.confidence})` : '';
+        const conf = obj.confidence !== null && obj.confidence !== undefined ? ` (conf: ${obj.confidence})` : '';
         instincts.push(`  • ${String(desc).slice(0, 100)}${conf}`);
       } catch {
         /* skip malformed */

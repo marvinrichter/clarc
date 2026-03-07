@@ -413,7 +413,6 @@ All Architecture Decision Records live in `docs/decisions/`.
 | ADR | Architecture Decision Record — documents a significant architectural choice |
 | Container (C4) | A deployable unit (app, service, DB) — not a Docker container specifically |
 | BFF | Backend for Frontend — API layer tailored to a specific frontend's needs |
-```
 
 ---
 

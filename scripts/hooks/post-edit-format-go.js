@@ -33,16 +33,6 @@ function findModuleRoot(startDir) {
   return startDir;
 }
 
-function isCommandAvailable(cmd) {
-  try {
-    execFileSync(cmd, ['--help'], { stdio: ['pipe', 'pipe', 'pipe'], timeout: 2000 });
-    return true;
-  } catch (err) {
-    // command not found exits non-zero but that still means it's there
-    return err.code !== 'ENOENT';
-  }
-}
-
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(data);
