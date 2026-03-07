@@ -44,8 +44,8 @@ const SKILL_MAP = {
   gin: ['golang-patterns', 'golang-testing'],
   echo: ['golang-patterns', 'golang-testing'],
   phoenix: ['elixir-patterns', 'elixir-testing'],
-  nestjs: ['typescript-patterns', 'backend-patterns'],
-  express: ['backend-patterns', 'api-design'],
+  nestjs: ['typescript-patterns', 'nodejs-backend-patterns'],
+  express: ['nodejs-backend-patterns', 'api-design'],
   actix: ['rust-patterns', 'rust-testing'],
   axum: ['rust-patterns', 'rust-testing']
 };

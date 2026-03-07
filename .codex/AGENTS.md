@@ -28,7 +28,7 @@ Available skills:
 - market-research — Source-attributed market and competitor research
 - investor-materials — Decks, memos, models, and one-pagers
 - investor-outreach — Personalized investor outreach and follow-ups
-- backend-patterns — API design, database, caching
+- nodejs-backend-patterns — Node.js/Express/Next.js API design, database, caching
 - e2e-testing — Playwright E2E tests
 - eval-harness — Eval-driven development
 - strategic-compact — Context management

@@ -1,21 +1,21 @@
 ---
-name: backend-patterns
-description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes.
+name: nodejs-backend-patterns
+description: "Node.js backend architecture patterns — Express, Fastify, Next.js API routes, TypeScript services. API design, database optimization, caching, middleware. Not applicable to Python, Go, or Java backends."
 ---
 
-# Backend Development Patterns
+# Node.js Backend Patterns
 
-Backend architecture patterns and best practices for scalable server-side applications.
+Backend architecture patterns and best practices for Node.js/TypeScript server-side applications (Express, Fastify, Next.js API routes). For Python backends see `fastapi-patterns` or `django-patterns`. For Go see `go-patterns`. For Java see `springboot-patterns`.
 
 ## When to Activate
 
-- Designing REST or GraphQL API endpoints
-- Implementing repository, service, or controller layers
-- Optimizing database queries (N+1, indexing, connection pooling)
-- Adding caching (Redis, in-memory, HTTP cache headers)
-- Setting up background jobs or async processing
-- Structuring error handling and validation for APIs
-- Building middleware (auth, logging, rate limiting)
+- Designing REST or GraphQL API endpoints in a Node.js/TypeScript project
+- Implementing repository, service, or controller layers with TypeScript
+- Optimizing database queries in a Node.js context (N+1, indexing, connection pooling)
+- Adding caching (Redis, in-memory, HTTP cache headers) in a Node.js service
+- Setting up background jobs or async processing with Node.js workers
+- Structuring error handling and validation for Express/Fastify/Next.js APIs
+- Building middleware (auth, logging, rate limiting) in Node.js
 
 ## API Design Patterns
 

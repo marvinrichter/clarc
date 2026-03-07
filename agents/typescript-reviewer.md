@@ -105,4 +105,4 @@ Fix: What to change
 - **Use cases** (`application/usecase/`): Depends on port interfaces only, async/await for I/O, domain logic delegated to domain model
 - **Domain** (`domain/`): No imports from `node_modules` except type-only imports from `zod` for schemas is a violation — domain stays pure
 
-For detailed TypeScript patterns and code examples, see skills: `ddd-typescript`, `hexagonal-typescript`, `backend-patterns`.
+For detailed TypeScript patterns and code examples, see skills: `ddd-typescript`, `hexagonal-typescript`, `nodejs-backend-patterns`.

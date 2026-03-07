@@ -139,7 +139,7 @@ SELECT pg_reload_conf();
 
 - Agent: `database-reviewer` - Full database review workflow
 - Skill: `duckdb-patterns` - Embedded OLAP and analytical query patterns
-- Skill: `backend-patterns` - API and backend patterns
+- Skill: `nodejs-backend-patterns` - Node.js/Express/Next.js API and backend patterns
 
 ---
 
