@@ -61,6 +61,11 @@ When invoked:
 - **`print()` in production**: Use `Logger` (os.log) instead
 - **Missing `@discardableResult`**: Return value silently ignored without `_`
 
+### MEDIUM — API Response Standards
+- **Non-standard error responses**: Returning `{ "error": "message" }` — use RFC 7807 Problem Details (`application/problem+json`) with `type`, `title`, `status`, `detail`, `instance`
+- **Success envelope inconsistency**: Some endpoints return raw objects, others wrap in `{ "data": ... }` — use the envelope pattern consistently
+- **Generic error codes**: HTTP 500 for all errors — map domain errors to appropriate 4xx codes
+
 ## Diagnostic Commands
 
 ```bash

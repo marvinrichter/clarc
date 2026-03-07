@@ -90,9 +90,14 @@ Fix: What to change
 - Use `stream/3` for large, updatable lists (not `assign`)
 - `temporary_assigns` for data that doesn't need to persist across renders
 
+### Phoenix — API Response Standards
+- **Error responses**: Use RFC 7807 Problem Details (`content-type: application/problem+json`) with `type`, `title`, `status`, `detail`, `instance` — not `{ error: "message" }`
+- **Success responses**: Use envelope pattern `%{ "data" => ... }` with optional `meta` for pagination — not bare maps
+- **FallbackController**: `action_fallback MyAppWeb.FallbackController` should render Problem Details for all `{:error, ...}` tuples
+
 ## Reference
 
-For Elixir patterns and testing examples, see skills: `elixir-patterns`, `elixir-testing`.
+For Elixir patterns and testing examples, see skills: `elixir-patterns`, `elixir-testing`, `elixir-patterns-advanced`.
 
 ---
 

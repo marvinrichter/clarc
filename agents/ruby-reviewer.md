@@ -101,9 +101,14 @@ Fix: What to change
 - Presentation logic belongs in decorators or helpers, not in models
 - API responses use serializers (not raw `as_json`)
 
+### Rails — API Response Standards
+- **Error responses**: Use RFC 7807 Problem Details (`Content-Type: application/problem+json`) with `type`, `title`, `status`, `detail`, `instance` — not `{ success: false, error: "..." }`
+- **Success responses**: Use envelope pattern `{ "data": ... }` with optional `meta` for pagination — not bare objects
+- **Rescue handlers**: `rescue_from` in `ApplicationController` should render Problem Details, not plain JSON errors
+
 ## Reference
 
-For Ruby patterns and testing examples, see skills: `ruby-patterns`, `ruby-testing`.
+For Ruby patterns and testing examples, see skills: `ruby-patterns`, `ruby-testing`, `ruby-patterns-advanced`.
 
 ---
 
