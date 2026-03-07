@@ -1,3 +1,13 @@
+---
+paths:
+  - "**/*.cpp"
+  - "**/*.cc"
+  - "**/*.cxx"
+  - "**/*.h"
+  - "**/*.hpp"
+  - "**/CMakeLists.txt"
+  - "**/Makefile"
+---
 > This file extends [common/coding-style.md](../common/coding-style.md) with C++ specific content.
 
 # C++ Coding Style

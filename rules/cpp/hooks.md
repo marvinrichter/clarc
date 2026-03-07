@@ -1,3 +1,13 @@
+---
+paths:
+  - "**/*.cpp"
+  - "**/*.cc"
+  - "**/*.cxx"
+  - "**/*.h"
+  - "**/*.hpp"
+  - "**/CMakeLists.txt"
+  - "**/Makefile"
+---
 > This file extends [common/hooks.md](../common/hooks.md) with C++ specific hook configuration.
 
 # C++ Hooks

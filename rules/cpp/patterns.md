@@ -1,3 +1,13 @@
+---
+paths:
+  - "**/*.cpp"
+  - "**/*.cc"
+  - "**/*.cxx"
+  - "**/*.h"
+  - "**/*.hpp"
+  - "**/CMakeLists.txt"
+  - "**/Makefile"
+---
 > This file extends [common/patterns.md](../common/patterns.md) with C++ specific design patterns.
 
 # C++ Patterns

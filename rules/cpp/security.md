@@ -1,3 +1,13 @@
+---
+paths:
+  - "**/*.cpp"
+  - "**/*.cc"
+  - "**/*.cxx"
+  - "**/*.h"
+  - "**/*.hpp"
+  - "**/CMakeLists.txt"
+  - "**/Makefile"
+---
 > This file extends [common/security.md](../common/security.md) with C++ specific security guidance.
 
 # C++ Security
