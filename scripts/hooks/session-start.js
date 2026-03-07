@@ -31,6 +31,7 @@ const SKILL_MAP = {
   java: ['springboot-patterns', 'jpa-patterns', 'java-patterns'],
   swift: ['swift-patterns', 'swift-patterns-advanced', 'swiftui-patterns'],
   elixir: ['elixir-patterns', 'elixir-testing'],
+  cpp: ['cpp-patterns', 'cpp-patterns-advanced', 'cpp-testing'],
   // Frameworks
   react: ['state-management', 'frontend-patterns', 'e2e-testing'],
   nextjs: ['state-management', 'frontend-patterns', 'e2e-testing'],

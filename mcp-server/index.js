@@ -263,7 +263,8 @@ function detectProjectTypeSync(dir) {
     ruby: ['ruby-patterns', 'ruby-testing'],
     elixir: ['elixir-patterns', 'elixir-testing'],
     rust: ['rust-patterns', 'rust-testing'],
-    java: ['springboot-patterns', 'jpa-patterns']
+    java: ['springboot-patterns', 'jpa-patterns'],
+    cpp: ['cpp-patterns', 'cpp-patterns-advanced', 'cpp-testing']
   };
 
   const skillSet = new Set();
