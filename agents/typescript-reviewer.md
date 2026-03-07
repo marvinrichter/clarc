@@ -1,6 +1,6 @@
 ---
 name: typescript-reviewer
-description: Expert TypeScript backend code reviewer specializing in hexagonal architecture, DDD patterns, type safety, security, and performance. Use for TypeScript backend/API code changes. MUST BE USED for TypeScript backend projects.
+description: Expert TypeScript/JavaScript code reviewer for frontend, backend, and full-stack — React, Next.js, Node.js, hexagonal architecture, DDD, type safety, security, and performance. Use for any .ts, .tsx, or .js code changes.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
 ---
