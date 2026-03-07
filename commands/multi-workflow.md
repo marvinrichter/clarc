@@ -1,3 +1,7 @@
+---
+description: "[Requires codeagent-wrapper] Multi-model collaborative development workflow with intelligent routing — Frontend→Gemini, Backend→Codex. Full Research→Ideation→Plan→Execute→Optimize→Review cycle."
+---
+
 # Workflow - Multi-Model Collaborative Development
 
 > **Prerequisites — check before starting**

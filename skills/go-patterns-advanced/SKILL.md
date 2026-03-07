@@ -1,5 +1,5 @@
 ---
-name: golang-patterns-advanced
+name: go-patterns-advanced
 description: Advanced Go patterns — hexagonal architecture with full working examples, struct design (functional options, embedding), memory optimization, Go tooling (golangci-lint), Go 1.21+ slices/maps stdlib, and anti-patterns. Extends golang-patterns.
 ---
 

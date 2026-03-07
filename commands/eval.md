@@ -1,3 +1,7 @@
+---
+description: Manage eval-driven development workflow — define, run, check results, and list evals for a feature. Supports eval-first development where behaviour is specified before implementation.
+---
+
 # Eval Command
 
 Manage eval-driven development workflow.

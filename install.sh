@@ -7,9 +7,9 @@
 #
 # Examples:
 #   ./install.sh typescript
-#   ./install.sh typescript python golang
+#   ./install.sh typescript python go
 #   ./install.sh --target cursor typescript
-#   ./install.sh --target cursor typescript python golang
+#   ./install.sh --target cursor typescript python go
 #   ./install.sh --check                    # check common + all installed langs
 #   ./install.sh --check typescript python  # check specific languages
 #

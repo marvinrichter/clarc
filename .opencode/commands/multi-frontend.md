@@ -1,3 +1,7 @@
+---
+description: "[Requires codeagent-wrapper] Frontend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Gemini-led. Requires codeagent-wrapper + ace-tool MCP."
+---
+
 # Frontend - Frontend-Focused Development
 
 > **Prerequisites — check before starting**

@@ -105,4 +105,4 @@ src/test/java/...   # mirrors main
 
 ## Reference
 
-See skill: `java-coding-standards` for comprehensive Java idioms and patterns.
+See skill: `java-patterns` for comprehensive Java idioms and patterns.

@@ -1,3 +1,7 @@
+---
+description: "[Requires codeagent-wrapper] Backend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Codex-led. Requires codeagent-wrapper + ace-tool MCP."
+---
+
 # Backend - Backend-Focused Development
 
 > **Prerequisites — check before starting**

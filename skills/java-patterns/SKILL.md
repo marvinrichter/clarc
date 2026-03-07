@@ -1,5 +1,5 @@
 ---
-name: java-coding-standards
+name: java-patterns
 description: "Java coding standards for Spring Boot services: naming, immutability, Optional usage, streams, exceptions, generics, and project layout."
 ---
 

@@ -1,3 +1,7 @@
+---
+description: "[Requires codeagent-wrapper] Multi-model collaborative planning — Context retrieval + Codex/Gemini dual-model analysis → step-by-step implementation plan."
+---
+
 # Plan - Multi-Model Collaborative Planning
 
 > **Prerequisites — check before starting**

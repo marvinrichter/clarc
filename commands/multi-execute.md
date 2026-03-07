@@ -1,3 +1,7 @@
+---
+description: "[Requires codeagent-wrapper] Multi-model collaborative execution — prototype from plan → Claude refactors and implements → multi-model audit and delivery."
+---
+
 # Execute - Multi-Model Collaborative Execution
 
 > **Prerequisites — check before starting**

@@ -1,7 +1,7 @@
 # clarc
 
 **A workflow OS for Claude Code.**
-20 agents · 122 skills · 57 commands · 8 language rule sets · continuous learning flywheel.
+22 agents · 126 skills · 57 commands · 10 language rule sets · continuous learning flywheel.
 
 ---
 
@@ -17,7 +17,14 @@ cd ~/.clarc
 
 # Install common rules + your language(s)
 ./install.sh typescript
-./install.sh typescript python golang
+./install.sh typescript python golang ruby elixir
+
+# Enable continuous learning (recommended)
+./install.sh --enable-learning typescript
+
+# Install for Cursor or OpenCode
+./install.sh --target cursor typescript
+./install.sh --target opencode typescript
 
 # Check if your installed rules are up to date
 ./install.sh --check
@@ -31,10 +38,10 @@ The installer copies rules into `~/.claude/rules/` while preserving the `common/
 
 | Component | Count | Purpose |
 |-----------|------:|---------|
-| **Agents** | 20 | Specialized subagents — delegate planning, review, testing, debugging |
-| **Skills** | 122 | Domain knowledge — patterns, conventions, examples for specific tasks |
+| **Agents** | 22 | Specialized subagents — delegate planning, review, testing, debugging |
+| **Skills** | 126 | Domain knowledge — patterns, conventions, examples for specific tasks |
 | **Commands** | 57 | Slash commands — repeatable workflows triggered by `/command` |
-| **Rules** | 8 | Language rule sets — always-on coding standards and checklists |
+| **Rules** | 10 | Language rule sets — always-on coding standards and checklists |
 | **Hooks** | — | Background automations — format, lint, persist state, weekly digests |
 
 ---
@@ -56,6 +63,8 @@ Agents are delegated automatically based on what you're doing. You can also invo
 | `go-reviewer` | Idiomatic Go, error handling, goroutine patterns |
 | `java-reviewer` | Spring Boot, JPA, hexagonal architecture |
 | `swift-reviewer` | SwiftUI, Combine, concurrency |
+| `ruby-reviewer` | Idiomatic Ruby, Rails best practices, RuboCop |
+| `elixir-reviewer` | OTP patterns, Ecto, Phoenix context violations |
 | `product-evaluator` | Go/No-Go evaluation of new feature ideas |
 | `solution-designer` | Generates 2–4 solution options with trade-off analysis |
 | `refactor-cleaner` | Identifies and removes dead code safely |
@@ -113,7 +122,7 @@ Agents are delegated automatically based on what you're doing. You can also invo
 
 Skills are loaded on-demand when Claude detects they're relevant. They encode domain knowledge in a structured format: when to use, patterns, examples, anti-patterns.
 
-**Language patterns:** TypeScript · Python · Go · Java · Rust · Swift · C++ · Django · Spring Boot · React Native · SwiftUI
+**Language patterns:** TypeScript · Python · Go · Java · Rust · Swift · C++ · Ruby · Elixir · Django · Spring Boot · React Native · SwiftUI
 
 **Architecture:** Hexagonal · DDD · Strategic DDD · API design · gRPC · GraphQL · WebSockets
 
@@ -139,8 +148,11 @@ At the end of a session, extracts recurring patterns, friction points, and solve
 **Instinct evolution** (`/evolve`)
 Analyzes accumulated instincts and promotes stable, high-signal ones into permanent skills. Closes the loop from observation → codified knowledge.
 
-**Weekly digest**
-Every Monday, the notification hook summarizes what you learned in the past week — new instincts, promoted skills, recurring patterns.
+**Weekly evolve batch**
+Every Monday, clarc automatically analyzes accumulated instincts and generates a digest with promotion suggestions — without waiting for a manual `/evolve` call.
+
+**Conflict detection**
+When contradictory instincts exist in the same domain (e.g. "prefer functional" vs "use classes"), they are flagged in `conflicts.json` and surfaced in `/instinct-status` for resolution.
 
 **Pre-compact snapshots**
 Before context compaction, clarc reads the session transcript and persists a structured snapshot: open tasks, touched files, recent exchanges. Nothing is lost between context resets.
@@ -160,7 +172,9 @@ rules/
 ├── swift/           # Swift 6, actors, value types
 ├── java/            # Spring Boot, JPA, hexagonal architecture
 ├── rust/            # Ownership, Result/Option, unsafe rules
-└── cpp/             # C++17/20, RAII, smart pointers
+├── cpp/             # C++17/20, RAII, smart pointers
+├── ruby/            # RuboCop, Rails conventions, RSpec, Brakeman
+└── elixir/          # mix format, Credo, OTP patterns, Sobelow
 ```
 
 ---
@@ -171,8 +185,18 @@ clarc ships configurations for multiple editors alongside the primary Claude Cod
 
 - **Claude Code** — agents, skills, commands, hooks, rules (full support)
 - **Cursor** — rules, agents, skills under `.cursor/`
-- **OpenCode** — instructions and commands under `.opencode/`
+- **OpenCode** — full command parity (57 commands) + agent prompts under `.opencode/`
 - **Codex** — agent configuration under `.codex/`
+
+### clarc as MCP server
+
+clarc can expose its own state as an MCP server, letting subagents and external tools query it directly:
+
+```json
+{ "mcpServers": { "clarc": { "command": "node", "args": ["<path>/mcp-server/index.js"] } } }
+```
+
+Available tools: `get_instinct_status` · `get_session_context` · `get_skill_index` · `get_project_context`
 
 ---
 
@@ -182,13 +206,17 @@ clarc ships configurations for multiple editors alongside the primary Claude Cod
 clarc/
 ├── agents/          # Subagent definitions (frontmatter + instructions)
 ├── skills/          # Domain knowledge skills (SKILL.md per topic)
+├── skills/INDEX.md  # Machine-readable skill catalog by domain
 ├── commands/        # Slash commands (/tdd, /plan, /breakdown, ...)
 ├── hooks/           # Hook configurations (JSON)
 ├── scripts/hooks/   # Hook implementations (Node.js)
-├── rules/           # Language rule sets
+├── rules/           # Language rule sets (10 languages)
 ├── mcp-configs/     # MCP server configurations
-├── tests/           # Structural evals and unit tests
-└── install.sh       # Rule installer with --check support
+├── mcp-server/      # clarc as an MCP server (4 tools)
+├── .opencode/       # OpenCode commands and agent prompts
+├── .cursor/         # Cursor rules
+├── tests/           # Structural evals, behavior evals, unit tests
+└── install.sh       # Installer: --check, --target, --enable-learning
 ```
 
 ---

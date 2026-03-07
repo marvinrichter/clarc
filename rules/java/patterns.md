@@ -229,4 +229,4 @@ List<String> names = markets.stream()
 
 ## Reference
 
-See skills: `ddd-java`, `hexagonal-java`, `java-coding-standards`, `springboot-patterns`, `jpa-patterns` for comprehensive examples.
+See skills: `ddd-java`, `hexagonal-java`, `java-patterns`, `springboot-patterns`, `jpa-patterns` for comprehensive examples.

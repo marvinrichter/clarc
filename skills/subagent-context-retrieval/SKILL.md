@@ -1,6 +1,6 @@
 ---
-name: iterative-retrieval
-description: Pattern for progressively refining context retrieval to solve the subagent context problem
+name: subagent-context-retrieval
+description: Pattern for progressively refining context retrieval in multi-agent workflows — avoids context-overflow failures when subagents cannot predict what context they need upfront.
 ---
 
 # Iterative Retrieval Pattern

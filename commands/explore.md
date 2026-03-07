@@ -1,5 +1,5 @@
 ---
-description: Generate and compare multiple solution approaches for a validated product idea. Delegates to the solution-designer agent to produce 2-4 options with trade-off analysis and an Architecture Decision Record recommending one approach.
+description: Design solutions for a validated product idea — generates 2-4 concrete approaches with trade-off analysis and an Architecture Decision Record. Use after /evaluate returns Go. Delegates to the solution-designer agent.
 ---
 
 # Explore

@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.
+description: Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, ruby-reviewer, elixir-reviewer, rust-reviewer, cpp-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
 ---
@@ -18,6 +18,10 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.py` | **python-reviewer** |
 | `.java`, `.kt` | **java-reviewer** |
 | `.swift` | **swift-reviewer** |
+| `.rs` | **rust-reviewer** |
+| `.cpp`, `.cc`, `.cxx`, `.h`, `.hpp` | **cpp-reviewer** |
+| `.rb`, `.rake` | **ruby-reviewer** |
+| `.ex`, `.exs` | **elixir-reviewer** |
 | `.sql`, `.prisma` | **database-reviewer** |
 
 If changed files span multiple languages, invoke each relevant specialist in parallel.

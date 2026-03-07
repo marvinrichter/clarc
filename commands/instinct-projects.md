@@ -1,6 +1,6 @@
 ---
 name: projects
-description: List known projects and their instinct statistics
+description: List registered projects and their instinct/observation counts — part of the continuous-learning-v2 system.
 command: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: cpp-coding-standards
+name: cpp-patterns
 description: C++ coding standards (C++ Core Guidelines). Core rules for philosophy, interfaces, functions, classes, resource management, error handling, and immutability.
 ---
 

@@ -73,4 +73,4 @@ func NewMarketService(store MarketStore) *MarketService {
 
 ## Reference
 
-See skill: `golang-patterns` for comprehensive Go patterns including hexagonal architecture, concurrency, error handling, and package organization.
+See skill: `go-patterns` for comprehensive Go patterns including hexagonal architecture, concurrency, error handling, and package organization.
