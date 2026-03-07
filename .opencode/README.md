@@ -137,7 +137,7 @@ The default OpenCode config loads 11 curated clarc skills via the `instructions`
 - typescript-coding-standards
 - nodejs-backend-patterns
 - frontend-patterns
-- frontend-slides
+- html-slides
 - security-review
 - tdd-workflow
 - strategic-compact

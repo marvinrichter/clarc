@@ -22,7 +22,7 @@ Available skills:
 - security-review — Comprehensive security checklist
 - typescript-coding-standards — TypeScript, JavaScript, React, and Node.js coding standards
 - frontend-patterns — React/Next.js patterns
-- frontend-slides — Viewport-safe HTML presentations and PPTX-to-web conversion
+- html-slides — Viewport-safe HTML presentations and PPTX-to-web conversion
 - article-writing — Long-form writing from notes and voice references
 - content-engine — Platform-native social content and repurposing
 - market-research — Source-attributed market and competitor research

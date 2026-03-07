@@ -65,7 +65,7 @@ mkdir -p $TARGET/skills $TARGET/rules
 
 ### 2a: Choose Scope (Core vs Niche)
 
-Default to **Core (recommended for new users)** — copy `.agents/skills/*` plus `skills/search-first/` for research-first workflows. This bundle covers engineering, evals, verification, security, strategic compaction, frontend design, and Anthropic cross-functional skills (article-writing, content-engine, market-research, frontend-slides).
+Default to **Core (recommended for new users)** — copy `.agents/skills/*` plus `skills/search-first/` for research-first workflows. This bundle covers engineering, evals, verification, security, strategic compaction, frontend design, and Anthropic cross-functional skills (article-writing, content-engine, market-research, html-slides).
 
 Use `AskUserQuestion` (single select):
 ```
@@ -107,7 +107,7 @@ For each selected category, print the full list of skills below and ask the user
 | `django-tdd` | Django testing with pytest-django, factory_boy, mocking, coverage |
 | `django-verification` | Django verification loop: migrations, linting, tests, security scans |
 | `frontend-patterns` | React, Next.js, state management, performance, UI patterns |
-| `frontend-slides` | Zero-dependency HTML presentations, style previews, and PPTX-to-web conversion |
+| `html-slides` | Zero-dependency HTML presentations, style previews, and PPTX-to-web conversion |
 | `golang-patterns` | Idiomatic Go patterns, conventions for robust Go applications |
 | `golang-testing` | Go testing: table-driven tests, subtests, benchmarks, fuzzing |
 | `java-coding-standards` | Java coding standards for Spring Boot: naming, immutability, Optional, streams |

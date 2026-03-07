@@ -1,6 +1,6 @@
 # Style Presets Reference
 
-Curated visual styles for `frontend-slides`.
+Curated visual styles for `html-slides`.
 
 Use this file for:
 - the mandatory viewport-fitting CSS base
