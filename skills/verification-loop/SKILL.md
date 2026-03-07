@@ -123,3 +123,12 @@ Run: /verify
 
 This skill complements PostToolUse hooks but provides deeper verification.
 Hooks catch issues immediately; this skill provides comprehensive review.
+
+## Related Skills
+
+This is the **general-purpose** verification loop for any project. Framework-specific variants know the exact build commands, test runners, and quality tools for their ecosystem:
+
+- **`springboot-verification`** — Spring Boot projects: Maven/Gradle build, SpotBugs, JaCoCo coverage, OWASP dependency check
+- **`django-verification`** — Django projects: migration safety, pylint/ruff, pytest-django, Bandit/Safety security scans, deployment readiness
+
+Use this skill when none of the framework-specific variants apply.

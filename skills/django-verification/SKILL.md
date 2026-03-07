@@ -466,3 +466,10 @@ jobs:
 | Diff stats | `git diff --stat` |
 
 Remember: Automated verification catches common issues but doesn't replace manual code review and testing in staging environment.
+
+## Related Skills
+
+This is the **Django-specific** verification loop. For other frameworks or general projects:
+
+- **`verification-loop`** — General-purpose verification for any project type (TypeScript, Go, Java, etc.)
+- **`springboot-verification`** — Spring Boot-specific: Maven/Gradle build, SpotBugs, JaCoCo, OWASP

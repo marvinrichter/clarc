@@ -228,3 +228,10 @@ Issues to Fix:
 - Keep a short loop: `mvn -T 4 test` + spotbugs for quick feedback
 
 **Remember**: Fast feedback beats late surprises. Keep the gate strict—treat warnings as defects in production systems.
+
+## Related Skills
+
+This is the **Spring Boot-specific** verification loop. For other frameworks or general projects:
+
+- **`verification-loop`** — General-purpose verification for any project type (TypeScript, Go, Python, etc.)
+- **`django-verification`** — Django-specific: migration safety, pytest-django, Bandit/Safety security scans
