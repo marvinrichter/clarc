@@ -1812,6 +1812,7 @@ async function runTests() {
       fs.writeFileSync(
         configPath,
         JSON.stringify({
+          min_session_length: 0,
           learned_skills_path: customLearnedDir
         })
       );
@@ -2674,6 +2675,7 @@ async function runTests() {
       fs.writeFileSync(
         configPath,
         JSON.stringify({
+          min_session_length: 0,
           learned_skills_path: midTildeDir
         })
       );
@@ -2961,7 +2963,7 @@ async function runTests() {
         const logFile = path.join(sessionsDir, 'compaction-log.txt');
         assert.ok(fs.existsSync(logFile), 'Compaction log should exist');
         const content = fs.readFileSync(logFile, 'utf8');
-        const entries = (content.match(/Context compaction triggered/g) || []).length;
+        const entries = (content.match(/Compaction triggered/g) || []).length;
         assert.strictEqual(entries, 3, `Should have 3 log entries, got ${entries}`);
       } finally {
         fs.rmSync(isoHome, { recursive: true, force: true });

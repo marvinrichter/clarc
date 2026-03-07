@@ -42,7 +42,11 @@ function extractSnapshot(transcriptPath) {
   const lines = raw.trim().split('\n').filter(Boolean);
   const messages = [];
   for (const line of lines) {
-    try { messages.push(JSON.parse(line)); } catch { /* skip */ }
+    try {
+      messages.push(JSON.parse(line));
+    } catch {
+      /* skip */
+    }
   }
 
   // Scan all messages for todo-like patterns and file paths
@@ -50,11 +54,15 @@ function extractSnapshot(transcriptPath) {
   const fileRe = /(?:^|\s)((?:\/[\w.-]+){2,}\.[\w]+)/g;
 
   for (const msg of messages) {
-    const text = typeof msg.content === 'string'
-      ? msg.content
-      : Array.isArray(msg.content)
-        ? msg.content.filter(b => b.type === 'text').map(b => b.text).join(' ')
-        : '';
+    const text =
+      typeof msg.content === 'string'
+        ? msg.content
+        : Array.isArray(msg.content)
+          ? msg.content
+              .filter(b => b.type === 'text')
+              .map(b => b.text)
+              .join(' ')
+          : '';
 
     for (const m of text.matchAll(todoRe)) {
       snapshot.taskLines.push(`[${m[1]}] ${m[2].slice(0, 120)}`);
@@ -68,11 +76,15 @@ function extractSnapshot(transcriptPath) {
   const turns = messages.filter(m => m.role === 'user' || m.role === 'assistant');
   const recent = turns.slice(-6);
   for (const t of recent) {
-    const text = typeof t.content === 'string'
-      ? t.content
-      : Array.isArray(t.content)
-        ? t.content.filter(b => b.type === 'text').map(b => b.text).join(' ')
-        : '';
+    const text =
+      typeof t.content === 'string'
+        ? t.content
+        : Array.isArray(t.content)
+          ? t.content
+              .filter(b => b.type === 'text')
+              .map(b => b.text)
+              .join(' ')
+          : '';
     if (text.trim()) {
       snapshot.recentExchanges.push(`[${t.role}] ${text.trim().slice(0, 200)}`);
     }
@@ -82,65 +94,73 @@ function extractSnapshot(transcriptPath) {
 }
 
 process.stdin.on('end', () => {
-  const sessionsDir = getSessionsDir();
-  ensureDir(sessionsDir);
-
-  let sessionId = null;
-  let transcriptPath = null;
-
   try {
-    const input = JSON.parse(data);
-    sessionId = input.session_id || null;
-    transcriptPath = input.transcript_path || null;
-  } catch {
-    // No valid input — proceed with minimal logging
-  }
+    const sessionsDir = getSessionsDir();
+    ensureDir(sessionsDir);
 
-  const timestamp = getDateTimeString();
-  const timeStr = getTimeString();
-  const compactionLog = path.join(sessionsDir, 'compaction-log.txt');
-  appendFile(compactionLog, `[${timestamp}] Compaction triggered (session: ${sessionId || 'unknown'})\n`);
+    let sessionId = null;
+    let transcriptPath = null;
 
-  // Find or create active session file
-  let activeSession = null;
-  const sessions = findFiles(sessionsDir, '*-session.tmp');
-  if (sessions.length > 0) {
-    activeSession = sessions[0].path;
-  } else if (sessionId) {
-    activeSession = path.join(sessionsDir, `${sessionId}-session.tmp`);
-  }
-
-  // Build snapshot lines
-  const snapshotLines = [`\n---\n**[Compaction occurred at ${timeStr}]** - Context was summarized`];
-
-  if (transcriptPath && fs.existsSync(transcriptPath)) {
-    const snap = extractSnapshot(transcriptPath);
-
-    const dedupedTasks = [...new Set(snap.taskLines)].slice(0, 15);
-    if (dedupedTasks.length > 0) {
-      snapshotLines.push('\n**Tasks at compaction time:**');
-      snapshotLines.push(...dedupedTasks.map(t => `  ${t}`));
+    try {
+      const input = JSON.parse(data);
+      sessionId = input.session_id || null;
+      transcriptPath = input.transcript_path || null;
+    } catch {
+      // No valid input — proceed with minimal logging
     }
 
-    const files = [...snap.filesMentioned].slice(0, 10);
-    if (files.length > 0) {
-      snapshotLines.push('\n**Files mentioned:**');
-      snapshotLines.push(...files.map(f => `  ${f}`));
+    const timestamp = getDateTimeString();
+    const timeStr = getTimeString();
+    const compactionLog = path.join(sessionsDir, 'compaction-log.txt');
+    appendFile(compactionLog, `[${timestamp}] Compaction triggered (session: ${sessionId || 'unknown'})\n`);
+
+    // Find or create active session file
+    let activeSession = null;
+    const sessions = findFiles(sessionsDir, '*-session.tmp');
+    if (sessions.length > 0) {
+      activeSession = sessions[0].path;
+    } else if (sessionId) {
+      activeSession = path.join(sessionsDir, `${sessionId}-session.tmp`);
     }
 
-    if (snap.recentExchanges.length > 0) {
-      snapshotLines.push('\n**Recent context (pre-compaction):**');
-      snapshotLines.push(...snap.recentExchanges.map(e => `  ${e}`));
-    }
-  } else {
-    snapshotLines.push('(transcript unavailable — minimal state saved)');
-  }
+    // Build snapshot lines
+    const snapshotLines = [`\n---\n**[Compaction occurred at ${timeStr}]** - Context was summarized`];
 
-  if (activeSession) {
-    appendFile(activeSession, snapshotLines.join('\n') + '\n');
-    log(`[PreCompact] Snapshot saved to ${path.basename(activeSession)}`);
-  } else {
-    log('[PreCompact] No active session file found — compaction logged only');
+    if (transcriptPath && fs.existsSync(transcriptPath)) {
+      const snap = extractSnapshot(transcriptPath);
+
+      const dedupedTasks = [...new Set(snap.taskLines)].slice(0, 15);
+      if (dedupedTasks.length > 0) {
+        snapshotLines.push('\n**Tasks at compaction time:**');
+        snapshotLines.push(...dedupedTasks.map(t => `  ${t}`));
+      }
+
+      const files = [...snap.filesMentioned].slice(0, 10);
+      if (files.length > 0) {
+        snapshotLines.push('\n**Files mentioned:**');
+        snapshotLines.push(...files.map(f => `  ${f}`));
+      }
+
+      if (snap.recentExchanges.length > 0) {
+        snapshotLines.push('\n**Recent context (pre-compaction):**');
+        snapshotLines.push(...snap.recentExchanges.map(e => `  ${e}`));
+      }
+    } else {
+      snapshotLines.push('(transcript unavailable — minimal state saved)');
+    }
+
+    if (activeSession) {
+      try {
+        appendFile(activeSession, snapshotLines.join('\n') + '\n');
+        log(`[PreCompact] Snapshot saved to ${path.basename(activeSession)}`);
+      } catch (appendErr) {
+        log(`[PreCompact] Warning: could not write snapshot: ${appendErr.message}`);
+      }
+    } else {
+      log('[PreCompact] No active session file found — compaction logged only');
+    }
+  } catch (err) {
+    log(`[PreCompact] Error: ${err.message}`);
   }
 
   process.exit(0);

@@ -14,6 +14,7 @@
 
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import { getLearnedSkillsDir, ensureDir, readFile, countInFile, log } from '../lib/utils.js';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
