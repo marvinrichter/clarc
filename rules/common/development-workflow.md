@@ -10,23 +10,23 @@ The full workflow covers two phases: **Product Discovery** (is this the right th
 
 > Run this phase for new features whose value or approach is not yet clear. Skip for bug fixes, refactors, chores, and features with well-defined requirements.
 
--3. **Idea Capture** — `/idea <description>`
-   - Structures the raw idea: problem statement, target user, success metric
-   - Asks clarifying questions if gaps exist
-   - Output: `docs/ideas/YYYY-MM-DD-<name>.md`
+- **-3.** **Idea Capture** — `/idea <description>`
+  - Structures the raw idea: problem statement, target user, success metric
+  - Asks clarifying questions if gaps exist
+  - Output: `docs/ideas/YYYY-MM-DD-<name>.md`
 
--2. **Evaluation** — `/evaluate <name>`
-   - Delegates to **product-evaluator** agent (model: Opus)
-   - Assesses: problem clarity, user fit, technical feasibility, alternatives, opportunity cost
-   - Produces explicit Go / No-Go / Modify recommendation
-   - Output: `docs/evals/YYYY-MM-DD-<name>-eval.md`
-   - **Stop here if No-Go.** Do not proceed to implementation.
+- **-2.** **Evaluation** — `/evaluate <name>`
+  - Delegates to **product-evaluator** agent (model: Opus)
+  - Assesses: problem clarity, user fit, technical feasibility, alternatives, opportunity cost
+  - Produces explicit Go / No-Go / Modify recommendation
+  - Output: `docs/evals/YYYY-MM-DD-<name>-eval.md`
+  - **Stop here if No-Go.** Do not proceed to implementation.
 
--1. **Solution Design** — `/explore <name>` → `/prd <name>`
-   - `/explore` delegates to **solution-designer** agent: generates 2-4 options, trade-off analysis, Architecture Decision Record
-   - `/prd` synthesizes idea + eval + ADR into a full Product Requirements Document
-   - Output: `docs/decisions/<name>-adr.md` + `docs/specs/<name>-prd.md`
-   - The PRD is directly consumed by `/overnight`, `/plan`, and `/tdd`
+- **-1.** **Solution Design** — `/explore <name>` → `/prd <name>`
+  - `/explore` delegates to **solution-designer** agent: generates 2-4 options, trade-off analysis, Architecture Decision Record
+  - `/prd` synthesizes idea + eval + ADR into a full Product Requirements Document
+  - Output: `docs/decisions/<name>-adr.md` + `docs/specs/<name>-prd.md`
+  - The PRD is directly consumed by `/overnight`, `/plan`, and `/tdd`
 
 See skill `product-lifecycle` for the full decision criteria and document templates.
 
