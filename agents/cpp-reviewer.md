@@ -49,6 +49,13 @@ When invoked:
 - **Deadlock risk**: Lock acquisition order inconsistency across threads
 - **Missing `std::atomic`**: Non-atomic reads/writes on shared flags or counters
 
+### HIGH — Design & Architecture
+
+- **God class**: Class with more than 5 distinct responsibilities — apply Single Responsibility Principle
+- **Missing abstraction for dependency**: Concrete class injected directly where an abstract base class or C++20 concept would enable testability and substitution
+- **Public mutable data members**: `public` non-`const` fields — use private fields with accessor methods to maintain invariants
+- **Missing `[[nodiscard]]` on factory/error-returning functions**: Callers silently discard return values that signal ownership or error state
+
 ### MEDIUM — Performance
 
 - **Pass-by-value for large types**: Should be `const T&` for read-only access, or `T&&` to forward
@@ -62,30 +69,29 @@ When invoked:
 - **Use structured bindings**: `auto [key, val] = entry` instead of `.first`/`.second`
 - **Avoid `std::endl`**: Flushes on every call — use `'\n'` unless flush is intentional
 
-## OUTPUT FORMAT
+## Diagnostic Commands
 
+```bash
+cppcheck --enable=all --quiet src/
+clang-tidy src/**/*.cpp -- -p build
+cmake --build build 2>&1 | head -40
 ```
-## C++ Code Review
 
-### CRITICAL
-- [file.cpp:line] Issue — fix suggestion
+## Output Format
 
-### HIGH
-- [file.cpp:line] Issue — fix suggestion
-
-### MEDIUM / STYLE
-- [file.cpp:line] Issue — fix suggestion
-
-### Static Analysis Summary
-[cppcheck / clang-tidy output or "No warnings"]
-
-## Review Summary
-
-| Severity | Count | Status |
-|---|---|---|
-| CRITICAL | 0 | pass |
-| HIGH | 1 | warn |
-| MEDIUM | 0 | info |
-
-Verdict: WARNING — 1 HIGH issue should be resolved before merge.
+```text
+[SEVERITY] Issue title
+File: path/to/file.cpp:42
+Issue: Description
+Fix: What to change
 ```
+
+## Approval Criteria
+
+- **Approve**: No CRITICAL or HIGH issues
+- **Warning**: MEDIUM issues only (can merge with caution)
+- **Block**: CRITICAL or HIGH issues found
+
+## Reference
+
+For C++ patterns, RAII, and code examples, see skills: `cpp-patterns`, `cpp-patterns-advanced`, `cpp-testing`.
