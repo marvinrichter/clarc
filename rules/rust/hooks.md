@@ -30,12 +30,13 @@ Configure in `~/.claude/settings.json`:
   }
   ```
 
-## Note on Rust Formatter Integration
+## Dispatch Hook Integration
 
-The `post-edit-format-dispatch.js` hook (included in this plugin) does not yet support Rust. To add Rust formatting, extend `scripts/hooks/post-edit-format-dispatch.js` with:
+The `post-edit-format-dispatch.js` hook routes `.rs` files to `scripts/hooks/post-edit-format-rust.js`, which calls `rustfmt` automatically. Enable by adding the dispatch hook to `hooks.json`:
 
-```javascript
-'.rs': 'post-edit-format-rust.js',
+```json
+{
+  "matcher": "Edit",
+  "hooks": [{"type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-dispatch.js\""}]
+}
 ```
-
-And create `scripts/hooks/post-edit-format-rust.js` that calls `rustfmt`.

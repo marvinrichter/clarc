@@ -26,18 +26,7 @@ Add to `hooks.json` PostToolUse for Edit on `.cpp`/`.h` files:
 }
 ```
 
-The dispatch hook routes `.cpp`/`.cc`/`.h`/`.hpp` files to a clang-format script automatically if you add those extensions to `EXT_MAP` in `post-edit-format-dispatch.js`.
-
-## Manual clang-format hook example
-
-```bash
-#!/usr/bin/env bash
-# post-edit-format-cpp.sh
-FILE=$(echo "$1" | jq -r '.tool_input.file_path // empty')
-if [[ "$FILE" =~ \.(cpp|cc|cxx|h|hpp)$ ]]; then
-  clang-format -i "$FILE" 2>/dev/null || true
-fi
-```
+The dispatch hook routes `.cpp`/`.cc`/`.cxx`/`.h`/`.hpp` files to `scripts/hooks/post-edit-format-cpp.js`, which calls `clang-format -i` when a `.clang-format` config is found in the directory tree. Formatting is skipped silently if `clang-format` is not installed or no config exists.
 
 ## clang-tidy (optional, slower)
 

@@ -35,7 +35,12 @@ const EXT_MAP = {
   '.go': 'post-edit-format-go.js',
   '.java': 'post-edit-format-java.js',
   '.swift': 'post-edit-format-swift.js',
-  '.rs': 'post-edit-format-rust.js'
+  '.rs': 'post-edit-format-rust.js',
+  '.cpp': 'post-edit-format-cpp.js',
+  '.cc': 'post-edit-format-cpp.js',
+  '.cxx': 'post-edit-format-cpp.js',
+  '.h': 'post-edit-format-cpp.js',
+  '.hpp': 'post-edit-format-cpp.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -106,7 +111,12 @@ process.stdin.on('end', () => {
               '.go': 'goimports / gofmt',
               '.java': 'google-java-format / spotless',
               '.swift': 'swift-format / swiftformat',
-              '.rs': 'rustfmt'
+              '.rs': 'rustfmt',
+              '.cpp': 'clang-format',
+              '.cc': 'clang-format',
+              '.cxx': 'clang-format',
+              '.h': 'clang-format',
+              '.hpp': 'clang-format'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);
