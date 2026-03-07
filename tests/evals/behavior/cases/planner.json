@@ -1,0 +1,35 @@
+{
+  "agent": "planner",
+  "description": "Planner agent produces structured implementation plans",
+  "cases": [
+    {
+      "id": "plan-001",
+      "prompt": "I need to build a REST API for a blog with posts, comments, and user authentication.",
+      "expected_patterns": [
+        "phase|step|task|milestone",
+        "auth|authentication|jwt|token",
+        "database|schema|model",
+        "test|coverage"
+      ],
+      "forbidden_patterns": [
+        "^```.*\\bcode\\b"
+      ],
+      "min_length": 300,
+      "max_length": 5000,
+      "description": "Must produce a multi-phase plan with tasks, not just code"
+    },
+    {
+      "id": "plan-002",
+      "prompt": "Refactor the monolithic UserService class (500 lines) into smaller, focused services.",
+      "expected_patterns": [
+        "extract|split|separate|decompose",
+        "single.*responsibility|srp|cohes",
+        "phase|step|order|sequence"
+      ],
+      "forbidden_patterns": [],
+      "min_length": 200,
+      "max_length": 4000,
+      "description": "Must plan a structured refactoring approach"
+    }
+  ]
+}

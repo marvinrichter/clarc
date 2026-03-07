@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "clarc": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/index.js"],
+      "env": {
+        "CLAUDE_WORKDIR": "${workspaceFolder}"
+      },
+      "description": "clarc MCP server — exposes instinct status, session context, skill index, and project detection as MCP tools"
+    }
+  }
+}

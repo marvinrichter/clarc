@@ -74,9 +74,24 @@ Example:
 
 → Creates: **debugger** agent
 
+## Conflict Resolution (Run First)
+
+Before evolving, check and resolve conflicts:
+
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/conflict-detector.py"
+```
+
+If conflicts exist in `~/.claude/homunculus/conflicts.json`, resolve them before evolving:
+- Show each conflict pair with their confidence scores
+- Recommend keeping the higher-confidence instinct
+- User can run `--fix` to auto-resolve (removes lower-confidence instinct)
+- Only proceed to evolution after conflicts are resolved or acknowledged
+
 ## What to Do
 
-1. Detect current project context
+1. Run conflict detection first (see above)
+2. Detect current project context
 2. Read project + global instincts (project takes precedence on ID conflicts)
 3. Group instincts by trigger/domain patterns
 4. Identify:

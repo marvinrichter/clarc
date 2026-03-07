@@ -109,9 +109,193 @@ function confirm(question) {
 const [, , command, ...rest] = process.argv;
 const skipConfirm = rest.includes('--yes') || rest.includes('-y');
 const useMd = rest.includes('--md');
+const useBranch = rest.includes('--branch');
+const INSTINCT_BRANCH = 'clarc/instincts';
+
+/**
+ * Push instincts to a git orphan branch (clarc/instincts).
+ * Creates the branch if it does not exist.
+ */
+function pushToBranch() {
+  const srcDir = getProjectInstinctsDir();
+  if (!srcDir || !fs.existsSync(srcDir)) {
+    console.error('No project instincts found. Run /learn or continuous-learning-v2 first.');
+    process.exit(1);
+  }
+
+  const yamlFiles = fs.readdirSync(srcDir).filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
+  if (yamlFiles.length === 0) {
+    console.log('No instinct YAML files to push.');
+    process.exit(0);
+  }
+
+  // Check if branch exists (locally or remotely)
+  const localBranch = spawnSync('git', ['branch', '--list', INSTINCT_BRANCH], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+  const remoteBranch = spawnSync('git', ['ls-remote', '--heads', 'origin', INSTINCT_BRANCH], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+  const branchExists = localBranch.stdout?.trim() || remoteBranch.stdout?.trim();
+
+  const tmpDir = path.join(REPO_ROOT, '.git', 'clarc-instincts-tmp');
+  fs.mkdirSync(tmpDir, { recursive: true });
+
+  // Copy instinct files to temp dir
+  for (const file of yamlFiles) {
+    fs.copyFileSync(path.join(srcDir, file), path.join(tmpDir, file));
+  }
+
+  // Build commit message
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const commitMsg = `chore: sync ${yamlFiles.length} instinct(s) — ${dateStr}`;
+
+  let pushResult;
+  if (branchExists) {
+    // Checkout existing branch, add files, commit
+    spawnSync('git', ['checkout', INSTINCT_BRANCH], { stdio: 'inherit', cwd: REPO_ROOT });
+    for (const file of yamlFiles) {
+      fs.copyFileSync(path.join(tmpDir, file), path.join(REPO_ROOT, file));
+    }
+    spawnSync('git', ['add', ...yamlFiles], { stdio: 'inherit', cwd: REPO_ROOT });
+    spawnSync('git', ['commit', '--allow-empty', '-m', commitMsg], { stdio: 'inherit', cwd: REPO_ROOT });
+    pushResult = spawnSync('git', ['push', 'origin', INSTINCT_BRANCH], { stdio: 'inherit', cwd: REPO_ROOT });
+    spawnSync('git', ['checkout', '-'], { stdio: 'inherit', cwd: REPO_ROOT });
+  } else {
+    // Create orphan branch
+    spawnSync('git', ['checkout', '--orphan', INSTINCT_BRANCH], { stdio: 'inherit', cwd: REPO_ROOT });
+    spawnSync('git', ['rm', '-rf', '--cached', '.'], { stdio: 'pipe', cwd: REPO_ROOT });
+    for (const file of yamlFiles) {
+      fs.copyFileSync(path.join(tmpDir, file), path.join(REPO_ROOT, file));
+    }
+    spawnSync('git', ['add', ...yamlFiles], { stdio: 'inherit', cwd: REPO_ROOT });
+    spawnSync('git', ['commit', '-m', commitMsg], { stdio: 'inherit', cwd: REPO_ROOT });
+    pushResult = spawnSync('git', ['push', 'origin', INSTINCT_BRANCH], { stdio: 'inherit', cwd: REPO_ROOT });
+    spawnSync('git', ['checkout', '-'], { stdio: 'inherit', cwd: REPO_ROOT });
+  }
+
+  // Cleanup temp dir
+  fs.rmSync(tmpDir, { recursive: true, force: true });
+
+  if (pushResult?.status === 0) {
+    console.log(`\nPushed ${yamlFiles.length} instinct(s) to branch '${INSTINCT_BRANCH}'.`);
+    console.log('Team members can pull with: node scripts/sync-instincts.js pull --branch');
+  } else {
+    console.error('\nFailed to push to remote. Check git remote access.');
+    process.exit(1);
+  }
+}
+
+/**
+ * Pull instincts from git orphan branch (clarc/instincts).
+ * Merges into local inherited/ directory without overwriting personal/.
+ */
+function pullFromBranch() {
+  const fetchResult = spawnSync('git', ['fetch', 'origin', INSTINCT_BRANCH], { stdio: 'inherit', cwd: REPO_ROOT });
+  if (fetchResult.status !== 0) {
+    console.error(`Branch '${INSTINCT_BRANCH}' not found on remote. Push first with: node scripts/sync-instincts.js push --branch`);
+    process.exit(1);
+  }
+
+  // Get list of files from remote branch
+  const lsResult = spawnSync('git', ['ls-tree', '--name-only', `origin/${INSTINCT_BRANCH}`], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+  const remoteFiles = (lsResult.stdout || '').split('\n').filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
+
+  if (remoteFiles.length === 0) {
+    console.log('No instinct files found in remote branch.');
+    process.exit(0);
+  }
+
+  console.log(`Found ${remoteFiles.length} instinct(s) in branch '${INSTINCT_BRANCH}'`);
+
+  // Determine inherited dir
+  const projectDir = getProjectInstinctsDir();
+  const inheritedDir = projectDir ? path.join(path.dirname(path.dirname(projectDir)), 'inherited') : path.join(HOMUNCULUS_DIR, 'inherited');
+  fs.mkdirSync(inheritedDir, { recursive: true });
+
+  // Show what would be imported (dry run preview)
+  const personalDir = projectDir || path.join(HOMUNCULUS_DIR, 'instincts', 'personal');
+  let newCount = 0,
+    skipCount = 0,
+    updateCount = 0;
+
+  const preview = [];
+  for (const file of remoteFiles) {
+    const localPersonal = path.join(personalDir, file);
+    const localInherited = path.join(inheritedDir, file);
+    // Extract remote file content
+    const showResult = spawnSync('git', ['show', `origin/${INSTINCT_BRANCH}:${file}`], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+    const remoteContent = showResult.stdout || '';
+
+    if (fs.existsSync(localPersonal)) {
+      skipCount++;
+      preview.push(`  SKIP (personal exists): ${file}`);
+    } else if (fs.existsSync(localInherited)) {
+      // Compare confidence — update if remote is higher
+      const localContent = fs.readFileSync(localInherited, 'utf8');
+      const localConf = parseFloat((localContent.match(/confidence:\s*([\d.]+)/) || [])[1] || '0');
+      const remoteConf = parseFloat((remoteContent.match(/confidence:\s*([\d.]+)/) || [])[1] || '0');
+      if (remoteConf > localConf) {
+        updateCount++;
+        preview.push(`  UPDATE (remote conf=${remoteConf} > local conf=${localConf}): ${file}`);
+      } else {
+        skipCount++;
+        preview.push(`  SKIP (local conf=${localConf} >= remote conf=${remoteConf}): ${file}`);
+      }
+    } else {
+      newCount++;
+      preview.push(`  NEW: ${file}`);
+    }
+  }
+
+  console.log('\nPreview:');
+  for (const line of preview) console.log(line);
+  console.log(`\n  ${newCount} new, ${updateCount} updates, ${skipCount} skipped`);
+
+  if (newCount === 0 && updateCount === 0) {
+    console.log('Nothing to import.');
+    process.exit(0);
+  }
+
+  const doImport = () => {
+    for (const file of remoteFiles) {
+      const localPersonal = path.join(personalDir, file);
+      if (fs.existsSync(localPersonal)) continue; // Never overwrite personal
+
+      const showResult = spawnSync('git', ['show', `origin/${INSTINCT_BRANCH}:${file}`], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+      const remoteContent = showResult.stdout || '';
+      const localInherited = path.join(inheritedDir, file);
+
+      if (fs.existsSync(localInherited)) {
+        const localContent = fs.readFileSync(localInherited, 'utf8');
+        const localConf = parseFloat((localContent.match(/confidence:\s*([\d.]+)/) || [])[1] || '0');
+        const remoteConf = parseFloat((remoteContent.match(/confidence:\s*([\d.]+)/) || [])[1] || '0');
+        if (remoteConf > localConf) {
+          fs.writeFileSync(localInherited, remoteContent, 'utf8');
+        }
+      } else {
+        fs.writeFileSync(localInherited, remoteContent, 'utf8');
+      }
+    }
+    console.log(`\nImported ${newCount + updateCount} instinct(s) to ${inheritedDir}`);
+  };
+
+  if (skipConfirm) {
+    doImport();
+  } else {
+    confirm(`\nImport ${newCount + updateCount} instinct(s)? [y/N] `).then(answer => {
+      if (answer === 'y' || answer === 'yes') {
+        doImport();
+      } else {
+        console.log('Aborted.');
+      }
+      process.exit(0);
+    });
+  }
+}
 
 switch (command) {
   case 'push': {
+    if (useBranch) {
+      pushToBranch();
+      break;
+    }
     if (useMd) {
       // Legacy: export single .md file
       console.log(`Exporting project instincts → ${SHARED_FILE}`);
@@ -159,6 +343,10 @@ switch (command) {
   }
   // falls through
   case 'pull': {
+    if (useBranch) {
+      pullFromBranch();
+      break;
+    }
     if (useMd) {
       // Legacy: import from single .md file
       if (!fs.existsSync(SHARED_FILE)) {
@@ -272,21 +460,31 @@ switch (command) {
       console.log(`  Hash          : ${fileHash(SHARED_FILE)}`);
     }
 
+    // Also show branch status if branch exists
+    const branchCheck = spawnSync('git', ['ls-remote', '--heads', 'origin', INSTINCT_BRANCH], { stdio: 'pipe', encoding: 'utf8', cwd: REPO_ROOT });
+    if (branchCheck.stdout?.trim()) {
+      console.log(`\nGit branch sync: branch '${INSTINCT_BRANCH}' exists on remote.`);
+      console.log('  Run "pull --branch" to pull team instincts from the branch.');
+    }
+
     console.log('\nRun "pull" to preview and load into your local instinct store.');
     process.exit(0);
   }
   // falls through
   default:
-    console.log('Usage: node scripts/sync-instincts.js <push|pull|status> [--yes] [--md]');
+    console.log('Usage: node scripts/sync-instincts.js <push|pull|status> [--yes] [--md] [--branch]');
     console.log('');
     console.log('Commands:');
-    console.log('  push          Copy project instincts → .claude/instincts/*.yaml');
-    console.log('  push --md     Export → .claude/shared-instincts.md (legacy)');
-    console.log('  pull          Preview then import .claude/instincts/*.yaml');
-    console.log('  pull --yes    Skip confirmation');
-    console.log('  pull --md     Import from legacy .claude/shared-instincts.md');
-    console.log('  status        Show shared instincts info');
+    console.log('  push             Copy project instincts → .claude/instincts/*.yaml');
+    console.log('  push --branch    Push instincts to git branch clarc/instincts (team sync)');
+    console.log('  push --md        Export → .claude/shared-instincts.md (legacy)');
+    console.log('  pull             Preview then import .claude/instincts/*.yaml');
+    console.log('  pull --branch    Pull instincts from git branch clarc/instincts (team sync)');
+    console.log('  pull --yes       Skip confirmation');
+    console.log('  pull --md        Import from legacy .claude/shared-instincts.md');
+    console.log('  status           Show shared instincts info');
     console.log('');
-    console.log('Merge: NEW added, UPDATE only if shared confidence > local, SKIP otherwise.');
+    console.log('Team sync (--branch): Uses orphan git branch for cross-machine instinct sharing.');
+    console.log('  Personal instincts are never overwritten. Merge: NEW added, UPDATE if remote conf > local.');
     process.exit(1);
 }

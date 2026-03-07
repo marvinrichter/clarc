@@ -36,6 +36,28 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py status
 4. Merge with precedence rules (project overrides global when IDs collide)
 5. Display grouped by domain with confidence bars and observation stats
 
+## Conflict Detection
+
+After showing instincts, also run the conflict detector:
+
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/conflict-detector.py"
+```
+
+If `~/.claude/homunculus/conflicts.json` exists and has unresolved conflicts, show a **Conflicts** section at the end:
+
+```
+============================================================
+  CONFLICTS REQUIRING RESOLUTION (2)
+============================================================
+
+  Domain: workflow | Keywords: [functional, class]
+  A [project] prefer-functional (conf=0.72)
+  B [global]  prefer-classes (conf=0.45)
+  Resolution: keep 'prefer-functional' (higher confidence)
+  Run /evolve to resolve, or /instinct-status --fix to auto-resolve.
+```
+
 ## Output Format
 
 ```

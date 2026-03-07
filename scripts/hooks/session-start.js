@@ -16,6 +16,40 @@ import { getPackageManager, getSelectionPrompt } from '../lib/package-manager.js
 import { listAliases } from '../lib/session-aliases.js';
 import { detectProjectType } from '../lib/project-detect.js';
 
+/**
+ * Maps detected languages and frameworks to relevant clarc skills.
+ * Used to surface skill recommendations at session start.
+ */
+const SKILL_MAP = {
+  // Languages
+  typescript: ['typescript-patterns', 'typescript-patterns-advanced', 'coding-standards'],
+  javascript: ['coding-standards', 'async-patterns'],
+  python: ['python-patterns', 'python-patterns-advanced', 'python-testing'],
+  golang: ['golang-patterns', 'golang-patterns-advanced', 'golang-testing'],
+  rust: ['rust-patterns', 'rust-testing'],
+  ruby: ['ruby-patterns', 'ruby-testing'],
+  java: ['springboot-patterns', 'jpa-patterns', 'java-coding-standards'],
+  swift: ['swift-patterns', 'swift-patterns-advanced', 'swiftui-patterns'],
+  elixir: ['elixir-patterns', 'elixir-testing'],
+  // Frameworks
+  react: ['state-management', 'frontend-patterns', 'e2e-testing'],
+  nextjs: ['state-management', 'frontend-patterns', 'e2e-testing'],
+  vue: ['state-management', 'frontend-patterns'],
+  angular: ['state-management', 'frontend-patterns'],
+  django: ['django-patterns', 'django-security', 'django-tdd'],
+  fastapi: ['python-patterns', 'python-testing-advanced'],
+  flask: ['python-patterns', 'python-testing'],
+  spring: ['springboot-patterns', 'springboot-security', 'springboot-tdd'],
+  rails: ['ruby-patterns', 'ruby-testing'],
+  gin: ['golang-patterns', 'golang-testing'],
+  echo: ['golang-patterns', 'golang-testing'],
+  phoenix: ['elixir-patterns', 'elixir-testing'],
+  nestjs: ['typescript-patterns', 'backend-patterns'],
+  express: ['backend-patterns', 'api-design'],
+  actix: ['rust-patterns', 'rust-testing'],
+  axum: ['rust-patterns', 'rust-testing']
+};
+
 const MAX_INJECT_CHARS = 3000;
 
 // Stop words to ignore when extracting git-log keywords
@@ -240,6 +274,19 @@ async function main() {
     }
     log(`[SessionStart] Project detected — ${parts.join('; ')}`);
     output(`Project type: ${JSON.stringify(projectInfo)}`);
+
+    // Suggest relevant skills based on detected stack
+    const detected = [...projectInfo.frameworks, ...projectInfo.languages];
+    const skillSet = new Set();
+    for (const key of detected) {
+      const skills = SKILL_MAP[key] || [];
+      for (const s of skills) skillSet.add(s);
+    }
+    if (skillSet.size > 0) {
+      const skillList = Array.from(skillSet).slice(0, 6).join(', ');
+      log(`[SessionStart] Relevant skills: ${skillList}`);
+      output(`Relevant skills for this project: ${skillList}`);
+    }
   } else {
     log('[SessionStart] No specific project type detected');
   }

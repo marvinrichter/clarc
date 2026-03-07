@@ -86,12 +86,20 @@
     "claw": "node scripts/claw.js",
     "instincts:push": "node scripts/sync-instincts.js push",
     "instincts:pull": "node scripts/sync-instincts.js pull",
+    "instincts:push:branch": "node scripts/sync-instincts.js push --branch",
+    "instincts:pull:branch": "node scripts/sync-instincts.js pull --branch",
     "instincts:push:md": "node scripts/sync-instincts.js push --md",
     "instincts:pull:md": "node scripts/sync-instincts.js pull --md",
     "instincts:status": "node scripts/sync-instincts.js status",
     "test": "node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node tests/run-all.js",
     "hooks:summary": "node scripts/hooks-summary.js",
-    "hooks:errors": "node scripts/hooks-summary.js --errors"
+    "hooks:heatmap": "node scripts/hooks-summary.js --heatmap",
+    "hooks:errors": "node scripts/hooks-summary.js --errors",
+    "validate:quality": "node scripts/ci/validate-skill-quality.js",
+    "evals:behavior": "node tests/evals/behavior/runner.js"
+  },
+  "optionalDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

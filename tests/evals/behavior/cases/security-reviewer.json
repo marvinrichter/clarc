@@ -1,0 +1,51 @@
+{
+  "agent": "security-reviewer",
+  "description": "Security reviewer detects common vulnerabilities",
+  "cases": [
+    {
+      "id": "sec-001",
+      "prompt": "Review this Python code:\n```python\ndef get_user(user_id):\n    query = f'SELECT * FROM users WHERE id = {user_id}'\n    return db.execute(query)\n```",
+      "expected_patterns": [
+        "sql.*inject|inject.*sql",
+        "parameterized|prepared.*statement|param",
+        "critical|high|vulnerability|unsafe"
+      ],
+      "forbidden_patterns": [
+        "looks good|no issues|safe"
+      ],
+      "min_length": 80,
+      "max_length": 2000,
+      "description": "Must detect SQL injection via f-string"
+    },
+    {
+      "id": "sec-002",
+      "prompt": "Review this code:\n```javascript\napp.get('/user', (req, res) => {\n  const name = req.query.name;\n  res.send(`<h1>Hello ${name}</h1>`);\n});\n```",
+      "expected_patterns": [
+        "xss|cross.*site.*script|script.*inject",
+        "sanitize|escape|encode",
+        "critical|high|vulnerability"
+      ],
+      "forbidden_patterns": [
+        "looks good|no issues|safe"
+      ],
+      "min_length": 80,
+      "max_length": 2000,
+      "description": "Must detect XSS via unescaped user input"
+    },
+    {
+      "id": "sec-003",
+      "prompt": "Review this code:\n```python\nAPI_KEY = 'sk-abc123def456'\nSECRET = 'my-super-secret'\n```",
+      "expected_patterns": [
+        "hardcoded|secret|credential",
+        "environment.*variable|env.*var|\\.env",
+        "critical|high|never.*hardcode"
+      ],
+      "forbidden_patterns": [
+        "looks good|acceptable|fine"
+      ],
+      "min_length": 60,
+      "max_length": 1500,
+      "description": "Must flag hardcoded secrets/API keys"
+    }
+  ]
+}

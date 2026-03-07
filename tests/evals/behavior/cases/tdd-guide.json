@@ -1,0 +1,51 @@
+{
+  "agent": "tdd-guide",
+  "description": "TDD guide agent enforces write-tests-first workflow",
+  "cases": [
+    {
+      "id": "tdd-001",
+      "prompt": "I need to add a function that calculates the factorial of a number. Please help me implement it.",
+      "expected_patterns": [
+        "test",
+        "red",
+        "fail",
+        "write.*test|test.*first|before.*implement"
+      ],
+      "forbidden_patterns": [
+        "^```.*\\bfunction factorial\\b"
+      ],
+      "min_length": 100,
+      "max_length": 3000,
+      "description": "Agent must suggest writing tests before implementation"
+    },
+    {
+      "id": "tdd-002",
+      "prompt": "Add a UserService class that validates email addresses and stores users in a database.",
+      "expected_patterns": [
+        "test|spec",
+        "describe|it\\(|test\\(",
+        "expect|assert",
+        "mock|stub|fake"
+      ],
+      "forbidden_patterns": [
+        "class UserService.*\\{[^}]{200}"
+      ],
+      "min_length": 150,
+      "max_length": 4000,
+      "description": "Agent must show test scaffolding before service implementation"
+    },
+    {
+      "id": "tdd-003",
+      "prompt": "My existing test is failing: AssertionError: expected 42 but got 0. The function is supposed to sum an array.",
+      "expected_patterns": [
+        "implement|fix|green",
+        "pass.*test|test.*pass",
+        "sum|reduce|array"
+      ],
+      "forbidden_patterns": [],
+      "min_length": 80,
+      "max_length": 2000,
+      "description": "Agent helps make a failing test pass (GREEN step)"
+    }
+  ]
+}

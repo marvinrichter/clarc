@@ -7,6 +7,7 @@
  *   node scripts/hooks-summary.js --days 30 # last 30 days
  *   node scripts/hooks-summary.js --recent  # last 20 entries
  *   node scripts/hooks-summary.js --errors  # only errored invocations
+ *   node scripts/hooks-summary.js --heatmap # usage heatmap + write ~/.claude/homunculus/usage-heatmap.md
  *
  * Output:
  *   - Invocation count per hook
@@ -27,6 +28,7 @@ const daysFlag = args.indexOf('--days');
 const days = daysFlag !== -1 ? Number(args[daysFlag + 1]) || 7 : 7;
 const showRecent = args.includes('--recent');
 const errorsOnly = args.includes('--errors');
+const showHeatmap = args.includes('--heatmap');
 
 // --- Read log ---
 if (!fs.existsSync(LOG_PATH)) {
@@ -41,7 +43,13 @@ const cutoff = Date.now() - days * 86_400_000;
 const entries = raw
   .split('\n')
   .filter(Boolean)
-  .map(line => { try { return JSON.parse(line); } catch { return null; } })
+  .map(line => {
+    try {
+      return JSON.parse(line);
+    } catch {
+      return null;
+    }
+  })
   .filter(e => e && e.ts && e.hook);
 
 const filtered = entries.filter(e => {
@@ -115,6 +123,86 @@ for (const r of rows) {
   );
 }
 console.log(sep);
-console.log(`${'TOTAL'.padEnd(hookW)}  ${String(totalInvocations).padStart(6)}  ${String(Math.round(totalMs / totalInvocations)).padStart(6)}  ${''.padStart(6)}  ${String(totalErrors).padStart(6)}  ${((totalErrors / totalInvocations) * 100).toFixed(0).padStart(4)}%`);
+console.log(
+  `${'TOTAL'.padEnd(hookW)}  ${String(totalInvocations).padStart(6)}  ${String(Math.round(totalMs / totalInvocations)).padStart(6)}  ${''.padStart(6)}  ${String(totalErrors).padStart(6)}  ${((totalErrors / totalInvocations) * 100).toFixed(0).padStart(4)}%`
+);
 console.log(`\nTotal time spent in hooks: ${(totalMs / 1000).toFixed(1)}s`);
 console.log(`Log: ${LOG_PATH}\n`);
+
+// --- Heatmap mode ---
+if (showHeatmap) {
+  generateHeatmap(filtered, rows, days);
+}
+
+function generateHeatmap(entries, hookRows, windowDays) {
+  const dateStr = new Date().toISOString().slice(0, 10);
+
+  // Count by day-of-week and hour
+  const byHour = new Array(24).fill(0);
+  const byDayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => ({ day: d, count: 0 }));
+
+  for (const e of entries) {
+    const d = new Date(e.ts);
+    byHour[d.getHours()]++;
+    byDayOfWeek[d.getDay()].count++;
+  }
+
+  // Top commands from hook target fields (if available)
+  const commandCounts = {};
+  for (const e of entries) {
+    const target = e.target || e.command || '';
+    if (target) {
+      commandCounts[target] = (commandCounts[target] || 0) + 1;
+    }
+  }
+  const topCommands = Object.entries(commandCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+
+  // Top hooks
+  const topHooks = hookRows.slice(0, 10);
+
+  // Build markdown
+  const maxHour = Math.max(...byHour, 1);
+  const hourBar = n => '█'.repeat(Math.round((n / maxHour) * 20)).padEnd(20);
+
+  const maxDay = Math.max(...byDayOfWeek.map(d => d.count), 1);
+  const dayBar = n => '█'.repeat(Math.round((n / maxDay) * 15)).padEnd(15);
+
+  let md = `# clarc Usage Heatmap\n\n`;
+  md += `Generated: ${dateStr} | Window: last ${windowDays} day(s) | Total invocations: ${entries.length}\n\n`;
+
+  md += `## Hooks by Invocation Count\n\n`;
+  md += `| Hook | Calls | Avg ms | Err% |\n`;
+  md += `|------|------:|-------:|-----:|\n`;
+  for (const r of topHooks) {
+    md += `| \`${r.hook}\` | ${r.count} | ${r.avg} | ${r.errRate} |\n`;
+  }
+
+  md += `\n## Activity by Hour (UTC)\n\n\`\`\`\n`;
+  for (let h = 0; h < 24; h++) {
+    md += `${String(h).padStart(2, '0')}h  ${hourBar(byHour[h])} ${byHour[h]}\n`;
+  }
+  md += `\`\`\`\n`;
+
+  md += `\n## Activity by Day of Week\n\n\`\`\`\n`;
+  for (const { day, count } of byDayOfWeek) {
+    md += `${day}  ${dayBar(count)} ${count}\n`;
+  }
+  md += `\`\`\`\n`;
+
+  if (topCommands.length > 0) {
+    md += `\n## Top Command Targets\n\n`;
+    md += `| Target | Count |\n|--------|------:|\n`;
+    for (const [target, count] of topCommands) {
+      md += `| \`${target.slice(0, 60)}\` | ${count} |\n`;
+    }
+  }
+
+  // Write heatmap file
+  const homunculusDir = path.join(os.homedir(), '.claude', 'homunculus');
+  fs.mkdirSync(homunculusDir, { recursive: true });
+  const heatmapFile = path.join(homunculusDir, 'usage-heatmap.md');
+  fs.writeFileSync(heatmapFile, md, 'utf8');
+  console.log(`\nHeatmap written to: ${heatmapFile}`);
+}

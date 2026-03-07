@@ -1,0 +1,48 @@
+name: Behavior Evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      agent:
+        description: 'Agent to evaluate (leave empty for all)'
+        required: false
+        default: ''
+  schedule:
+    # Run weekly on Mondays at 9:00 UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  behavior-evals:
+    name: Run Agent Behavior Evals
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run behavior evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EVAL_AGENT: ${{ github.event.inputs.agent }}
+        run: |
+          if [ -n "$EVAL_AGENT" ]; then
+            node tests/evals/behavior/runner.js --agent "$EVAL_AGENT"
+          else
+            node tests/evals/behavior/runner.js
+          fi
+
+      - name: Upload eval results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behavior-eval-results-${{ github.run_id }}
+          path: tests/evals/behavior/results/
+          retention-days: 30

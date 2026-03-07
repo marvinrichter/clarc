@@ -11,6 +11,7 @@
 
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import { getSessionsDir, getDateString, getTimeString, getSessionIdShort, ensureDir, readFile, writeFile, replaceInFile, log } from '../lib/utils.js';
 
 /**
@@ -38,11 +39,7 @@ function extractSessionSummary(transcriptPath) {
       if (entry.type === 'user' || entry.role === 'user' || entry.message?.role === 'user') {
         // Support both direct content and nested message.content (Claude Code JSONL format)
         const rawContent = entry.message?.content ?? entry.content;
-        const text = typeof rawContent === 'string'
-          ? rawContent
-          : Array.isArray(rawContent)
-            ? rawContent.map(c => (c && c.text) || '').join(' ')
-            : '';
+        const text = typeof rawContent === 'string' ? rawContent : Array.isArray(rawContent) ? rawContent.map(c => (c && c.text) || '').join(' ') : '';
         if (text.trim()) {
           userMessages.push(text.trim().slice(0, 200));
         }
@@ -148,11 +145,7 @@ async function main() {
 
   if (fs.existsSync(sessionFile)) {
     // Update existing session file
-    const updated = replaceInFile(
-      sessionFile,
-      /\*\*Last Updated:\*\*.*/,
-      `**Last Updated:** ${currentTime}`
-    );
+    const updated = replaceInFile(sessionFile, /\*\*Last Updated:\*\*.*/, `**Last Updated:** ${currentTime}`);
     if (!updated) {
       log(`[SessionEnd] Failed to update timestamp in ${sessionFile}`);
     }
@@ -163,10 +156,7 @@ async function main() {
       if (existing) {
         // Use a flexible regex that matches both "## Session Summary" and "## Current State"
         // Match to end-of-string to avoid duplicate ### Stats sections
-        const updatedContent = existing.replace(
-          /## (?:Session Summary|Current State)[\s\S]*?$/ ,
-          buildSummarySection(summary).trim() + '\n'
-        );
+        const updatedContent = existing.replace(/## (?:Session Summary|Current State)[\s\S]*?$/, buildSummarySection(summary).trim() + '\n');
         writeFile(sessionFile, updatedContent);
       }
     }
@@ -192,7 +182,83 @@ ${summarySection}
     log(`[SessionEnd] Created session file: ${sessionFile}`);
   }
 
+  // Weekly Evolve-Batch: trigger on Mondays when >= 10 instincts and last run > 6 days ago
+  checkWeeklyEvolve();
+
   process.exit(0);
+}
+
+/**
+ * Check if a weekly evolve digest should be queued.
+ * Runs only on Mondays, at most once per week, when >= 10 instincts exist.
+ */
+function checkWeeklyEvolve() {
+  try {
+    const today = new Date();
+    if (today.getDay() !== 1) return; // Only on Mondays
+
+    const claudeDir = process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude');
+    const homunculusDir = path.join(claudeDir, 'homunculus');
+    const lastEvolveFile = path.join(homunculusDir, 'last-evolve.json');
+
+    // Check last evolve date
+    let lastEvolveDate = null;
+    try {
+      const data = JSON.parse(fs.readFileSync(lastEvolveFile, 'utf8'));
+      lastEvolveDate = new Date(data.date);
+    } catch {
+      // First run
+    }
+
+    const sixDaysAgo = Date.now() - 6 * 24 * 60 * 60 * 1000;
+    if (lastEvolveDate && lastEvolveDate.getTime() > sixDaysAgo) return;
+
+    // Count instincts in homunculus dir
+    let instinctCount = 0;
+    if (fs.existsSync(homunculusDir)) {
+      for (const entry of fs.readdirSync(homunculusDir)) {
+        if (entry.endsWith('.json') && entry !== 'last-evolve.json') instinctCount++;
+      }
+      // Also count in projects subdirectory
+      const projectsDir = path.join(homunculusDir, 'projects');
+      if (fs.existsSync(projectsDir)) {
+        for (const project of fs.readdirSync(projectsDir)) {
+          const instinctsDir = path.join(projectsDir, project, 'instincts', 'personal');
+          if (fs.existsSync(instinctsDir)) {
+            instinctCount += fs.readdirSync(instinctsDir).filter(f => f.endsWith('.yaml') || f.endsWith('.json')).length;
+          }
+        }
+      }
+    }
+
+    if (instinctCount < 10) return;
+
+    // Write weekly evolve suggestion to notification queue
+    const digestDir = path.join(homunculusDir);
+    ensureDir(digestDir);
+    const digestFile = path.join(digestDir, 'weekly-digest.md');
+    const dateStr = today.toISOString().slice(0, 10);
+
+    const content = `# Weekly Evolve Digest — ${dateStr}
+
+${instinctCount} instincts accumulated. Run \`/evolve\` to analyze and promote patterns.
+
+## Suggested Actions
+- \`/evolve\` — Analyze clusters and suggest skills/commands/agents
+- \`/evolve --generate\` — Also generate evolved files
+- \`/instinct-status\` — Review all current instincts
+
+_This digest was generated automatically. Delete this file after reviewing._
+`;
+
+    writeFile(digestFile, content);
+
+    // Update last-evolve.json
+    fs.writeFileSync(lastEvolveFile, JSON.stringify({ date: dateStr }), 'utf8');
+    log(`[SessionEnd] Weekly evolve digest written (${instinctCount} instincts). Run /evolve to review.`);
+  } catch (err) {
+    log(`[SessionEnd] Weekly evolve check error: ${err.message}`);
+  }
 }
 
 function buildSummarySection(summary) {
@@ -223,4 +289,3 @@ function buildSummarySection(summary) {
 
   return section;
 }
-
