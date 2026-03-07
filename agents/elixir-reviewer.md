@@ -51,7 +51,6 @@ When invoked:
 - `if/else` where pattern matching clause works better
 - Missing guard clauses in function heads
 - `String.to_atom` instead of `String.to_existing_atom`
-- `is_nil(x)` instead of `x == nil` (use `is_nil` — this is actually correct!)
 
 ## Diagnostic Commands
 
