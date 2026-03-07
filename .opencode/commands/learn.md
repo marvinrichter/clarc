@@ -40,7 +40,7 @@ Analyze the conversation and code changes to extract:
 ### Suggested Skill Updates
 
 If patterns are significant, suggest updates to:
-- `skills/coding-standards/SKILL.md`
+- `skills/typescript-coding-standards/SKILL.md`
 - `skills/[domain]/SKILL.md`
 - `rules/[category].md`
 

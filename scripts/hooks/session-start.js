@@ -22,8 +22,8 @@ import { detectProjectType } from '../lib/project-detect.js';
  */
 const SKILL_MAP = {
   // Languages
-  typescript: ['typescript-patterns', 'typescript-patterns-advanced', 'coding-standards'],
-  javascript: ['coding-standards', 'async-patterns'],
+  typescript: ['typescript-patterns', 'typescript-patterns-advanced', 'typescript-coding-standards'],
+  javascript: ['typescript-coding-standards', 'async-patterns'],
   python: ['python-patterns', 'python-patterns-advanced', 'python-testing'],
   golang: ['golang-patterns', 'golang-patterns-advanced', 'golang-testing'],
   rust: ['rust-patterns', 'rust-testing'],

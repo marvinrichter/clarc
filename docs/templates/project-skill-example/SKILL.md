@@ -342,7 +342,7 @@ SUPABASE_KEY=eyJ...
 
 ## Related Skills
 
-- `coding-standards.md` - General coding best practices
+- `typescript-coding-standards/` - TypeScript, JavaScript, React, and Node.js coding standards
 - `backend-patterns.md` - API and database patterns
 - `frontend-patterns.md` - React and Next.js patterns
 - `tdd-workflow/` - Test-driven development methodology

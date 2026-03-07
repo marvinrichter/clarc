@@ -6,7 +6,7 @@
  * - 31 commands (/plan, /tdd, /code-review, etc.)
  * - Plugin hooks (auto-format, TypeScript check, console.log warning, env injection, etc.)
  * - Custom tools (run-tests, check-coverage, security-audit, format-code, lint-check, git-summary)
- * - 37 skills (coding-standards, security-review, tdd-workflow, etc.)
+ * - 37 skills (typescript-coding-standards, security-review, tdd-workflow, etc.)
  *
  * Usage:
  *

@@ -134,7 +134,7 @@ OpenCode has 20+ additional events not available in Claude Code.
 
 The default OpenCode config loads 11 curated clarc skills via the `instructions` array:
 
-- coding-standards
+- typescript-coding-standards
 - backend-patterns
 - frontend-patterns
 - frontend-slides

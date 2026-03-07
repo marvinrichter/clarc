@@ -20,7 +20,7 @@ Skills are auto-loaded from `.agents/skills/`. Each skill contains:
 Available skills:
 - tdd-workflow — Test-driven development with 80%+ coverage
 - security-review — Comprehensive security checklist
-- coding-standards — Universal coding standards
+- typescript-coding-standards — TypeScript, JavaScript, React, and Node.js coding standards
 - frontend-patterns — React/Next.js patterns
 - frontend-slides — Viewport-safe HTML presentations and PPTX-to-web conversion
 - article-writing — Long-form writing from notes and voice references

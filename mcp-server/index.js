@@ -120,9 +120,7 @@ function handleGetInstinctStatus({ project_id, domain } = {}) {
     }
   }
 
-  const filtered = domain
-    ? instincts.filter(i => (i.domain || '').toLowerCase().includes(domain.toLowerCase()))
-    : instincts;
+  const filtered = domain ? instincts.filter(i => (i.domain || '').toLowerCase().includes(domain.toLowerCase())) : instincts;
 
   return {
     total: filtered.length,
@@ -144,7 +142,10 @@ function loadInstinctsFromDir(dir, scope, result) {
         for (const line of content.split('\n')) {
           if (line.startsWith('#') || !line.includes(':')) continue;
           const [k, ...vs] = line.split(':');
-          obj[k.trim()] = vs.join(':').trim().replace(/^["']|["']$/g, '');
+          obj[k.trim()] = vs
+            .join(':')
+            .trim()
+            .replace(/^["']|["']$/g, '');
         }
       }
       result.push({
@@ -205,9 +206,7 @@ function handleGetSkillIndex({ language, domain } = {}) {
   if (language) {
     const langLower = language.toLowerCase();
     const sections = content.split('\n## ');
-    const relevant = sections.filter(s =>
-      s.toLowerCase().includes(langLower) || s.startsWith('# ')
-    );
+    const relevant = sections.filter(s => s.toLowerCase().includes(langLower) || s.startsWith('# '));
     content = relevant.join('\n## ');
   }
 
@@ -215,9 +214,7 @@ function handleGetSkillIndex({ language, domain } = {}) {
   if (domain) {
     const domainLower = domain.toLowerCase();
     const sections = content.split('\n## ');
-    const relevant = sections.filter(s =>
-      s.toLowerCase().includes(domainLower) || s.startsWith('# ')
-    );
+    const relevant = sections.filter(s => s.toLowerCase().includes(domainLower) || s.startsWith('# '));
     content = relevant.join('\n## ');
   }
 
@@ -260,7 +257,7 @@ function detectProjectTypeSync(dir) {
   }
 
   const SKILL_MAP = {
-    typescript: ['typescript-patterns', 'coding-standards'],
+    typescript: ['typescript-patterns', 'typescript-coding-standards'],
     python: ['python-patterns', 'python-testing'],
     golang: ['golang-patterns', 'golang-testing'],
     ruby: ['ruby-patterns', 'ruby-testing'],
@@ -285,14 +282,11 @@ function detectProjectTypeSync(dir) {
 
 // ─── MCP Server setup ──────────────────────────────────────────────────────
 
-const server = new Server(
-  { name: 'clarc', version: '1.0.0' },
-  { capabilities: { tools: {} } }
-);
+const server = new Server({ name: 'clarc', version: '1.0.0' }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }));
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async request => {
   const { name, arguments: args } = request.params;
 
   try {
