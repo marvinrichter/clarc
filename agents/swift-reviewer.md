@@ -85,4 +85,4 @@ Issue: Description
 Fix: What to change
 ```
 
-For detailed Swift patterns and DI examples, see skills: `swift-protocol-di-testing`, `swift-actor-persistence`, `swiftui-patterns`.
+For detailed Swift patterns and DI examples, see skills: `swift-patterns`, `swift-patterns-advanced`, `swift-concurrency-6-2`, `swift-protocol-di-testing`, `swift-actor-persistence`, `swiftui-patterns`, `foundation-models-on-device`.
