@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.ex"
+  - "**/*.exs"
+  - "**/mix.exs"
+  - "**/mix.lock"
+---
 > This file extends [common/coding-style.md](../common/coding-style.md) with Elixir-specific content.
 
 # Elixir Coding Style

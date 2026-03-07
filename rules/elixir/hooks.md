@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.ex"
+  - "**/*.exs"
+  - "**/mix.exs"
+  - "**/mix.lock"
+---
 > This file extends [common/hooks.md](../common/hooks.md) with Elixir-specific content.
 
 # Elixir Hooks

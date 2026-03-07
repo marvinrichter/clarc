@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.ex"
+  - "**/*.exs"
+  - "**/mix.exs"
+  - "**/mix.lock"
+---
 > This file extends [common/security.md](../common/security.md) with Elixir-specific content.
 
 # Elixir Security

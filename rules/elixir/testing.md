@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.ex"
+  - "**/*.exs"
+  - "**/mix.exs"
+  - "**/mix.lock"
+---
 > This file extends [common/testing.md](../common/testing.md) with Elixir-specific content.
 
 # Elixir Testing
