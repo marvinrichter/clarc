@@ -37,7 +37,7 @@ const SKILL_MAP = {
   vue: ['state-management', 'frontend-patterns'],
   angular: ['state-management', 'frontend-patterns'],
   django: ['django-patterns', 'django-security', 'django-tdd'],
-  fastapi: ['python-patterns', 'python-testing-advanced'],
+  fastapi: ['fastapi-patterns', 'python-patterns', 'python-testing-advanced'],
   flask: ['python-patterns', 'python-testing'],
   spring: ['springboot-patterns', 'springboot-security', 'springboot-tdd'],
   rails: ['ruby-patterns', 'ruby-testing'],
