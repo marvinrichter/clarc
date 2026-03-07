@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - "**/Gemfile"
+  - "**/Gemfile.lock"
+---
 > This file extends [common/patterns.md](../common/patterns.md) with Ruby-specific content.
 
 # Ruby Patterns

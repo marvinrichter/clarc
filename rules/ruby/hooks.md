@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - "**/Gemfile"
+  - "**/Gemfile.lock"
+---
 > This file extends [common/hooks.md](../common/hooks.md) with Ruby-specific content.
 
 # Ruby Hooks

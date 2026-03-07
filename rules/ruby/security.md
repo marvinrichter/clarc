@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - "**/Gemfile"
+  - "**/Gemfile.lock"
+---
 > This file extends [common/security.md](../common/security.md) with Ruby-specific content.
 
 # Ruby Security

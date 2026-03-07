@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - "**/Gemfile"
+  - "**/Gemfile.lock"
+---
 > This file extends [common/testing.md](../common/testing.md) with Ruby-specific content.
 
 # Ruby Testing

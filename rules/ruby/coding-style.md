@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - "**/Gemfile"
+  - "**/Gemfile.lock"
+---
 > This file extends [common/coding-style.md](../common/coding-style.md) with Ruby-specific content.
 
 # Ruby Coding Style
