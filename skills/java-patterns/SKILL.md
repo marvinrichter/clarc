@@ -1,15 +1,15 @@
 ---
 name: java-patterns
-description: "Java coding standards for Spring Boot services: naming, immutability, Optional usage, streams, exceptions, generics, and project layout."
+description: "Java coding standards and idioms for Java 25+ — naming, immutability, Optional, streams, exceptions, generics, records, sealed classes. Applies to plain Java, Spring Boot, Quarkus, and Jakarta EE projects."
 ---
 
 # Java Coding Standards
 
-Standards for readable, maintainable Java (25+) code in Spring Boot services.
+Standards for readable, maintainable Java (25+) code. Applies to any Java project — plain Java, Spring Boot, Quarkus, or Jakarta EE.
 
 ## When to Activate
 
-- Writing or reviewing Java code in Spring Boot projects
+- Writing or reviewing Java code in any Java 25+ project
 - Enforcing naming, immutability, or exception handling conventions
 - Working with records, sealed classes, or pattern matching (Java 25+)
 - Reviewing use of Optional, streams, or generics
