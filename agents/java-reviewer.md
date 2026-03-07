@@ -103,4 +103,4 @@ Fix: What to change
 - **Spring Security**: CSRF config, `@PreAuthorize` usage, password encoding
 - **Config** (`config/`): Bean wiring only here — no business logic in `@Configuration` classes
 
-For detailed Java patterns and code examples, see skills: `ddd-java`, `hexagonal-java`, `java-coding-standards`, `springboot-patterns`, `jpa-patterns`, `springboot-security`.
+For detailed Java patterns and code examples, see skills: `ddd-java`, `hexagonal-java`, `java-patterns`, `springboot-patterns`, `jpa-patterns`, `springboot-security`.

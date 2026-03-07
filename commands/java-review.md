@@ -113,4 +113,4 @@ Verdict: WARNING — 2 HIGH issues should be resolved before merge.
 ## Related
 
 - Agent: `agents/java-reviewer.md`
-- Skills: `skills/java-coding-standards/`, `skills/springboot-patterns/`, `skills/hexagonal-java/`, `skills/ddd-java/`, `skills/jpa-patterns/`
+- Skills: `skills/java-patterns/`, `skills/springboot-patterns/`, `skills/hexagonal-java/`, `skills/ddd-java/`, `skills/jpa-patterns/`
