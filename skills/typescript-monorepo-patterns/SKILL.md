@@ -1,6 +1,6 @@
 ---
-name: monorepo-patterns
-description: "Monorepo setup and patterns using Turborepo + pnpm workspaces. Covers package structure, shared configs, task pipeline caching, build orchestration, and publishing strategy. The go-to reference for TypeScript monorepos."
+name: typescript-monorepo-patterns
+description: "TypeScript monorepo patterns with Turborepo + pnpm workspaces. Covers package structure, shared configs, task pipeline caching, build orchestration, and publishing strategy."
 ---
 
 # Monorepo Patterns
