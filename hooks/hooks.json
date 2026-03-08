@@ -81,6 +81,16 @@
         "description": "Auto-format + console.log check after edits: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat), Rust (rustfmt)"
       },
       {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/system-health-check.js\""
+          }
+        ],
+        "description": "System health check after editing agents/skills/commands: verifies frontmatter, cross-references, and naming conventions"
+      },
+      {
         "matcher": "Edit",
         "hooks": [
           {
