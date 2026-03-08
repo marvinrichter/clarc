@@ -95,38 +95,39 @@ See skill `product-lifecycle` for the full decision criteria and document templa
    - Prefer adopting or porting a proven approach over writing net-new code when it meets the requirement.
 
 1. **FinOps Gate** _(mandatory when adding or changing cloud infrastructure)_
+
    - **Infracost check**: Run `infracost breakdown --path=.` for all Terraform changes — cost estimate must be reviewed before merge
    - **Cost-review threshold**: If monthly cost increases > 10%, tag PR with `cost-review` and involve a team lead or FinOps champion
    - **Tagging standard first**: Before creating any new AWS/GCP/Azure resource, confirm the tagging taxonomy (`project`, `team`, `environment`, `owner`) is defined in Terraform locals or variables
    - **Right-size from the start**: Use the smallest instance/service tier sufficient for the workload — it's easier to scale up than to justify scale-down later
    - Skip this step for purely non-infrastructure changes (frontend features, logic-only refactors, documentation)
 
-1. **API Contract** _(mandatory when adding or changing API endpoints or events)_
+2. **API Contract** _(mandatory when adding or changing API endpoints or events)_
    - **Spec before code**: Write `api/v1/openapi.yaml` (REST) or `api/v1/asyncapi.yaml` (events) before any implementation
    - **Lint the spec**: `spectral lint api/v1/openapi.yaml` — must pass with zero errors
    - **Generate types/stubs**: Run code generation for affected languages (see skill `api-contract`)
    - **Breaking changes**: Any field removal, rename, or type change requires `api/v2/` — enforced by `oasdiff` in CI
    - Skip this step only for purely internal, non-API changes (e.g., refactoring, DB migrations)
 
-2. **Plan First**
+3. **Plan First**
    - Use **planner** agent to create implementation plan
    - Generate planning docs before coding: PRD, architecture, system_design, tech_doc, task_list
    - Identify dependencies and risks
    - Break down into phases
 
-3. **TDD Approach**
+4. **TDD Approach**
    - Use **tdd-guide** agent
    - Write tests first (RED)
    - Implement to pass tests (GREEN)
    - Refactor (IMPROVE)
    - Verify 80%+ coverage
 
-4. **Code Review**
+5. **Code Review**
    - Use **code-reviewer** agent immediately after writing code
    - Address CRITICAL and HIGH issues
    - Fix MEDIUM issues when possible
 
-5. **Commit & Push**
+6. **Commit & Push**
    - Detailed commit messages
    - Follow conventional commits format
    - See [git-workflow.md](./git-workflow.md) for commit message format and PR process

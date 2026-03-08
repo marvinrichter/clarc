@@ -1,3 +1,8 @@
+---
+name: developer-onboarding
+description: "Day-1 productivity engineering — code archaeology (git/CodeScene/Sourcegraph), CONTRIBUTING.md patterns, automated setup scripts, architecture tour, domain glossary, onboarding metrics (Time to First PR)"
+---
+
 # Skill: Developer Onboarding Engineering
 
 Making new team members productive on day one — through code archaeology, automated setup, structured knowledge transfer, and measurable onboarding outcomes.

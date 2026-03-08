@@ -1,7 +1,7 @@
 ---
 name: docs-architect
 description: Expert documentation strategy agent. Analyses audience, recommends platform (Mintlify/Docusaurus/Redoc/Scalar), structures docs via Divio framework, configures OpenAPI extensions, designs changelog automation, and outputs a full CI pipeline. Invoke when planning or overhauling API documentation.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
   - Read
   - Glob
