@@ -41,6 +41,13 @@ See skill `product-lifecycle` for the full decision criteria and document templa
    - **Search for adaptable implementations:** Look for open-source projects that solve 80%+ of the problem and can be forked, ported, or wrapped.
    - Prefer adopting or porting a proven approach over writing net-new code when it meets the requirement.
 
+1. **FinOps Gate** _(mandatory when adding or changing cloud infrastructure)_
+   - **Infracost check**: Run `infracost breakdown --path=.` for all Terraform changes — cost estimate must be reviewed before merge
+   - **Cost-review threshold**: If monthly cost increases > 10%, tag PR with `cost-review` and involve a team lead or FinOps champion
+   - **Tagging standard first**: Before creating any new AWS/GCP/Azure resource, confirm the tagging taxonomy (`project`, `team`, `environment`, `owner`) is defined in Terraform locals or variables
+   - **Right-size from the start**: Use the smallest instance/service tier sufficient for the workload — it's easier to scale up than to justify scale-down later
+   - Skip this step for purely non-infrastructure changes (frontend features, logic-only refactors, documentation)
+
 1. **API Contract** _(mandatory when adding or changing API endpoints or events)_
    - **Spec before code**: Write `api/v1/openapi.yaml` (REST) or `api/v1/asyncapi.yaml` (events) before any implementation
    - **Lint the spec**: `spectral lint api/v1/openapi.yaml` — must pass with zero errors
