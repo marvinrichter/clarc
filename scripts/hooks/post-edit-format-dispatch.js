@@ -45,7 +45,8 @@ const EXT_MAP = {
   '.bash': 'post-edit-format-bash.js',
   '.zsh': 'post-edit-format-bash.js',
   '.kt': 'post-edit-format-kotlin.js',
-  '.kts': 'post-edit-format-kotlin.js'
+  '.kts': 'post-edit-format-kotlin.js',
+  '.sql': 'post-edit-format-sql.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -126,7 +127,8 @@ process.stdin.on('end', () => {
               '.bash': 'shfmt',
               '.zsh': 'shfmt',
               '.kt': 'ktfmt',
-              '.kts': 'ktfmt'
+              '.kts': 'ktfmt',
+              '.sql': 'sqlfluff'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);
