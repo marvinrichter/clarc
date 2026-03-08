@@ -1,6 +1,13 @@
 # clarc — Agent Instructions
 
-This is a **production-grade Claude Code workflow OS** providing 20 specialized agents, 122+ skills, 57 commands, and automated hook workflows for software development.
+This is a **production-grade Claude Code workflow OS** providing 50 specialized agents, 193+ skills, 115 commands, and automated hook workflows for software development.
+
+## Install
+
+```bash
+npx github:marvinrichter/clarc          # interactive wizard
+npx github:marvinrichter/clarc typescript  # explicit language, skip wizard
+```
 
 ## Core Principles
 

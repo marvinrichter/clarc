@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 # install.sh — Install clarc rules, agents, skills, and commands to your editor/AI tool.
 #
+# Preferred entry point: npx github:marvinrichter/clarc (interactive wizard)
+# This script is the workhorse called by the wizard, or used directly by power users.
+#
 # Usage:
-#   ./install.sh [--target <claude|cursor|opencode|codex>] <language> [<language> ...]
+#   ./install.sh [--target <claude|cursor|opencode|codex>] [<language> ...]
 #   ./install.sh --check [<language> ...]
 #
+# No languages? Project files are auto-detected (package.json, go.mod, Gemfile, etc.)
+#
 # Examples:
+#   ./install.sh                            # auto-detect from project files
 #   ./install.sh typescript
 #   ./install.sh typescript python go
 #   ./install.sh --target cursor typescript
-#   ./install.sh --target cursor typescript python go
 #   ./install.sh --target opencode typescript
 #   ./install.sh --target codex
 #   ./install.sh --check                    # check common + all installed langs

@@ -41,6 +41,19 @@ The project is organized into several core components:
 - `/learn-eval` - Extract patterns from sessions (with quality gate)
 - `/skill-create` - Generate skills from git history
 
+## Install (for users of clarc)
+
+```bash
+# Interactive wizard — detects languages, prompts for target + learning
+npx github:marvinrichter/clarc
+
+# With explicit args (skips wizard)
+npx github:marvinrichter/clarc typescript
+npx github:marvinrichter/clarc --target cursor typescript
+```
+
+The wizard entry point is `scripts/setup-wizard.js`. When called with args it delegates to `install.sh` directly.
+
 ## Development Notes
 
 - Package manager detection: npm, pnpm, yarn, bun (configurable via `CLAUDE_PACKAGE_MANAGER` env var or project config)
@@ -48,6 +61,7 @@ The project is organized into several core components:
 - Agent format: Markdown with YAML frontmatter (name, description, tools, model)
 - Skill format: Markdown with clear sections for when to use, how it works, examples
 - Hook format: JSON with matcher conditions and command/notification hooks
+- Install wizard: `scripts/setup-wizard.js` — bin entry for `npx github:marvinrichter/clarc`
 
 ## File formats
 
