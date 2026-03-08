@@ -304,8 +304,146 @@ Key DevTools views:
 
 ---
 
+## Mobile CI/CD for Flutter
+
+Flutter apps target both iOS and Android from one codebase, but each platform has its own code-signing and distribution requirements.
+
+### Build Commands
+
+```bash
+# Android — release App Bundle (required for Play Store)
+flutter build appbundle --release --obfuscate --split-debug-info=build/debug-info/
+
+# iOS — release archive (requires macOS + Xcode)
+flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+# Web
+flutter build web --release --base-href /myapp/
+```
+
+### Fastlane Integration
+
+Fastlane works for Flutter apps the same way it does for native apps. Flutter builds produce standard `.ipa` and `.aab` artefacts that Fastlane can sign and upload.
+
+```ruby
+# fastlane/Fastfile
+platform :ios do
+  lane :beta do
+    match(type: "appstore", readonly: is_ci)
+    sh("flutter build ipa --release --export-options-plist=../ios/ExportOptions.plist")
+    upload_to_testflight(
+      ipa: "build/ios/ipa/MyApp.ipa",
+      skip_waiting_for_build_processing: true,
+    )
+  end
+end
+
+platform :android do
+  lane :beta do
+    sh("flutter build appbundle --release")
+    upload_to_play_store(
+      track: "internal",
+      aab: "build/app/outputs/bundle/release/app-release.aab",
+      json_key: ENV["PLAY_STORE_SERVICE_ACCOUNT_JSON"],
+    )
+  end
+end
+```
+
+### Expo EAS for Flutter? No — Use Fastlane or Codemagic
+
+EAS Build is Expo-specific (React Native). For Flutter, use:
+- **Fastlane** — free, open source, full control
+- **Codemagic** — Flutter-native CI service with built-in signing management
+- **GitHub Actions** — with `subosito/flutter-action@v2`
+
+### GitHub Actions — Flutter CI Matrix
+
+```yaml
+# .github/workflows/flutter-ci.yml
+name: Flutter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.x', channel: 'stable', cache: true }
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test --coverage
+      - uses: codecov/codecov-action@v4
+        with: { file: coverage/lcov.info }
+
+  build-android:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '21', distribution: 'temurin' }
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.x', channel: 'stable', cache: true }
+      - run: flutter pub get
+      - name: Decode keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+      - run: flutter build appbundle --release
+        env:
+          ANDROID_KEYSTORE_PATH: release.keystore
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      - name: Upload to Play Store
+        run: bundle exec fastlane android beta
+
+  build-ios:
+    runs-on: macos-15
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.x', channel: 'stable', cache: true }
+      - run: flutter pub get
+      - run: cd ios && pod install
+      - name: Sync iOS signing
+        run: bundle exec fastlane sync_signing
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_TOKEN }}
+      - run: flutter build ipa --release
+      - run: bundle exec fastlane ios beta
+```
+
+### Version Management
+
+Flutter uses `pubspec.yaml` for versioning:
+
+```yaml
+# pubspec.yaml — format: version_name+build_number
+version: 2.1.0+47  # "2.1.0" displayed to users; "47" is build number (monotonically increasing)
+```
+
+Auto-update build number from CI:
+
+```bash
+# In CI: replace build number with git commit count
+BUILD_NUMBER=$(git rev-list HEAD --count)
+sed -i "s/^version: .*/version: 2.1.0+${BUILD_NUMBER}/" pubspec.yaml
+```
+
+---
+
 ## Reference Rules
 
 - `rules/flutter/coding-style.md` — dart format, const correctness, naming
 - `rules/flutter/patterns.md` — architecture decisions, Clean Architecture layers
 - `rules/flutter/testing.md` — widget tests, golden tests, BLoC testing
+- Skill: `mobile-cicd-patterns` — detailed code signing, Fastlane, TestFlight, Firebase App Distribution
