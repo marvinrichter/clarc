@@ -34,7 +34,10 @@ function ensureLocalClone() {
   } else {
     console.log(`Cloning clarc to ~/.clarc …`);
     const r = spawnSync('git', ['clone', '--depth', '1', CLARC_REPO, CLARC_HOME], { stdio: 'inherit' });
-    if (r.status !== 0) { console.error('Clone failed.'); process.exit(1); }
+    if (r.status !== 0) {
+      console.error('Clone failed.');
+      process.exit(1);
+    }
   }
   console.log();
   return join(CLARC_HOME, 'install.sh');
@@ -92,7 +95,10 @@ async function promptLanguages() {
   console.log(`  Available: ${KNOWN_LANGS.join(', ')}`);
   const input = (await ask('  Enter languages (comma-separated): ')).trim();
   if (!input) return [];
-  return input.split(',').map(l => l.trim().toLowerCase()).filter(l => KNOWN_LANGS.includes(l));
+  return input
+    .split(',')
+    .map(l => l.trim().toLowerCase())
+    .filter(l => KNOWN_LANGS.includes(l));
 }
 
 async function runWizard() {
@@ -122,9 +128,14 @@ async function runWizard() {
     const useDetected = (await ask('  Use detected? [Y/n]: ')).trim().toLowerCase();
     if (useDetected === '' || useDetected === 'y' || useDetected === 'yes') {
       languages = [...detected];
+      const remaining = KNOWN_LANGS.filter(l => !detected.includes(l));
+      console.log(`  Also available: ${DIM}${remaining.join(', ')}${RESET}`);
       const more = (await ask('  Add more? (comma-separated, or Enter to skip): ')).trim();
       if (more) {
-        const extras = more.split(',').map(l => l.trim().toLowerCase()).filter(l => KNOWN_LANGS.includes(l));
+        const extras = more
+          .split(',')
+          .map(l => l.trim().toLowerCase())
+          .filter(l => KNOWN_LANGS.includes(l));
         languages = [...new Set([...languages, ...extras])];
       }
     } else {
