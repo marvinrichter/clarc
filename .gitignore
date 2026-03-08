@@ -40,6 +40,9 @@ private/
 .claude/settings.local.json
 .claude/package-manager.json
 
+# Personal memory symlink (user-specific path)
+.claude-memory
+
 # Session templates (not committed)
 examples/sessions/*.tmp
 
