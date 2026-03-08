@@ -21,12 +21,13 @@
 
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
-const LOG_PATH = path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'hooks.log');
+const LOG_PATH = path.join(process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude'), 'hooks.log');
 const MAX_LOG_BYTES = 500 * 1024; // 500KB
-const KEEP_LINES = 5000;
+const KEEP_LINES = 1500;
 // Override via CLAUDE_HOOK_SLOW_MS env var (e.g. for slow CI machines)
 const SLOW_HOOK_THRESHOLD_MS = Number(process.env.CLAUDE_HOOK_SLOW_MS) || 3000;
 
