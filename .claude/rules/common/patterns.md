@@ -1,0 +1,1 @@
+/Users/marvinrichter/.clarc/rules/common/patterns.md

@@ -1,0 +1,1 @@
+/Users/marvinrichter/.clarc/rules/common/coding-style.md
