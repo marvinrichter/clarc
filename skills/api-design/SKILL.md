@@ -18,6 +18,7 @@ Conventions and best practices for designing consistent, developer-friendly REST
 - Building public or partner-facing APIs
 
 > For the full Contract-First workflow (spec writing, code generation, CI breaking-change detection, Pact): see skill `api-contract`.
+> For API documentation production — platform choice (Mintlify, Docusaurus, Redoc, Scalar), OpenAPI descriptions/examples, interactive playground, changelog automation, Vale prose linting, and Divio structure: see skill `api-docs-patterns`.
 
 ## Contract-First Principle
 
@@ -50,6 +51,52 @@ The spec is the public contract. Consumers depend on it. Code is a private imple
 - Any breaking change requires a new API version (`/api/v2/`)
 
 See skill `api-contract` for the complete toolchain and CI setup.
+
+### Write descriptions and examples from the start
+
+OpenAPI documentation is easiest to write while you are designing the spec — not after the implementation is shipped.
+
+**Minimum documentation requirements per operation** (add these when you write each path, not later):
+
+```yaml
+paths:
+  /orders:
+    post:
+      summary: Create an order        # ← one-line summary
+      description: |                  # ← full description with scope, side effects, notes
+        Places a new order for the authenticated customer.
+        The order is created in `pending` status and transitions to
+        `processing` once payment is confirmed (async, webhook fired).
+
+        **Scopes required:** `orders:write`
+      operationId: createOrder        # ← stable, unique identifier
+      tags: [Orders]                  # ← logical grouping
+      parameters: []                  # ← every param needs description + example
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+            example:                  # ← concrete, realistic example
+              customer_id: "cust_abc123"
+              items:
+                - product_id: "prod_xyz"
+                  quantity: 2
+      responses:
+        '201':
+          description: Order created successfully.
+          headers:
+            Location:
+              description: URL of the newly created order.
+              schema: { type: string }
+        '400':
+          description: Request validation failed.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/ProblemDetails' }
+```
+
+> See skill `api-docs-patterns` for the full documentation workflow: platform setup, interactive playground, code examples in all languages, changelog automation, and CI.
 
 ---
 
@@ -558,3 +605,9 @@ Before shipping a new endpoint:
 - [ ] Spec linted (`spectral lint`) with zero errors
 - [ ] Types/stubs generated from spec — not hand-written
 - [ ] Breaking change detection configured in CI (`oasdiff`)
+- [ ] Every operation has non-empty `description` (not just `summary`)
+- [ ] Every parameter has `description` + realistic `example`
+- [ ] Every schema property has `description` + `example`
+- [ ] `x-codeSamples` added for curl + TypeScript + Python + Go
+- [ ] `x-stability` set (stable / beta / experimental)
+- [ ] CHANGELOG.md updated for new/changed/deprecated endpoints
