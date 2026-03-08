@@ -424,3 +424,43 @@ Before any production deployment:
 - [ ] Database migration tested against production-sized data
 - [ ] Runbook for common failure scenarios
 - [ ] On-call rotation and escalation path defined
+
+---
+
+## Edge & Serverless
+
+Modern deployment targets beyond containers:
+
+### Edge Functions
+
+Run code at the network edge — globally distributed, sub-millisecond cold starts, V8 isolates instead of containers.
+
+**Platforms:** Cloudflare Workers, Vercel Edge Middleware, Deno Deploy
+
+**When to use edge:**
+- Request routing, geo-targeting, A/B testing
+- Auth checks before origin (reduce origin load)
+- Response transformation (add headers, modify HTML)
+- API proxying with caching
+
+**Key constraints:**
+- No `fs`, `child_process`, `net` — only Web Standard APIs
+- Bundle size limits (Cloudflare: 1MB, Vercel: 4MB)
+- CPU limits (Cloudflare: 50ms per request)
+
+> Deep dive: see skill `edge-patterns` for Cloudflare Workers (KV, D1, R2, Durable Objects), Vercel Edge Middleware, and testing with Miniflare.
+
+### Serverless Functions (AWS Lambda)
+
+Event-driven compute — pay per invocation, infinite scale, no servers to manage.
+
+**When to use Lambda:**
+- APIs with spiky or unpredictable traffic
+- Event processing (S3, SQS, DynamoDB Streams)
+- Scheduled jobs, background tasks
+
+**Cold start by runtime:** Rust/Go ~1ms, Node.js ~100ms, Python ~200ms, Java (SnapStart) ~150ms
+
+**Mitigation:** Provisioned Concurrency (eliminates cold starts), SnapStart (JVM), keep-warm pings
+
+> Deep dive: see skill `serverless-patterns` for cold starts, Step Functions, Lambda Powertools, and idempotency.
