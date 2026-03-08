@@ -4,6 +4,10 @@ paths:
   - "**/*.tsx"
   - "**/*.js"
   - "**/*.jsx"
+globs:
+  - "**/*.{ts,tsx,mts,cts}"
+  - "**/*.{js,jsx,mjs,cjs}"
+alwaysApply: false
 ---
 # TypeScript/JavaScript Coding Style
 

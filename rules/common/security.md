@@ -1,3 +1,6 @@
+---
+alwaysApply: true
+---
 # Security Guidelines
 
 ## Mandatory Security Checks

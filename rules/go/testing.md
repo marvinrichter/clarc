@@ -3,6 +3,10 @@ paths:
   - "**/*.go"
   - "**/go.mod"
   - "**/go.sum"
+globs:
+  - "**/*.go"
+  - "**/go.{mod,sum}"
+alwaysApply: false
 ---
 # Go Testing
 
