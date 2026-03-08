@@ -45,3 +45,6 @@ examples/sessions/*.tmp
 
 # Local drafts
 marketing/
+
+# Competitor analyses (private)
+docs/analysis/
