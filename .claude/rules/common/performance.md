@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/common/performance.md

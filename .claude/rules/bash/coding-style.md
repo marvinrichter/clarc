@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/bash/coding-style.md

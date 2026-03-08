@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/common/agents.md

@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/common/git-workflow.md

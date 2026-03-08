@@ -35,6 +35,11 @@ tasks/
 personal/
 private/
 
+# User-local Claude Code installation artifacts (symlinks point to user-specific paths)
+.claude/rules/
+.claude/settings.local.json
+.claude/package-manager.json
+
 # Session templates (not committed)
 examples/sessions/*.tmp
 

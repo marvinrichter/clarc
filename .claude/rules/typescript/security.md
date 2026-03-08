@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/typescript/security.md

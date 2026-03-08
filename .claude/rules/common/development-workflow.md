@@ -1,1 +1,0 @@
-/Users/marvinrichter/.clarc/rules/common/development-workflow.md
