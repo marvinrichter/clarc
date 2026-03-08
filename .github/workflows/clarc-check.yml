@@ -1,0 +1,160 @@
+name: clarc check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Cancel in-progress runs for the same PR
+concurrency:
+  group: clarc-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  code-review:
+    name: clarc / code-review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get changed files
+        id: changed
+        run: |
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt
+          # Cap at 20 files to control API cost
+          head -20 changed-files.txt > changed-files-capped.txt
+          echo "files=$(cat changed-files-capped.txt | tr '\n' ',')" >> $GITHUB_OUTPUT
+          echo "count=$(wc -l < changed-files.txt | tr -d ' ')" >> $GITHUB_OUTPUT
+
+      - name: Run clarc code review
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          TOTAL_FILES: ${{ steps.changed.outputs.count }}
+        run: node scripts/ci/clarc-review.js
+        continue-on-error: true
+
+      - name: Post review comment
+        if: always() && steps.review.outputs.comment != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `${{ steps.review.outputs.comment }}`;
+            if (!comment) return;
+
+            // Find and update existing clarc comment, or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const existing = comments.find(c =>
+              c.user.login === 'github-actions[bot]' &&
+              c.body.startsWith('## clarc Review')
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: comment,
+              });
+            }
+
+      - name: Fail on CRITICAL findings
+        if: steps.review.outputs.has_critical == 'true'
+        run: |
+          echo "clarc review found CRITICAL issues. See PR comment for details."
+          exit 1
+
+  security-check:
+    name: clarc / security
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get changed files
+        id: changed
+        run: |
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt
+          head -20 changed-files.txt > changed-files-capped.txt
+          echo "files=$(cat changed-files-capped.txt | tr '\n' ',')" >> $GITHUB_OUTPUT
+
+      - name: Run clarc security review
+        id: security
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: node scripts/ci/clarc-security.js
+        continue-on-error: true
+
+      - name: Post security comment
+        if: always() && steps.security.outputs.comment != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `${{ steps.security.outputs.comment }}`;
+            if (!comment) return;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const existing = comments.find(c =>
+              c.user.login === 'github-actions[bot]' &&
+              c.body.startsWith('## clarc Security')
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: comment,
+              });
+            }
+
+      - name: Fail on CRITICAL security findings
+        if: steps.security.outputs.has_critical == 'true'
+        run: |
+          echo "clarc security check found CRITICAL issues. See PR comment for details."
+          exit 1
