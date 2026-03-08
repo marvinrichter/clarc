@@ -159,6 +159,8 @@ detect_languages() {
 
 # --- Install helper: symlink (default) or copy .md files from src_dir into dest_dir ---
 # Existing user-created non-symlink files are preserved (never overwritten).
+# Exception: if a non-symlink file is byte-for-byte identical to the source (old copy),
+# it is replaced with a symlink so future updates work automatically.
 install_files() {
     local src_dir="$1"
     local dest_dir="$2"
@@ -171,10 +173,15 @@ install_files() {
         local name dest
         name="$(basename "$f")"
         dest="$dest_dir/$name"
-        # Preserve user-created files (non-symlinks with same name)
+        # Non-symlink exists: only skip if content differs (= user customization).
+        # If content matches the source it's an old clarc copy → replace with symlink.
         if [[ -e "$dest" && ! -L "$dest" ]]; then
-            echo "  skip $name (custom file exists, not overwriting)"
-            continue
+            if diff -q "$f" "$dest" > /dev/null 2>&1; then
+                rm "$dest"   # old copy identical to source → upgrade to symlink below
+            else
+                echo "  skip $name (custom file, content differs — not overwriting)"
+                continue
+            fi
         fi
         if [[ "$USE_SYMLINKS" == true ]]; then
             ln -sf "$f" "$dest"
