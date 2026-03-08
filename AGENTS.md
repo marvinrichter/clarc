@@ -1,6 +1,6 @@
 # clarc — Agent Instructions
 
-This is a **production-grade Claude Code workflow OS** providing 50 specialized agents, 193+ skills, 115 commands, and automated hook workflows for software development.
+This is a **production-grade Claude Code workflow OS** providing 50 specialized agents, 193 skills, 115 commands, and automated hook workflows for software development.
 
 ## Install
 
