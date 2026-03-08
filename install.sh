@@ -75,7 +75,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --project)
             # Install language rules into <cwd>/.claude/rules/ instead of ~/.claude/rules/
-            # Common rules still go to ~/.claude/rules/common/ (always global)
+            # Common rules go to both ~/.claude/rules/common/ (global) and
+            # <cwd>/.claude/rules/common/ (project-local) so that ../common/ relative
+            # links inside language rule files resolve correctly.
             PROJECT_LOCAL=true
             shift
             ;;
@@ -388,6 +390,11 @@ if [[ "$TARGET" == "claude" ]]; then
     # --- Rules ---
     hdr "Rules ($local_verb)"
     install_files "$RULES_DIR/common" "$GLOBAL_RULES_DIR/common" "common"
+    # When installing project-locally, also symlink common into the project so that
+    # relative references (../common/coding-style.md) in language rules resolve correctly.
+    if [[ "$PROJECT_LOCAL" == true ]]; then
+        install_files "$RULES_DIR/common" "$LANG_DEST_DIR/common" "common (project-local)"
+    fi
     for lang in "$@"; do
         if [[ ! "$lang" =~ ^[a-zA-Z0-9_-]+$ ]]; then
             echo "Error: invalid language name '$lang'." >&2; continue
