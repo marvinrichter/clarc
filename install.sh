@@ -61,6 +61,7 @@ PROJECT_LOCAL=false
 CHECK_ONLY=false
 ENABLE_LEARNING=false
 LEARNING_FLAG_SET=false
+USE_SYMLINKS=true   # default: symlink files, not copy
 
 while [[ $# -gt 0 ]]; do
     case "${1:-}" in
@@ -81,6 +82,11 @@ while [[ $# -gt 0 ]]; do
         --check)
             # Compare installed rules against repo version — do not install anything
             CHECK_ONLY=true
+            shift
+            ;;
+        --copy)
+            # Use cp instead of symlinks (for CI, containers, cross-filesystem)
+            USE_SYMLINKS=false
             shift
             ;;
         --enable-learning)
@@ -138,6 +144,35 @@ detect_languages() {
     [[ -f "$cwd/global.json" ]] && detected+=(csharp)
 
     echo "${detected[@]:-}"
+}
+
+# --- Install helper: symlink (default) or copy .md files from src_dir into dest_dir ---
+# Existing user-created non-symlink files are preserved (never overwritten).
+install_files() {
+    local src_dir="$1"
+    local dest_dir="$2"
+    local label="$3"
+    [[ -d "$src_dir" ]] || return 0
+    mkdir -p "$dest_dir"
+    local count=0
+    for f in "$src_dir"/*.md; do
+        [[ -f "$f" ]] || continue
+        local name dest
+        name="$(basename "$f")"
+        dest="$dest_dir/$name"
+        # Preserve user-created files (non-symlinks with same name)
+        if [[ -e "$dest" && ! -L "$dest" ]]; then
+            echo "  skip $name (custom file exists, not overwriting)"
+            continue
+        fi
+        if [[ "$USE_SYMLINKS" == true ]]; then
+            ln -sf "$f" "$dest"
+        else
+            cp "$f" "$dest"
+        fi
+        count=$((count + 1))
+    done
+    [[ $count -gt 0 ]] && ok "$label  →  $dest_dir/  ($count files)"
 }
 
 # --- Check mode: compare installed rules against repo ---
@@ -319,42 +354,44 @@ NODEEOF
 
 # --- Claude target ---
 if [[ "$TARGET" == "claude" ]]; then
-    # --project: lang rules go to <cwd>/.claude/rules/, common stays global
+    GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
+    CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
+    CLAUDE_COMMANDS_DIR="$HOME/.claude/commands"
+
     if [[ "$PROJECT_LOCAL" == true ]]; then
-        GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
         LANG_DEST_DIR="$(pwd)/.claude/rules"
     else
-        GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
         LANG_DEST_DIR="$GLOBAL_RULES_DIR"
     fi
 
-    # Always install common rules globally
-    mkdir -p "$GLOBAL_RULES_DIR/common"
-    cp -r "$RULES_DIR/common/." "$GLOBAL_RULES_DIR/common/"
-    ok "common  →  $GLOBAL_RULES_DIR/common/"
+    local_verb="symlinked"
+    [[ "$USE_SYMLINKS" == false ]] && local_verb="copied"
 
-    # Install each requested language
+    # --- Rules ---
+    hdr "Rules ($local_verb)"
+    install_files "$RULES_DIR/common" "$GLOBAL_RULES_DIR/common" "common"
     for lang in "$@"; do
-        # Validate language name to prevent path traversal
         if [[ ! "$lang" =~ ^[a-zA-Z0-9_-]+$ ]]; then
-            echo "Error: invalid language name '$lang'. Only alphanumeric, dash, and underscore allowed." >&2
-            continue
+            echo "Error: invalid language name '$lang'." >&2; continue
         fi
-        lang_dir="$RULES_DIR/$lang"
-        if [[ ! -d "$lang_dir" ]]; then
-            echo "Warning: rules/$lang/ does not exist, skipping." >&2
-            continue
+        if [[ ! -d "$RULES_DIR/$lang" ]]; then
+            echo "Warning: rules/$lang/ not found, skipping." >&2; continue
         fi
-        mkdir -p "$LANG_DEST_DIR/$lang"
-        cp -r "$lang_dir/." "$LANG_DEST_DIR/$lang/"
-        ok "$lang  →  $LANG_DEST_DIR/$lang/"
+        install_files "$RULES_DIR/$lang" "$LANG_DEST_DIR/$lang" "$lang"
     done
 
-    if [[ "$PROJECT_LOCAL" == true ]]; then
-        ok "Common rules  →  $GLOBAL_RULES_DIR/common/"
-        ok "Lang rules    →  $LANG_DEST_DIR/"
-    else
-        ok "Rules installed  →  $LANG_DEST_DIR/"
+    # --- Agents ---
+    hdr "Agents ($local_verb)"
+    install_files "$SCRIPT_DIR/agents" "$CLAUDE_AGENTS_DIR" "agents"
+
+    # --- Commands ---
+    hdr "Commands ($local_verb)"
+    install_files "$SCRIPT_DIR/commands" "$CLAUDE_COMMANDS_DIR" "commands"
+
+    if [[ "$USE_SYMLINKS" == true ]]; then
+        echo ""
+        echo -e "  ${_DIM}Files are symlinked → \`git pull\` in ~/.clarc updates everything automatically.${_RESET}"
+        echo -e "  ${_DIM}To override a file: replace the symlink with your own version.${_RESET}"
     fi
 
     # --- Continuous Learning prompt (claude target only) ---
@@ -362,11 +399,10 @@ if [[ "$TARGET" == "claude" ]]; then
 
     # --- Next steps ---
     hdr "Next steps"
-    echo "  • Use commands in Claude Code: /tdd  /plan  /code-review  /verify"
-    echo "  • Activate hooks (auto-format, session persistence):"
-    echo "    Copy entries from hooks/hooks.json into ~/.claude/settings.json"
-    echo "    — or use the MCP config: mcp-configs/clarc-self.json"
-    echo "  • Check for updates:  ./install.sh --check"
+    echo "  • Use commands: /tdd  /plan  /code-review  /verify"
+    echo "  • Update: cd ~/.clarc && git pull  (symlinks update instantly)"
+    echo "  • Activate hooks: merge hooks/hooks.json into ~/.claude/settings.json"
+    echo "  • Check for updates: ./install.sh --check"
     echo "  • Docs:  https://github.com/marvinrichter/clarc"
     echo ""
 fi

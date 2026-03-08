@@ -44,15 +44,13 @@ The project is organized into several core components:
 ## Install (for users of clarc)
 
 ```bash
-# Interactive wizard — detects languages, prompts for target + learning
-npx github:marvinrichter/clarc
-
-# With explicit args (skips wizard)
-npx github:marvinrichter/clarc typescript
-npx github:marvinrichter/clarc --target cursor typescript
+npx github:marvinrichter/clarc              # interactive wizard
+npx github:marvinrichter/clarc typescript   # explicit, skip wizard
+npx github:marvinrichter/clarc --copy typescript  # copy instead of symlink
 ```
 
-The wizard entry point is `scripts/setup-wizard.js`. When called with args it delegates to `install.sh` directly.
+The wizard clones clarc to `~/.clarc/` on first run, then symlinks agents, commands, and rules into `~/.claude/`. Users' own files in `~/.claude/` are never overwritten.
+Update: `cd ~/.clarc && git pull` — symlinks update instantly, no re-install.
 
 ## Development Notes
 

@@ -28,17 +28,32 @@ npx github:marvinrichter/clarc --target codex
 npx github:marvinrichter/clarc --check
 ```
 
-The wizard detects your project's languages, lets you pick a target editor, and optionally enables continuous learning — all in one command. No clone required.
+The wizard clones clarc to `~/.clarc/` on first run, then **symlinks** agents, commands, and rules into `~/.claude/`. A single `git pull` in `~/.clarc/` keeps everything current — no re-install needed.
+
+```
+~/.claude/agents/tdd-guide.md  →  ~/.clarc/agents/tdd-guide.md   (symlink)
+~/.claude/commands/plan.md     →  ~/.clarc/commands/plan.md       (symlink)
+~/.claude/rules/common/*.md    →  ~/.clarc/rules/common/*.md      (symlinks)
+```
+
+Your own agents or rules placed in `~/.claude/agents/` or `~/.claude/rules/` are never touched — symlinks only fill in files that don't already exist there.
+
+```bash
+# Update clarc
+cd ~/.clarc && git pull
+
+# Force copy instead of symlinks (CI, containers, cross-filesystem)
+npx github:marvinrichter/clarc --copy typescript
+```
 
 <details>
-<summary>Clone and run locally instead</summary>
+<summary>Clone and run locally</summary>
 
 ```bash
 git clone git@github.com:marvinrichter/clarc.git ~/.clarc
-cd ~/.clarc
-./install.sh typescript                        # explicit language(s)
-./install.sh --enable-learning typescript      # with learning enabled
-./install.sh --check                           # verify installed rules
+~/.clarc/install.sh typescript
+~/.clarc/install.sh --enable-learning typescript
+~/.clarc/install.sh --check
 ```
 </details>
 

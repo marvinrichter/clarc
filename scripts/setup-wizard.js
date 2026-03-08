@@ -1,24 +1,56 @@
 #!/usr/bin/env node
 /**
- * clarc setup wizard — entry point for `npx clarc-install`
+ * clarc setup wizard — entry point for `npx github:marvinrichter/clarc`
  *
  * No args  → interactive wizard (detect languages, prompt for target + learning)
  * With args → delegate directly to install.sh (non-interactive, backward compat)
+ *
+ * When running from the npx cache (ephemeral), clones clarc to ~/.clarc/ first
+ * so that symlinks created by install.sh point to a persistent location.
  */
 
 import { createInterface } from 'readline';
 import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
+import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const INSTALL_SH = resolve(__dirname, '../install.sh');
+const CLARC_HOME = join(homedir(), '.clarc');
+const CLARC_REPO = 'https://github.com/marvinrichter/clarc.git';
+
+// Running from npx cache? Symlinks to the cache would break on cache eviction.
+function isEphemeral() {
+  return __dirname.includes('_npx') || __dirname.includes('.npm/_npx');
+}
+
+// Ensure clarc is cloned to ~/.clarc/ (clone or pull).
+function ensureLocalClone() {
+  if (existsSync(join(CLARC_HOME, '.git'))) {
+    console.log(`Updating ~/.clarc …`);
+    const r = spawnSync('git', ['-C', CLARC_HOME, 'pull', '--ff-only', '--quiet'], { stdio: 'inherit' });
+    if (r.status !== 0) console.warn('  Warning: git pull failed — using existing clone.');
+  } else {
+    console.log(`Cloning clarc to ~/.clarc …`);
+    const r = spawnSync('git', ['clone', '--depth', '1', CLARC_REPO, CLARC_HOME], { stdio: 'inherit' });
+    if (r.status !== 0) { console.error('Clone failed.'); process.exit(1); }
+  }
+  console.log();
+  return join(CLARC_HOME, 'install.sh');
+}
+
+// Resolve which install.sh to use.
+function resolveInstallSh() {
+  if (isEphemeral()) return ensureLocalClone();
+  return resolve(__dirname, '../install.sh');
+}
 
 // --- Pass-through mode: args provided → skip wizard ---
 const args = process.argv.slice(2);
 if (args.length > 0) {
-  const result = spawnSync('bash', [INSTALL_SH, ...args], { stdio: 'inherit' });
+  const installSh = resolveInstallSh();
+  const result = spawnSync('bash', [installSh, ...args], { stdio: 'inherit' });
   process.exit(result.status ?? 0);
 }
 
@@ -51,12 +83,22 @@ function detectLanguages() {
   if (check('composer.json')) detected.push('php');
   if (check('build.sbt')) detected.push('scala');
   if (check('DESCRIPTION', 'renv.lock')) detected.push('r');
-  if (check('*.csproj', 'global.json')) detected.push('csharp');
+  if (check('global.json')) detected.push('csharp');
 
   return detected;
 }
 
+async function promptLanguages() {
+  console.log(`  Available: ${KNOWN_LANGS.join(', ')}`);
+  const input = (await ask('  Enter languages (comma-separated): ')).trim();
+  if (!input) return [];
+  return input.split(',').map(l => l.trim().toLowerCase()).filter(l => KNOWN_LANGS.includes(l));
+}
+
 async function runWizard() {
+  // Resolve install.sh early (may trigger clone) before showing wizard UI
+  const installSh = resolveInstallSh();
+
   console.log(`\n${BOLD}clarc setup wizard${RESET}\n`);
 
   // --- Target ---
@@ -80,13 +122,9 @@ async function runWizard() {
     const useDetected = (await ask('  Use detected? [Y/n]: ')).trim().toLowerCase();
     if (useDetected === '' || useDetected === 'y' || useDetected === 'yes') {
       languages = [...detected];
-      // Allow appending extra langs after auto-detected set
       const more = (await ask('  Add more? (comma-separated, or Enter to skip): ')).trim();
       if (more) {
-        const extras = more
-          .split(',')
-          .map(l => l.trim().toLowerCase())
-          .filter(l => KNOWN_LANGS.includes(l));
+        const extras = more.split(',').map(l => l.trim().toLowerCase()).filter(l => KNOWN_LANGS.includes(l));
         languages = [...new Set([...languages, ...extras])];
       }
     } else {
@@ -123,18 +161,8 @@ async function runWizard() {
 
   console.log(`${BOLD}Installing…${RESET}\n`);
 
-  const result = spawnSync('bash', [INSTALL_SH, ...installArgs], { stdio: 'inherit' });
+  const result = spawnSync('bash', [installSh, ...installArgs], { stdio: 'inherit' });
   process.exit(result.status ?? 0);
-}
-
-async function promptLanguages() {
-  console.log(`  Available: ${KNOWN_LANGS.join(', ')}`);
-  const input = (await ask('  Enter languages (comma-separated): ')).trim();
-  if (!input) return [];
-  return input
-    .split(',')
-    .map(l => l.trim().toLowerCase())
-    .filter(l => KNOWN_LANGS.includes(l));
 }
 
 runWizard().catch(err => {
