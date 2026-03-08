@@ -48,7 +48,8 @@ const EXT_MAP = {
   '.kts': 'post-edit-format-kotlin.js',
   '.sql': 'post-edit-format-sql.js',
   '.scala': 'post-edit-format-scala.js',
-  '.sc': 'post-edit-format-scala.js'
+  '.sc': 'post-edit-format-scala.js',
+  '.c': 'post-edit-format-c.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -132,7 +133,8 @@ process.stdin.on('end', () => {
               '.kts': 'ktfmt',
               '.sql': 'sqlfluff',
               '.scala': 'scalafmt',
-              '.sc': 'scalafmt'
+              '.sc': 'scalafmt',
+              '.c': 'clang-format'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);
