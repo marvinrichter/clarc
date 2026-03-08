@@ -603,6 +603,49 @@ impl AppConfig {
 }
 ```
 
+## WebAssembly Target
+
+When compiling Rust to WASM, these patterns apply:
+
+```toml
+# Cargo.toml — WASM library
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+
+[profile.release]
+opt-level = "s"    # Size over speed
+lto = true
+panic = "abort"    # No unwinding — required for WASM
+```
+
+```rust
+use wasm_bindgen::prelude::*;
+
+// Mark public API for JS export
+#[wasm_bindgen]
+pub fn process(data: &[u8]) -> Result<Vec<u8>, JsError> {
+    // Return Result — wasm-bindgen converts Err to JS exception
+    inner_process(data).map_err(|e| JsError::new(&e.to_string()))
+}
+
+// Set up panic hook in init (panics show as useful messages in JS console)
+#[wasm_bindgen(start)]
+pub fn init() {
+    console_error_panic_hook::set_once();
+}
+```
+
+**Key differences from native Rust:**
+- No threads by default (use `wasm-bindgen-rayon` for threading)
+- `panic = "abort"` — no stack unwinding, `.unwrap()` crashes the whole module
+- `std::time` unavailable — use `js-sys::Date` or inject time via JS
+- File system unavailable in browser (use WASI for CLI/server WASM)
+
+> Full patterns, JS integration, WASI, and Component Model: see skill `wasm-patterns`.
+
 ## Dependency Quick Reference
 
 | Need | Crate |

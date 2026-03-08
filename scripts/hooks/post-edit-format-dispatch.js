@@ -56,7 +56,8 @@ const EXT_MAP = {
   '.qmd': 'post-edit-format-r.js',
   '.cs': 'post-edit-format-csharp.js',
   '.csx': 'post-edit-format-csharp.js',
-  '.razor': 'post-edit-format-csharp.js'
+  '.razor': 'post-edit-format-csharp.js',
+  '.dart': 'post-edit-format-dart.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -148,7 +149,8 @@ process.stdin.on('end', () => {
               '.qmd': 'styler (R package)',
               '.cs': 'csharpier (dotnet tool)',
               '.csx': 'csharpier (dotnet tool)',
-              '.razor': 'csharpier (dotnet tool)'
+              '.razor': 'csharpier (dotnet tool)',
+              '.dart': 'dart format'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);

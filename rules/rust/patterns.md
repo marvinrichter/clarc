@@ -141,6 +141,46 @@ src/
     user_handler.rs
 ```
 
+## WebAssembly (WASM) Targets
+
+When the crate targets `wasm32-unknown-unknown` or `wasm32-wasi`:
+
+```toml
+# Cargo.toml
+[lib]
+crate-type = ["cdylib"]  # Required for wasm-pack / browser targets
+
+[profile.release]
+opt-level = "s"    # Optimize for binary size
+lto = true         # Cross-crate dead code elimination
+panic = "abort"    # No unwinding — ~50KB savings, required for WASM targets
+```
+
+```rust
+use wasm_bindgen::prelude::*;
+
+// Expose to JavaScript
+#[wasm_bindgen]
+pub fn greet(name: &str) -> String {
+    format!("Hello, {name}!")
+}
+
+// Return errors as JS exceptions (not panics)
+#[wasm_bindgen]
+pub fn parse(input: &str) -> Result<JsValue, JsError> {
+    let val: serde_json::Value = serde_json::from_str(input)
+        .map_err(|e| JsError::new(&e.to_string()))?;
+    Ok(serde_wasm_bindgen::to_value(&val)?)
+}
+```
+
+**WASM-specific rules:**
+- Never `.unwrap()` in `#[wasm_bindgen]` functions — panics kill the whole module
+- Batch data across the JS↔Wasm boundary — avoid per-element calls in loops
+- Memory passed via raw pointer must have a matching `free` export
+
+> For full wasm-pack build workflow, optimization, and JS integration: see `commands/wasm-build.md` and skills `wasm-patterns`, `wasm-performance`.
+
 ## Reference
 
 See the [Rust Book](https://doc.rust-lang.org/book/), [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/), and [Tokio docs](https://tokio.rs) for deeper coverage.

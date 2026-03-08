@@ -30,6 +30,7 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.scala`, `.sc` | **scala-reviewer** |
 | `.sql`, `.prisma` | **database-reviewer** |
 | `.sh`, `.bash`, `.zsh` | **bash-reviewer** |
+| `.dart` | **flutter-reviewer** |
 | `prompts/`, `*.prompt.md`, `*.prompt.txt` | **prompt-reviewer** |
 
 If changed files span multiple languages, invoke each relevant specialist in parallel.
