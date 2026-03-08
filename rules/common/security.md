@@ -39,6 +39,27 @@ Before ANY commit touching user data:
 - [ ] New PII storage is included in the RTBF erasure function
 - [ ] No new third-party service receiving PII without a signed DPA
 
+## Zero-Trust Obligations (Kubernetes / Microservices)
+
+When operating services in Kubernetes or any multi-service environment, Zero-Trust is mandatory:
+
+- **Service-to-service communication MUST use mTLS** — plain HTTP between services is never acceptable in production. Use Istio (`PeerAuthentication: STRICT`) or Linkerd.
+- **Default-Deny NetworkPolicies required** — every namespace must have a `default-deny-all` NetworkPolicy. Add explicit allowlist rules per-service. No namespace may rely on implicit allow-all.
+- **Secrets MUST NOT be stored in environment variables** — not even via `secretKeyRef`. Use Vault Agent Sidecar, External Secrets Operator (ESO), or equivalent. Secrets in env vars are exposed via `ps aux`, logging, and pod-spec leaks.
+- **Service identity via SPIFFE/SPIRE or Kubernetes Service Accounts** — workloads must have cryptographic identity. Authorization policies must reference principals (SPIFFE SVIDs), not just pod labels.
+- **Authorization Policies: default deny, explicit allow** — Istio `AuthorizationPolicy` with empty spec (deny-all) must exist in every namespace. Each allowed route must be listed explicitly.
+- **No long-lived tokens** — use projected Service Account Tokens with audience binding and short expiry (`expirationSeconds: 3600`). Never mount default service account tokens unnecessarily.
+
+### Zero-Trust Checklist (add to pre-deployment review)
+
+Before ANY service deployment to a production cluster:
+- [ ] `PeerAuthentication` exists and mode is `STRICT` (not `PERMISSIVE`)
+- [ ] `AuthorizationPolicy` deny-all baseline exists in namespace
+- [ ] `NetworkPolicy` default-deny-all exists in namespace
+- [ ] No secrets mounted as environment variables (`env.valueFrom.secretKeyRef`)
+- [ ] Service Account Token uses projected volume with audience + short expiry
+- [ ] Egress NetworkPolicy restricts outbound connections to required endpoints only
+
 ## Security Response Protocol
 
 If security issue found:
