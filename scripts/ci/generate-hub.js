@@ -363,6 +363,7 @@ code { background: var(--badge-bg); padding: 0.15em 0.4em; border-radius: 4px; f
 `;
 
 const SEARCH_JS = `/* clarc Hub — client-side search + filter */
+/* eslint-disable no-undef */
 (function () {
   const searchInput = document.getElementById('search');
   const filterBtns = document.querySelectorAll('.filter-btn');

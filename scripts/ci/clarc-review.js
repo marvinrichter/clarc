@@ -19,7 +19,6 @@
  */
 
 import fs from 'fs';
-import path from 'path';
 
 // GitHub Actions output helper
 function setOutput(name, value) {

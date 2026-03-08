@@ -1,4 +1,5 @@
 /* clarc Hub — client-side search + filter */
+/* eslint-disable no-undef */
 (function () {
   const searchInput = document.getElementById('search');
   const filterBtns = document.querySelectorAll('.filter-btn');
