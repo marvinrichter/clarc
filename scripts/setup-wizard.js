@@ -67,7 +67,7 @@ const GREEN = '\x1b[32m';
 const CYAN = '\x1b[36m';
 const RESET = '\x1b[0m';
 
-const KNOWN_LANGS = ['typescript', 'python', 'go', 'java', 'rust', 'swift', 'ruby', 'elixir', 'cpp', 'php', 'scala', 'r', 'csharp'];
+const KNOWN_LANGS = ['typescript', 'python', 'go', 'java', 'rust', 'swift', 'ruby', 'elixir', 'cpp', 'c', 'csharp', 'kotlin', 'php', 'scala', 'r', 'flutter', 'bash', 'sql'];
 
 function detectLanguages() {
   const cwd = process.cwd();
@@ -87,6 +87,9 @@ function detectLanguages() {
   if (check('build.sbt')) detected.push('scala');
   if (check('DESCRIPTION', 'renv.lock')) detected.push('r');
   if (check('global.json')) detected.push('csharp');
+  if (check('build.gradle', 'build.gradle.kts', 'settings.gradle.kts')) detected.push('kotlin');
+  if (check('pubspec.yaml')) detected.push('flutter');
+  if (check('.sqlfluff', 'dbt_project.yml')) detected.push('sql');
 
   return detected;
 }

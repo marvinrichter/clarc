@@ -142,6 +142,12 @@ detect_languages() {
     [[ -f "$cwd/DESCRIPTION" || -f "$cwd/renv.lock" ]] && detected+=(r)
     # C#
     [[ -f "$cwd/global.json" ]] && detected+=(csharp)
+    # Kotlin (Gradle without Java marker already covered above; standalone Kotlin projects)
+    [[ -f "$cwd/settings.gradle.kts" ]] && ! printf '%s\n' "${detected[@]}" | grep -q '^java$' && detected+=(kotlin)
+    # Flutter / Dart
+    [[ -f "$cwd/pubspec.yaml" ]] && detected+=(flutter)
+    # SQL / dbt
+    [[ -f "$cwd/dbt_project.yml" || -f "$cwd/.sqlfluff" ]] && detected+=(sql)
 
     echo "${detected[@]:-}"
 }
