@@ -11,6 +11,9 @@
  */
 
 import { spawnSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 import { getSessionsDir, getLearnedSkillsDir, findFiles, ensureDir, readFile, log, output, getProjectName } from '../lib/utils.js';
 import { getPackageManager, getSelectionPrompt } from '../lib/package-manager.js';
 import { listAliases } from '../lib/session-aliases.js';
@@ -209,6 +212,127 @@ function filterSessionContent(content, projectName, cwd) {
   return cap(tail);
 }
 
+/**
+ * Parse YAML frontmatter from a Rule markdown file.
+ * Returns { globs, alwaysApply } or null if no frontmatter found.
+ * Pure Node.js — no external dependencies.
+ */
+function parseRuleFrontmatter(content) {
+  if (!content.startsWith('---')) return null;
+  const end = content.indexOf('\n---', 3);
+  if (end === -1) return null;
+  const yaml = content.slice(3, end);
+  const globs = [];
+  let alwaysApply = null;
+
+  for (const line of yaml.split('\n')) {
+    const trimmed = line.trim();
+    // Parse "globs:" list items (- "pattern")
+    const globMatch = trimmed.match(/^-\s+"?([^"]+)"?$/);
+    if (globMatch) {
+      globs.push(globMatch[1]);
+    }
+    if (trimmed.startsWith('alwaysApply:')) {
+      alwaysApply = trimmed.includes('true');
+    }
+  }
+
+  return { globs, alwaysApply };
+}
+
+/**
+ * Simple glob matcher without external deps.
+ * Converts glob patterns to regex and tests against file paths.
+ * Supports * (any char except /), ** (any char incl /), ? (single char).
+ */
+function globMatches(pattern, filePath) {
+  // Normalize slashes
+  const p = filePath.replace(/\\/g, '/');
+  // Convert glob to regex
+  const regexStr = pattern
+    .replace(/\\/g, '/')
+    .replace(/\./g, '\\.')
+    .replace(/\{([^}]+)\}/g, (_, group) => `(${group.split(',').join('|')})`)
+    .replace(/\*\*/g, '__GLOBSTAR__') // placeholder for ** before replacing *
+    .replace(/\*/g, '[^/]*')
+    .replace(/__GLOBSTAR__/g, '.*')
+    .replace(/\?/g, '[^/]');
+  try {
+    return new RegExp(`(^|/)${regexStr}$`).test(p);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Scan installed Rules directories (~/.claude/rules/) for files with
+ * globs frontmatter and check if any project files match.
+ * Returns list of matched rule file paths (relative to rules dir).
+ */
+function detectGlobRules(cwd) {
+  const claudeDir = path.join(os.homedir(), '.claude');
+  const rulesDir = path.join(claudeDir, 'rules');
+  if (!fs.existsSync(rulesDir)) return [];
+
+  // Collect project files via git ls-files (fast, respects .gitignore)
+  let projectFiles = [];
+  try {
+    const r = spawnSync('git', ['ls-files'], { cwd, encoding: 'utf8', stdio: 'pipe', timeout: 5000 });
+    if (r.status === 0 && r.stdout) {
+      projectFiles = r.stdout.trim().split('\n').filter(Boolean);
+    }
+  } catch {
+    // Fallback: skip glob matching if git unavailable
+    return [];
+  }
+
+  if (projectFiles.length === 0) return [];
+
+  const matched = [];
+
+  // Walk all rule .md files
+  function walkDir(dir, rel) {
+    let entries;
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        walkDir(path.join(dir, entry.name), rel ? `${rel}/${entry.name}` : entry.name);
+      } else if (entry.name.endsWith('.md')) {
+        const filePath = path.join(dir, entry.name);
+        const relPath = rel ? `${rel}/${entry.name}` : entry.name;
+        const content = (() => {
+          try {
+            return fs.readFileSync(filePath, 'utf8');
+          } catch {
+            return '';
+          }
+        })();
+        const meta = parseRuleFrontmatter(content);
+        if (!meta) return;
+
+        // alwaysApply: true → skip (already loaded by Claude Code natively)
+        if (meta.alwaysApply === true) return;
+
+        // No globs → skip
+        if (meta.globs.length === 0) return;
+
+        // Check if any project file matches any glob
+        const hit = meta.globs.some(glob => projectFiles.some(pf => globMatches(glob, pf)));
+        if (hit) {
+          matched.push(relPath);
+        }
+      }
+    }
+  }
+
+  walkDir(rulesDir, '');
+  return matched;
+}
+
 async function main() {
   const sessionsDir = getSessionsDir();
   const learnedDir = getLearnedSkillsDir();
@@ -290,6 +414,13 @@ async function main() {
     }
   } else {
     log('[SessionStart] No specific project type detected');
+  }
+
+  // Glob-based Rule activation: detect which installed rules match current project files
+  const matchedRules = detectGlobRules(process.cwd());
+  if (matchedRules.length > 0) {
+    log(`[SessionStart] Glob-matched rules: ${matchedRules.join(', ')}`);
+    output(`Active glob-rules (auto-detected for this project): ${matchedRules.join(', ')}`);
   }
 
   process.exit(0);

@@ -1,3 +1,7 @@
+---
+name: mlops-patterns
+description: Skill: MLOps Patterns
+---
 # Skill: MLOps Patterns
 
 ## When to Activate

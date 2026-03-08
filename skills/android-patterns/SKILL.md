@@ -1,3 +1,7 @@
+---
+name: android-patterns
+description: Skill: Android Patterns (Jetpack Compose)
+---
 # Skill: Android Patterns (Jetpack Compose)
 
 ## When to Activate

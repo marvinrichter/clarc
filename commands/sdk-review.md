@@ -248,4 +248,4 @@ Recommendation: Fix HIGH issue before publishing. MEDIUM issues in next MINOR re
 - Skill: `skills/sdk-design-patterns/` — patterns and code examples
 - Skill: `skills/api-contract/` — OpenAPI spec authoring
 - Skill: `skills/contract-testing/` — Pact and OpenAPI contract tests
-- Command: `/api-review` — review the underlying API before reviewing the SDK
+- Command: `/code-review` — review the underlying API before reviewing the SDK

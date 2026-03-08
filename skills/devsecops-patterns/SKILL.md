@@ -1,3 +1,7 @@
+---
+name: devsecops-patterns
+description: Skill: DevSecOps & Security Automation
+---
 # Skill: DevSecOps & Security Automation
 
 DevSecOps integrates security into every phase of the SDLC — shifting left from post-release penetration tests to pre-commit hooks and PR gates. Security is continuous, automated, developer-friendly, and not a final checkpoint.

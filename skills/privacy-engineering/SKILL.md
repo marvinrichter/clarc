@@ -1,3 +1,7 @@
+---
+name: privacy-engineering
+description: Skill: Privacy Engineering
+---
 # Skill: Privacy Engineering
 
 ## When to Activate

@@ -205,11 +205,13 @@ pipdeptree 2>/dev/null || pip install pipdeptree && pipdeptree
 ## Phase 2: License Compliance
 
 ### Issues Found
+
 | Package | License | Risk | Action |
 |---------|---------|------|--------|
 | [name] | GPL-3.0 | CRITICAL | Replace with [alternative] |
 
 ### License Distribution
+
 | License | Count |
 |---------|-------|
 | MIT | [N] |
@@ -221,6 +223,7 @@ pipdeptree 2>/dev/null || pip install pipdeptree && pipdeptree
 ## Phase 3: Supply Chain Risk
 
 ### Pinning Issues
+
 | Location | Issue | Fix |
 |----------|-------|-----|
 | `package.json` | `^4.18.2` range | Pin to exact version |

@@ -107,7 +107,7 @@ function checkCommandsToAgents() {
 function checkAgentsToSkills() {
   const agentFiles = listFiles(AGENTS_DIR, '.md');
   // Match "skill: foo-bar" or "skills/foo-bar" but not "skills/foo-bar/baz" (sub-paths)
-  const skillRefPattern = /\bskills?[:\/]\s*([a-z][\w-]+)(?:\/SKILL\.md)?(?!\s*\/\s*\w)/gi;
+  const skillRefPattern = /\bskills?[:/]\s*([a-z][\w-]+)(?:\/SKILL\.md)?(?!\s*\/\s*\w)/gi;
 
   for (const file of agentFiles) {
     const content = readFile(path.join(AGENTS_DIR, file));
@@ -115,7 +115,7 @@ function checkAgentsToSkills() {
 
     const refs = findMatches(content, skillRefPattern);
     // Filter out common non-skill words
-    const NON_SKILL = new Set(['md', 'json', 'yaml', 'js', 'common', 'commands', 'agents']);
+    const NON_SKILL = new Set(['md', 'json', 'yaml', 'js', 'common', 'commands', 'agents', 'INDEX', 'Knowledge', 'index', 'knowledge']);
     for (const ref of refs) {
       if (NON_SKILL.has(ref)) continue;
       if (!fs.existsSync(path.join(SKILLS_DIR, ref, 'SKILL.md'))) {

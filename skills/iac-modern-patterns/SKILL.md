@@ -1,3 +1,7 @@
+---
+name: iac-modern-patterns
+description: Skill: Modern IaC Patterns — Pulumi, AWS CDK, Bicep, cdktf
+---
 # Skill: Modern IaC Patterns — Pulumi, AWS CDK, Bicep, cdktf
 
 ## When to Activate

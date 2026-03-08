@@ -367,5 +367,5 @@ async function loadWasm(url: string) {
 
 - `wasm-patterns` — wasm-bindgen, WASI, Component Model, JS integration
 - `rust-patterns` — Rust idioms that affect WASM output
-- wasm-opt docs: https://github.com/WebAssembly/binaryen
-- Rust WASM book: https://rustwasm.github.io/book/
+- wasm-opt docs: <https://github.com/WebAssembly/binaryen>
+- Rust WASM book: <https://rustwasm.github.io/book/>

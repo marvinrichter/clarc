@@ -97,6 +97,7 @@ grep -rn "FAIL_ON_UNKNOWN_PROPERTIES\|strict:\s*true\|additionalProperties.*fals
 ```
 
 **Schema change classification:**
+
 | Change | Compatible? | Action |
 |--------|-------------|--------|
 | Add optional field | ✅ Yes | Safe to deploy |

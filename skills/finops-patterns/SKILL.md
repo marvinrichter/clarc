@@ -1,3 +1,7 @@
+---
+name: finops-patterns
+description: Skill: FinOps & Cloud Cost Engineering
+---
 # Skill: FinOps & Cloud Cost Engineering
 
 FinOps is the practice of bringing financial accountability to cloud spending. Engineering, Finance, and Business collaborate to understand and optimize cloud costs without sacrificing performance or speed.

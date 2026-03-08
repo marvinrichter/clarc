@@ -81,7 +81,7 @@ Assess prose quality of descriptions and examples.
    - No placeholder text ("TODO", "TBD", "coming soon")
 2. Check examples for realism:
    - UUIDs look like real UUIDs (not "123" or "test")
-   - Email addresses look real (not "email@email.com")
+   - Email addresses look real (not `email@email.com`)
    - Timestamps are ISO 8601 (not "2023-1-1")
    - Amounts are plausible (not 0 or 999999)
 3. Check `info.description` — is there a meaningful API overview?

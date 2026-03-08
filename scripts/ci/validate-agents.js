@@ -12,7 +12,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const AGENTS_DIR = path.join(__dirname, '../../agents');
+const DEFAULT_AGENTS_DIR = path.join(__dirname, '../../agents');
+const AGENTS_DIR = process.env.AGENTS_DIR_OVERRIDE || DEFAULT_AGENTS_DIR;
 const AGENTS_MD = path.join(__dirname, '../../rules/common/agents.md');
 const SESSION_START = path.join(__dirname, '../hooks/session-start.js');
 const MCP_SERVER = path.join(__dirname, '../../mcp-server/index.js');
@@ -148,7 +149,7 @@ function checkAgentsMdCompleteness(agentFiles) {
 function checkSkillMapExistence() {
   const sources = [
     { file: SESSION_START, label: 'session-start.js' },
-    { file: MCP_SERVER, label: 'mcp-server/index.js' },
+    { file: MCP_SERVER, label: 'mcp-server/index.js' }
   ];
 
   let checkedCount = 0;
@@ -182,9 +183,13 @@ function checkSkillMapExistence() {
 // ─── Run all checks ─────────────────────────────────────────────────────────
 
 const agentFiles = checkFrontmatter();
-checkAgentsMdCompleteness(agentFiles);
-checkSkillMapExistence();
+// Checks B and C are project-wide checks — only run against the real agents dir
+if (AGENTS_DIR === DEFAULT_AGENTS_DIR) {
+  checkAgentsMdCompleteness(agentFiles);
+  checkSkillMapExistence();
+}
 
 if (hasErrors) {
   process.exit(1);
 }
+console.log(`Validated ${(agentFiles || []).length} agent files`);

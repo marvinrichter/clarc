@@ -473,5 +473,5 @@ export default {
 
 - `wasm-performance` — size optimization (wasm-opt), profiling, memory management
 - `rust-patterns` — Rust idioms relevant to WASM targets
-- wasm-pack docs: https://rustwasm.github.io/wasm-pack/
-- wasm-bindgen guide: https://rustwasm.github.io/wasm-bindgen/
+- wasm-pack docs: <https://rustwasm.github.io/wasm-pack/>
+- wasm-bindgen guide: <https://rustwasm.github.io/wasm-bindgen/>

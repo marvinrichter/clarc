@@ -61,6 +61,18 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/auto-checkpoint.js\"",
+            "async": true,
+            "timeout": 15
+          }
+        ],
+        "description": "Auto-checkpoint: create a lightweight git checkpoint after every Edit/Write for /undo support"
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {

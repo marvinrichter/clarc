@@ -1,3 +1,7 @@
+---
+name: zero-trust-patterns
+description: Skill: Zero-Trust Patterns
+---
 # Skill: Zero-Trust Patterns
 
 ## When to Activate
