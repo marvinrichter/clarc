@@ -77,7 +77,10 @@ function detectLanguages() {
   if (check('tsconfig.json', 'package.json')) detected.push('typescript');
   if (check('pyproject.toml', 'requirements.txt', 'setup.py', 'Pipfile')) detected.push('python');
   if (check('go.mod')) detected.push('go');
-  if (check('pom.xml', 'build.gradle', 'build.gradle.kts')) detected.push('java');
+  // Java: Maven or Groovy Gradle (build.gradle without .kts = Java convention)
+  if (check('pom.xml', 'build.gradle') || (check('build.gradle.kts') && !check('settings.gradle.kts'))) detected.push('java');
+  // Kotlin: Kotlin DSL (settings.gradle.kts is the discriminating marker)
+  if (check('settings.gradle.kts')) detected.push('kotlin');
   if (check('Cargo.toml')) detected.push('rust');
   if (check('Package.swift')) detected.push('swift');
   if (check('Gemfile')) detected.push('ruby');
@@ -87,7 +90,6 @@ function detectLanguages() {
   if (check('build.sbt')) detected.push('scala');
   if (check('DESCRIPTION', 'renv.lock')) detected.push('r');
   if (check('global.json')) detected.push('csharp');
-  if (check('build.gradle', 'build.gradle.kts', 'settings.gradle.kts')) detected.push('kotlin');
   if (check('pubspec.yaml')) detected.push('flutter');
   if (check('.sqlfluff', 'dbt_project.yml')) detected.push('sql');
 

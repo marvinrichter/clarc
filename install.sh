@@ -122,8 +122,13 @@ detect_languages() {
     [[ -f "$cwd/pyproject.toml" || -f "$cwd/requirements.txt" || -f "$cwd/setup.py" || -f "$cwd/Pipfile" ]] && detected+=(python)
     # Go
     [[ -f "$cwd/go.mod" ]] && detected+=(go)
-    # Java / Kotlin / Gradle
-    [[ -f "$cwd/pom.xml" || -f "$cwd/build.gradle" || -f "$cwd/build.gradle.kts" ]] && detected+=(java)
+    # Java: Maven or Groovy Gradle; build.gradle.kts alone is ambiguous — only Java if no settings.gradle.kts
+    if [[ -f "$cwd/pom.xml" || -f "$cwd/build.gradle" ]] || \
+       [[ -f "$cwd/build.gradle.kts" && ! -f "$cwd/settings.gradle.kts" ]]; then
+        detected+=(java)
+    fi
+    # Kotlin: settings.gradle.kts is the Kotlin DSL discriminating marker
+    [[ -f "$cwd/settings.gradle.kts" ]] && detected+=(kotlin)
     # Rust
     [[ -f "$cwd/Cargo.toml" ]] && detected+=(rust)
     # Swift
