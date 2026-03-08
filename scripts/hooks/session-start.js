@@ -121,7 +121,7 @@ const STOP_WORDS = new Set([
  * Returns a Set of lowercase tokens weighted by frequency (TF-style).
  * Falls back gracefully if git is unavailable.
  */
-function extractGitKeywords(cwd, limit = 30) {
+function extractGitKeywords(cwd, limit = 15) {
   try {
     const result = spawnSync('git', ['log', '--oneline', `-${limit}`], {
       cwd,
