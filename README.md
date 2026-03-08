@@ -1,7 +1,7 @@
 # clarc
 
 **A workflow OS for Claude Code.**
-50 agents · 193 skills · 115 commands · 19 language rule sets · continuous learning flywheel.
+59 agents · 208 skills · 128 commands · 20 language rule sets · continuous learning flywheel.
 
 ---
 
@@ -63,10 +63,10 @@ git clone git@github.com:marvinrichter/clarc.git ~/.clarc
 
 | Component | Count | Purpose |
 |-----------|------:|---------|
-| **Agents** | 50 | Specialized subagents — delegate planning, review, testing, debugging |
-| **Skills** | 193 | Domain knowledge — patterns, conventions, examples for specific tasks |
-| **Commands** | 115 | Slash commands — repeatable workflows triggered by `/command` |
-| **Rules** | 19 | Language rule sets — always-on coding standards and checklists |
+| **Agents** | 59 | Specialized subagents — delegate planning, review, testing, debugging |
+| **Skills** | 208 | Domain knowledge — patterns, conventions, examples for specific tasks |
+| **Commands** | 128 | Slash commands — repeatable workflows triggered by `/command` |
+| **Rules** | 20 | Language rule sets — always-on coding standards and checklists |
 | **Hooks** | — | Background automations — format, lint, persist state, weekly digests |
 
 ---
@@ -94,6 +94,15 @@ Agents are delegated automatically based on what you're doing. You can also invo
 | `solution-designer` | Generates 2–4 solution options with trade-off analysis |
 | `refactor-cleaner` | Identifies and removes dead code safely |
 | `doc-updater` | Keeps documentation in sync with code changes |
+| `android-reviewer` | Jetpack Compose, Hilt scopes, Room migrations, Coroutines |
+| `gitops-architect` | Designs GitOps setup — ArgoCD/Flux, env strategy, progressive delivery |
+| `finops-advisor` | Cloud cost analysis, rightsizing, ROI-prioritized recommendations |
+| `devsecops-reviewer` | SAST, secrets detection, IaC misconfigurations, OWASP Top 10 |
+| `mlops-architect` | ML serving stack, monitoring, drift detection, A/B testing plans |
+| `sdk-architect` | SDK architecture, multi-language generation, release process |
+| `frontend-architect` | Micro-frontend architecture, Module Federation, team topology |
+| `data-architect` | Data Mesh design, domain products, migration from monolith |
+| `docs-architect` | API documentation strategy, Mintlify/Docusaurus, Divio structure |
 
 ---
 
@@ -124,12 +133,27 @@ Agents are delegated automatically based on what you're doing. You can also invo
 ### Engineering operations
 
 ```
-/slo           Define SLIs, SLOs, and error budget alerts
-/instrument    Add analytics event tracking to code
-/experiment    Design a statistically valid A/B test
-/incident      Open and manage a production incident
-/deps          Dependency audit and upgrade planner
-/setup-ci      Generate GitHub Actions CI/CD pipeline
+/slo               Define SLIs, SLOs, and error budget alerts
+/instrument        Add analytics event tracking to code
+/experiment        Design a statistically valid A/B test
+/incident          Open and manage a production incident
+/deps              Dependency audit and upgrade planner
+/setup-ci          Generate GitHub Actions CI/CD pipeline
+/security          Full DevSecOps scan — SAST, secrets, deps, DAST, OPA
+/gitops-review     Review GitOps config — sync, secrets, drift, progressive delivery
+/finops-audit      Cloud cost audit — tagging, rightsizing, anomalies, Infracost
+/zero-trust-review Service mesh & mTLS review — identity, NetworkPolicies, east-west
+/iac-review        IaC code review — Pulumi/CDK/Terraform abstractions, compliance
+/mlops-review      MLOps audit — experiment tracking, serving, drift detection
+/privacy-audit     Privacy engineering audit — PII scan, retention, RTBF, consent
+/android-review    Android/Compose review — UDF, Hilt, Room, Coroutines
+/mobile-release    Mobile release workflow — signing, beta, store submission
+/webrtc-review     WebRTC architecture review — TURN, signaling, simulcast, security
+/frontend-arch-review  Micro-frontend architecture review — federation, routing, DX
+/data-mesh-review  Data Mesh review — domain boundaries, contracts, quality, lineage
+/sdk-review        SDK design review — ergonomics, backward compat, error design
+/docs-review       API documentation audit — completeness, playground, changelog
+/onboard           Generate onboarding materials — CONTRIBUTING.md, architecture tour
 ```
 
 ### Learning & evolution
@@ -147,17 +171,23 @@ Agents are delegated automatically based on what you're doing. You can also invo
 
 Skills are loaded on-demand when Claude detects they're relevant. They encode domain knowledge in a structured format: when to use, patterns, examples, anti-patterns.
 
-**Language patterns:** TypeScript · Python · Go · Java · Rust · Swift · C++ · Ruby · Elixir · Django · Spring Boot · React Native · SwiftUI
+**Language patterns:** TypeScript · Python · Go · Java · Rust · Swift · C++ · Ruby · Elixir · Django · Spring Boot · React Native · SwiftUI · Android/Jetpack Compose · Flutter · WebAssembly · Kotlin · Scala · PHP · R · C# · Bash
 
-**Architecture:** Hexagonal · DDD · Strategic DDD · API design · gRPC · GraphQL · WebSockets
+**Architecture:** Hexagonal · DDD · Strategic DDD · API design · gRPC · GraphQL · WebSockets · Micro-Frontends/Module Federation · Zero-Trust/Service Mesh · Data Mesh · CQRS/Event Sourcing · Multi-Agent Systems
 
-**Data:** PostgreSQL · DuckDB · NoSQL · Redis/caching · dbt + Dagster · database migrations
+**Data:** PostgreSQL · DuckDB · NoSQL · Redis/caching · database migrations · Data Mesh (Great Expectations, Soda, Delta Lake, Iceberg)
 
-**Testing:** TDD workflow · E2E (Playwright) · load testing · eval harness
+**Infrastructure:** Terraform · Pulumi · AWS/Azure CDK · Kubernetes · Docker · GitOps (ArgoCD, Flux) · FinOps (Infracost, OpenCost) · CI/CD · deployment patterns · Edge/Serverless
 
-**Ops:** Observability · Kubernetes · Terraform · CI/CD · Docker · deployment patterns · SLO workflow
+**Testing:** TDD workflow · E2E (Playwright) · contract testing (Pact) · visual regression · load testing · eval harness · chaos engineering · MLOps (A/B model testing, drift detection)
 
-**Product engineering:** Analytics workflow · experiment design · feature flags · A/B testing · compliance & audit logs · GDPR
+**Security:** DevSecOps (SAST/DAST, OPA/Kyverno) · supply chain (SBOM/SLSA) · privacy engineering (PII, Presidio) · GDPR · auth patterns · Zero-Trust
+
+**AI/ML:** LLM app patterns · RAG · eval harness · MLOps · cost-aware pipelines · foundation models · prompt engineering · SDK design
+
+**Ops:** Observability · SLO workflow · incident response · performance profiling · platform engineering · developer onboarding
+
+**Product engineering:** Analytics workflow · experiment design · feature flags · A/B testing · compliance & audit logs · API documentation engineering
 
 **Team process:** OKRs · sprint planning · DORA metrics · roadmapping · working agreements
 
@@ -190,16 +220,26 @@ Rules are always-on guidelines loaded into every session. They complement skills
 
 ```
 rules/
-├── common/          # Universal — immutability, error handling, security checklist
+├── common/          # Universal — immutability, error handling, security, GitOps, onboarding
 ├── typescript/      # TS/JS — strict typing, ESM, React patterns
 ├── python/          # PEP 8, type hints, async idioms
-├── golang/          # Idiomatic Go, error wrapping, goroutines
+├── go/              # Idiomatic Go, error wrapping, goroutines
 ├── swift/           # Swift 6, actors, value types
 ├── java/            # Spring Boot, JPA, hexagonal architecture
 ├── rust/            # Ownership, Result/Option, unsafe rules
 ├── cpp/             # C++17/20, RAII, smart pointers
 ├── ruby/            # RuboCop, Rails conventions, RSpec, Brakeman
-└── elixir/          # mix format, Credo, OTP patterns, Sobelow
+├── elixir/          # mix format, Credo, OTP patterns, Sobelow
+├── kotlin/          # Coroutines, null safety, sealed classes
+├── bash/            # set -euo pipefail, quoting, shellcheck
+├── scala/           # Functional idioms, ADTs, effect systems
+├── c/               # C11/C17, memory safety, opaque pointers
+├── php/             # PHP 8.2+, strict types, PSR-12
+├── r/               # tidyverse, native pipe, renv
+├── csharp/          # C# 12/.NET 8, nullable, records
+├── sql/             # Query optimization, indexing, migrations
+├── flutter/         # Widget lifecycle, state management, null safety
+└── android/         # Compose UDF, Hilt scopes, Room, Coroutines
 ```
 
 ---
@@ -235,7 +275,7 @@ clarc/
 ├── commands/        # Slash commands (/tdd, /plan, /breakdown, ...)
 ├── hooks/           # Hook configurations (JSON)
 ├── scripts/hooks/   # Hook implementations (Node.js)
-├── rules/           # Language rule sets (18 languages)
+├── rules/           # Language rule sets (20 languages)
 ├── mcp-configs/     # MCP server configurations
 ├── mcp-server/      # clarc as an MCP server (4 tools)
 ├── .opencode/       # OpenCode commands and agent prompts

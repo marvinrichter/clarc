@@ -1,6 +1,6 @@
 {
   "name": "clarc",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "description": "Production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.",
   "keywords": [
     "claude-code",
