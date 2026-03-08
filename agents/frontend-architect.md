@@ -1,7 +1,7 @@
 ---
 name: frontend-architect
 description: Micro-Frontend architecture specialist. Designs MFE system architecture — team topology, integration strategy selection, routing, shared state minimization, design system integration, and migration plan from monolith. Use when building multi-team frontend systems or evaluating MFE feasibility.
-tools: ["- Read", "Glob", "Grep", "Bash"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
 ---
 
