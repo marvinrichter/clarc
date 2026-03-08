@@ -176,6 +176,26 @@ jobs:
         run: node scripts/ci/validate-rules.js
         continue-on-error: false
 
+      - name: Validate wiring (cross-component references)
+        run: node scripts/ci/validate-wiring.js
+        continue-on-error: false
+
+      - name: Validate naming conventions
+        run: node scripts/ci/validate-naming.js
+        continue-on-error: false
+
+      - name: Generate coverage map (informational)
+        run: node scripts/ci/generate-coverage-map.js
+        continue-on-error: true
+
+      - name: Upload coverage map
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-map
+          path: docs/system-review/coverage-map.md
+          if-no-files-found: ignore
+
   security:
     name: Security Scan
     runs-on: ubuntu-latest
