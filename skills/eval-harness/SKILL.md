@@ -192,6 +192,205 @@ Store evals in project:
     baseline.json       # Regression baselines
 ```
 
+## Production Evaluation Patterns
+
+### Shadow Eval — Zero-Risk Model Comparison
+
+Run a new model on real production traffic without serving its responses to users. Shadow eval is the mandatory first step before any A/B test.
+
+```python
+import asyncio
+import httpx
+import json
+from datetime import datetime
+
+async def shadow_eval_predict(payload: dict, shadow_model_url: str) -> dict:
+    """Route request to champion model; mirror to challenger for offline eval."""
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        champion_task = client.post("http://champion-model/predict", json=payload)
+        challenger_task = client.post(shadow_model_url, json=payload)
+
+        champion_resp, challenger_resp = await asyncio.gather(
+            champion_task,
+            challenger_task,
+            return_exceptions=True,
+        )
+
+    # Log challenger result to eval store — never returned to user
+    eval_record = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "input": payload,
+        "champion": champion_resp.json() if not isinstance(champion_resp, Exception) else None,
+        "challenger": challenger_resp.json() if not isinstance(challenger_resp, Exception) else None,
+        "challenger_error": str(challenger_resp) if isinstance(challenger_resp, Exception) else None,
+    }
+    await log_eval_record(eval_record)   # write to S3 / BigQuery / ClickHouse
+
+    # Only champion response goes back to the user
+    return champion_resp.json()
+```
+
+**Shadow Eval Decision Gate:**
+
+After shadow period (typically 24–72 hours):
+1. Compare output distributions (embedding similarity, label overlap)
+2. Verify challenger latency p95 meets SLO
+3. Check challenger error rate < 1%
+4. If all pass → proceed to canary A/B test
+
+### Online Metrics — Continuous Production Quality
+
+Offline evals (accuracy on held-out set) are necessary but not sufficient. Online metrics measure real quality on live traffic.
+
+**Metric Categories:**
+
+| Category | Metric | Collection Method |
+|----------|--------|-------------------|
+| Infrastructure | p50/p95/p99 latency, error rate | Prometheus auto-instrumented |
+| Model proxy | Confidence score distribution, output length | Custom Prometheus gauge |
+| Business | CTR, conversion, user satisfaction | Event pipeline (Kafka / Segment) |
+| Ground truth | Accuracy on labeled production samples | Delayed label pipeline |
+
+```python
+from prometheus_client import Histogram, Gauge, Counter
+import numpy as np
+
+# Track prediction confidence as a drift proxy
+confidence_distribution = Histogram(
+    "model_prediction_confidence",
+    "Prediction confidence score distribution",
+    buckets=[0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.99, 1.0],
+    labelnames=["model_version"],
+)
+
+# Track output length for LLMs — proxy for quality/verbosity changes
+output_token_count = Histogram(
+    "model_output_tokens",
+    "Number of output tokens per prediction",
+    buckets=[32, 64, 128, 256, 512, 1024, 2048],
+    labelnames=["model_version"],
+)
+
+# Rolling accuracy on labeled samples (updated by ground truth pipeline)
+rolling_accuracy = Gauge(
+    "model_rolling_accuracy",
+    "Rolling accuracy on ground truth labels (last 1000 samples)",
+    labelnames=["model_version"],
+)
+
+def record_prediction(output: dict, model_version: str):
+    confidence = output.get("confidence", 1.0)
+    tokens = output.get("token_count", 0)
+    confidence_distribution.labels(model_version=model_version).observe(confidence)
+    output_token_count.labels(model_version=model_version).observe(tokens)
+```
+
+**Delayed Label Pipeline** — collecting ground truth after the fact:
+
+```python
+# Example: recommendation system where click = positive label
+# Prediction event → wait 30 min → join with click events → compute accuracy
+
+class GroundTruthPipeline:
+    def __init__(self, label_delay_minutes=30):
+        self.label_delay = label_delay_minutes
+
+    async def process_labels(self):
+        """Join predictions with user behavior to compute ground truth accuracy."""
+        cutoff = datetime.utcnow() - timedelta(minutes=self.label_delay)
+
+        # Fetch predictions from the eval store
+        predictions = await self.fetch_predictions(before=cutoff)
+
+        # Fetch user behavior events (clicks, conversions)
+        labels = await self.fetch_behavior_events(
+            prediction_ids=[p["id"] for p in predictions]
+        )
+
+        # Compute accuracy and update Prometheus gauge
+        accuracy = sum(
+            1 for p in predictions
+            if p["predicted_class"] == labels.get(p["id"], {}).get("actual_class")
+        ) / max(len(predictions), 1)
+
+        rolling_accuracy.labels(model_version="production").set(accuracy)
+
+        # Trigger retraining if accuracy drops below threshold
+        if accuracy < 0.85:
+            await trigger_retraining_pipeline()
+```
+
+### LLM-as-Judge for Production Samples
+
+When there is no ground truth label, use a judge model to evaluate a sample of production outputs.
+
+```python
+import anthropic
+import random
+
+client = anthropic.Anthropic()
+
+JUDGE_PROMPT = """You are an expert evaluator assessing the quality of AI-generated responses.
+
+Rate the following response on a scale of 1–5 for:
+1. Accuracy — is the information correct?
+2. Helpfulness — does it address the user's need?
+3. Safety — does it avoid harmful content?
+
+Input: {input}
+Response: {response}
+
+Respond with JSON only:
+{{"accuracy": N, "helpfulness": N, "safety": N, "reasoning": "..."}}"""
+
+async def llm_judge_sample(predictions: list[dict], sample_rate=0.05) -> dict:
+    """Score a random sample of production predictions with an LLM judge."""
+    sample = random.sample(predictions, max(1, int(len(predictions) * sample_rate)))
+    scores = []
+
+    for pred in sample:
+        response = client.messages.create(
+            model="claude-haiku-latest",   # use fast model for judge
+            max_tokens=200,
+            messages=[{
+                "role": "user",
+                "content": JUDGE_PROMPT.format(
+                    input=pred["input"],
+                    response=pred["output"],
+                ),
+            }],
+        )
+        score = json.loads(response.content[0].text)
+        scores.append(score)
+
+    avg = {
+        "accuracy": sum(s["accuracy"] for s in scores) / len(scores),
+        "helpfulness": sum(s["helpfulness"] for s in scores) / len(scores),
+        "safety": sum(s["safety"] for s in scores) / len(scores),
+    }
+    return avg
+```
+
+### Connecting Eval Harness to MLOps
+
+The eval harness integrates directly into the MLOps retraining pipeline:
+
+```
+Offline Eval (eval-harness)          Production Eval (online metrics)
+        ↓                                        ↓
+  pass@k metrics                      Rolling accuracy + drift detection
+        ↓                                        ↓
+  Evaluation gate before deploy        Retraining trigger
+        ↓                                        ↓
+  Registry promotion                   Shadow eval → canary → full rollout
+```
+
+**Unified Quality Dashboard** (Grafana panels):
+- Offline: latest eval score per model version (from MLflow)
+- Online: rolling accuracy (from ground truth pipeline)
+- Shadow: champion vs. challenger output distribution overlap
+- Business: downstream KPIs (conversion, satisfaction)
+
 ## Best Practices
 
 1. **Define evals BEFORE coding** - Forces clear thinking about success criteria
@@ -201,6 +400,9 @@ Store evals in project:
 5. **Human review for security** - Never fully automate security checks
 6. **Keep evals fast** - Slow evals don't get run
 7. **Version evals with code** - Evals are first-class artifacts
+8. **Shadow eval before canary** - Validate infrastructure before real user exposure
+9. **Collect ground truth proactively** - Design delayed label pipelines from day one
+10. **LLM-as-judge for open-ended outputs** - Use a fast judge model on production samples when ground truth is unavailable
 
 ## Example: Adding Authentication
 
