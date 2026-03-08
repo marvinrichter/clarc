@@ -14,6 +14,16 @@ import fs from 'fs';
 import os from 'os';
 import { getSessionsDir, getDateString, getTimeString, getSessionIdShort, ensureDir, readFile, writeFile, replaceInFile, log } from '../lib/utils.js';
 
+// Cost estimation constants (Claude Sonnet, 2026 pricing)
+const SONNET_INPUT_USD_PER_M = 3.0;
+const SONNET_OUTPUT_USD_PER_M = 15.0;
+// Empirical heuristic: ~1200 input + ~300 output tokens per tool call on average
+const EST_INPUT_TOKENS_PER_CALL = 1200;
+const EST_OUTPUT_TOKENS_PER_CALL = 300;
+
+const CLARC_DIR = path.join(os.homedir(), '.clarc');
+const COST_LOG_FILE = path.join(CLARC_DIR, 'cost-log.jsonl');
+
 /**
  * Extract a meaningful summary from the session transcript.
  * Reads the JSONL transcript and pulls out key information:
@@ -89,6 +99,42 @@ function extractSessionSummary(transcriptPath) {
   };
 }
 
+/**
+ * Estimate session cost from tool call count and append to ~/.clarc/cost-log.jsonl.
+ * Tool calls are the only reliable proxy we have without direct API access.
+ * Disclaimer is always shown so users know this is an approximation.
+ */
+function logSessionCost(toolCallCount, sessionId, date) {
+  try {
+    if (toolCallCount === 0) return;
+
+    const estInputTokens = toolCallCount * EST_INPUT_TOKENS_PER_CALL;
+    const estOutputTokens = toolCallCount * EST_OUTPUT_TOKENS_PER_CALL;
+    const estUsd = (estInputTokens / 1_000_000) * SONNET_INPUT_USD_PER_M + (estOutputTokens / 1_000_000) * SONNET_OUTPUT_USD_PER_M;
+
+    const entry = {
+      date,
+      session_id: sessionId,
+      tool_calls: toolCallCount,
+      estimated_input_tokens: estInputTokens,
+      estimated_output_tokens: estOutputTokens,
+      estimated_usd: Math.round(estUsd * 10000) / 10000,
+      project: path.basename(process.cwd()),
+      disclaimer: 'Estimate only — exact costs at console.anthropic.com'
+    };
+
+    if (!fs.existsSync(CLARC_DIR)) {
+      fs.mkdirSync(CLARC_DIR, { recursive: true });
+    }
+    fs.appendFileSync(COST_LOG_FILE, JSON.stringify(entry) + '\n', 'utf8');
+
+    const totalK = Math.round((estInputTokens + estOutputTokens) / 100) / 10;
+    log(`[SessionEnd] Cost estimate: ${toolCallCount} tool calls | ~${totalK}k tokens | ~$${entry.estimated_usd.toFixed(4)} (Schätzung)`);
+  } catch (err) {
+    log(`[SessionEnd] Cost logging error: ${err.message}`);
+  }
+}
+
 // Read hook input from stdin (Claude Code provides transcript_path via stdin JSON)
 const MAX_STDIN = 1024 * 1024;
 let stdinData = '';
@@ -142,6 +188,10 @@ async function main() {
       log(`[SessionEnd] Transcript not found: ${transcriptPath}`);
     }
   }
+
+  // Token/cost tracking
+  const toolCallCount = summary ? summary.toolsUsed.length : 0;
+  logSessionCost(toolCallCount, shortId, today);
 
   if (fs.existsSync(sessionFile)) {
     // Update existing session file
