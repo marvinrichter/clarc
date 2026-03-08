@@ -62,6 +62,10 @@ CHECK_ONLY=false
 ENABLE_LEARNING=false
 LEARNING_FLAG_SET=false
 USE_SYMLINKS=true   # default: symlink files, not copy
+# On native Windows (Git Bash / Cygwin / MSYS2) symlinks require admin rights → use copy
+if [[ "${OSTYPE:-}" == msys* || "${OSTYPE:-}" == cygwin* || "${OSTYPE:-}" == mingw* ]]; then
+    USE_SYMLINKS=false
+fi
 
 while [[ $# -gt 0 ]]; do
     case "${1:-}" in
@@ -178,7 +182,7 @@ install_files() {
         # Non-symlink exists: only skip if content differs (= user customization).
         # If content matches the source it's an old clarc copy → replace with symlink.
         if [[ -e "$dest" && ! -L "$dest" ]]; then
-            if diff -q "$f" "$dest" > /dev/null 2>&1; then
+            if cmp -s "$f" "$dest"; then
                 rm "$dest"   # old copy identical to source → upgrade to symlink below
             else
                 echo "  skip $name (custom file, content differs — not overwriting)"
