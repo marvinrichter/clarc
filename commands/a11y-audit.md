@@ -180,6 +180,7 @@ grep -rn 'id="' src/ --include="*.tsx" | sed 's/.*id="\([^"]*\)".*/\1/' | sort |
 ```
 
 **Common ARIA mistakes:**
+
 | Pattern | Problem | Fix |
 |---------|---------|-----|
 | `<div role="button">` | Missing `tabindex="0"` and keyboard handler | Use `<button>` instead |

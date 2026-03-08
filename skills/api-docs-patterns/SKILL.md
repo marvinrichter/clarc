@@ -424,6 +424,7 @@ app.use('/docs', apiReference({
 ```
 
 **Scalar vs Swagger UI:**
+
 | Feature | Scalar | Swagger UI |
 |---------|--------|------------|
 | Design quality | Modern, polished | Dated |
@@ -593,6 +594,7 @@ jobs:
 ```
 
 **release-please vs semantic-release:**
+
 | Aspect | release-please | semantic-release |
 |--------|---------------|-----------------|
 | Release trigger | PR merge (human in the loop) | Push to main (fully automatic) |

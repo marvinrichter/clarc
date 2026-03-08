@@ -51,3 +51,6 @@ marketing/
 
 # Competitor analyses (private)
 docs/analysis/
+
+# Hook runtime logs
+hooks.log

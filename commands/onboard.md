@@ -97,7 +97,7 @@ cd <repo>
 
 | Command | Description |
 |---------|-------------|
-<list from package.json scripts / Makefile / pyproject.toml>
+| `<command>` | `<from package.json scripts / Makefile / pyproject.toml>` |
 
 ## Environment Variables
 

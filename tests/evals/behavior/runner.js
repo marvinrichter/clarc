@@ -72,10 +72,8 @@ function evaluateResponse(responseText, testCase) {
     warnings: []
   };
 
-  const lowerText = responseText.toLowerCase();
-
   // Check expected patterns
-  for (const pattern of (testCase.expected_patterns || [])) {
+  for (const pattern of testCase.expected_patterns || []) {
     const re = new RegExp(pattern, 'i');
     if (!re.test(responseText)) {
       results.passed = false;
@@ -84,7 +82,7 @@ function evaluateResponse(responseText, testCase) {
   }
 
   // Check forbidden patterns
-  for (const pattern of (testCase.forbidden_patterns || [])) {
+  for (const pattern of testCase.forbidden_patterns || []) {
     if (!pattern) continue;
     const re = new RegExp(pattern, 'is');
     if (re.test(responseText)) {
@@ -120,7 +118,8 @@ function loadAgentPrompt(agentName) {
 async function runEvals() {
   fs.mkdirSync(outputDir, { recursive: true });
 
-  const caseFiles = fs.readdirSync(CASES_DIR)
+  const caseFiles = fs
+    .readdirSync(CASES_DIR)
     .filter(f => f.endsWith('.json'))
     .filter(f => !agentFilter || f.startsWith(agentFilter));
 

@@ -290,7 +290,7 @@ curl -X POST http://localhost:7007/api/catalog/locations \
 ## Validation Checklist
 
 - [ ] `yarn dev` starts without errors
-- [ ] Frontend accessible at http://localhost:3000
+- [ ] Frontend accessible at `http://localhost:3000`
 - [ ] Backend health: `curl http://localhost:7007/healthcheck`
 - [ ] GitHub integration connected (check Settings > Integrations in Backstage UI)
 - [ ] First catalog entity visible in Catalog tab

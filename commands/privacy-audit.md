@@ -242,6 +242,7 @@ else:
 ```
 
 Each PII category must document:
+
 | Field | Required | Example |
 |-------|----------|---------|
 | `legal_basis` | Yes | `"contract"`, `"consent"`, `"legitimate_interest"` |

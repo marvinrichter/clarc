@@ -72,6 +72,7 @@ flog app/
 - Nested loops and conditionals cost more than flat code
 
 **Target thresholds:**
+
 | Rating | Cyclomatic Complexity | Action |
 |--------|----------------------|--------|
 | A | 1–5 | Good |

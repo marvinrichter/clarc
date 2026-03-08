@@ -27,14 +27,10 @@ let errors = 0;
 let warnings = 0;
 
 // Claude Code built-in commands — do not collide
-const BUILTIN_COMMANDS = new Set([
-  'help', 'clear', 'exit', 'quit', 'history', 'version',
-  'new', 'open', 'save', 'load', 'run', 'stop', 'reset',
-  'login', 'logout', 'config', 'settings', 'update',
-]);
+const BUILTIN_COMMANDS = new Set(['help', 'clear', 'exit', 'quit', 'history', 'version', 'new', 'open', 'save', 'load', 'run', 'stop', 'reset', 'login', 'logout', 'config', 'settings', 'update']);
 
 // Languages with special naming (not straight <lang>)
-const LANG_ALIAS = { golang: 'go', csharp: 'csharp' };
+const _LANG_ALIAS = { golang: 'go', csharp: 'csharp' }; // reserved for future use
 
 function logError(check, message) {
   console.log(`\u2717 [${check}] ${message}`);

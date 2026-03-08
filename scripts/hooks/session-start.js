@@ -253,9 +253,9 @@ function globMatches(pattern, filePath) {
     .replace(/\\/g, '/')
     .replace(/\./g, '\\.')
     .replace(/\{([^}]+)\}/g, (_, group) => `(${group.split(',').join('|')})`)
-    .replace(/\*\*/g, '\x00') // placeholder
+    .replace(/\*\*/g, '__GLOBSTAR__') // placeholder for ** before replacing *
     .replace(/\*/g, '[^/]*')
-    .replace(/\x00/g, '.*')
+    .replace(/__GLOBSTAR__/g, '.*')
     .replace(/\?/g, '[^/]');
   try {
     return new RegExp(`(^|/)${regexStr}$`).test(p);

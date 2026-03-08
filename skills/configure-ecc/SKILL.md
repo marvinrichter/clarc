@@ -254,14 +254,14 @@ Options:
   - "Skip" — "Keep everything as-is"
 ```
 
-### If optimizing skills:
+### If optimizing skills
 1. Read each installed SKILL.md
 2. Ask the user what their project's tech stack is (if not already known)
 3. For each skill, suggest removals of irrelevant sections
 4. Edit the SKILL.md files in-place at the installation target (NOT the source repo)
 5. Fix any path issues found in Step 4
 
-### If optimizing rules:
+### If optimizing rules
 1. Read each installed rule .md file
 2. Ask the user about their preferences:
    - Test coverage target (default 80%)
