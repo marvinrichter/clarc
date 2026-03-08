@@ -441,3 +441,33 @@ if [[ "$TARGET" == "opencode" ]]; then
     echo "Done. OpenCode configs installed to $OC_DEST/"
     echo "Tip: Add .opencode/ to your project's .gitignore or commit it for team sharing."
 fi
+
+# --- Codex target ---
+if [[ "$TARGET" == "codex" ]]; then
+    CODEX_SRC="$SCRIPT_DIR/codex"
+    CODEX_DEST="codex"
+
+    if [[ ! -d "$CODEX_SRC" ]]; then
+        echo "Error: codex/ source directory not found at $SCRIPT_DIR" >&2
+        exit 1
+    fi
+
+    echo "Installing Codex CLI configs to $CODEX_DEST/"
+
+    # Instructions (global rules)
+    if [[ -f "$CODEX_SRC/instructions.md" ]]; then
+        echo "Installing instructions -> $CODEX_DEST/instructions.md"
+        mkdir -p "$CODEX_DEST"
+        cp "$CODEX_SRC/instructions.md" "$CODEX_DEST/instructions.md"
+    fi
+
+    # Commands
+    if [[ -d "$CODEX_SRC/commands" ]]; then
+        echo "Installing commands -> $CODEX_DEST/commands/"
+        mkdir -p "$CODEX_DEST/commands"
+        cp -r "$CODEX_SRC/commands/." "$CODEX_DEST/commands/"
+    fi
+
+    echo "Done. Codex CLI configs installed to $CODEX_DEST/"
+    echo "Tip: Add codex/ to your project's .gitignore or commit it for team sharing."
+fi
