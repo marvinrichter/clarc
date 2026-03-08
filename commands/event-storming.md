@@ -140,32 +140,36 @@ Mark areas of concern (Red stickies in real EventStorming):
 | OrderShipped | ShippingService | NotificationService.NotifyCustomer | orderId, trackingNumber |
 ```
 
-### Aggregate Map (Mermaid)
+### Aggregate Map (PlantUML)
 
-```mermaid
-graph TD
-  subgraph "Order Management"
-    A[Order Aggregate]
-    A -->|OrderPlaced| B
-    A -->|OrderCancelled| E
-  end
+```plantuml
+@startuml
+package "Order Management" {
+  [Order Aggregate]
+}
 
-  subgraph "Inventory"
-    B[StockItem Aggregate]
-    B -->|StockReserved| C
-    B -->|StockReleased| A
-  end
+package "Inventory" {
+  [StockItem Aggregate]
+}
 
-  subgraph "Payment"
-    C[Payment Aggregate]
-    C -->|PaymentProcessed| D
-    C -->|PaymentFailed| A
-  end
+package "Payment" {
+  [Payment Aggregate]
+}
 
-  subgraph "Shipping"
-    D[Shipment Aggregate]
-    D -->|OrderShipped| F[Notification Service]
-  end
+package "Shipping" {
+  [Shipment Aggregate]
+}
+
+[Notification Service]
+
+[Order Aggregate] --> [StockItem Aggregate] : OrderPlaced
+[Order Aggregate] --> [StockItem Aggregate] : OrderCancelled
+[StockItem Aggregate] --> [Payment Aggregate] : StockReserved
+[StockItem Aggregate] --> [Order Aggregate] : StockReleased
+[Payment Aggregate] --> [Shipment Aggregate] : PaymentProcessed
+[Payment Aggregate] --> [Order Aggregate] : PaymentFailed
+[Shipment Aggregate] --> [Notification Service] : OrderShipped
+@enduml
 ```
 
 ### Architecture Recommendations
