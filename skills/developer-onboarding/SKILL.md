@@ -37,7 +37,7 @@ The goal of onboarding engineering is not orientation — it is making someone p
 - Assuming every new hire has the same background — tech stack familiarity varies widely
 - No buddy / no first task assigned — new hires cannot navigate alone
 
-**Evergreen principle:** Every onboarding artefact must be maintained automatically or it will rot. Automate staleness detection. Add onboarding doc review to your release process.
+**Evergreen principle:** Every onboarding artifact must be maintained automatically or it will rot. Automate staleness detection. Add onboarding doc review to your release process.
 
 ---
 

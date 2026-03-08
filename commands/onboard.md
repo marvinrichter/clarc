@@ -41,7 +41,7 @@ Files to read:
   - Setup script: scripts/setup.sh / Makefile setup target
 ```
 
-Use `Glob` and `Read` — do NOT run arbitrary commands on the codebase.
+Use `Glob` and `Read` to analyse the codebase — do NOT run arbitrary Bash commands on it. `Write` is permitted for generating output files.
 
 Determine:
 - **Primary language** (TypeScript / Python / Go / Java / Rust / other)

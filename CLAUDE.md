@@ -69,3 +69,7 @@ Update: `cd ~/.clarc && git pull` — symlinks update instantly, no re-install.
 - Hooks: JSON with matcher and hooks array
 
 File naming: lowercase with hyphens (e.g., `python-reviewer.md`, `tdd-workflow.md`)
+
+## Versioning
+
+The canonical version is in `package.json`. All version references across the project (README badges, install scripts, changelogs) must match `package.json`. Current version: `0.9.0` (pre-launch).
