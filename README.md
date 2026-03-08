@@ -12,26 +12,35 @@ clarc turns Claude Code from a coding assistant into a structured engineering sy
 ## Install
 
 ```bash
-git clone git@github.com:marvinrichter/clarc.git ~/.clarc
-cd ~/.clarc
+# Recommended — interactive wizard (auto-detects your languages)
+npx github:marvinrichter/clarc
 
-# Install common rules + your language(s)
-./install.sh typescript
-./install.sh typescript python golang ruby elixir
+# Or with explicit language(s) — skips the wizard
+npx github:marvinrichter/clarc typescript
+npx github:marvinrichter/clarc typescript python go
 
-# Enable continuous learning (recommended)
-./install.sh --enable-learning typescript
-
-# Install for Cursor, OpenCode, or Codex CLI
-./install.sh --target cursor typescript
-./install.sh --target opencode typescript
-./install.sh --target codex
+# Other editors
+npx github:marvinrichter/clarc --target cursor typescript
+npx github:marvinrichter/clarc --target opencode typescript
+npx github:marvinrichter/clarc --target codex
 
 # Check if your installed rules are up to date
-./install.sh --check
+npx github:marvinrichter/clarc --check
 ```
 
-The installer copies rules into `~/.claude/rules/` while preserving the `common/` and language-specific directory structure so relative references stay valid.
+The wizard detects your project's languages, lets you pick a target editor, and optionally enables continuous learning — all in one command. No clone required.
+
+<details>
+<summary>Clone and run locally instead</summary>
+
+```bash
+git clone git@github.com:marvinrichter/clarc.git ~/.clarc
+cd ~/.clarc
+./install.sh typescript                        # explicit language(s)
+./install.sh --enable-learning typescript      # with learning enabled
+./install.sh --check                           # verify installed rules
+```
+</details>
 
 ---
 

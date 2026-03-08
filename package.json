@@ -67,6 +67,7 @@
     "scripts/lib/",
     "scripts/claw.js",
     "scripts/setup-package-manager.js",
+    "scripts/setup-wizard.js",
     "scripts/skill-create-output.js",
     "scripts/sync-instincts.js",
     "skills/",
@@ -78,10 +79,11 @@
     "scripts/hooks-summary.js"
   ],
   "bin": {
-    "clarc-install": "install.sh"
+    "clarc": "scripts/setup-wizard.js",
+    "clarc-install": "scripts/setup-wizard.js"
   },
   "scripts": {
-    "postinstall": "echo '\\n  clarc installed!\\n  Run: npx clarc-install typescript\\n'",
+    "postinstall": "echo '\\n  clarc installed!\\n  Run: npx github:marvinrichter/clarc\\n'",
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "claw": "node scripts/claw.js",
     "instincts:push": "node scripts/sync-instincts.js push",

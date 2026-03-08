@@ -29,6 +29,16 @@
 
 set -euo pipefail
 
+# --- ANSI helpers (only when connected to a terminal) ---
+if [[ -t 1 ]]; then
+    _BOLD='\033[1m'; _GREEN='\033[32m'; _CYAN='\033[36m'; _DIM='\033[2m'; _RESET='\033[0m'
+else
+    _BOLD=''; _GREEN=''; _CYAN=''; _DIM=''; _RESET=''
+fi
+
+ok()  { echo -e "${_GREEN}✔${_RESET} $*"; }
+hdr() { echo -e "\n${_BOLD}$*${_RESET}"; }
+
 # Resolve symlinks — needed when invoked as `clarc-install` via npm/bun bin symlink
 SCRIPT_PATH="$0"
 while [ -L "$SCRIPT_PATH" ]; do
@@ -90,6 +100,41 @@ if [[ "$CHECK_ONLY" == false && "$TARGET" != "claude" && "$TARGET" != "cursor" &
     exit 1
 fi
 
+# --- Auto-detect languages from project files in $PWD ---
+detect_languages() {
+    local cwd="$PWD"
+    local detected=()
+
+    # TypeScript / JavaScript
+    [[ -f "$cwd/tsconfig.json" || -f "$cwd/package.json" ]] && detected+=(typescript)
+    # Python
+    [[ -f "$cwd/pyproject.toml" || -f "$cwd/requirements.txt" || -f "$cwd/setup.py" || -f "$cwd/Pipfile" ]] && detected+=(python)
+    # Go
+    [[ -f "$cwd/go.mod" ]] && detected+=(go)
+    # Java / Kotlin / Gradle
+    [[ -f "$cwd/pom.xml" || -f "$cwd/build.gradle" || -f "$cwd/build.gradle.kts" ]] && detected+=(java)
+    # Rust
+    [[ -f "$cwd/Cargo.toml" ]] && detected+=(rust)
+    # Swift
+    [[ -f "$cwd/Package.swift" ]] && detected+=(swift)
+    # Ruby
+    [[ -f "$cwd/Gemfile" ]] && detected+=(ruby)
+    # Elixir
+    [[ -f "$cwd/mix.exs" ]] && detected+=(elixir)
+    # C++
+    [[ -f "$cwd/CMakeLists.txt" ]] && detected+=(cpp)
+    # PHP
+    [[ -f "$cwd/composer.json" ]] && detected+=(php)
+    # Scala
+    [[ -f "$cwd/build.sbt" ]] && detected+=(scala)
+    # R
+    [[ -f "$cwd/DESCRIPTION" || -f "$cwd/renv.lock" ]] && detected+=(r)
+    # C#
+    [[ -f "$cwd/global.json" ]] && detected+=(csharp)
+
+    echo "${detected[@]:-}"
+}
+
 # --- Check mode: compare installed rules against repo ---
 if [[ "$CHECK_ONLY" == true ]]; then
     GLOBAL_RULES_DIR="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
@@ -138,29 +183,37 @@ if [[ "$CHECK_ONLY" == true ]]; then
     exit 0
 fi
 
-# --- Usage ---
+# --- Auto-detect or show usage when no languages provided ---
 if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 [--target <claude|cursor>] [--project] <language> [<language> ...]"
-    echo "       $0 --check [<language> ...]"
-    echo ""
-    echo "Flags:"
-    echo "  --check    Compare installed rules against repo version (read-only)"
-    echo "  --project  Install language rules into <cwd>/.claude/rules/ (project-local)"
-    echo "             Common rules always go to ~/.claude/rules/common/ (global)"
-    echo ""
-    echo "Targets:"
-    echo "  claude   (default) — Install rules to ~/.claude/rules/"
-    echo "  cursor   — Install rules, agents, skills, commands to ./.cursor/ + .cursorrules"
-    echo "  opencode — Install commands, prompts, and instructions to ./.opencode/"
-    echo "  codex    — Install instructions and commands to ./codex/ for Codex CLI"
-    echo ""
-    echo "Available languages:"
-    for dir in "$RULES_DIR"/*/; do
-        name="$(basename "$dir")"
-        [[ "$name" == "common" ]] && continue
-        echo "  - $name"
-    done
-    exit 1
+    detected_langs=($(detect_languages))
+    if [[ ${#detected_langs[@]} -gt 0 ]]; then
+        echo -e "${_CYAN}Auto-detected:${_RESET} ${detected_langs[*]}"
+        set -- "${detected_langs[@]}"
+    else
+        echo "Usage: $0 [--target <claude|cursor|opencode|codex>] [--project] <language> [<language> ...]"
+        echo "       $0 --check [<language> ...]"
+        echo ""
+        echo "Flags:"
+        echo "  --check    Compare installed rules against repo version (read-only)"
+        echo "  --project  Install language rules into <cwd>/.claude/rules/ (project-local)"
+        echo "             Common rules always go to ~/.claude/rules/common/ (global)"
+        echo ""
+        echo "Targets:"
+        echo "  claude   (default) — Install rules to ~/.claude/rules/"
+        echo "  cursor   — Install rules, agents, skills, commands to ./.cursor/ + .cursorrules"
+        echo "  opencode — Install commands, prompts, and instructions to ./.opencode/"
+        echo "  codex    — Install instructions and commands to ./codex/ for Codex CLI"
+        echo ""
+        echo "Available languages:"
+        for dir in "$RULES_DIR"/*/; do
+            name="$(basename "$dir")"
+            [[ "$name" == "common" ]] && continue
+            echo "  - $name"
+        done
+        echo ""
+        echo "Tip: run 'npx clarc-install' for an interactive setup wizard."
+        exit 1
+    fi
 fi
 
 # --- Continuous Learning prompt ---
@@ -271,9 +324,9 @@ if [[ "$TARGET" == "claude" ]]; then
     fi
 
     # Always install common rules globally
-    echo "Installing common rules -> $GLOBAL_RULES_DIR/common/"
     mkdir -p "$GLOBAL_RULES_DIR/common"
     cp -r "$RULES_DIR/common/." "$GLOBAL_RULES_DIR/common/"
+    ok "common  →  $GLOBAL_RULES_DIR/common/"
 
     # Install each requested language
     for lang in "$@"; do
@@ -287,20 +340,30 @@ if [[ "$TARGET" == "claude" ]]; then
             echo "Warning: rules/$lang/ does not exist, skipping." >&2
             continue
         fi
-        echo "Installing $lang rules -> $LANG_DEST_DIR/$lang/"
         mkdir -p "$LANG_DEST_DIR/$lang"
         cp -r "$lang_dir/." "$LANG_DEST_DIR/$lang/"
+        ok "$lang  →  $LANG_DEST_DIR/$lang/"
     done
 
     if [[ "$PROJECT_LOCAL" == true ]]; then
-        echo "Done. Common rules -> $GLOBAL_RULES_DIR/common/  |  Lang rules -> $LANG_DEST_DIR/"
-        echo "Tip: commit $LANG_DEST_DIR/ to share rules with your team."
+        ok "Common rules  →  $GLOBAL_RULES_DIR/common/"
+        ok "Lang rules    →  $LANG_DEST_DIR/"
     else
-        echo "Done. Rules installed to $LANG_DEST_DIR/"
+        ok "Rules installed  →  $LANG_DEST_DIR/"
     fi
 
     # --- Continuous Learning prompt (claude target only) ---
     enable_learning_prompt
+
+    # --- Next steps ---
+    hdr "Next steps"
+    echo "  • Use commands in Claude Code: /tdd  /plan  /code-review  /verify"
+    echo "  • Activate hooks (auto-format, session persistence):"
+    echo "    Copy entries from hooks/hooks.json into ~/.claude/settings.json"
+    echo "    — or use the MCP config: mcp-configs/clarc-self.json"
+    echo "  • Check for updates:  ./install.sh --check"
+    echo "  • Docs:  https://github.com/marvinrichter/clarc"
+    echo ""
 fi
 
 # --- Cursor target ---
