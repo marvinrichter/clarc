@@ -11,6 +11,7 @@
 
 import { execFileSync } from 'child_process';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { logHook } from './hook-logger.js';
 
@@ -100,14 +101,14 @@ process.stdin.on('end', () => {
       // 2. Dispatch to language-specific formatter
       const script = EXT_MAP[ext];
       if (script) {
-        const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
+        const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude');
         const scriptPath = path.join(pluginRoot, 'scripts', 'hooks', script);
 
         try {
           const out = execFileSync(process.execPath, [scriptPath], {
             input: data,
             stdio: ['pipe', 'pipe', 'pipe'],
-            timeout: 20000
+            timeout: 5000
           });
           logHook('post-edit-format-dispatch', 'Edit', filePath, 0, Date.now() - start);
           process.stdout.write(out);
