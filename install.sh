@@ -81,8 +81,8 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ "$CHECK_ONLY" == false && "$TARGET" != "claude" && "$TARGET" != "cursor" && "$TARGET" != "opencode" ]]; then
-    echo "Error: unknown target '$TARGET'. Must be 'claude', 'cursor', or 'opencode'." >&2
+if [[ "$CHECK_ONLY" == false && "$TARGET" != "claude" && "$TARGET" != "cursor" && "$TARGET" != "opencode" && "$TARGET" != "codex" ]]; then
+    echo "Error: unknown target '$TARGET'. Must be 'claude', 'cursor', 'opencode', or 'codex'." >&2
     exit 1
 fi
 
@@ -146,8 +146,9 @@ if [[ $# -eq 0 ]]; then
     echo ""
     echo "Targets:"
     echo "  claude   (default) — Install rules to ~/.claude/rules/"
-    echo "  cursor   — Install rules, agents, skills, commands, and MCP to ./.cursor/"
+    echo "  cursor   — Install rules, agents, skills, commands to ./.cursor/ + .cursorrules"
     echo "  opencode — Install commands, prompts, and instructions to ./.opencode/"
+    echo "  codex    — Install instructions and commands to ./codex/ for Codex CLI"
     echo ""
     echo "Available languages:"
     for dir in "$RULES_DIR"/*/; do
@@ -376,7 +377,14 @@ if [[ "$TARGET" == "cursor" ]]; then
         cp "$CURSOR_SRC/mcp.json" "$DEST_DIR/mcp.json"
     fi
 
+    # --- .cursorrules root file ---
+    if [[ -f "$SCRIPT_DIR/.cursorrules" ]]; then
+        echo "Installing .cursorrules -> .cursorrules"
+        cp "$SCRIPT_DIR/.cursorrules" ".cursorrules"
+    fi
+
     echo "Done. Cursor configs installed to $DEST_DIR/"
+    echo "Tip: Add .cursor/ and .cursorrules to .gitignore or commit for team sharing."
 fi
 
 # --- OpenCode target ---
