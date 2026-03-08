@@ -171,9 +171,18 @@ async function runWizard() {
   // --- Build install.sh args ---
   const installArgs = [];
   if (target !== 'claude') installArgs.push('--target', target);
+  // When called from a project (languages detected/selected), install language rules
+  // project-locally (.claude/rules/) to avoid overloading the global context.
+  const isProjectInstall = target === 'claude' && languages.length > 0;
+  if (isProjectInstall) installArgs.push('--project');
   if (enableLearning) installArgs.push('--enable-learning');
   else installArgs.push('--no-learning');
   installArgs.push(...languages);
+
+  if (isProjectInstall) {
+    console.log(`${DIM}  Language rules → ./.claude/rules/ (project-local)${RESET}`);
+    console.log(`${DIM}  Common rules   → ~/.claude/rules/ (global)${RESET}\n`);
+  }
 
   console.log(`${BOLD}Installing…${RESET}\n`);
 
