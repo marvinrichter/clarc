@@ -23,9 +23,25 @@ description: "Real-time communication patterns: WebSocket with reconnection and 
 | Server-to-client streaming (LLM output, live feed) | SSE | Simpler, HTTP/2 multiplexed, auto-reconnect |
 | Occasional updates (notifications) | SSE | Lighter than WebSocket |
 | Fallback for restrictive firewalls | Long Polling | Works everywhere |
-| File transfer, video | WebRTC | Peer-to-peer |
+| Real-time audio/video calls (1:1 or group) | WebRTC | Peer-to-peer or SFU — media transport, not text |
+| Screen sharing, live video with <500ms latency | WebRTC | Browser-native A/V pipeline, adaptive bitrate |
 
-**Default:** Start with SSE. Upgrade to WebSocket only when you need client-to-server streaming.
+**Default:** Start with SSE for data. Use WebSocket for bidirectional text. Use WebRTC only when you need media (audio/video) — it's a fundamentally different technology stack.
+
+### WebRTC vs WebSocket: Key Distinction
+
+WebSocket and WebRTC solve different problems and are often used together:
+
+| Dimension | WebSocket | WebRTC |
+|-----------|-----------|--------|
+| Transport | TCP (reliable, ordered) | UDP (real-time, tolerates loss) |
+| What it carries | Text, JSON, binary messages | Audio/Video tracks + data channels |
+| Server involvement | Always through server | P2P direct or via SFU (not MCU) |
+| Latency | 50-150ms typical | 50-200ms typical (better for media) |
+| Signaling | IS the signaling channel | Requires WebSocket for signaling |
+| Typical use | Chat, notifications, collaboration data | Video calls, screen share, live streaming |
+
+In a typical video call application: **WebSocket = signaling channel** (to exchange offer/answer/ICE candidates), **WebRTC = media transport** (the actual audio/video stream).
 
 ---
 
@@ -275,6 +291,80 @@ subClient.subscribe('ws:events', (message) => {
 
 ---
 
+## Pattern 3: WebRTC for Media Streaming
+
+Use WebRTC when you need sub-500ms audio/video — not for data/text messages.
+
+WebRTC itself does not define a signaling protocol. Use WebSocket (patterns above) as the signaling channel, and WebRTC as the media transport.
+
+```typescript
+// Minimal WebRTC 1:1 call — signaling via Socket.IO
+import { io } from 'socket.io-client';
+
+const socket = io(process.env.NEXT_PUBLIC_WS_URL!, { auth: { token } });
+
+const pc = new RTCPeerConnection({
+  iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' },
+    // TURN credentials fetched from API (time-limited HMAC)
+    ...(await fetchTurnCredentials()),
+  ],
+});
+
+// ── Calling peer ───────────────────────────────────────────────────────────
+async function startCall(remoteUserId: string) {
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+
+  // Use WebSocket (Socket.IO) as the signaling channel
+  socket.emit('webrtc:offer', { to: remoteUserId, sdp: offer });
+}
+
+// ── ICE candidates: trickle as they arrive ─────────────────────────────────
+pc.onicecandidate = ({ candidate }) => {
+  if (candidate) socket.emit('webrtc:ice-candidate', { to: remoteUserId, candidate });
+};
+
+// ── Receiving peer ─────────────────────────────────────────────────────────
+socket.on('webrtc:offer', async ({ from, sdp }) => {
+  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+  const answer = await pc.createAnswer();
+  await pc.setLocalDescription(answer);
+  socket.emit('webrtc:answer', { to: from, sdp: answer });
+});
+
+socket.on('webrtc:answer', async ({ sdp }) => {
+  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+});
+
+socket.on('webrtc:ice-candidate', async ({ candidate }) => {
+  await pc.addIceCandidate(new RTCIceCandidate(candidate));
+});
+
+// ── Receive remote stream ─────────────────────────────────────────────────
+pc.ontrack = ({ streams }) => {
+  const remoteVideo = document.getElementById('remote-video') as HTMLVideoElement;
+  remoteVideo.srcObject = streams[0];
+};
+
+// ── Handle ICE failure → restart ──────────────────────────────────────────
+pc.oniceconnectionstatechange = async () => {
+  if (pc.iceConnectionState === 'failed') {
+    pc.restartIce(); // Creates new ICE candidates
+    const offer = await pc.createOffer({ iceRestart: true });
+    await pc.setLocalDescription(offer);
+    socket.emit('webrtc:offer', { to: remoteUserId, sdp: offer });
+  }
+};
+```
+
+**For group calls (>4 participants):** Use an SFU like [LiveKit](https://livekit.io) — peer-to-peer mesh does not scale. See skill `webrtc-patterns` for full LiveKit integration.
+
+---
+
 ## Checklist
 
 - [ ] Auth verified before any WebSocket connection or SSE stream
@@ -286,3 +376,24 @@ subClient.subscribe('ws:events', (message) => {
 - [ ] Rate limiting on message send events (prevent spam)
 - [ ] Max connections per user enforced (prevent resource exhaustion)
 - [ ] `X-Accel-Buffering: no` set for SSE behind nginx
+
+### WebRTC Additional Checklist
+
+- [ ] TURN server configured (not just STUN) — STUN alone fails for ~15-20% of users
+- [ ] TURN credentials are time-limited (HMAC), not static passwords
+- [ ] ICE failure handled with restart logic (`pc.restartIce()`)
+- [ ] Access tokens for SFU rooms are short-lived and participant-scoped
+- [ ] Recording requires explicit user consent
+- [ ] Simulcast enabled for group call video (bandwidth adaptation)
+
+### When to Use Which
+
+```
+Need audio/video (<500ms)?          → WebRTC (+ WebSocket for signaling)
+Need text/data, bidirectional?      → WebSocket
+Server → client only (LLM, feed)?  → SSE
+Occasional updates, notifications? → SSE
+Fallback for strict firewalls?      → Long Polling
+```
+
+See skill `webrtc-patterns` for full WebRTC implementation guide (ICE/STUN/TURN, LiveKit SFU, Mediasoup, Simulcast, recording).
