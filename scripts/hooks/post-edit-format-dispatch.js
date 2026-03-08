@@ -50,7 +50,10 @@ const EXT_MAP = {
   '.scala': 'post-edit-format-scala.js',
   '.sc': 'post-edit-format-scala.js',
   '.c': 'post-edit-format-c.js',
-  '.php': 'post-edit-format-php.js'
+  '.php': 'post-edit-format-php.js',
+  '.r': 'post-edit-format-r.js',
+  '.rmd': 'post-edit-format-r.js',
+  '.qmd': 'post-edit-format-r.js'
 };
 
 const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
@@ -136,7 +139,10 @@ process.stdin.on('end', () => {
               '.scala': 'scalafmt',
               '.sc': 'scalafmt',
               '.c': 'clang-format',
-              '.php': 'php-cs-fixer'
+              '.php': 'php-cs-fixer',
+              '.r': 'styler (R package)',
+              '.rmd': 'styler (R package)',
+              '.qmd': 'styler (R package)'
             }[ext] || 'formatter';
           console.error(`[HOOK: post-edit-format] FAILED on ${path.basename(filePath)}: ${reason}`);
           console.error(`[HOOK: post-edit-format] Ensure ${formatterHint} is installed and in PATH`);
