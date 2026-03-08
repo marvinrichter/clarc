@@ -23,6 +23,7 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.cpp`, `.cc`, `.cxx`, `.h`, `.hpp` | **cpp-reviewer** |
 | `.rb`, `.rake` | **ruby-reviewer** |
 | `.ex`, `.exs` | **elixir-reviewer** |
+| `.scala`, `.sc` | **scala-reviewer** |
 | `.sql`, `.prisma` | **database-reviewer** |
 | `.sh`, `.bash`, `.zsh` | **bash-reviewer** |
 | `prompts/`, `*.prompt.md`, `*.prompt.txt` | **prompt-reviewer** |
