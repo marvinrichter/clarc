@@ -460,3 +460,91 @@ terraform graph | dot -Tpng > graph.png  # visualize dependency graph
 | One giant `main.tf` | Impossible to navigate | Split by concern: `vpc.tf`, `rds.tf`, `ecs.tf` |
 | `depends_on` overuse | Hides missing implicit references | Fix the reference chain instead |
 | `ignore_changes` for everything | Terraform loses awareness of drift | Only ignore what autoscaling legitimately changes |
+
+---
+
+## Terraform vs. Pulumi vs. AWS CDK — When to Use What
+
+Terraform is the right choice in many situations, but modern IaC alternatives (Pulumi, AWS CDK) offer advantages worth evaluating for new projects.
+
+### Decision Matrix
+
+| Criterion | Terraform HCL | Pulumi | AWS CDK |
+|-----------|:-------------:|:------:|:-------:|
+| Multi-cloud support | ✅ Best (3000+ providers) | ✅ Good | ❌ AWS only |
+| Real programming language | ❌ HCL DSL | ✅ TS/Python/Go | ✅ TS/Python/Java |
+| Unit testing infrastructure | ❌ | ✅ | ✅ |
+| Type safety + IDE autocomplete | ❌ | ✅ | ✅ |
+| Native loops & conditionals | ⚠️ `count`/`for_each` | ✅ | ✅ |
+| Existing Terraform state migration | ✅ N/A | ⚠️ Via cdktf | ❌ |
+| Provider ecosystem maturity | ✅ Largest | ✅ Uses TF providers | ⚠️ AWS-specific |
+| Reusable abstractions | Modules | ComponentResource | L3 Constructs |
+| Governance / policy | Sentinel / OPA | CrossGuard | CDK Aspects + OPA |
+| Team HCL familiarity | ✅ | ❌ | ❌ |
+
+### When to Stay with Terraform
+
+- Existing large Terraform codebase — migration cost outweighs benefits
+- Multi-cloud with providers not available in Pulumi (niche SaaS providers)
+- Team is HCL-fluent and finds DSL simpler than TypeScript for infra
+- Terraform Cloud governance (Sentinel policies, team VCS integration) is a requirement
+- Working with providers only available via Terraform Registry
+
+### When to Choose Pulumi
+
+- New project and team writes TypeScript/Python/Go daily — same language for infra and app
+- Need real unit tests for infrastructure code (`pulumi.runtime.setMocks`)
+- Multi-cloud: deploy to AWS + GCP + Azure + Kubernetes in one program
+- Need complex dynamic resource generation (lists of services, conditional resource graphs)
+- CrossGuard policy enforcement in CI is a requirement
+
+### When to Choose AWS CDK
+
+- AWS-only infrastructure (no multi-cloud requirement)
+- Team values strong defaults (L2 Constructs include encryption, proper IAM by default)
+- Publishing reusable constructs to Construct Hub for other teams to consume
+- Need CDK Pipelines for self-mutating CI/CD
+- tighter AWS service integration and early access to new AWS services
+
+### Hybrid Strategy: Terraform + Pulumi/CDK
+
+For large organizations, a hybrid works well:
+- **Terraform** manages foundational infrastructure: VPCs, accounts, DNS, IAM org-wide roles
+- **Pulumi/CDK** manages application-specific resources: ECS services, databases, queues
+- Pulumi/CDK reads Terraform outputs via remote state (`terraform_remote_state` or `pulumi.StackReference`)
+
+```typescript
+// Pulumi: read VPC from existing Terraform state
+const tfState = new pulumi.StackReference("tf-networking/prod");
+const vpcId = tfState.getOutput("vpc_id");
+
+// Use VPC created by Terraform in a Pulumi resource
+const service = new aws.ecs.Service("api", {
+  networkConfiguration: {
+    subnets: tfState.getOutput("private_subnet_ids").apply(ids => ids as string[]),
+  },
+});
+```
+
+### Migration Path: Terraform → Pulumi
+
+If migrating an existing Terraform codebase:
+
+1. Use `pulumi convert --from terraform` to auto-convert HCL to TypeScript/Python
+2. Import existing state with `pulumi import` (matches existing resources without recreating)
+3. Migrate module by module — keep Terraform for unmigrated modules, use Pulumi for new ones
+4. Run `pulumi refresh` after import to align state with actual cloud resources
+
+```bash
+# Convert existing Terraform module to Pulumi TypeScript
+pulumi convert --from terraform --language typescript ./infra/modules/vpc
+```
+
+---
+
+## Related Skills
+
+- `iac-modern-patterns` — Pulumi TypeScript, AWS CDK L1/L2/L3, Bicep, cdktf — full reference for non-HCL IaC
+- `kubernetes-patterns` — Kubernetes resource management (Terraform can provision clusters, Helm provider manages workloads)
+- `devsecops-patterns` — Checkov, OPA/Conftest for IaC compliance scanning in CI
+- `ci-cd-patterns` — GitHub Actions integration for Terraform plan/apply pipelines
