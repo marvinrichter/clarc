@@ -423,7 +423,51 @@ async function main() {
     output(`Active glob-rules (auto-detected for this project): ${matchedRules.join(', ')}`);
   }
 
+  // Memory Bank: load .clarc/ project context (higher priority than MEMORY.md)
+  loadMemoryBank(process.cwd());
+
   process.exit(0);
+}
+
+/**
+ * Load project-level Memory Bank from .clarc/ directory.
+ * Reads brief.md + context.md + progress.md and injects as session context.
+ * Falls back silently if .clarc/ does not exist.
+ *
+ * Priority: .clarc/ > session files (already loaded above)
+ */
+function loadMemoryBank(cwd) {
+  const clarcDir = path.join(cwd, '.clarc');
+  if (!fs.existsSync(clarcDir)) return;
+
+  const files = [
+    { name: 'brief.md', label: 'Project Brief' },
+    { name: 'context.md', label: 'Last Session Context' },
+    { name: 'progress.md', label: 'Progress' },
+  ];
+
+  const loaded = [];
+  let combined = '';
+
+  for (const { name, label } of files) {
+    const filePath = path.join(clarcDir, name);
+    if (!fs.existsSync(filePath)) continue;
+    try {
+      const content = fs.readFileSync(filePath, 'utf8').trim();
+      if (!content) continue;
+      // Cap each file at 2000 chars to avoid flooding context
+      const capped = content.length > 2000 ? content.slice(0, 2000) + '\n...(truncated)' : content;
+      combined += `### ${label}\n${capped}\n\n`;
+      loaded.push(name);
+    } catch {
+      // Skip unreadable files
+    }
+  }
+
+  if (loaded.length > 0) {
+    log(`[SessionStart] Memory Bank loaded: ${loaded.join(', ')}`);
+    output(`--- Project Memory Bank ---\n${combined.trim()}\n---`);
+  }
 }
 
 main().catch(err => {

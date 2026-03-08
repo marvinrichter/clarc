@@ -226,7 +226,7 @@ function handleGetProjectContext({ cwd } = {}) {
 
   // Import project detection (dynamic import for ES module compat)
   try {
-    const detectModule = path.join(__dirname, '..', 'scripts', 'lib', 'project-detect.js');
+    const _detectModule = path.join(__dirname, '..', 'scripts', 'lib', 'project-detect.js');
     // Use synchronous approach: read project files directly
     const result = detectProjectTypeSync(projectDir);
     return result;

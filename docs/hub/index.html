@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — clarc hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav">
+      <span class="nav-brand">clarc hub</span>
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section class="hero">
+      <h1>clarc hub</h1>
+      <p>The workflow OS for Claude Code — agents, skills, and commands for production engineering.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">59</div><div class="stat-label">Agents</div></div>
+        <div class="stat"><div class="stat-num">209</div><div class="stat-label">Skills</div></div>
+        <div class="stat"><div class="stat-num">130</div><div class="stat-label">Commands</div></div>
+      </div>
+      <div class="search-bar">
+        <input id="search" type="search" placeholder="Search agents, skills, commands..." aria-label="Search">
+      </div>
+    </section>
+
+    <div class="section-cards">
+      <a href="agents.html" class="section-card">
+        <div class="count">59</div>
+        <h2>Agents</h2>
+        <p>Specialized subagents for code review, planning, testing, and more.</p>
+      </a>
+      <a href="skills.html" class="section-card">
+        <div class="count">209</div>
+        <h2>Skills</h2>
+        <p>Deep workflow patterns for frameworks, languages, and engineering practices.</p>
+      </a>
+      <a href="commands.html" class="section-card">
+        <div class="count">130</div>
+        <h2>Commands</h2>
+        <p>Slash commands that activate skills and agents in Claude Code.</p>
+      </a>
+    </div>
+
+    <section>
+      <h2 style="margin-bottom:1rem">Featured Agents</h2>
+      <div class="grid" id="featured-agents">
+        
+<div class="card" data-name="agent-quality-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name">agent-quality-reviewer</h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-review or called by agent-system-reviewer during full system review.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-quality-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-system-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name">agent-system-reviewer</h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Orchestrates a full clarc system review by synthesizing results from all component analyzers (agent-quality-reviewer, skill-depth-analyzer, command-auditor, hook-auditor), cross-component validators, and systemic effectiveness tools into a unified Priority Matrix with P0/P1/P2 classification. Uses Opus for deep architectural reasoning. Called by /system-review full.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-system-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="android-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name">android-reviewer</h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Expert Android code reviewer specializing in Jetpack Compose best practices, Hilt DI scoping, Room migrations, ViewModel/UiState patterns, and Coroutine Dispatcher correctness. Use for all Kotlin/Android code changes. MUST BE USED for Android/Compose projects.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/android-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="architect" data-category="Architecture">
+  <div class="card-header">
+    <h3 class="card-name">architect</h3>
+    <span class="badge">Architecture</span>
+  </div>
+  <p class="card-desc">Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/architect.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="bash-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name">bash-reviewer</h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Reviews Bash/shell scripts for correctness, safety, idiomatic style, and portability. Checks set -euo pipefail, quoting, shellcheck issues, security (no eval, mktemp, path quoting), BATS test coverage, and formatting via shfmt. Invoked by code-reviewer for .sh/.bash/.zsh files.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/bash-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="build-error-resolver" data-category="CI / CD">
+  <div class="card-header">
+    <h3 class="card-name">build-error-resolver</h3>
+    <span class="badge">CI / CD</span>
+  </div>
+  <p class="card-desc">Build error resolution specialist for any language — TypeScript, Go, Python, Java, and more. Use PROACTIVELY when builds fail, type errors occur, or compilation breaks. Fixes errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.</p>
+  
+  <div class="card-footer">
+    <span class="model-badge">sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/build-error-resolver.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+      </div>
+      <div style="text-align:center;margin-bottom:2rem">
+        <a href="agents.html">View all 59 agents →</a>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="search.js"></script>
+</body>
+</html>

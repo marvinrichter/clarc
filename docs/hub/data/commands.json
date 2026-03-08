@@ -1,0 +1,1172 @@
+[
+  {
+    "name": "a11y-audit",
+    "slash": "/a11y-audit",
+    "description": "Comprehensive accessibility audit — automated axe scan, keyboard navigation check, color contrast review, ARIA audit, and prioritized CRITICAL/HIGH/MEDIUM issue backlog",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/a11y-audit.md",
+    "filename": "a11y-audit.md"
+  },
+  {
+    "name": "add-observability",
+    "slash": "/add-observability",
+    "description": "Add production observability to a service — structured logging, metrics endpoint, health checks, and Sentry error tracking. Detects project type and adds the right libraries and middleware.",
+    "category": "Observability",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/add-observability.md",
+    "filename": "add-observability.md"
+  },
+  {
+    "name": "agent-design",
+    "slash": "/agent-design",
+    "description": "Guided workshop for designing a multi-agent system — task decomposition, agent roles, orchestration pattern, pseudocode, and failure handling strategy",
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-design.md",
+    "filename": "agent-design.md"
+  },
+  {
+    "name": "agent-review",
+    "slash": "/agent-review",
+    "description": "Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-review --all to review all agents at once.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-review.md",
+    "filename": "agent-review.md"
+  },
+  {
+    "name": "analyze-feedback",
+    "slash": "/analyze-feedback",
+    "description": "Analyze raw user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify top pain points, cluster themes, and generate idea seeds. Delegates to the feedback-analyst agent.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/analyze-feedback.md",
+    "filename": "analyze-feedback.md"
+  },
+  {
+    "name": "android-review",
+    "slash": "/android-review",
+    "description": "Android code review — Compose best practices, Hilt scoping, Room migrations, ViewModel/UiState patterns, Coroutine Dispatchers. Invokes the android-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/android-review.md",
+    "filename": "android-review.md"
+  },
+  {
+    "name": "arc42",
+    "slash": "/arc42",
+    "description": "Generate or update arc42 architecture documentation with C4 diagrams for the current project. Reads the codebase and produces docs/architecture/arc42.md with PlantUML diagrams. Supports targeted section updates.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/arc42.md",
+    "filename": "arc42.md"
+  },
+  {
+    "name": "backstage-setup",
+    "slash": "/backstage-setup",
+    "description": "Install, configure, and deploy Backstage — from npx create-app to production with GitHub integration, TechDocs, and Docker Compose local dev",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/backstage-setup.md",
+    "filename": "backstage-setup.md"
+  },
+  {
+    "name": "brainstorm",
+    "slash": "/brainstorm",
+    "description": "Generate product ideas from a problem space using structured ideation frameworks (JTBD, How Might We, analogy thinking, constraint reversal). Produces concrete idea seeds, not vague concepts.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/brainstorm.md",
+    "filename": "brainstorm.md"
+  },
+  {
+    "name": "brand-identity",
+    "slash": "/brand-identity",
+    "description": "Develop a visual brand identity for a product — generates color palette (with WCAG validation), typeface pairings, brand voice, mood board direction, and a starter Brand Guidelines structure.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/brand-identity.md",
+    "filename": "brand-identity.md"
+  },
+  {
+    "name": "breakdown",
+    "slash": "/breakdown",
+    "description": "Break down a feature, epic, or initiative into sprint-ready tasks. Produces user stories, acceptance criteria, story point estimates, and a prioritized task list ready to paste into Jira, Linear, or GitHub Issues.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/breakdown.md",
+    "filename": "breakdown.md"
+  },
+  {
+    "name": "build-fix",
+    "slash": "/build-fix",
+    "description": "Incrementally fix build and type errors with minimal, safe changes.",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/build-fix.md",
+    "filename": "build-fix.md"
+  },
+  {
+    "name": "cfp",
+    "slash": "/cfp",
+    "description": "Write a conference abstract (CFP submission) — generates abstract in 200/300/500-word versions, title variants, and speaker bio in 50/150-word versions.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cfp.md",
+    "filename": "cfp.md"
+  },
+  {
+    "name": "chaos-experiment",
+    "slash": "/chaos-experiment",
+    "description": "Design and run a chaos experiment — from hypothesis to tool-specific commands and experiment protocol",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/chaos-experiment.md",
+    "filename": "chaos-experiment.md"
+  },
+  {
+    "name": "chart-review",
+    "slash": "/chart-review",
+    "description": "Review data visualizations for chart type appropriateness, WCAG accessibility (color contrast, ARIA), responsive behavior, and performance. Applies data-visualization skill.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/chart-review.md",
+    "filename": "chart-review.md"
+  },
+  {
+    "name": "checkpoint",
+    "slash": "/checkpoint",
+    "description": "Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/checkpoint.md",
+    "filename": "checkpoint.md"
+  },
+  {
+    "name": "claw",
+    "slash": "/claw",
+    "description": "Start the NanoClaw agent REPL — a persistent, session-aware AI assistant powered by the claude CLI.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/claw.md",
+    "filename": "claw.md"
+  },
+  {
+    "name": "cli-review",
+    "slash": "/cli-review",
+    "description": "Review a CLI tool implementation for ergonomics, error handling, exit codes, help text quality, and Unix composability. Applies cli-patterns and cli-ux skills.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cli-review.md",
+    "filename": "cli-review.md"
+  },
+  {
+    "name": "code-review",
+    "slash": "/code-review",
+    "description": "Comprehensive code review — delegates to code-reviewer agent which routes to language specialists (typescript, go, python, java, swift, rust, cpp, ruby, elixir).",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/code-review.md",
+    "filename": "code-review.md"
+  },
+  {
+    "name": "command-audit",
+    "slash": "/command-audit",
+    "description": "Audit the clarc command system for UX ergonomics — naming consistency, argument design, feedback loops, step count, agent invocation, overlap detection, missing commands, and built-in conflicts. Produces a tabular overview and issue list. Use /command-audit --all for a full system audit.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/command-audit.md",
+    "filename": "command-audit.md"
+  },
+  {
+    "name": "competitive-review",
+    "slash": "/competitive-review",
+    "description": "Compare clarc against competing AI engineering workflow systems (Cursor, Copilot, Windsurf, Aider, Devin, Continue.dev) — feature matrix, clarc-unique capabilities, and prioritized competitive gaps. Produces a strategic analysis report.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/competitive-review.md",
+    "filename": "competitive-review.md"
+  },
+  {
+    "name": "contract-test",
+    "slash": "/contract-test",
+    "description": "Set up consumer-driven contract testing with Pact — write consumer pact, configure Pact Broker, set up provider verification, and add can-i-deploy gate to CI",
+    "category": "Testing",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/contract-test.md",
+    "filename": "contract-test.md"
+  },
+  {
+    "name": "cpp-build",
+    "slash": "/cpp-build",
+    "description": "Build C++ code with CMake or Make and run static analysis. Catches compilation errors, warnings, and cppcheck issues.",
+    "category": "C / C++",
+    "whenToUse": "- When CMake or Make build fails - When cppcheck reports issues - After pulling changes that break compilation",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cpp-build.md",
+    "filename": "cpp-build.md"
+  },
+  {
+    "name": "cpp-review",
+    "slash": "/cpp-review",
+    "description": "Comprehensive C++ code review for C++ Core Guidelines, memory safety, RAII, modern C++20/23, concurrency, and performance. Invokes the cpp-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cpp-review.md",
+    "filename": "cpp-review.md"
+  },
+  {
+    "name": "cursor-setup",
+    "slash": "/cursor-setup",
+    "description": "Set up Cursor IDE integration for clarc — creates .cursor/rules/ files for all installed languages and generates .cursorrules from common rules.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cursor-setup.md",
+    "filename": "cursor-setup.md"
+  },
+  {
+    "name": "data-mesh-review",
+    "slash": "/data-mesh-review",
+    "description": "Data Mesh architecture review — domain boundaries, data contracts, quality checks (Great Expectations/Soda), catalog registration, SLO definitions, PII governance, and cross-domain lineage.",
+    "category": "Code Review",
+    "whenToUse": "Use /data-mesh-review when: - Onboarding a new domain team to the data mesh - Reviewing a new or updated data product before it goes live",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/data-mesh-review.md",
+    "filename": "data-mesh-review.md"
+  },
+  {
+    "name": "database-review",
+    "slash": "/database-review",
+    "description": "PostgreSQL schema, query, and security review — indexes, RLS, schema design, anti-patterns. Invokes the database-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /database-review when: - Writing or modifying SQL queries - Creating or altering database migrations",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/database-review.md",
+    "filename": "database-review.md"
+  },
+  {
+    "name": "debt-audit",
+    "slash": "/debt-audit",
+    "description": "Systematic technical debt inventory — complexity analysis, hotspot identification (Churn×Complexity), dependency age, test coverage gaps, and prioritized debt backlog",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/debt-audit.md",
+    "filename": "debt-audit.md"
+  },
+  {
+    "name": "dep-audit",
+    "slash": "/dep-audit",
+    "description": "Full dependency audit — vulnerability scanning, license compliance, supply chain risk, and prioritized remediation report",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/dep-audit.md",
+    "filename": "dep-audit.md"
+  },
+  {
+    "name": "deps",
+    "slash": "/deps",
+    "description": "Dependency audit and upgrade workflow — check for outdated packages, security vulnerabilities, and safely upgrade dependencies with verification. Supports npm, pnpm, yarn, bun, pip, poetry, go mod, and cargo.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/deps.md",
+    "filename": "deps.md"
+  },
+  {
+    "name": "design-critique",
+    "slash": "/design-critique",
+    "description": "Get structured design critique for a visual design — from a screenshot path, URL description, or code. Invokes the design-critic agent.",
+    "category": "Architecture",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/design-critique.md",
+    "filename": "design-critique.md"
+  },
+  {
+    "name": "devex-survey",
+    "slash": "/devex-survey",
+    "description": "Design a Developer Experience survey — DX Core 24 questions, SPACE-aligned dimensions, Likert scale, anonymization, and action plan from results",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/devex-survey.md",
+    "filename": "devex-survey.md"
+  },
+  {
+    "name": "discover",
+    "slash": "/discover",
+    "description": "Discover product opportunities through market research. Searches for competitor features, user pain points on Reddit/HN, tech trends, and market gaps in a given domain. Generates idea seeds from what it finds.",
+    "category": "Product",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/discover.md",
+    "filename": "discover.md"
+  },
+  {
+    "name": "docs-review",
+    "slash": "/docs-review",
+    "description": "Review API documentation for completeness, quality, playground, code examples, changelog, navigation, and CI — produces a structured audit report with prioritised fixes.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/docs-review.md",
+    "filename": "docs-review.md"
+  },
+  {
+    "name": "dora-baseline",
+    "slash": "/dora-baseline",
+    "description": "Measure DORA Four Keys baseline for a team — deployment frequency, lead time, change failure rate, MTTR — with benchmark comparison and improvement priorities",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/dora-baseline.md",
+    "filename": "dora-baseline.md"
+  },
+  {
+    "name": "e2e",
+    "slash": "/e2e",
+    "description": "Generate and run end-to-end tests with Playwright. Creates test journeys, runs tests, captures screenshots/videos/traces, and uploads artifacts.",
+    "category": "General",
+    "whenToUse": "Use /e2e when: - Testing critical user journeys (login, trading, payments) - Verifying multi-step flows work end-to-end",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/e2e.md",
+    "filename": "e2e.md"
+  },
+  {
+    "name": "eda-review",
+    "slash": "/eda-review",
+    "description": "Review event-driven code for idempotency, ordering guarantees, schema evolution compatibility, DLQ handling, and observability — produces prioritized findings",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/eda-review.md",
+    "filename": "eda-review.md"
+  },
+  {
+    "name": "edge-review",
+    "slash": "/edge-review",
+    "description": "Review Edge Function code for runtime compatibility, bundle size, caching opportunities, and security — supports Cloudflare Workers, Vercel Edge, and Deno Deploy",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/edge-review.md",
+    "filename": "edge-review.md"
+  },
+  {
+    "name": "elixir-review",
+    "slash": "/elixir-review",
+    "description": "Comprehensive Elixir/Phoenix code review for OTP patterns, Ecto queries, security (Sobelow), and idiomatic functional Elixir. Invokes the elixir-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/elixir-review.md",
+    "filename": "elixir-review.md"
+  },
+  {
+    "name": "engineering-review",
+    "slash": "/engineering-review",
+    "description": "Monthly engineering health review — DORA trends, leading indicators, tech debt movement, DevEx pulse, and action items for next month",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/engineering-review.md",
+    "filename": "engineering-review.md"
+  },
+  {
+    "name": "eval",
+    "slash": "/eval",
+    "description": "Manage eval-driven development workflow — define, run, check results, and list evals for a feature. Supports eval-first development where behaviour is specified before implementation.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/eval.md",
+    "filename": "eval.md"
+  },
+  {
+    "name": "evaluate",
+    "slash": "/evaluate",
+    "description": "Evaluate a product idea before committing to build it. Delegates to the product-evaluator agent to assess problem clarity, user fit, feasibility, alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/evaluate.md",
+    "filename": "evaluate.md"
+  },
+  {
+    "name": "event-storming",
+    "slash": "/event-storming",
+    "description": "Facilitate an EventStorming workshop — Big Picture discovery, Process Level modeling, Design Level with aggregates and bounded contexts, producing a Domain Event Glossar and aggregate map",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/event-storming.md",
+    "filename": "event-storming.md"
+  },
+  {
+    "name": "evolve",
+    "slash": "/evolve",
+    "description": "Cluster accumulated instincts into skills, commands, or agents — runs conflict detection first, groups instincts by trigger domain, scores clusters by confidence, and writes evolved files with --generate.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/evolve.md",
+    "filename": "evolve.md"
+  },
+  {
+    "name": "experiment",
+    "slash": "/experiment",
+    "description": "Design a statistically valid A/B test. Walk through hypothesis, metric selection, sample size calculation, assignment strategy, and analysis plan. Outputs a ready-to-use experiment spec.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/experiment.md",
+    "filename": "experiment.md"
+  },
+  {
+    "name": "explore",
+    "slash": "/explore",
+    "description": "Design solutions for a validated product idea — generates 2-4 concrete approaches with trade-off analysis and an Architecture Decision Record. Use after /evaluate returns Go. Delegates to the solution-designer agent.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/explore.md",
+    "filename": "explore.md"
+  },
+  {
+    "name": "find-skill",
+    "slash": "/find-skill",
+    "description": "Search all available skills by keyword and return the top matches with their descriptions. Use when unsure which skill covers a topic.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/find-skill.md",
+    "filename": "find-skill.md"
+  },
+  {
+    "name": "finops-audit",
+    "slash": "/finops-audit",
+    "description": "Audit cloud costs for a project — tagging coverage, rightsizing opportunities, savings plan potential, anomalies, and Infracost integration gaps",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/finops-audit.md",
+    "filename": "finops-audit.md"
+  },
+  {
+    "name": "frontend-arch-review",
+    "slash": "/frontend-arch-review",
+    "description": "Micro-Frontend architecture review — team boundaries, Module Federation config, shared dependencies, routing, state sharing, fallbacks, design system consistency, and CI/CD independence.",
+    "category": "Code Review",
+    "whenToUse": "Use /frontend-arch-review when: - Setting up a new Micro-Frontend architecture - Adding a new Remote app to an existing Shell",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/frontend-arch-review.md",
+    "filename": "frontend-arch-review.md"
+  },
+  {
+    "name": "gitops-review",
+    "slash": "/gitops-review",
+    "description": "Review GitOps configuration for declarative correctness, sync strategy, secrets management, and progressive delivery readiness",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/gitops-review.md",
+    "filename": "gitops-review.md"
+  },
+  {
+    "name": "go-build",
+    "slash": "/go-build",
+    "description": "Fix Go build errors, go vet warnings, and linter issues incrementally. Invokes the go-build-resolver agent for minimal, surgical fixes.",
+    "category": "Go",
+    "whenToUse": "Use /go-build when: - go build ./... fails with errors - go vet ./... reports issues",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/go-build.md",
+    "filename": "go-build.md"
+  },
+  {
+    "name": "go-review",
+    "slash": "/go-review",
+    "description": "Comprehensive Go code review for idiomatic patterns, concurrency safety, error handling, and security. Invokes the go-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /go-review when: - After writing or modifying Go code - Before committing Go changes",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/go-review.md",
+    "filename": "go-review.md"
+  },
+  {
+    "name": "go-test",
+    "slash": "/go-test",
+    "description": "Enforce TDD workflow for Go. Write table-driven tests first, then implement. Verify 80%+ coverage with go test -cover.",
+    "category": "Testing",
+    "whenToUse": "Use /go-test when: - Implementing new Go functions - Adding test coverage to existing code",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/go-test.md",
+    "filename": "go-test.md"
+  },
+  {
+    "name": "golden-path",
+    "slash": "/golden-path",
+    "description": "Create a Golden Path Backstage Scaffolder template for a standard service type — generates template.yaml, skeleton files, CI/CD, and catalog-info.yaml",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/golden-path.md",
+    "filename": "golden-path.md"
+  },
+  {
+    "name": "hook-audit",
+    "slash": "/hook-audit",
+    "description": "Audit the clarc hook system for coverage, reliability, and performance — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and scripts/hooks/*.js.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/hook-audit.md",
+    "filename": "hook-audit.md"
+  },
+  {
+    "name": "hooks-stats",
+    "slash": "/hooks-stats",
+    "description": "Show hook invocation statistics, performance metrics, and error rates from the hook log.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/hooks-stats.md",
+    "filename": "hooks-stats.md"
+  },
+  {
+    "name": "i18n-audit",
+    "slash": "/i18n-audit",
+    "description": "Audit a codebase for i18n completeness — find hardcoded user-visible strings, missing translation keys, RTL-incompatible CSS, and locale-sensitive formatting without Intl API.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/i18n-audit.md",
+    "filename": "i18n-audit.md"
+  },
+  {
+    "name": "iac-review",
+    "slash": "/iac-review",
+    "description": "IaC code review for Pulumi and AWS CDK — abstractions, security hardening, tagging, unit tests, multi-environment separation, drift detection, and compliance policy coverage.",
+    "category": "Code Review",
+    "whenToUse": "Use /iac-review when: - Adding new Pulumi programs or CDK stacks to the codebase - Writing new ComponentResources or L3 Constructs",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/iac-review.md",
+    "filename": "iac-review.md"
+  },
+  {
+    "name": "idea",
+    "slash": "/idea",
+    "description": "Capture and structure a raw product idea. Asks clarifying questions to fill gaps, then writes a structured idea document. First step in the product lifecycle before evaluation and solution design.",
+    "category": "Product",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/idea.md",
+    "filename": "idea.md"
+  },
+  {
+    "name": "idp-design",
+    "slash": "/idp-design",
+    "description": "Design an Internal Developer Platform (IDP) for an engineering organization — guided discovery, component prioritization, make-vs-buy decision, and 90-day roadmap",
+    "category": "Architecture",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/idp-design.md",
+    "filename": "idp-design.md"
+  },
+  {
+    "name": "incident",
+    "slash": "/incident",
+    "description": "Open and manage a production incident. Creates a structured incident document, guides root cause analysis, generates status page updates and Slack messages, and sets up a post-mortem after resolution.",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/incident.md",
+    "filename": "incident.md"
+  },
+  {
+    "name": "instinct-export",
+    "slash": "/instinct-export",
+    "description": "Export instincts from project/global scope to a file",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-export.md",
+    "filename": "instinct-export.md"
+  },
+  {
+    "name": "instinct-import",
+    "slash": "/instinct-import",
+    "description": "Import instincts from file or URL into project/global scope",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-import.md",
+    "filename": "instinct-import.md"
+  },
+  {
+    "name": "instinct-projects",
+    "slash": "/instinct-projects",
+    "description": "List registered projects and their instinct/observation counts — part of the continuous-learning-v2 system.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-projects.md",
+    "filename": "instinct-projects.md"
+  },
+  {
+    "name": "instinct-status",
+    "slash": "/instinct-status",
+    "description": "Show learned instincts (project + global) with confidence",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-status.md",
+    "filename": "instinct-status.md"
+  },
+  {
+    "name": "instrument",
+    "slash": "/instrument",
+    "description": "Add product analytics event tracking to an existing feature or file. Designs event taxonomy, chooses the right analytics call (track/identify/group), and instruments the code without breaking existing logic.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instrument.md",
+    "filename": "instrument.md"
+  },
+  {
+    "name": "java-review",
+    "slash": "/java-review",
+    "description": "Comprehensive Java code review for idiomatic patterns, Spring Boot 4, hexagonal architecture, DDD, JPA, and security. Invokes the java-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /java-review when: - After writing or modifying Java/Spring Boot code - Before committing Java changes",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/java-review.md",
+    "filename": "java-review.md"
+  },
+  {
+    "name": "learn-eval",
+    "slash": "/learn-eval",
+    "description": "Extract reusable patterns from the session, self-evaluate quality before saving, and determine the right save location (Global vs Project).",
+    "category": "General",
+    "whenToUse": "[Trigger conditions]",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/learn-eval.md",
+    "filename": "learn-eval.md"
+  },
+  {
+    "name": "learning-audit",
+    "slash": "/learning-audit",
+    "description": "Audit the effectiveness of the clarc continuous-learning-v2 loop — instinct quality, conflict detector accuracy, evolution velocity, and learning coverage gaps. Produces a structured health report for the learning system.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/learning-audit.md",
+    "filename": "learning-audit.md"
+  },
+  {
+    "name": "migrate",
+    "slash": "/migrate",
+    "description": "Database migration workflow — plan, review, apply, and verify schema changes safely. Supports Drizzle, Prisma, Flyway, Alembic, golang-migrate. Guards against data-loss migrations reaching production.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/migrate.md",
+    "filename": "migrate.md"
+  },
+  {
+    "name": "mlops-review",
+    "slash": "/mlops-review",
+    "description": "MLOps audit — experiment tracking, model registry, serving SLOs, drift detection, retraining pipelines, A/B testing readiness. Invokes the mlops-architect agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /mlops-review when: - Deploying an ML model to production for the first time - Evaluating an existing ML system for operational gaps",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/mlops-review.md",
+    "filename": "mlops-review.md"
+  },
+  {
+    "name": "mobile-release",
+    "slash": "/mobile-release",
+    "description": "Mobile release workflow — version bump, test, code signing, beta distribution (TestFlight / Firebase), and staged production rollout for iOS and Android.",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/mobile-release.md",
+    "filename": "mobile-release.md"
+  },
+  {
+    "name": "modernize",
+    "slash": "/modernize",
+    "description": "Create a step-by-step modernization plan for a specific component — interface extraction, Branch-by-Abstraction, Strangler Fig, feature toggle cutover, and rollback strategy",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/modernize.md",
+    "filename": "modernize.md"
+  },
+  {
+    "name": "multi-backend",
+    "slash": "/multi-backend",
+    "description": "[Requires codeagent-wrapper] Backend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Codex-led. Requires codeagent-wrapper + ace-tool MCP.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/multi-backend.md",
+    "filename": "multi-backend.md"
+  },
+  {
+    "name": "multi-execute",
+    "slash": "/multi-execute",
+    "description": "[Requires codeagent-wrapper] Multi-model collaborative execution — prototype from plan → Claude refactors and implements → multi-model audit and delivery.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/multi-execute.md",
+    "filename": "multi-execute.md"
+  },
+  {
+    "name": "multi-frontend",
+    "slash": "/multi-frontend",
+    "description": "[Requires codeagent-wrapper] Frontend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Gemini-led. Requires codeagent-wrapper + ace-tool MCP.",
+    "category": "TypeScript / Frontend",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/multi-frontend.md",
+    "filename": "multi-frontend.md"
+  },
+  {
+    "name": "multi-plan",
+    "slash": "/multi-plan",
+    "description": "[Requires codeagent-wrapper] Multi-model collaborative planning — Context retrieval + Codex/Gemini dual-model analysis → step-by-step implementation plan.",
+    "category": "Architecture",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/multi-plan.md",
+    "filename": "multi-plan.md"
+  },
+  {
+    "name": "multi-workflow",
+    "slash": "/multi-workflow",
+    "description": "[Requires codeagent-wrapper] Multi-model collaborative development workflow with intelligent routing — Frontend→Gemini, Backend→Codex. Full Research→Ideation→Plan→Execute→Optimize→Review cycle.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/multi-workflow.md",
+    "filename": "multi-workflow.md"
+  },
+  {
+    "name": "onboard",
+    "slash": "/onboard",
+    "description": "Generate onboarding documentation for an existing codebase — README, CONTRIBUTING.md, arc42 architecture docs, architecture tour, setup script validation, domain glossary, and GitHub onboarding issue template.",
+    "category": "Documentation",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/onboard.md",
+    "filename": "onboard.md"
+  },
+  {
+    "name": "orchestrate",
+    "slash": "/orchestrate",
+    "description": "Orchestrate multiple agents for complex tasks",
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/orchestrate.md",
+    "filename": "orchestrate.md"
+  },
+  {
+    "name": "oss-setup",
+    "slash": "/oss-setup",
+    "description": "Set up open source project infrastructure for a GitHub repository — issue/PR templates, CODEOWNERS, CONTRIBUTING.md, label taxonomy, and branch protection configuration.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/oss-setup.md",
+    "filename": "oss-setup.md"
+  },
+  {
+    "name": "overnight",
+    "slash": "/overnight",
+    "description": "Set up an autonomous overnight development pipeline. Analyzes the feature, selects the right pipeline pattern (Sequential, Continuous Claude, Ralphinho, or Infinite Loop), then generates all required files. WAITS for user confirmation before creating files.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/overnight.md",
+    "filename": "overnight.md"
+  },
+  {
+    "name": "plan",
+    "slash": "/plan",
+    "description": "Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code.",
+    "category": "Architecture",
+    "whenToUse": "Use /plan when: - Starting a new feature - Making significant architectural changes",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/plan.md",
+    "filename": "plan.md"
+  },
+  {
+    "name": "prd",
+    "slash": "/prd",
+    "description": "Write a Product Requirements Document from a validated idea and its Architecture Decision Record. Produces a spec directly compatible with /overnight and /plan. Final step before implementation.",
+    "category": "Product",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/prd.md",
+    "filename": "prd.md"
+  },
+  {
+    "name": "privacy-audit",
+    "slash": "/privacy-audit",
+    "description": "Privacy Engineering audit — PII scan (Presidio), retention-policy check, data minimization, test-fixture scan, RTBF flow validation, consent-basis review, third-party data sharing.",
+    "category": "General",
+    "whenToUse": "Use /privacy-audit when: - Adding any new feature that collects personal data - Onboarding a new third-party service that receives user data",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/privacy-audit.md",
+    "filename": "privacy-audit.md"
+  },
+  {
+    "name": "profile",
+    "slash": "/profile",
+    "description": "Guided profiling workflow — detects language, recommends the right profiler, starts a session, and interprets the top hotspots with concrete next steps",
+    "category": "Performance",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/profile.md",
+    "filename": "profile.md"
+  },
+  {
+    "name": "promote",
+    "slash": "/promote",
+    "description": "Promote project-scoped instincts to global scope",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/promote.md",
+    "filename": "promote.md"
+  },
+  {
+    "name": "prompt-review",
+    "slash": "/prompt-review",
+    "description": "Review a system prompt or prompt template for quality, safety, and effectiveness. Invokes the prompt-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/prompt-review.md",
+    "filename": "prompt-review.md"
+  },
+  {
+    "name": "python-review",
+    "slash": "/python-review",
+    "description": "Comprehensive Python code review for PEP 8 compliance, type hints, security, and Pythonic idioms. Invokes the python-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /python-review when: - After writing or modifying Python code - Before committing Python changes",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/python-review.md",
+    "filename": "python-review.md"
+  },
+  {
+    "name": "python-test",
+    "slash": "/python-test",
+    "description": "Run Python tests with coverage using pytest. Enforces 80%+ coverage and fails fast on the first error.",
+    "category": "Testing",
+    "whenToUse": "- Before committing Python changes - After adding new features (verify tests pass) - When CI reports failing tests",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/python-test.md",
+    "filename": "python-test.md"
+  },
+  {
+    "name": "refactor",
+    "slash": "/refactor",
+    "description": "Safely identify and remove dead code with test verification at every step.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/refactor.md",
+    "filename": "refactor.md"
+  },
+  {
+    "name": "release",
+    "slash": "/release",
+    "description": "Cut a new release. Reads git history since the last tag, determines the version bump (semver), updates CHANGELOG, bumps version files, creates a git tag, and generates GitHub Release notes.",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/release.md",
+    "filename": "release.md"
+  },
+  {
+    "name": "resilience-audit",
+    "slash": "/resilience-audit",
+    "description": "Systematic resilience audit of an architecture or codebase — inventories dependencies, checks failure handling, identifies SPOFs, outputs prioritized action plan",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/resilience-audit.md",
+    "filename": "resilience-audit.md"
+  },
+  {
+    "name": "ruby-review",
+    "slash": "/ruby-review",
+    "description": "Comprehensive Ruby/Rails code review for idiomatic Ruby, Rails best practices, security (Brakeman), performance, and N+1 detection. Invokes the ruby-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/ruby-review.md",
+    "filename": "ruby-review.md"
+  },
+  {
+    "name": "rust-build",
+    "slash": "/rust-build",
+    "description": "Build Rust code and run Clippy lints. Catches compilation errors and lint warnings with minimal, surgical fixes.",
+    "category": "Rust",
+    "whenToUse": "- When cargo build fails with errors - When cargo clippy reports warnings - After pulling changes that break compilation",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/rust-build.md",
+    "filename": "rust-build.md"
+  },
+  {
+    "name": "rust-review",
+    "slash": "/rust-review",
+    "description": "Comprehensive Rust code review for ownership, borrowing, async correctness (Tokio), error handling (thiserror/anyhow), and performance. Invokes the rust-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/rust-review.md",
+    "filename": "rust-review.md"
+  },
+  {
+    "name": "rust-test",
+    "slash": "/rust-test",
+    "description": "Run Rust tests with coverage. Enforces TDD workflow with table-driven tests and 80%+ coverage via cargo test and cargo tarpaulin.",
+    "category": "Testing",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/rust-test.md",
+    "filename": "rust-test.md"
+  },
+  {
+    "name": "sbom",
+    "slash": "/sbom",
+    "description": "Generate SBOM (Software Bill of Materials), run vulnerability scan, and set up attestation with cosign — full workflow from generation to CI integration",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/sbom.md",
+    "filename": "sbom.md"
+  },
+  {
+    "name": "sdk-review",
+    "slash": "/sdk-review",
+    "description": "SDK Design Review — ergonomics, consistency, backward compatibility, error hierarchy, documentation coverage, multi-language generation, and VCR/contract test readiness. Invokes the sdk-architect agent.",
+    "category": "Code Review",
+    "whenToUse": "Use /sdk-review when: - Releasing a new major or minor version of an SDK - Onboarding a new language into a multi-language SDK suite",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/sdk-review.md",
+    "filename": "sdk-review.md"
+  },
+  {
+    "name": "security",
+    "slash": "/security",
+    "description": "Run comprehensive DevSecOps security scan — SAST (Semgrep), secrets (Gitleaks), dependencies (Trivy), container images, DAST (ZAP), and Policy-as-Code (OPA/Kyverno). Produces prioritized CRITICAL/HIGH report with fix plan.",
+    "category": "Security",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/security.md",
+    "filename": "security.md"
+  },
+  {
+    "name": "session-cost",
+    "slash": "/session-cost",
+    "description": "Show estimated token usage and cost for recent clarc sessions",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/session-cost.md",
+    "filename": "session-cost.md"
+  },
+  {
+    "name": "sessions",
+    "slash": "/sessions",
+    "description": "Manage Claude Code session history — list, load, alias, and edit sessions stored in ~/.claude/sessions/.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/sessions.md",
+    "filename": "sessions.md"
+  },
+  {
+    "name": "setup-ci",
+    "slash": "/setup-ci",
+    "description": "Generate GitHub Actions CI/CD workflows for the current project. Detects language, test runner, and deployment target, then creates build/test/lint, Docker, and deploy workflows.",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/setup-ci.md",
+    "filename": "setup-ci.md"
+  },
+  {
+    "name": "setup-dev",
+    "slash": "/setup-dev",
+    "description": "Set up a complete local development environment for a new project. Generates devcontainer.json, .env.example, docker-compose.dev.yml for services, and a Getting Started section in the README.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/setup-dev.md",
+    "filename": "setup-dev.md"
+  },
+  {
+    "name": "setup-pm",
+    "slash": "/setup-pm",
+    "description": "Configure your preferred package manager (npm/pnpm/yarn/bun)",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/setup-pm.md",
+    "filename": "setup-pm.md"
+  },
+  {
+    "name": "skill-create",
+    "slash": "/skill-create",
+    "description": "Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skill-create.md",
+    "filename": "skill-create.md"
+  },
+  {
+    "name": "skill-depth",
+    "slash": "/skill-depth",
+    "description": "Analyze a clarc skill for prompt-engineering quality — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Use /skill-depth --all to analyze all skills.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skill-depth.md",
+    "filename": "skill-depth.md"
+  },
+  {
+    "name": "slide-deck",
+    "slash": "/slide-deck",
+    "description": "Generate a slide deck structure from a topic, document, or notes. Produces a Reveal.js HTML presentation or Markdown slide structure (Marp-compatible). Invokes the presentation-designer agent.",
+    "category": "Observability",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/slide-deck.md",
+    "filename": "slide-deck.md"
+  },
+  {
+    "name": "slo",
+    "slash": "/slo",
+    "description": "Define SLIs, SLOs, and error budgets for a service. Produces a complete SLO document with burn rate alert rules and deployment gating policy.",
+    "category": "Observability",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/slo.md",
+    "filename": "slo.md"
+  },
+  {
+    "name": "storybook-audit",
+    "slash": "/storybook-audit",
+    "description": "Audit an existing Storybook setup — story coverage, CSF version, accessibility, interaction tests, documentation quality, Chromatic integration, and prioritized improvement plan",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/storybook-audit.md",
+    "filename": "storybook-audit.md"
+  },
+  {
+    "name": "swift-build",
+    "slash": "/swift-build",
+    "description": "Build Swift/Xcode projects and run static analysis. Catches compilation errors, warnings, and analyzer issues.",
+    "category": "Swift / iOS",
+    "whenToUse": "- When swift build or xcodebuild fails - After pulling changes that break compilation - Before committing Swift changes",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/swift-build.md",
+    "filename": "swift-build.md"
+  },
+  {
+    "name": "swift-review",
+    "slash": "/swift-review",
+    "description": "Comprehensive Swift code review for concurrency safety, SwiftUI best practices, protocol-based architecture, memory management, and security. Invokes the swift-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/swift-review.md",
+    "filename": "swift-review.md"
+  },
+  {
+    "name": "system-review",
+    "slash": "/system-review",
+    "description": "Orchestrate a structured self-review of the entire clarc system. Three modes: quick (wiring + naming, ~5 min), components (all component analyzers, ~30 min), full (everything + competitive analysis, ~90 min). Produces a report in docs/system-review/.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/system-review.md",
+    "filename": "system-review.md"
+  },
+  {
+    "name": "talk-outline",
+    "slash": "/talk-outline",
+    "description": "Create a talk outline with time allocation, key points per section, speaker notes skeleton, and Q&A preparation questions.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/talk-outline.md",
+    "filename": "talk-outline.md"
+  },
+  {
+    "name": "tdd",
+    "slash": "/tdd",
+    "description": "Enforce test-driven development workflow. Scaffold interfaces, generate tests FIRST, then implement minimal code to pass. Ensure 80%+ coverage.",
+    "category": "Testing",
+    "whenToUse": "Use /tdd when: - Implementing new features - Adding new functions/components",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/tdd.md",
+    "filename": "tdd.md"
+  },
+  {
+    "name": "test-coverage",
+    "slash": "/test-coverage",
+    "description": "Analyze test coverage, identify gaps, and generate missing tests to reach 80%+ coverage.",
+    "category": "Testing",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/test-coverage.md",
+    "filename": "test-coverage.md"
+  },
+  {
+    "name": "triage",
+    "slash": "/triage",
+    "description": "Run an issue triage session — list open issues, suggest labels, identify stale issues, and generate standard close responses for out-of-scope or duplicate issues.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/triage.md",
+    "filename": "triage.md"
+  },
+  {
+    "name": "typescript-build",
+    "slash": "/typescript-build",
+    "description": "Type-check and lint TypeScript/JavaScript code. Runs tsc --noEmit and ESLint/Biome to catch type errors and style violations without building.",
+    "category": "TypeScript / Frontend",
+    "whenToUse": "- Before committing TypeScript changes - After pulling changes that may introduce type errors - When tsc or eslint is failing in CI",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/typescript-build.md",
+    "filename": "typescript-build.md"
+  },
+  {
+    "name": "typescript-review",
+    "slash": "/typescript-review",
+    "description": "Comprehensive TypeScript code review for hexagonal architecture, DDD patterns, type safety, security, and performance. Invokes the typescript-reviewer agent.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/typescript-review.md",
+    "filename": "typescript-review.md"
+  },
+  {
+    "name": "undo",
+    "slash": "/undo",
+    "description": "Undo last clarc auto-checkpoint (restores files to state before last Edit/Write)",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/undo.md",
+    "filename": "undo.md"
+  },
+  {
+    "name": "update-codemaps",
+    "slash": "/update-codemaps",
+    "description": "Analyze the codebase structure and generate token-lean architecture documentation in docs/CODEMAPS/.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/update-codemaps.md",
+    "filename": "update-codemaps.md"
+  },
+  {
+    "name": "update-docs",
+    "slash": "/update-docs",
+    "description": "Sync documentation with the codebase, generating from source-of-truth files.",
+    "category": "Documentation",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/update-docs.md",
+    "filename": "update-docs.md"
+  },
+  {
+    "name": "verify",
+    "slash": "/verify",
+    "description": "Run comprehensive build, type, lint, test, and git verification on the codebase.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/verify.md",
+    "filename": "verify.md"
+  },
+  {
+    "name": "visual-test",
+    "slash": "/visual-test",
+    "description": "Set up visual regression testing for a project — detects project type, recommends tool (Chromatic/Playwright/Percy), installs, creates baselines, and configures CI",
+    "category": "Testing",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/visual-test.md",
+    "filename": "visual-test.md"
+  },
+  {
+    "name": "wasm-build",
+    "slash": "/wasm-build",
+    "description": "Build, optimize, and validate a WebAssembly module from Rust — wasm-pack build, wasm-opt size optimization, and JS integration check",
+    "category": "CI / CD",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/wasm-build.md",
+    "filename": "wasm-build.md"
+  },
+  {
+    "name": "wasm-review",
+    "slash": "/wasm-review",
+    "description": "Review WebAssembly/Rust code for correctness, performance pitfalls, unsafe memory management, and JS interop quality",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/wasm-review.md",
+    "filename": "wasm-review.md"
+  },
+  {
+    "name": "web-perf",
+    "slash": "/web-perf",
+    "description": "Web performance audit — run Lighthouse, interpret Core Web Vitals, analyze bundle, identify quick wins, and set up regression prevention",
+    "category": "Performance",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/web-perf.md",
+    "filename": "web-perf.md"
+  },
+  {
+    "name": "webrtc-review",
+    "slash": "/webrtc-review",
+    "description": "WebRTC architecture review — P2P vs SFU vs MCU decision, TURN configuration, signaling robustness, simulcast, access token security, recording consent, and error handling.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/webrtc-review.md",
+    "filename": "webrtc-review.md"
+  },
+  {
+    "name": "workflow-check",
+    "slash": "/workflow-check",
+    "description": "Check whether clarc supports 6 critical end-to-end developer journeys — Idea-to-Production, Bug-to-Fix, New Developer Onboarding, Incident Response, Architecture Decision, and LLM App Development. Identifies which journey steps lack Command, Agent, or Skill coverage.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/workflow-check.md",
+    "filename": "workflow-check.md"
+  },
+  {
+    "name": "zero-trust-review",
+    "slash": "/zero-trust-review",
+    "description": "Zero-Trust security review for a service — mTLS enforcement, SPIFFE identity, NetworkPolicies, Authorization Policies, east-west traffic, and secret handling.",
+    "category": "Code Review",
+    "whenToUse": "Use /zero-trust-review when: - Onboarding a new service to a service mesh (Istio, Linkerd) - Migrating from PERMISSIVE to STRICT mTLS mode",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/zero-trust-review.md",
+    "filename": "zero-trust-review.md"
+  }
+]

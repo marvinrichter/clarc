@@ -235,7 +235,95 @@ ${summarySection}
   // Weekly Evolve-Batch: trigger on Mondays when >= 10 instincts and last run > 6 days ago
   checkWeeklyEvolve();
 
+  // Memory Bank: write .clarc/context.md and append to .clarc/progress.md
+  if (summary) {
+    writeMemoryBank(summary, today, currentTime);
+  }
+
   process.exit(0);
+}
+
+/**
+ * Write session data to the project-level Memory Bank (.clarc/).
+ * Only runs when .clarc/ already exists in the current working directory —
+ * never creates .clarc/ automatically (user must opt in).
+ */
+function writeMemoryBank(summary, date, time) {
+  const clarcDir = path.join(process.cwd(), '.clarc');
+  if (!fs.existsSync(clarcDir)) {
+    // Hint if project-like directory (has package.json, go.mod, etc.)
+    const markers = ['package.json', 'go.mod', 'Cargo.toml', 'pyproject.toml', 'build.gradle'];
+    const isProject = markers.some(m => fs.existsSync(path.join(process.cwd(), m)));
+    if (isProject) {
+      log('[SessionEnd] Tip: create .clarc/ to enable Memory Bank (see docs/memory-bank.md)');
+    }
+    return;
+  }
+
+  try {
+    // Overwrite context.md with current session summary
+    const contextContent = buildContextFile(summary, date);
+    fs.writeFileSync(path.join(clarcDir, 'context.md'), contextContent, 'utf8');
+
+    // Append to progress.md
+    const progressEntry = buildProgressEntry(summary, date, time);
+    const progressFile = path.join(clarcDir, 'progress.md');
+    const header = fs.existsSync(progressFile) ? '' : '# Session Progress Log\n\n';
+    fs.appendFileSync(progressFile, header + progressEntry, 'utf8');
+
+    log(`[SessionEnd] Memory Bank updated: .clarc/context.md, .clarc/progress.md`);
+  } catch (err) {
+    log(`[SessionEnd] Memory Bank write error: ${err.message}`);
+  }
+}
+
+function buildContextFile(summary, date) {
+  const tasks = summary.userMessages
+    .slice(-5)
+    .map(m => `- ${m.replace(/\n/g, ' ').slice(0, 120)}`)
+    .join('\n');
+
+  const files = summary.filesModified.length > 0
+    ? summary.filesModified.slice(0, 10).map(f => `- ${f}`).join('\n')
+    : '- (none)';
+
+  return `# Session Context — ${date}
+
+## Current focus
+${tasks || '- (no tasks captured)'}
+
+## Files changed this session
+${files}
+
+## Open TODOs
+- [ ] (review and update manually)
+
+## Next steps
+(update manually after reviewing session)
+`;
+}
+
+function buildProgressEntry(summary, date, time) {
+  const tasks = summary.userMessages
+    .slice(-5)
+    .map(m => `  - ${m.replace(/\n/g, ' ').slice(0, 120)}`)
+    .join('\n');
+
+  const files = summary.filesModified.slice(0, 10).map(f => `  - ${f}`).join('\n') || '  - (none)';
+
+  return `## Session ${date} ${time}
+
+### Tasks
+${tasks || '  - (none captured)'}
+
+### Files changed
+${files}
+
+### Stats
+- Tool calls: ${summary.toolsUsed.length}
+- User messages: ${summary.totalMessages}
+
+`;
 }
 
 /**
