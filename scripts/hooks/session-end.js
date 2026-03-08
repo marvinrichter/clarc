@@ -213,25 +213,29 @@ function checkWeeklyEvolve() {
     const sixDaysAgo = Date.now() - 6 * 24 * 60 * 60 * 1000;
     if (lastEvolveDate && lastEvolveDate.getTime() > sixDaysAgo) return;
 
-    // Count instincts in homunculus dir
+    // Count instincts — stop as soon as threshold is reached
+    const THRESHOLD = 10;
     let instinctCount = 0;
-    if (fs.existsSync(homunculusDir)) {
+    outer: if (fs.existsSync(homunculusDir)) {
       for (const entry of fs.readdirSync(homunculusDir)) {
-        if (entry.endsWith('.json') && entry !== 'last-evolve.json') instinctCount++;
+        if (entry.endsWith('.json') && entry !== 'last-evolve.json') {
+          if (++instinctCount >= THRESHOLD) break outer;
+        }
       }
-      // Also count in projects subdirectory
       const projectsDir = path.join(homunculusDir, 'projects');
       if (fs.existsSync(projectsDir)) {
         for (const project of fs.readdirSync(projectsDir)) {
           const instinctsDir = path.join(projectsDir, project, 'instincts', 'personal');
           if (fs.existsSync(instinctsDir)) {
-            instinctCount += fs.readdirSync(instinctsDir).filter(f => f.endsWith('.yaml') || f.endsWith('.json')).length;
+            for (const f of fs.readdirSync(instinctsDir)) {
+              if ((f.endsWith('.yaml') || f.endsWith('.json')) && ++instinctCount >= THRESHOLD) break outer;
+            }
           }
         }
       }
     }
 
-    if (instinctCount < 10) return;
+    if (instinctCount < THRESHOLD) return;
 
     // Write weekly evolve suggestion to notification queue
     const digestDir = path.join(homunculusDir);
