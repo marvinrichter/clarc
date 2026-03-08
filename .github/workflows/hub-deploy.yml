@@ -1,0 +1,55 @@
+name: Deploy Hub
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agents/**'
+      - 'skills/**'
+      - 'commands/**'
+      - 'scripts/ci/generate-hub.js'
+      - 'docs/hub/style.css'
+      - 'docs/hub/search.js'
+
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+# Only one deploy runs at a time
+concurrency:
+  group: hub-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Hub
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Hub
+        run: node scripts/ci/generate-hub.js
+
+      - name: Show generated files
+        run: |
+          echo "Generated files in docs/hub/:"
+          find docs/hub -type f | sort
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/hub
+          commit_message: 'chore: update hub [skip ci]'
+          # Preserve CNAME and other custom files from gh-pages branch
+          keep_files: false
+          # Enable Jekyll processing false — we generate plain HTML
+          enable_jekyll: false
