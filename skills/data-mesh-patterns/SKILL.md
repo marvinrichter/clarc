@@ -1,3 +1,7 @@
+---
+name: data-mesh-patterns
+description: Skill: Data Mesh Architecture Patterns
+---
 # Skill: Data Mesh Architecture Patterns
 
 ## When to Activate

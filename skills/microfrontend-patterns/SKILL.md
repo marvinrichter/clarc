@@ -1,3 +1,7 @@
+---
+name: microfrontend-patterns
+description: Skill: Micro-Frontend Patterns
+---
 # Skill: Micro-Frontend Patterns
 
 ## When to Activate

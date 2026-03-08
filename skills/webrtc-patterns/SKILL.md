@@ -1,3 +1,7 @@
+---
+name: webrtc-patterns
+description: Skill: WebRTC Patterns
+---
 # Skill: WebRTC Patterns
 
 ## When to Activate

@@ -27,6 +27,10 @@ function validateCommands() {
   // Build set of valid command names (without .md extension)
   const validCommands = new Set(files.map(f => f.replace(/\.md$/, '')));
 
+  // Built-in Claude Code commands — valid to reference but not in commands/
+  const BUILTIN_COMMANDS = new Set(['compact', 'cost', 'help', 'clear', 'memory', 'init', 'review', 'login', 'logout', 'config', 'bug', 'doctor', 'update', 'vim']);
+  for (const b of BUILTIN_COMMANDS) validCommands.add(b);
+
   // Build set of valid agent names (without .md extension)
   const validAgents = new Set();
   if (fs.existsSync(AGENTS_DIR)) {

@@ -70,6 +70,47 @@ Invoked by **code-reviewer** automatically based on file extension. Can also be 
 
 ---
 
+## Specialist & Review Agents
+
+| Agent | Purpose | When to Use |
+|-------|---------|-------------|
+| `agent-quality-reviewer` | Reviews a single agent file for quality across 8 dimensions | Before shipping or updating an agent |
+| `agent-system-reviewer` | Full clarc system review — orchestrates all analyzers | `/system-review full` |
+| `android-reviewer` | Android/Compose code review | All Kotlin/Android code changes |
+| `bash-reviewer` | Bash/shell script review | All `.sh`/`.bash` code changes |
+| `c-reviewer` | C code review (C11/C17, memory safety) | All C code changes |
+| `command-auditor` | Audits clarc commands for UX ergonomics | `/command-audit` |
+| `contract-reviewer` | API contract break detection | Modifying REST/event/GraphQL APIs |
+| `csharp-reviewer` | C#/.NET code review | All C# code changes |
+| `data-architect` | Data Mesh architecture design | Designing new data platforms |
+| `design-critic` | Visual design critique | Screenshots, wireframes, UI code |
+| `devsecops-reviewer` | Security scan for code changes | Code touching auth, APIs, infrastructure |
+| `docs-architect` | Documentation strategy and platform selection | Planning or overhauling API docs |
+| `finops-advisor` | Cloud cost optimization | Terraform/K8s config cost review |
+| `flutter-reviewer` | Flutter/Dart code review | All Flutter code changes |
+| `frontend-architect` | Micro-Frontend architecture design | Building multi-team frontend systems |
+| `gitops-architect` | GitOps setup design (ArgoCD/Flux) | Setting up K8s deployment workflows |
+| `hook-auditor` | Audits the clarc hook system | `/hook-audit` |
+| `kotlin-reviewer` | Kotlin code review | All `.kt`/`.kts` file changes |
+| `mlops-architect` | MLOps infrastructure design | Deploying or operationalizing ML models |
+| `modernization-planner` | Legacy codebase modernization roadmap | Analyzing legacy systems |
+| `orchestrator-designer` | Multi-agent system design | Architecting new multi-agent workflows |
+| `performance-analyst` | Performance hotspot analysis | Profiling output, flamegraphs, Lighthouse |
+| `php-reviewer` | PHP code review (PHP 8.2+) | All PHP code changes |
+| `platform-architect` | Internal Developer Platform design | Improving developer experience at scale |
+| `presentation-designer` | Slide deck design and structure | Any slide deck creation |
+| `prompt-quality-scorer` | Prompt engineering quality evaluation | Auditing agent/command instructions |
+| `prompt-reviewer` | System prompt and template review | Writing or auditing LLM prompts |
+| `resilience-reviewer` | Failure mode and circuit breaker review | Adding external dependencies |
+| `scala-reviewer` | Scala code review (Cats Effect/ZIO) | All `.scala`/`.sc` file changes |
+| `sdk-architect` | SDK architecture design | Building or evolving developer SDKs |
+| `skill-depth-analyzer` | Skill prompt-engineering quality analysis | `/skill-depth` command |
+| `supply-chain-auditor` | Supply chain security risk analysis | Before releases, security audits |
+| `talk-coach` | Talk outline and slide deck review | After drafting a presentation |
+| `workflow-os-competitor-analyst` | clarc vs competitor feature comparison | `/competitive-review` command |
+
+---
+
 ## Parallel Execution
 
 ALWAYS invoke agents in parallel for independent tasks:

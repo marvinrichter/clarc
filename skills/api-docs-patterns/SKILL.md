@@ -1,3 +1,7 @@
+---
+name: api-docs-patterns
+description: Skill: API Documentation Patterns
+---
 # Skill: API Documentation Patterns
 
 Engineering great API documentation — from OpenAPI descriptions to interactive playgrounds, changelog automation, and prose quality checks. API documentation is a product, not an afterthought.

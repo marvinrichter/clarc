@@ -1,3 +1,7 @@
+---
+name: android-testing
+description: Skill: Android Testing
+---
 # Skill: Android Testing
 
 ## When to Activate

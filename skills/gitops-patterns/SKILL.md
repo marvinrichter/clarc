@@ -1,3 +1,7 @@
+---
+name: gitops-patterns
+description: Skill: GitOps & Progressive Delivery
+---
 # Skill: GitOps & Progressive Delivery
 
 GitOps treats Git as the single source of truth for infrastructure and application state. Controllers continuously reconcile the desired state (in Git) with the actual state (in the cluster), eliminating manual `kubectl apply` in production.

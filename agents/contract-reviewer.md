@@ -1,12 +1,8 @@
 ---
 name: contract-reviewer
 description: "Reviews API changes for contract breaks. Given git diff of API definitions and existing consumer pacts, classifies each change as BREAKING / NON-BREAKING / ADDITIVE and produces a migration plan. Use when modifying any API (REST, event schema, GraphQL)."
-model: claude-sonnet-4-6
-tools:
-  - Read
-  - Glob
-  - Grep
-  - Bash
+model: sonnet
+tools: ["- Read", "Glob", "Grep", "Bash"]
 ---
 
 You are an API contract review specialist. When API definitions change, you determine whether those changes break existing consumers.

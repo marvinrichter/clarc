@@ -1,3 +1,7 @@
+---
+name: mobile-cicd-patterns
+description: Skill: Mobile CI/CD Patterns
+---
 # Skill: Mobile CI/CD Patterns
 
 ## When to Activate

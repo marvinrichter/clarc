@@ -1,3 +1,7 @@
+---
+name: sdk-design-patterns
+description: Skill: SDK Design Patterns
+---
 # Skill: SDK Design Patterns
 
 ## When to Activate

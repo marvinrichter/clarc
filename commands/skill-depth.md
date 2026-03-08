@@ -1,5 +1,5 @@
 ---
-description: Analyze a clarc skill for prompt-engineering quality — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Deeper analysis than /skill-stocktake. Use /skill-depth --all to analyze all skills.
+description: Analyze a clarc skill for prompt-engineering quality — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Use /skill-depth --all to analyze all skills.
 ---
 
 # Skill Depth Analysis
@@ -13,9 +13,9 @@ Invoke the **skill-depth-analyzer** agent to evaluate one or all clarc skills ag
 /skill-depth --all           — analyze all skills in skills/
 ```
 
-## vs. /skill-stocktake
+## vs. skill-stocktake
 
-| | `/skill-stocktake` | `/skill-depth` |
+| | skill-stocktake | `/skill-depth` |
 |--|--|--|
 | Focus | Quality, freshness, overlap | Prompt-engineering depth |
 | Actionability ratio | ❌ | ✅ |
@@ -24,7 +24,7 @@ Invoke the **skill-depth-analyzer** agent to evaluate one or all clarc skills ag
 | Internal consistency check | ❌ | ✅ |
 | Length calibration | ❌ | ✅ |
 
-Use `/skill-stocktake` for a quick system overview. Use `/skill-depth` to deeply improve individual skills.
+Use skill-stocktake for a quick system overview. Use `/skill-depth` to deeply improve individual skills.
 
 ## What It Scores
 

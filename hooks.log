@@ -1,0 +1,110 @@
+{"ts":"2026-03-08T20:11:25.944Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:11:25.989Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:11:26.036Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:11:26.081Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:11:26.128Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:11:26.173Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:11:26.267Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":47}
+{"ts":"2026-03-08T20:11:26.404Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:11:28.993Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:11:29.097Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:12:04.078Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:04.124Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:04.170Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:04.216Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:12:04.263Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:12:04.308Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:04.400Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:12:04.537Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:12:07.157Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:12:07.260Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:12:42.919Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:42.968Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:43.013Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:43.058Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:12:43.104Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:12:43.150Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:12:43.242Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":45}
+{"ts":"2026-03-08T20:12:43.379Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:12:45.915Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:12:46.017Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:13:19.924Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:13:19.970Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:13:20.015Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:13:20.060Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:13:20.106Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:13:20.152Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:13:20.243Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:13:20.380Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:13:22.912Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:13:23.013Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:14:01.741Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:01.787Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:01.834Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:01.882Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:14:01.927Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:14:01.972Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:02.064Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:14:02.202Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:14:54.311Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:54.359Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:54.408Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:54.455Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:14:54.501Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:14:54.546Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:14:54.637Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":45}
+{"ts":"2026-03-08T20:14:54.775Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:15:15.511Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:15:15.557Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:15:15.603Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:15:15.649Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:15:15.694Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:15:15.739Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:15:15.832Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:15:15.971Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:27:10.880Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:10.933Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:10.983Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:11.032Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:27:11.080Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:27:11.127Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:11.220Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:27:11.359Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:27:14.018Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:27:14.128Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:27:56.779Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:56.826Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:56.871Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:27:56.918Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:27:56.964Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:27:57.010Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":1}
+{"ts":"2026-03-08T20:27:57.100Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":45}
+{"ts":"2026-03-08T20:27:57.244Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:27:59.880Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:27:59.982Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:28:39.781Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:28:39.830Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:28:39.881Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:28:39.934Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:28:39.986Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:28:40.035Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:28:40.139Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":52}
+{"ts":"2026-03-08T20:28:40.276Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:38:48.621Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:38:48.667Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:38:48.712Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:38:48.759Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:38:48.805Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:38:48.851Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:38:48.943Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":44}
+{"ts":"2026-03-08T20:38:49.079Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
+{"ts":"2026-03-08T20:38:51.633Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":0}
+{"ts":"2026-03-08T20:38:51.736Z","hook":"pre-bash-dispatch","tool":"Bash","target":"yarn dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:39:37.731Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:39:37.777Z","hook":"pre-bash-dispatch","tool":"Bash","target":null,"exit":0,"ms":0}
+{"ts":"2026-03-08T20:39:37.821Z","hook":"pre-bash-dispatch","tool":"Bash","target":"git status","exit":0,"ms":0}
+{"ts":"2026-03-08T20:39:37.867Z","hook":"pre-bash-dispatch","tool":"Bash","target":"npm run dev","exit":2,"ms":1}
+{"ts":"2026-03-08T20:39:37.912Z","hook":"post-edit-format-dispatch","tool":"Edit","target":null,"exit":1,"ms":0}
+{"ts":"2026-03-08T20:39:37.959Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"bar.xyz","exit":0,"ms":0}
+{"ts":"2026-03-08T20:39:38.051Z","hook":"post-edit-format-dispatch","tool":"Edit","target":"test.js","exit":0,"ms":46}
+{"ts":"2026-03-08T20:39:38.189Z","hook":"test-hook","tool":"Edit","target":"bar.ts","exit":0,"ms":42}
