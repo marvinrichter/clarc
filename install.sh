@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# install.sh — Install claude rules while preserving directory structure.
+# install.sh — Install clarc rules, agents, skills, and commands to your editor/AI tool.
 #
 # Usage:
-#   ./install.sh [--target <claude|cursor>] <language> [<language> ...]
+#   ./install.sh [--target <claude|cursor|opencode|codex>] <language> [<language> ...]
 #   ./install.sh --check [<language> ...]
 #
 # Examples:
@@ -10,12 +10,16 @@
 #   ./install.sh typescript python go
 #   ./install.sh --target cursor typescript
 #   ./install.sh --target cursor typescript python go
+#   ./install.sh --target opencode typescript
+#   ./install.sh --target codex
 #   ./install.sh --check                    # check common + all installed langs
 #   ./install.sh --check typescript python  # check specific languages
 #
 # Targets:
-#   claude  (default) — Install rules to ~/.claude/rules/
-#   cursor  — Install rules, agents, skills, commands, and MCP to ./.cursor/
+#   claude   (default) — Install rules to ~/.claude/rules/
+#   cursor   — Install rules to .cursor/rules/ + .cursorrules (Cursor IDE)
+#   opencode — Install commands and instructions to .opencode/ (OpenCode IDE)
+#   codex    — Install instructions and commands to codex/ (Codex CLI)
 #
 # This script copies rules into the target directory keeping the common/ and
 # language-specific subdirectories intact so that:
