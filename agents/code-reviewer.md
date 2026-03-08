@@ -24,6 +24,7 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.cpp`, `.cc`, `.cxx`, `.h`, `.hpp` | **cpp-reviewer** |
 | `.php` | **php-reviewer** |
 | `.R`, `.r`, `.Rmd`, `.qmd` | **r-reviewer** |
+| `.cs`, `.csx`, `.razor` | **csharp-reviewer** |
 | `.rb`, `.rake` | **ruby-reviewer** |
 | `.ex`, `.exs` | **elixir-reviewer** |
 | `.scala`, `.sc` | **scala-reviewer** |
