@@ -239,9 +239,37 @@ where resolved_at is not null
 
 ---
 
+## Engineering Metrics
+
+Engineering team effectiveness is measured with the DORA Four Keys framework and complemented by the SPACE framework for developer experience.
+
+### DORA Four Keys (measurement layer)
+
+| Metric | Elite | High | Medium | Low |
+|--------|-------|------|--------|-----|
+| Deploy Frequency | Multiple/day | Daily–weekly | Weekly–monthly | < Monthly |
+| Lead Time | < 1h | 1d–1wk | 1wk–1mo | > 1mo |
+| Change Failure Rate | 0–15% | 16–30% | 16–30% | 46–60% |
+| MTTR | < 1h | < 1d | 1d–1wk | > 1wk |
+
+Team level = lowest single-metric rating. Use for team improvement — never for individual performance evaluation (Goodhart's Law).
+
+### Monthly Review Cadence
+
+Use `/engineering-review` for structured monthly reviews combining DORA trends, leading indicators (PR size, CI duration, review turnaround), tech debt movement, and team wellbeing signals.
+
+### Quarterly DevEx Survey
+
+Use `/devex-survey` to design anonymous developer experience surveys. Measures: Flow State, Feedback Loops, Cognitive Load, Collaboration, Wellbeing.
+
 ## Related
 
 - [product-lifecycle](../product-lifecycle/SKILL.md) — product discovery, idea → PRD
 - [incident-response](../incident-response/SKILL.md) — MTTR improvement, incident process
+- [engineering-metrics](../engineering-metrics/SKILL.md) — DORA Four Keys, SPACE framework theory
+- [dora-implementation](../dora-implementation/SKILL.md) — technical DORA data extraction
 - `/breakdown` command — break epic into sprint-ready stories
 - `/prd` command — write a Product Requirements Document
+- `/dora-baseline` command — measure team's current DORA baseline
+- `/devex-survey` command — design a developer experience survey
+- `/engineering-review` command — monthly engineering health review

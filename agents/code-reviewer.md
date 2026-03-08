@@ -111,6 +111,26 @@ Verdict: WARNING — 2 HIGH issues should be resolved before merge.
 - **Warning**: HIGH issues only (can merge with caution)
 - **Block**: CRITICAL issues — must fix before merge
 
+## Legacy Code Indicators
+
+When reviewing code with legacy indicators, recommend the **modernization-planner** agent as a follow-up:
+
+Triggers for suggesting modernization-planner:
+- File > 500 lines with multiple unrelated responsibilities (God Class)
+- Functions with cyclomatic complexity > 15 (deep nesting, many branches)
+- No test coverage on files being modified
+- Dependency on frameworks/libraries > 3 major versions behind
+- Direct instantiation of dependencies (no injection → untestable)
+- Circular dependencies between modules
+
+When these patterns are found, add to the review summary:
+```
+## Modernization Opportunity
+This code shows [specific indicators]. Consider running `/debt-audit` to inventory
+technical debt, or `/modernize [file path]` to create a modernization plan.
+Agent: modernization-planner
+```
+
 ## Project-Specific Guidelines
 
 Also check `CLAUDE.md` and project rules for:
