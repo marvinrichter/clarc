@@ -2,7 +2,7 @@
 description: Show estimated token usage and cost for recent clarc sessions
 ---
 
-# /cost — Session Cost Summary
+# /session-cost — Session Cost Summary
 
 Displays estimated token usage and cost based on clarc's session tracking.
 
@@ -32,8 +32,8 @@ Displays estimated token usage and cost based on clarc's session tracking.
 ## Output Format
 
 ```
-📊 clarc Cost Estimate (Schätzung)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 clarc Session Cost Estimate
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Today (2026-03-08):
   Sessions:    3
   Tool calls:  87
@@ -51,8 +51,8 @@ Top projects (7d):
 
 All-time estimate:  $8.30
 
-ℹ️  Exakte Kosten: console.anthropic.com → Billing
-💡 Tipp: /compact bei >60% Context spart Token-Kosten
+ℹ️  Estimate only — exact costs at console.anthropic.com → Billing
+💡 Tip: run /compact when context >60% full to reduce token costs
 ```
 
 ## Implementation

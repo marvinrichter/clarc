@@ -97,8 +97,8 @@ clarc automatically logs estimated session costs to `~/.clarc/cost-log.jsonl`.
 # View cost log
 cat ~/.clarc/cost-log.jsonl | tail -20
 
-# Run /cost command for a formatted summary
-/cost
+# Run /session-cost command for a formatted summary
+/session-cost
 ```
 
 **Important**: These are estimates based on tool-call count heuristics.
@@ -116,6 +116,6 @@ For exact costs, check [console.anthropic.com → Billing](https://console.anthr
 
 ## Related
 
-- `/cost` — view session cost summary
+- `/session-cost` — view session cost summary
 - `scripts/hooks/auto-checkpoint.js` — checkpoint before expensive operations
 - `skills/cost-aware-llm-pipeline` — designing cost-efficient multi-agent pipelines
