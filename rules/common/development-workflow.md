@@ -6,6 +6,59 @@ The full workflow covers two phases: **Product Discovery** (is this the right th
 
 ---
 
+## Onboarding Engineering Requirements
+
+Every project must have the following onboarding infrastructure before the first external contributor or new team hire joins. Use `/onboard` to generate all artefacts automatically.
+
+### CONTRIBUTING.md (mandatory)
+
+Every repository must have a `CONTRIBUTING.md` at the project root. Generate it with `/onboard contributing`. It must include:
+- Prerequisites with exact versions and install instructions
+- One-command setup that works in < 5 minutes
+- Development workflow (branch → code → test → PR)
+- Code standards: formatter, linter, type checker, test framework
+- Conventional Commits format
+- PR checklist including CHANGELOG update
+- Project structure with directory descriptions
+- Link to Architecture Decision Records in `docs/decisions/`
+- Troubleshooting section for common setup failures
+
+Never leave CONTRIBUTING.md as a placeholder — it must be accurate enough for a new hire to set up independently, without asking anyone.
+
+### Setup Script (mandatory — target: < 5 minutes)
+
+A working setup script must exist before the first team hire:
+- Single entry point: `./scripts/setup.sh` or `make setup`
+- **Idempotent** — safe to run multiple times without damage
+- **Explicit** — prints every action; never silently skips steps
+- **Actionable errors** — tells the user exactly how to fix each failure (e.g., "Install Node 20 via: nvm install 20")
+- **Cross-platform** — macOS and Linux (WSL2) supported
+- Companion doctor command: `make doctor` or `./scripts/check.sh` for ongoing health checks
+
+Validate the setup script on a fresh machine or Docker container before merging. If it fails on a clean environment, it is not done.
+
+### Architecture Tour (mandatory before first feature-freeze)
+
+Before the codebase reaches its first stable milestone, document an Architecture Tour that:
+- Traces one representative user action end-to-end through the system
+- Links to 5–10 anchor files every developer must know
+- Stored at `docs/onboarding/architecture-tour.md`
+- Generated with `/onboard tour`
+
+### Architecture Decision Records (mandatory for significant decisions)
+
+Every significant technical choice must be documented as an ADR in `docs/decisions/` before implementation begins. "Significant" includes:
+- Technology or framework selection
+- Architectural pattern choice (monolith vs. microservices, REST vs. GraphQL)
+- Database or storage engine selection
+- Authentication / authorisation strategy
+
+See skill `adr-writing` for ADR format and templates. See also the Architecture Documentation section below for the full arc42 + ADR workflow.
+
+New team members cannot onboard effectively without ADRs — they will re-debate settled decisions and lack context for why the codebase is structured the way it is.
+
+---
+
 ## Product Discovery Phase
 
 > Run this phase for new features whose value or approach is not yet clear. Skip for bug fixes, refactors, chores, and features with well-defined requirements.
