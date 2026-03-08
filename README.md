@@ -22,9 +22,10 @@ cd ~/.clarc
 # Enable continuous learning (recommended)
 ./install.sh --enable-learning typescript
 
-# Install for Cursor or OpenCode
+# Install for Cursor, OpenCode, or Codex CLI
 ./install.sh --target cursor typescript
 ./install.sh --target opencode typescript
+./install.sh --target codex
 
 # Check if your installed rules are up to date
 ./install.sh --check
@@ -184,9 +185,9 @@ rules/
 clarc ships configurations for multiple editors alongside the primary Claude Code integration:
 
 - **Claude Code** — agents, skills, commands, hooks, rules (full support)
-- **Cursor** — rules, agents, skills under `.cursor/`
-- **OpenCode** — full command parity (57 commands) + agent prompts under `.opencode/`
-- **Codex** — agent configuration under `.codex/`
+- **Cursor** — 50+ language rules in `.cursor/rules/` + `.cursorrules` global config (`--target cursor`)
+- **OpenCode** — full command parity (57 commands) + agent prompts under `.opencode/` (`--target opencode`)
+- **Codex CLI** — instructions + 14 commands under `codex/` (`--target codex`)
 
 ### clarc as MCP server
 
@@ -210,13 +211,14 @@ clarc/
 ├── commands/        # Slash commands (/tdd, /plan, /breakdown, ...)
 ├── hooks/           # Hook configurations (JSON)
 ├── scripts/hooks/   # Hook implementations (Node.js)
-├── rules/           # Language rule sets (10 languages)
+├── rules/           # Language rule sets (18 languages)
 ├── mcp-configs/     # MCP server configurations
 ├── mcp-server/      # clarc as an MCP server (4 tools)
 ├── .opencode/       # OpenCode commands and agent prompts
-├── .cursor/         # Cursor rules
+├── .cursor/         # Cursor rules (50+ language rule files)
+├── codex/           # Codex CLI instructions and commands
 ├── tests/           # Structural evals, behavior evals, unit tests
-└── install.sh       # Installer: --check, --target, --enable-learning
+└── install.sh       # Installer: --check, --target cursor/opencode/codex, --enable-learning
 ```
 
 ---
