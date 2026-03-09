@@ -1,6 +1,6 @@
 # clarc Developer Scenario Coverage Map
-**Generated:** 2026-03-08
-**Total scenarios:** 33 | ✅ Full: 30 | 🟡 Partial: 3 | ❌ None: 0
+**Generated:** 2026-03-09
+**Total scenarios:** 45 | ✅ Full: 42 | 🟡 Partial: 3 | ❌ None: 0
 
 ---
 
@@ -71,6 +71,23 @@
 | Command audit | ✅ | /command-audit | command-auditor | — | — |
 | Hook audit | ✅ | /hook-audit | hook-auditor | — | — |
 | Full system review | 🟡 | — | — | — | /system-review, agent:agent-system-reviewer |
+
+## Visual Design
+
+| Scenario | Status | Command | Agent | Skill | Missing |
+|----------|--------|---------|-------|-------|---------|
+| Brand identity | ✅ | /brand-identity | — | visual-identity, typography-design, color-theory | — |
+| Icon system | ✅ | /icon-system | — | icon-system | — |
+| Illustration style | ✅ | — | design-critic | illustration-style | — |
+| Design system & ops | ✅ | /storybook-audit | design-system-reviewer | design-system, figma-to-code, design-ops | — |
+| Dark mode audit | ✅ | /dark-mode-audit | design-system-reviewer | color-theory, design-system | — |
+| Wireframing / UX flow | ✅ | /wireframe | — | wireframing | — |
+| Marketing assets (OG, email) | ✅ | — | — | marketing-design | — |
+| AI-assisted design | ✅ | — | — | generative-ai-design | — |
+| Accessibility audit | ✅ | /a11y-audit | — | accessibility, accessibility-patterns | — |
+| Visual regression testing | ✅ | /visual-test | — | visual-testing | — |
+| Design critique | ✅ | /design-critique | design-critic | — | — |
+| Presentation / slide deck | ✅ | /slide-deck, /talk-outline | presentation-designer, talk-coach | presentation-design | — |
 
 ---
 

@@ -68,6 +68,22 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/gitops-review` | GitOps config — sync, secrets, drift |
 | `/finops-audit` | Cloud cost audit |
 
+## Visual Design
+
+| Command | What it does |
+|---------|-------------|
+| `/brand-identity` | Develop a brand identity — color palette, typeface, voice, mood board |
+| `/icon-system` | Icon library recommendation, tokens, component template, accessibility |
+| `/wireframe` | ASCII wireframes, user flow diagrams, IA maps, structural audits |
+| `/dark-mode-audit` | Audit dark mode — color strategy, elevation, contrast, common mistakes |
+| `/design-critique` | Structured visual critique — hierarchy, color, typography, accessibility |
+| `/a11y-audit` | Full accessibility audit — axe scan, keyboard, color contrast, ARIA |
+| `/chart-review` | Review data visualizations — chart type, WCAG, responsive |
+| `/visual-test` | Set up visual regression testing (Chromatic/Playwright/Percy) |
+| `/storybook-audit` | Audit Storybook — coverage, CSF, accessibility, Chromatic integration |
+| `/slide-deck` | Generate slide deck structure (Reveal.js or Marp) |
+| `/talk-outline` | Structured talk outline with time allocation and speaker notes |
+
 ## Review Commands
 
 | Command | What it does |

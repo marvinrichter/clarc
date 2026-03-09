@@ -43,6 +43,15 @@ These are invoked automatically by `code-reviewer` based on file extension, or d
 | `competitive-analyst` | Competitor feature matrix | `/competitive-review` |
 | `feedback-analyst` | Cluster themes from user feedback | `/analyze-feedback` |
 
+## Visual Design Agents
+
+| Agent | Purpose | Invoked by |
+|-------|---------|-----------|
+| `design-critic` | Structured visual critique — composition, hierarchy, color, typography, accessibility | `/design-critique` |
+| `design-system-reviewer` | Comprehensive design system audit — tokens, dark mode, icons, accessibility, component completeness | manual |
+| `presentation-designer` | Slide deck creation and structure — speaker notes, narrative, slide density | `/slide-deck` |
+| `talk-coach` | Talk and presentation review — structure, timing, audience fit | `/talk-outline` |
+
 ## Specialist Agents
 
 | Agent | Purpose |
