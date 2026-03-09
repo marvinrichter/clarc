@@ -21,6 +21,16 @@ An advanced learning system that turns your Claude Code sessions into reusable k
 - Managing project-scoped vs global instincts
 - Promoting instincts from project to global scope
 
+## What's New in v2.2
+
+| Feature | v2.1 | v2.2 |
+|---------|------|------|
+| Agent evolution | Not connected | `/agent-evolution` promotes instincts to agent overlays |
+| Overlay injection | None | `session-start.js` injects overlays at session start |
+| Flywheel | Capture → evolve → skills | Capture → evolve → skills + agent overlays |
+| Rollback | `/instinct-outcome bad` lowers confidence | + suggests overlay removal |
+| Commands | 6 | 8 (+agent-evolution, +agent-instincts) |
+
 ## What's New in v2.1
 
 | Feature | v2.0 | v2.1 |
@@ -119,6 +129,23 @@ Session Activity (in a git repo)
 |   * commands/new-feature.md                  |
 |   * skills/testing-workflow.md               |
 |   * agents/refactor-specialist.md            |
++---------------------------------------------+
+      |
+      | /agent-evolution (instinct → agent overlay)
+      v
++---------------------------------------------+
+|  ~/.clarc/agent-instincts/                   |
+|   * typescript-reviewer.md  (conf ≥ 0.75)   |
+|   * tdd-guide.md                             |
+|   * code-reviewer.md                         |
++---------------------------------------------+
+      |
+      | session-start.js (automatic injection)
+      v
++---------------------------------------------+
+|  Claude session context                       |
+|   * Agents apply learned instincts           |
+|   * Flywheel complete: capture → apply       |
 +---------------------------------------------+
 ```
 

@@ -237,6 +237,7 @@ These skills exist but are not declared in any agent's `uses_skills`. Consider a
 - `accessibility`
 - `accessibility-patterns`
 - `adr-writing`
+- `agent-evolution-patterns`
 - `analytics-workflow`
 - `android-patterns`
 - `android-testing`
