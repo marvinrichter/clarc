@@ -103,7 +103,7 @@ function parseFrontmatter(fileContent) {
 function serializeFrontmatter(fields) {
   const lines = ['---'];
   for (const [key, value] of fields.entries()) {
-    const needsQuote = /[:#\[\]{},|>&!%@`]/.test(String(value)) || String(value).startsWith(' ');
+    const needsQuote = /[:#[\]{},|>&!%@`]/.test(String(value)) || String(value).startsWith(' ');
     lines.push(needsQuote ? `${key}: "${value}"` : `${key}: ${value}`);
   }
   lines.push('---');

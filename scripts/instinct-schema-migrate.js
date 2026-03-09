@@ -27,7 +27,6 @@ import path from 'path';
 import os from 'os';
 
 const HOMUNCULUS_DIR = path.join(os.homedir(), '.claude', 'homunculus');
-const TODAY = new Date().toISOString().slice(0, 10);
 
 const NEW_FIELDS = [
   ['created', null],          // null = use file mtime
@@ -111,7 +110,7 @@ function serializeFrontmatter(fields) {
   const lines = ['---'];
   for (const [key, value] of fields.entries()) {
     // Quote values containing colons or starting with special chars
-    const needsQuote = /[:#\[\]{},|>&!%@`]/.test(String(value)) || String(value).startsWith(' ');
+    const needsQuote = /[:#[\]{},|>&!%@`]/.test(String(value)) || String(value).startsWith(' ');
     lines.push(needsQuote ? `${key}: "${value}"` : `${key}: ${value}`);
   }
   lines.push('---');
