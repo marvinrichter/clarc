@@ -15,10 +15,9 @@
  *   - Prints a summary at the end
  */
 
-import { existsSync, readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, cpSync } from 'fs';
-import { join, dirname, relative } from 'path';
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { homedir } from 'os';
-import { execSync, spawnSync } from 'child_process';
 
 const CLARC_HOME = join(homedir(), '.clarc');
 const CLAUDE_DIR = join(homedir(), '.claude');
