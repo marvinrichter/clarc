@@ -10,6 +10,9 @@
  *   - --upgrade removes orphan symlinks before re-installing
  *
  * All tests use isolated temp directories — nothing is written to the real ~/.claude/
+ *
+ * Performance: the 6 read-only symlink/manifest tests share a single install run.
+ * The uninstall and upgrade tests each need their own install.
  */
 
 import { spawnSync } from 'child_process';
@@ -56,7 +59,7 @@ function runInstall(args = [], tmpHome) {
 
 /**
  * Back up the manifest before a test that modifies it, restore after.
- * Calls fn(manifestPath) then restores.
+ * Calls fn() then restores.
  */
 function withManifestBackup(fn) {
   const backupPath = MANIFEST_FILE + '.bak';
@@ -80,55 +83,46 @@ function withManifestBackup(fn) {
   }
 }
 
+// ─── Shared install for read-only tests ──────────────────────────────────────
+// The 6 symlink + manifest tests all just read state after a single install.
+// We run install.sh once and share the result instead of spawning it 6 times.
+
+let sharedTmpHome = null;
+let sharedManifest = null;
+
+withManifestBackup(() => {
+  sharedTmpHome = mkdtempSync(join(tmpdir(), 'clarc-shared-'));
+  runInstall(['typescript'], sharedTmpHome);
+  sharedManifest = existsSync(MANIFEST_FILE)
+    ? JSON.parse(readFileSync(MANIFEST_FILE, 'utf8'))
+    : null;
+});
+
 // ─── Symlink creation ─────────────────────────────────────────────────────────
 
 console.log('\n--- Symlink creation ---\n');
 
 test('install.sh creates ~/.claude/agents/ with symlinked .md files', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      const agentsDir = join(tmpHome, '.claude', 'agents');
-      assert(existsSync(agentsDir), `~/.claude/agents/ not created`);
-      const mdFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
-      assert(mdFiles.length > 0, `No .md files in ${agentsDir}`);
-      const symlinks = mdFiles.filter(f => lstatSync(join(agentsDir, f)).isSymbolicLink());
-      assert(symlinks.length > 0, `No symlinks in ${agentsDir} — install may have used copy mode`);
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
-  }
+  const agentsDir = join(sharedTmpHome, '.claude', 'agents');
+  assert(existsSync(agentsDir), `~/.claude/agents/ not created`);
+  const mdFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+  assert(mdFiles.length > 0, `No .md files in ${agentsDir}`);
+  const symlinks = mdFiles.filter(f => lstatSync(join(agentsDir, f)).isSymbolicLink());
+  assert(symlinks.length > 0, `No symlinks in ${agentsDir} — install may have used copy mode`);
 });
 
 test('install.sh creates ~/.claude/commands/ with .md files', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      const commandsDir = join(tmpHome, '.claude', 'commands');
-      assert(existsSync(commandsDir), `~/.claude/commands/ not created`);
-      const mdFiles = readdirSync(commandsDir).filter(f => f.endsWith('.md'));
-      assert(mdFiles.length > 0, `No .md files in ${commandsDir}`);
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
-  }
+  const commandsDir = join(sharedTmpHome, '.claude', 'commands');
+  assert(existsSync(commandsDir), `~/.claude/commands/ not created`);
+  const mdFiles = readdirSync(commandsDir).filter(f => f.endsWith('.md'));
+  assert(mdFiles.length > 0, `No .md files in ${commandsDir}`);
 });
 
 test('install.sh creates ~/.claude/rules/common/ with .md files', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      const rulesDir = join(tmpHome, '.claude', 'rules', 'common');
-      assert(existsSync(rulesDir), `~/.claude/rules/common/ not created`);
-      const mdFiles = readdirSync(rulesDir).filter(f => f.endsWith('.md'));
-      assert(mdFiles.length > 0, `No .md files in ${rulesDir}`);
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
-  }
+  const rulesDir = join(sharedTmpHome, '.claude', 'rules', 'common');
+  assert(existsSync(rulesDir), `~/.claude/rules/common/ not created`);
+  const mdFiles = readdirSync(rulesDir).filter(f => f.endsWith('.md'));
+  assert(mdFiles.length > 0, `No .md files in ${rulesDir}`);
 });
 
 // ─── Manifest writing ─────────────────────────────────────────────────────────
@@ -136,56 +130,33 @@ test('install.sh creates ~/.claude/rules/common/ with .md files', () => {
 console.log('\n--- install-manifest.json ---\n');
 
 test('install.sh writes install-manifest.json with required fields', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      assert(existsSync(MANIFEST_FILE), 'install-manifest.json not created after install');
-      const manifest = JSON.parse(readFileSync(MANIFEST_FILE, 'utf8'));
-      assert(manifest.version, 'manifest.version missing');
-      assert(manifest.installed_at, 'manifest.installed_at missing');
-      assert(manifest.target === 'claude', `manifest.target expected "claude", got "${manifest.target}"`);
-      assert(Array.isArray(manifest.symlinks), 'manifest.symlinks must be an array');
-      assert(manifest.symlinks.length > 0, 'manifest.symlinks is empty — no symlinks tracked');
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
-  }
+  assert(sharedManifest !== null, 'install-manifest.json not created after install');
+  assert(sharedManifest.version, 'manifest.version missing');
+  assert(sharedManifest.installed_at, 'manifest.installed_at missing');
+  assert(sharedManifest.target === 'claude', `manifest.target expected "claude", got "${sharedManifest.target}"`);
+  assert(Array.isArray(sharedManifest.symlinks), 'manifest.symlinks must be an array');
+  assert(sharedManifest.symlinks.length > 0, 'manifest.symlinks is empty — no symlinks tracked');
 });
 
 test('manifest symlink entries have src, dst, component fields', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      if (!existsSync(MANIFEST_FILE)) return;
-      const manifest = JSON.parse(readFileSync(MANIFEST_FILE, 'utf8'));
-      for (const entry of manifest.symlinks.slice(0, 5)) {
-        assert(entry.src, `Symlink entry missing src: ${JSON.stringify(entry)}`);
-        assert(entry.dst, `Symlink entry missing dst: ${JSON.stringify(entry)}`);
-        assert(entry.component, `Symlink entry missing component: ${JSON.stringify(entry)}`);
-      }
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
+  if (!sharedManifest) return;
+  for (const entry of sharedManifest.symlinks.slice(0, 5)) {
+    assert(entry.src, `Symlink entry missing src: ${JSON.stringify(entry)}`);
+    assert(entry.dst, `Symlink entry missing dst: ${JSON.stringify(entry)}`);
+    assert(entry.component, `Symlink entry missing component: ${JSON.stringify(entry)}`);
   }
 });
 
 test('manifest symlink src paths actually exist on disk', () => {
-  const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-install-'));
-  try {
-    withManifestBackup(() => {
-      runInstall(['typescript'], tmpHome);
-      if (!existsSync(MANIFEST_FILE)) return;
-      const manifest = JSON.parse(readFileSync(MANIFEST_FILE, 'utf8'));
-      for (const entry of manifest.symlinks.slice(0, 10)) {
-        assert(existsSync(entry.src), `Manifest src does not exist on disk: ${entry.src}`);
-      }
-    });
-  } finally {
-    rmSync(tmpHome, { recursive: true, force: true });
+  if (!sharedManifest) return;
+  for (const entry of sharedManifest.symlinks.slice(0, 10)) {
+    assert(existsSync(entry.src), `Manifest src does not exist on disk: ${entry.src}`);
   }
 });
+
+// ─── Shared tmpHome cleanup ───────────────────────────────────────────────────
+
+rmSync(sharedTmpHome, { recursive: true, force: true });
 
 // ─── --check flag ─────────────────────────────────────────────────────────────
 
@@ -308,7 +279,6 @@ test('--upgrade removes broken clarc symlinks pointing to ~/.clarc/', () => {
     let orphanGone = false;
     try {
       lstatSync(orphanLink);
-      // If lstatSync succeeds, the symlink still exists
       orphanGone = false;
     } catch {
       orphanGone = true; // ENOENT means it was removed

@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 /**
- * Run all tests
+ * Run all tests — parallel execution for faster feedback.
  *
  * Usage: node tests/run-all.js
+ *
+ * All test files run concurrently. Results are printed in deterministic
+ * order (same as the testFiles array) after all processes complete.
  */
 
-import { spawnSync } from 'child_process';
+import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -37,7 +40,7 @@ const testFiles = [
   'scripts/validate-quality.test.js'
 ];
 
-const BOX_W = 58; // inner width between ║ delimiters
+const BOX_W = 58;
 const boxLine = s => `║${s.padEnd(BOX_W)}║`;
 
 console.log('╔' + '═'.repeat(BOX_W) + '╗');
@@ -45,33 +48,55 @@ console.log(boxLine('           Everything Claude Code - Test Suite'));
 console.log('╚' + '═'.repeat(BOX_W) + '╝');
 console.log();
 
+/**
+ * Spawn a single test file and collect all output + timing.
+ * Resolves when the process exits.
+ */
+function runFile(testFile) {
+  const testPath = path.join(testsDir, testFile);
+  if (!fs.existsSync(testPath)) {
+    return Promise.resolve({ testFile, stdout: '', stderr: '', skipped: true });
+  }
+
+  return new Promise(resolve => {
+    const start = Date.now();
+    let stdout = '';
+    let stderr = '';
+
+    const proc = spawn(process.execPath, [testPath], {
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+
+    proc.stdout.on('data', d => (stdout += d));
+    proc.stderr.on('data', d => (stderr += d));
+
+    proc.on('close', () => {
+      resolve({ testFile, stdout, stderr, elapsed: Date.now() - start, skipped: false });
+    });
+  });
+}
+
+// Launch all tests in parallel
+const results = await Promise.all(testFiles.map(runFile));
+
 let totalPassed = 0;
 let totalFailed = 0;
-let totalTests = 0;
 
-for (const testFile of testFiles) {
-  const testPath = path.join(testsDir, testFile);
-
-  if (!fs.existsSync(testPath)) {
+for (const { testFile, stdout, stderr, elapsed, skipped } of results) {
+  if (skipped) {
     console.log(`⚠ Skipping ${testFile} (file not found)`);
     continue;
   }
 
-  console.log(`\n━━━ Running ${testFile} ━━━`);
+  const elapsedStr = elapsed >= 1000
+    ? `${(elapsed / 1000).toFixed(1)}s`
+    : `${elapsed}ms`;
 
-  const result = spawnSync('node', [testPath], {
-    encoding: 'utf8',
-    stdio: ['pipe', 'pipe', 'pipe']
-  });
+  console.log(`\n━━━ Running ${testFile} (${elapsedStr}) ━━━`);
 
-  const stdout = result.stdout || '';
-  const stderr = result.stderr || '';
-
-  // Show both stdout and stderr so hook warnings are visible
   if (stdout) console.log(stdout);
   if (stderr) console.log(stderr);
 
-  // Parse results from combined output
   const combined = stdout + stderr;
   const passedMatch = combined.match(/Passed:\s*(\d+)/);
   const failedMatch = combined.match(/Failed:\s*(\d+)/);
@@ -80,7 +105,7 @@ for (const testFile of testFiles) {
   if (failedMatch) totalFailed += parseInt(failedMatch[1], 10);
 }
 
-totalTests = totalPassed + totalFailed;
+const totalTests = totalPassed + totalFailed;
 
 console.log('\n╔' + '═'.repeat(BOX_W) + '╗');
 console.log(boxLine('                     Final Results'));
