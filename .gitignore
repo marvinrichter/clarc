@@ -54,3 +54,7 @@ docs/analysis/
 
 # Hook runtime logs
 hooks.log
+
+# Memory bank — session-generated files
+.clarc/context.md
+.clarc/progress.md
