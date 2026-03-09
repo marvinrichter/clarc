@@ -63,14 +63,14 @@ function findRuleFiles(dir, rel = '') {
 // Validators
 // ─────────────────────────────────────────────
 
-function checkLineCount(lines, relPath) {
+function checkLineCount(lines, _relPath) {
   if (lines.length > MAX_LINES) {
     return `exceeds ${MAX_LINES} lines (${lines.length} lines)`;
   }
   return null;
 }
 
-function checkCodeBlocks(lines, relPath) {
+function checkCodeBlocks(lines, _relPath) {
   const violations = [];
   let inBlock = false;
   let blockStart = -1;
@@ -96,7 +96,7 @@ function checkCodeBlocks(lines, relPath) {
   return violations.length > 0 ? violations.join('; ') : null;
 }
 
-function checkHasChecklist(lines, relPath) {
+function checkHasChecklist(lines, _relPath) {
   const hasChecklist = lines.some(l => /^- \[ \]/.test(l.trim()));
   if (!hasChecklist) {
     return 'missing checklist (no "- [ ]" items found)';
