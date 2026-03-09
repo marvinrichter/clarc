@@ -700,6 +700,14 @@ if [[ "$TARGET" == "claude" ]]; then
     # --- Write install manifest ---
     write_manifest
 
+    # --- Record installed rules version ---
+    # Copies rules/RULES_VERSION to ~/.clarc/installed-rules-version so /doctor
+    # and the session-start staleness banner can compare against upstream.
+    if [[ "$DRY_RUN" == false && -f "$RULES_DIR/RULES_VERSION" ]]; then
+        cp "$RULES_DIR/RULES_VERSION" "$SCRIPT_DIR/installed-rules-version" 2>/dev/null || true
+        ok "Rules version: $(cat "$RULES_DIR/RULES_VERSION" | tr -d '[:space:]') recorded"
+    fi
+
     if [[ "$DRY_RUN" == true ]]; then
         echo ""
         echo -e "  ${_CYAN}Dry run complete — no changes were made.${_RESET}"

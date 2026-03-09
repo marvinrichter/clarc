@@ -19,6 +19,7 @@ Checks that your clarc installation is complete and healthy.
 | Symlinks | all healthy | — | any broken |
 | MEMORY.md | <180 lines | 180–200 | >200 (truncated) |
 | clarc version | current | update available | — |
+| Rules version | current (<30 days) | >30 days or update available | — |
 
 ## Usage
 
@@ -49,8 +50,10 @@ clarc doctor — checking your installation
 ✅ clarc version: 0.9.0
 ⚠️  Update available: 0.9.0 → 1.0.0
    → Run: cd ~/.clarc && git pull
+⚠️  Rules: v0.8.5 → v0.9.0 available (47 days ago)
+   → Run: /update-rules  or  cd ~/.clarc && git pull && ./install.sh
 
-2 warnings
+3 warnings
 ```
 
 ## Common Fixes
@@ -72,7 +75,12 @@ Move older entries to topic files (e.g., `debugging.md`, `patterns.md`) and link
 **hooks.json syntax error:**
 Open `~/.claude/hooks/hooks.json` and fix the JSON. Use a linter: `node -e "JSON.parse(require('fs').readFileSync('~/.claude/hooks/hooks.json','utf8'))"`.
 
+**Rules outdated:**
+Run `/update-rules` to apply the latest rules, or manually: `cd ~/.clarc && git pull && ./install.sh`
+
 ## Related
 
 - Command: `/quickstart` — first-time onboarding
 - Command: `/clarc-way` — interactive workflow guide
+- Command: `/update-rules` — apply latest rule updates
+- Command: `/rules-diff` — preview changes before applying

@@ -8,7 +8,7 @@
  *   node scripts/doctor.js
  */
 
-import { existsSync, readFileSync, readdirSync, readlinkSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, readlinkSync, statSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { execSync } from 'child_process';
@@ -254,6 +254,59 @@ if (currentVersion) {
   }
 } else {
   warn('clarc version: unknown', '', 'Run: npx github:marvinrichter/clarc to install to ~/.clarc/');
+}
+
+// 10. Rules staleness — compare installed version against upstream
+function getRulesInstallDate() {
+  // installed-rules-version is written by install.sh at install time
+  const installedVersionFile = join(CLARC_HOME, 'installed-rules-version');
+  if (!existsSync(installedVersionFile)) return null;
+  try {
+    const { mtimeMs } = statSync(installedVersionFile);
+    const version = readFileSync(installedVersionFile, 'utf8').trim();
+    return { version, mtimeMs };
+  } catch {
+    return null;
+  }
+}
+
+function getUpstreamRulesVersion() {
+  const upstreamFile = join(CLARC_HOME, 'rules', 'RULES_VERSION');
+  if (!existsSync(upstreamFile)) return null;
+  try {
+    return readFileSync(upstreamFile, 'utf8').trim();
+  } catch {
+    return null;
+  }
+}
+
+const rulesInfo = getRulesInstallDate();
+const upstreamRulesVersion = getUpstreamRulesVersion();
+
+if (rulesInfo) {
+  const daysSinceInstall = rulesInfo.mtimeMs
+    ? Math.floor((Date.now() - rulesInfo.mtimeMs) / 86_400_000)
+    : null;
+
+  const ageLabel = daysSinceInstall !== null ? ` (${daysSinceInstall} days ago)` : '';
+
+  if (upstreamRulesVersion && upstreamRulesVersion !== rulesInfo.version) {
+    warn(
+      `Rules: v${rulesInfo.version} → v${upstreamRulesVersion} available${ageLabel}`,
+      '',
+      'Run: /update-rules  or  cd ~/.clarc && git pull && ./install.sh'
+    );
+  } else if (daysSinceInstall !== null && daysSinceInstall > 30) {
+    warn(
+      `Rules: v${rulesInfo.version} — last updated ${daysSinceInstall} days ago`,
+      '',
+      'Run: /update-rules to check for newer rules'
+    );
+  } else {
+    ok(`Rules: v${rulesInfo.version}${ageLabel}`);
+  }
+} else {
+  warn('Rules: install date unknown', '', 'Re-run: ./install.sh to record rules version');
 }
 
 // ─── Summary ──────────────────────────────────────────────────────────────────

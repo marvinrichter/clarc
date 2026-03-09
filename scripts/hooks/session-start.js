@@ -426,6 +426,9 @@ async function main() {
   // Memory Bank: load .clarc/ project context (higher priority than MEMORY.md)
   loadMemoryBank(process.cwd());
 
+  // Rules staleness banner: notify once per 7 days if rules > 30 days old
+  checkRulesStaleness();
+
   process.exit(0);
 }
 
@@ -468,6 +471,76 @@ function loadMemoryBank(cwd) {
     log(`[SessionStart] Memory Bank loaded: ${loaded.join(', ')}`);
     output(`--- Project Memory Bank ---\n${combined.trim()}\n---`);
   }
+}
+
+/**
+ * Rules staleness banner.
+ *
+ * Shows a one-line notice when installed rules are > 30 days old or a newer
+ * upstream version is available. Suppressed for 7 days after each notice.
+ *
+ * Suppressible via ~/.clarc/config.json: { "suppress_rules_banner": true }
+ */
+function checkRulesStaleness() {
+  const clarcHome = path.join(os.homedir(), '.clarc');
+  const installedVersionFile = path.join(clarcHome, 'installed-rules-version');
+  const upstreamVersionFile = path.join(clarcHome, 'rules', 'RULES_VERSION');
+  const cooldownFile = path.join(clarcHome, 'rules-banner-cooldown.json');
+  const configFile = path.join(clarcHome, 'config.json');
+
+  // Respect suppress flag
+  try {
+    if (fs.existsSync(configFile)) {
+      const cfg = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+      if (cfg.suppress_rules_banner === true) return;
+    }
+  } catch { /* ignore */ }
+
+  // Cooldown: show at most once per 7 days
+  const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+  try {
+    if (fs.existsSync(cooldownFile)) {
+      const { last_shown } = JSON.parse(fs.readFileSync(cooldownFile, 'utf8'));
+      if (Date.now() - last_shown < COOLDOWN_MS) return;
+    }
+  } catch { /* ignore */ }
+
+  // Determine install date and versions
+  if (!fs.existsSync(installedVersionFile)) return;
+  let installedVersion, installMtime;
+  try {
+    installedVersion = fs.readFileSync(installedVersionFile, 'utf8').trim();
+    installMtime = fs.statSync(installedVersionFile).mtimeMs;
+  } catch { return; }
+
+  const daysSinceInstall = Math.floor((Date.now() - installMtime) / 86_400_000);
+
+  let upstreamVersion = null;
+  try {
+    if (fs.existsSync(upstreamVersionFile)) {
+      upstreamVersion = fs.readFileSync(upstreamVersionFile, 'utf8').trim();
+    }
+  } catch { /* ignore */ }
+
+  const hasNewerVersion = upstreamVersion && upstreamVersion !== installedVersion;
+  const isStale = daysSinceInstall > 30;
+
+  if (!hasNewerVersion && !isStale) return;
+
+  // Emit banner
+  if (hasNewerVersion) {
+    output(`Rules update available: v${installedVersion} → v${upstreamVersion}. Run /update-rules to get latest.`);
+    log(`[SessionStart] Rules banner: update available ${installedVersion} → ${upstreamVersion}`);
+  } else {
+    output(`Rules last updated ${daysSinceInstall} days ago (v${installedVersion}). Run /update-rules to check for updates.`);
+    log(`[SessionStart] Rules banner: stale (${daysSinceInstall} days)`);
+  }
+
+  // Record cooldown
+  try {
+    fs.mkdirSync(clarcHome, { recursive: true });
+    fs.writeFileSync(cooldownFile, JSON.stringify({ last_shown: Date.now() }), 'utf8');
+  } catch { /* ignore */ }
 }
 
 main().catch(err => {
