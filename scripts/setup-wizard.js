@@ -52,6 +52,15 @@ function resolveInstallSh() {
 // --- Pass-through mode: args provided → skip wizard ---
 const args = process.argv.slice(2);
 if (args.length > 0) {
+  // Sub-command: doctor
+  if (args[0] === 'doctor') {
+    const doctorScript = isEphemeral()
+      ? join(ensureLocalClone().replace('install.sh', ''), 'doctor.js')
+      : resolve(__dirname, 'doctor.js');
+    const result = spawnSync('node', [doctorScript, ...args.slice(1)], { stdio: 'inherit' });
+    process.exit(result.status ?? 0);
+  }
+
   const installSh = resolveInstallSh();
   const result = spawnSync('bash', [installSh, ...args], { stdio: 'inherit' });
   process.exit(result.status ?? 0);

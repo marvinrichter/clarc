@@ -6,3 +6,19 @@ scripts/release.sh
 
 # Plugin dev notes (not needed by consumers)
 .claude-plugin/PLUGIN_SCHEMA_NOTES.md
+
+# Development & testing
+tests/
+.github/
+.vscode/
+eslint.config.js
+commitlint.config.js
+*.test.js
+
+# Memory and session state (not needed by consumers)
+memory/
+*.log
+hooks.log
+
+# Docs (available on GitHub)
+docs/

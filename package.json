@@ -1,5 +1,5 @@
 {
-  "name": "clarc",
+  "name": "@marvinrichter/clarc",
   "version": "0.9.0",
   "description": "Production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.",
   "keywords": [
@@ -37,6 +37,7 @@
     "url": "https://github.com/marvinrichter/clarc/issues"
   },
   "files": [
+    "scripts/doctor.js",
     ".agents/",
     ".codex/",
     ".cursor/",
@@ -80,7 +81,11 @@
   ],
   "bin": {
     "clarc": "scripts/setup-wizard.js",
-    "clarc-install": "scripts/setup-wizard.js"
+    "clarc-install": "scripts/setup-wizard.js",
+    "clarc-doctor": "scripts/doctor.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "postinstall": "echo '\\n  clarc installed!\\n  Run: npx github:marvinrichter/clarc\\n'",

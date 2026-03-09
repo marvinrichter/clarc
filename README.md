@@ -9,6 +9,51 @@ clarc turns Claude Code from a coding assistant into a structured engineering sy
 
 ---
 
+## The clarc Way
+
+clarc ships a complete, opinionated development methodology — from raw idea to shipped code.
+
+```
+Phase 0: Discovery        /idea → /evaluate → /explore → /prd
+Phase 1: Planning         /plan
+Phase 2: Implementation   /tdd  (RED → GREEN → IMPROVE)
+Phase 3: Quality          /code-review  +  /security
+Phase 4: Ship             /commit-push-pr
+```
+
+**Skip what you don't need:**
+
+| Task | Start here |
+|------|-----------|
+| New idea (unsure if worth building) | `/idea` |
+| Feature with clear spec | `/plan` |
+| Bug fix | `/tdd` (write the failing test first) |
+| Refactor | `/plan` → `/tdd` |
+| Docs / chore | `/commit` |
+
+Run `/clarc-way` to get a tailored recommendation for your current task.
+Run `/quickstart` if you're new to clarc.
+
+---
+
+## Getting Started in 5 Minutes
+
+```bash
+# 1. Install (pick your language)
+npx github:marvinrichter/clarc typescript
+npx github:marvinrichter/clarc python
+npx github:marvinrichter/clarc go
+
+# 2. Verify the installation
+npx github:marvinrichter/clarc doctor
+
+# 3. Open Claude Code and run your first command
+# /quickstart    → guided tour of the most important workflows
+# /clarc-way     → what to do for your current task
+```
+
+---
+
 ## Install
 
 ```bash
@@ -111,6 +156,8 @@ Agents are delegated automatically based on what you're doing. You can also invo
 ### Daily workflow
 
 ```
+/clarc-way     Interactive guide — recommends the right workflow for your task
+/quickstart    First-time onboarding — understand clarc in 5 minutes
 /plan          Plan implementation before writing code
 /tdd           Enforce test-first development
 /code-review   Security and quality review

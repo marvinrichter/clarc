@@ -1,0 +1,78 @@
+---
+description: "Health-check for your clarc installation. Verifies agents, skills, commands, hooks, symlinks, MEMORY.md size, and available updates. Runs scripts/doctor.js."
+---
+
+# Doctor Command
+
+Checks that your clarc installation is complete and healthy.
+
+## What It Checks
+
+| Check | Pass | Warn | Fail |
+|-------|------|------|------|
+| Node.js version | >=18 | — | <18 |
+| `~/.claude/` exists | ✅ | — | missing |
+| Agents | >=10 installed | 1–9 | none |
+| Skills | >=20 installed | 1–19 | none |
+| Commands | >=20 installed | 1–19 | none |
+| hooks.json | valid JSON | not found | syntax error |
+| Symlinks | all healthy | — | any broken |
+| MEMORY.md | <180 lines | 180–200 | >200 (truncated) |
+| clarc version | current | update available | — |
+
+## Usage
+
+```bash
+# From the CLI
+npx github:marvinrichter/clarc doctor
+
+# As a slash command in Claude Code
+/doctor
+
+# Directly
+node ~/.clarc/scripts/doctor.js
+```
+
+## Example Output
+
+```
+clarc doctor — checking your installation
+
+✅ Node.js 20.11.0
+✅ ~/.claude/ exists
+✅ Agents: 59 installed
+✅ Skills: 209 installed
+✅ Commands: 130 installed
+✅ Hooks: active (12 hooks)
+✅ Symlinks: 59 healthy
+⚠️  MEMORY.md: 193 lines (approaching 200-line limit — clean up soon)
+✅ clarc version: 0.9.0
+⚠️  Update available: 0.9.0 → 1.0.0
+   → Run: cd ~/.clarc && git pull
+
+2 warnings
+```
+
+## Common Fixes
+
+**Agents/skills/commands missing:**
+```bash
+npx github:marvinrichter/clarc typescript   # re-run installer
+```
+
+**Broken symlinks:**
+```bash
+cd ~/.clarc && git pull                     # update local clone
+npx github:marvinrichter/clarc typescript  # re-link
+```
+
+**MEMORY.md too long:**
+Move older entries to topic files (e.g., `debugging.md`, `patterns.md`) and link from `MEMORY.md`.
+
+**hooks.json syntax error:**
+Open `~/.claude/hooks/hooks.json` and fix the JSON. Use a linter: `node -e "JSON.parse(require('fs').readFileSync('~/.claude/hooks/hooks.json','utf8'))"`.
+
+## Related
+
+- Command: `/quickstart` — first-time onboarding
+- Command: `/clarc-way` — interactive workflow guide

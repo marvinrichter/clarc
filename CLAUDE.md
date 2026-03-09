@@ -33,6 +33,9 @@ The project is organized into several core components:
 
 ## Key Commands
 
+- `/quickstart` - Interactive onboarding for new users (first 5 minutes)
+- `/clarc-way` - Interactive workflow guide (what to do for any task)
+- `/doctor` - Health-check the clarc installation
 - `/tdd` - Test-driven development workflow
 - `/plan` - Implementation planning
 - `/e2e` - Generate and run E2E tests
@@ -47,6 +50,7 @@ The project is organized into several core components:
 npx github:marvinrichter/clarc              # interactive wizard
 npx github:marvinrichter/clarc typescript   # explicit, skip wizard
 npx github:marvinrichter/clarc --copy typescript  # copy instead of symlink
+npx github:marvinrichter/clarc doctor       # health-check installation
 ```
 
 The wizard clones clarc to `~/.clarc/` on first run, then symlinks agents, commands, and rules into `~/.claude/`. Users' own files in `~/.claude/` are never overwritten.
