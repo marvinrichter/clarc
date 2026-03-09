@@ -114,46 +114,18 @@ Invoked by **code-reviewer** automatically based on file extension. Can also be 
 
 ## Parallel Execution
 
-ALWAYS invoke agents in parallel for independent tasks:
+ALWAYS invoke agents in parallel for independent tasks — never sequentially when there are no dependencies between them.
 
-```
-# GOOD: parallel
-Launch 3 agents simultaneously:
-1. security-reviewer → auth module
-2. typescript-reviewer → new API routes
-3. tdd-guide → missing test coverage
-
-# BAD: sequential when not needed
-First security-reviewer, then typescript-reviewer, then tdd-guide
-```
-
-For complex analysis, use split-role sub-agents:
-- Factual reviewer
-- Senior engineer perspective
-- Security expert
-- Consistency checker
-
----
+For complex analysis, use split-role sub-agents (factual reviewer, senior engineer, security expert, consistency checker).
 
 ## Multi-Agent Coordination Patterns
 
 Use the **orchestrator** agent or `/orchestrate` command for tasks requiring 3+ agents.
 
-### Pattern Auto-Selection
-
-| Task Signal | Pattern |
-|-------------|---------|
-| Same task across N independent targets | Fan-Out → Fan-In |
-| Decision needing multiple perspectives | Split-Role |
-| Unknown codebase / research needed | Explorer + Validator |
-| N parallel write operations | Worktree Isolation |
-| Each phase depends on previous output | Sequential Pipeline |
-
-### Key Rules
-
+Key rules:
 - **Worktree isolation** (`isolation: "worktree"`) for any agent that modifies files in parallel
 - **Minimal context per agent** — pass only what each agent needs, not the full problem
 - **Always synthesize** — collect all agent results and produce a unified output
 - **Security > quality > style** when reconciling conflicting agent recommendations
 
-See skill `multi-agent-coordination` for full pattern specifications.
+> See skill `multi-agent-patterns` for pattern selection (Fan-Out, Split-Role, Explorer+Validator, Worktree Isolation, Sequential Pipeline) with examples.

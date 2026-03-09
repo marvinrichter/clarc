@@ -49,6 +49,14 @@ For complex tasks requiring deep reasoning:
 3. Use multiple critique rounds for thorough analysis
 4. Use split role sub-agents for diverse perspectives
 
+## Performance Checklist
+
+Before selecting a model or starting a large task:
+- [ ] Use Haiku for high-frequency or lightweight agent invocations
+- [ ] Use Sonnet for main development work (default)
+- [ ] Use Opus only for complex architectural decisions
+- [ ] Context window < 80% before starting large refactors
+
 ## Build Troubleshooting
 
 If build fails:

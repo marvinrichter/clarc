@@ -20,5 +20,13 @@ When creating PRs:
 4. Include test plan with TODOs
 5. Push with `-u` flag if new branch
 
+## Commit Checklist
+
+Before every commit:
+- [ ] Commit message follows `<type>: <description>` format
+- [ ] No secrets or PII in the diff
+- [ ] Tests pass locally
+- [ ] PR summary covers all commits (not just the latest)
+
 > For the full development process (planning, TDD, code review) before git operations,
 > see [development-workflow.md](./development-workflow.md).

@@ -24,6 +24,14 @@ MANDATORY workflow:
 3. Verify mocks are correct
 4. Fix implementation, not tests (unless tests are wrong)
 
+## Testing Checklist
+
+Before marking any feature complete:
+- [ ] Tests written before implementation (TDD)
+- [ ] Unit, integration, and E2E tests present
+- [ ] Coverage ≥ 80%
+- [ ] No test depends on external state or order
+
 ## Agent Support
 
 - **tdd-guide** - Use PROACTIVELY for new features, enforces write-tests-first

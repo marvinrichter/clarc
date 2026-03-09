@@ -1,6 +1,6 @@
 # Rules vs. Skills Boundary Roadmap
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-09
 **Motivation:** Rules are supposed to be "always follow" governance. Skills are "on-demand" deep reference. In practice the line is blurry — some rules contain full YAML/code examples (GitOps rule has complete Kubernetes manifests), while some skills are shorter than the rules referencing them. Users don't know where to look.
 

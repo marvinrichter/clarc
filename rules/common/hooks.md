@@ -28,3 +28,11 @@ Todo list reveals:
 - Extra unnecessary items
 - Wrong granularity
 - Misinterpreted requirements
+
+## Hooks Checklist
+
+Before enabling a new hook:
+- [ ] Hook command is idempotent (safe to run multiple times)
+- [ ] Hook exits cleanly on error (no blocking the session)
+- [ ] Async hooks used for slow operations (> 1s)
+- [ ] Hook tested locally before committing
