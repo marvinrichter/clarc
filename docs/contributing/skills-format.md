@@ -14,8 +14,38 @@ description: One-line description of when to use this skill
 triggers:
   - when doing X
   - when Y is needed
+skill_family: testing
+related_agents:
+  - tdd-guide
+  - python-reviewer
 ---
 ```
+
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Lowercase with hyphens. Must match directory name |
+| `description` | string | One sentence. Used in skill picker and `skills/INDEX.md` |
+| `triggers` | array | Conditions that activate this skill |
+
+### Optional Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `skill_family` | string | Logical grouping. See **Skill Families** below |
+| `related_agents` | array | Agents that use this skill. Used to build `skills/SKILL_AGENTS.md` |
+
+#### Skill Families
+
+| Family | Example Skills |
+|--------|---------------|
+| `testing` | tdd-workflow, python-testing, typescript-testing, go-testing |
+| `architecture` | hexagonal-typescript, ddd-typescript, arc42-c4 |
+| `security` | auth-patterns, supply-chain-security, gdpr-privacy |
+| `devops` | docker-patterns, kubernetes-patterns, terraform-patterns |
+| `review` | (language reviewer patterns) |
+| `ai-patterns` | llm-app-patterns, rag-patterns, agent-reliability |
 
 ---
 
@@ -57,6 +87,7 @@ good_example()
 Before adding or modifying a skill file:
 
 - [ ] Frontmatter present with `name`, `description`, `triggers`
+- [ ] `skill_family` set to one of the standard families
 - [ ] All 4 required sections present (Overview, Patterns, Anti-patterns, Checklist)
 - [ ] Code examples show WRONG and CORRECT approaches
 - [ ] File is ≥ 50 lines
