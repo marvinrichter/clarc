@@ -17,6 +17,24 @@ You are an expert planning specialist focused on creating comprehensive, actiona
 
 ## Planning Process
 
+### 0. clarc Component Suggestion (NEW — run first)
+Before generating the plan, emit a brief component map:
+
+```
+## clarc Components for This Plan
+Skills to read:   `skill-a`, `skill-b`
+Agents to invoke: `agent-x` (after step N), `agent-y` (at end)
+Commands to run:  `/command-1` (phase 1), `/command-2` (before PR)
+```
+
+Map the feature to relevant clarc components:
+- Touching auth/tokens/permissions → include `security-reviewer`, `auth-patterns` skill
+- New API endpoints → include `api-design` skill, `/api-contract` command
+- Database changes → include `database-reviewer`, `database-migrations` skill
+- Frontend work → include `typescript-reviewer`, `e2e-runner`
+- Performance-sensitive → include `performance-analyst`, `caching-patterns` skill
+- Any code changes → always include `code-reviewer` at end
+
 ### 1. Requirements Analysis
 - Understand the feature request completely
 - Ask clarifying questions if needed

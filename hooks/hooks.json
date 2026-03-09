@@ -57,6 +57,16 @@
           }
         ],
         "description": "Load previous context and detect package manager on new session"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/context-banner.js\""
+          }
+        ],
+        "description": "Context-aware banner: shows top 3 relevant clarc commands for detected project stack. Once per day, suppressible via .clarc/config.json"
       }
     ],
     "PostToolUse": [
@@ -113,6 +123,30 @@
           }
         ],
         "description": "System health check after editing agents/skills/commands: verifies frontmatter, cross-references, and naming conventions"
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-workflow-nudge.js\"",
+            "async": true,
+            "timeout": 5
+          }
+        ],
+        "description": "Workflow nudges after code edits: security-scan, code-review, doc-update, tdd-guard. Suppressible via .clarc/hooks-config.json"
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/build-failure-router.js\"",
+            "async": true,
+            "timeout": 5
+          }
+        ],
+        "description": "Build failure router: detects compile/type errors in Bash output and suggests build-error-resolver agent"
       },
       {
         "matcher": "Edit",
