@@ -426,6 +426,9 @@ async function main() {
   // Memory Bank: load .clarc/ project context (higher priority than MEMORY.md)
   loadMemoryBank(process.cwd());
 
+  // Project-local skills: scan .clarc/skills/ and surface to Claude
+  loadLocalSkills(process.cwd());
+
   // Rules staleness banner: notify once per 7 days if rules > 30 days old
   checkRulesStaleness();
 
@@ -471,6 +474,76 @@ function loadMemoryBank(cwd) {
     log(`[SessionStart] Memory Bank loaded: ${loaded.join(', ')}`);
     output(`--- Project Memory Bank ---\n${combined.trim()}\n---`);
   }
+}
+
+/**
+ * Parse simple YAML frontmatter (key: value pairs only) from a skill file.
+ * Returns an object with any found keys; falls back to empty object.
+ */
+function parseSkillFrontmatter(content) {
+  if (!content.startsWith('---')) return {};
+  const end = content.indexOf('\n---', 3);
+  if (end === -1) return {};
+  const yaml = content.slice(3, end);
+  const result = {};
+  for (const line of yaml.split('\n')) {
+    const m = line.match(/^(\w[\w-]*):\s*(.+)$/);
+    if (m) result[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+  }
+  return result;
+}
+
+/**
+ * Scan .clarc/skills/ for project-local skill directories.
+ * Each skill must have a SKILL.md file with a frontmatter title/description.
+ * - Local skills are surfaced to Claude via output()
+ * - If a local skill name matches a key in SKILL_MAP, it is flagged as an override
+ * Falls back silently if .clarc/skills/ does not exist.
+ */
+function loadLocalSkills(cwd) {
+  const skillsDir = path.join(cwd, '.clarc', 'skills');
+  if (!fs.existsSync(skillsDir)) return;
+
+  let entries;
+  try {
+    entries = fs.readdirSync(skillsDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  const found = [];
+  const overrides = [];
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const skillFile = path.join(skillsDir, entry.name, 'SKILL.md');
+    if (!fs.existsSync(skillFile)) continue;
+
+    let content = '';
+    try {
+      content = fs.readFileSync(skillFile, 'utf8');
+    } catch {
+      continue;
+    }
+
+    const meta = parseSkillFrontmatter(content);
+    const title = meta.title || entry.name;
+    const description = meta.description || '';
+    const isOverride = Object.values(SKILL_MAP).flat().includes(entry.name);
+
+    if (isOverride) {
+      overrides.push(entry.name);
+      log(`[SessionStart] Local skill '${entry.name}' overrides global version`);
+    }
+
+    found.push({ name: entry.name, title, description, isOverride });
+  }
+
+  if (found.length === 0) return;
+
+  const names = found.map(s => `[local] ${s.name}${s.isOverride ? ' (overrides global)' : ''}`).join(', ');
+  log(`[SessionStart] Project-local skills loaded: ${found.map(s => s.name).join(', ')}`);
+  output(`Loaded ${found.length} project-local skill${found.length !== 1 ? 's' : ''}: ${names}`);
 }
 
 /**

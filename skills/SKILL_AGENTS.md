@@ -366,6 +366,7 @@ These skills exist but are not declared in any agent's `uses_skills`. Consider a
 - `privacy-engineering`
 - `problem-details`
 - `product-lifecycle`
+- `project-local-skills`
 - `prompt-engineering`
 - `python-patterns-advanced`
 - `python-testing-advanced`
