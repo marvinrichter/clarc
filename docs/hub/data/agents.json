@@ -9,6 +9,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent agent-quality-reviewer",
@@ -25,6 +26,7 @@
       "Bash"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent agent-system-reviewer",
@@ -41,6 +43,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent android-reviewer",
@@ -56,6 +59,12 @@
       "Glob"
     ],
     "model": "opus",
+    "usesSkills": [
+      "arc42-c4",
+      "ddd-typescript",
+      "hexagonal-typescript",
+      "api-design"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent architect",
@@ -71,6 +80,7 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent bash-reviewer",
@@ -89,6 +99,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "CI / CD",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent build-error-resolver",
@@ -105,6 +116,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent c-reviewer",
@@ -121,6 +133,10 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "security-review",
+      "tdd-workflow"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent code-reviewer",
@@ -137,6 +153,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent command-auditor",
@@ -152,6 +169,7 @@
       "Write"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent competitive-analyst",
@@ -168,6 +186,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent contract-reviewer",
@@ -184,6 +203,10 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "cpp-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent cpp-reviewer",
@@ -200,6 +223,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent csharp-reviewer",
@@ -216,6 +240,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent data-architect",
@@ -234,6 +259,11 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "sql-patterns",
+      "database-migrations",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent database-reviewer",
@@ -248,11 +278,29 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent design-critic",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/design-critic.md",
     "filename": "design-critic.md"
+  },
+  {
+    "name": "design-system-reviewer",
+    "description": "Comprehensive design system audit — reviews CSS/token structure, dark mode implementation, icon system, accessibility compliance, design-code consistency, and component completeness. Routes findings across visual design dimensions and produces a prioritized remediation plan. Use when auditing a frontend codebase for design quality, before a major UI release, or when design system debt has accumulated.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent design-system-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/design-system-reviewer.md",
+    "filename": "design-system-reviewer.md"
   },
   {
     "name": "devsecops-reviewer",
@@ -264,6 +312,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent devsecops-reviewer",
@@ -282,6 +331,7 @@
       "Glob"
     ],
     "model": "haiku",
+    "usesSkills": [],
     "category": "Documentation",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent doc-updater",
@@ -298,6 +348,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent docs-architect",
@@ -316,6 +367,9 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "e2e-testing"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent e2e-runner",
@@ -332,6 +386,11 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "elixir-patterns",
+      "elixir-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent elixir-reviewer",
@@ -348,6 +407,7 @@
       "WebSearch"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent feedback-analyst",
@@ -364,6 +424,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent finops-advisor",
@@ -379,6 +440,7 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent flutter-reviewer",
@@ -395,6 +457,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "TypeScript / Frontend",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent frontend-architect",
@@ -411,6 +474,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Infrastructure",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent gitops-architect",
@@ -429,6 +493,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Go",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent go-build-resolver",
@@ -445,6 +510,11 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "go-patterns",
+      "go-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent go-reviewer",
@@ -461,6 +531,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent hook-auditor",
@@ -477,6 +548,13 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "java-patterns",
+      "java-testing",
+      "ddd-java",
+      "hexagonal-java",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent java-reviewer",
@@ -492,6 +570,11 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "kotlin-patterns",
+      "kotlin-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent kotlin-reviewer",
@@ -508,6 +591,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent mlops-architect",
@@ -524,11 +608,33 @@
       "Bash"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent modernization-planner",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/modernization-planner.md",
     "filename": "modernization-planner.md"
+  },
+  {
+    "name": "orchestrator",
+    "description": "Multi-agent orchestration specialist. Decomposes complex tasks into subtasks, selects the optimal coordination pattern (fan-out, split-role, explorer+validator, worktree isolation, sequential pipeline), and synthesizes results. Use via /orchestrate or for any task requiring 3+ independent agents.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Agent",
+      "Bash"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "multi-agent-patterns",
+      "agent-reliability"
+    ],
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent orchestrator",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator.md",
+    "filename": "orchestrator.md"
   },
   {
     "name": "orchestrator-designer",
@@ -540,6 +646,7 @@
       "WebSearch"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "AI / Agents",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent orchestrator-designer",
@@ -555,6 +662,7 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Performance",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent performance-analyst",
@@ -563,7 +671,7 @@
   },
   {
     "name": "php-reviewer",
-    "description": "Expert PHP code reviewer specializing in PHP 8.2+ idioms, PSR-12 style, strict types, readonly classes, enums, value objects, repository pattern, Laravel/Symfony patterns, PHPStan level 9, SQL injection/XSS/CSRF prevention. Use for all PHP code changes. MUST BE USED for PHP projects.",
+    "description": "Expert PHP code reviewer specializing in PHP 8.4+ idioms, PSR-12 style, strict types, readonly classes, enums, value objects, repository pattern, Laravel/Symfony patterns, PHPStan level 9, SQL injection/XSS/CSRF prevention. Use for all PHP code changes. MUST BE USED for PHP projects.",
     "tools": [
       "Read",
       "Grep",
@@ -571,6 +679,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent php-reviewer",
@@ -586,6 +695,10 @@
       "Glob"
     ],
     "model": "opus",
+    "usesSkills": [
+      "arc42-c4",
+      "api-design"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent planner",
@@ -602,6 +715,7 @@
       "WebSearch"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent platform-architect",
@@ -617,6 +731,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent presentation-designer",
@@ -633,6 +748,7 @@
       "WebSearch"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "Product",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent product-evaluator",
@@ -649,6 +765,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-quality-scorer",
@@ -664,6 +781,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-reviewer",
@@ -680,6 +798,12 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "python-patterns",
+      "python-testing",
+      "security-review",
+      "tdd-workflow"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent python-reviewer",
@@ -696,6 +820,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent r-reviewer",
@@ -714,6 +839,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent refactor-cleaner",
@@ -729,6 +855,7 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent resilience-reviewer",
@@ -745,6 +872,11 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "ruby-patterns",
+      "ruby-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent ruby-reviewer",
@@ -761,6 +893,10 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "rust-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent rust-reviewer",
@@ -777,6 +913,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent scala-reviewer",
@@ -793,6 +930,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent sdk-architect",
@@ -811,6 +949,12 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "auth-patterns",
+      "supply-chain-security",
+      "gdpr-privacy",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent security-reviewer",
@@ -828,6 +972,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent skill-depth-analyzer",
@@ -844,6 +989,7 @@
       "WebSearch"
     ],
     "model": "opus",
+    "usesSkills": [],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent solution-designer",
@@ -860,6 +1006,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent supply-chain-auditor",
@@ -876,6 +1023,11 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "swift-patterns",
+      "swift-testing",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent swift-reviewer",
@@ -890,6 +1042,7 @@
       "Glob"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent talk-coach",
@@ -907,6 +1060,14 @@
       "Grep"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "tdd-workflow",
+      "python-testing",
+      "typescript-testing",
+      "go-testing",
+      "java-testing",
+      "test-data"
+    ],
     "category": "Testing",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent tdd-guide",
@@ -923,6 +1084,13 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [
+      "typescript-patterns",
+      "typescript-testing",
+      "hexagonal-typescript",
+      "security-review",
+      "tdd-workflow"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent typescript-reviewer",
@@ -940,6 +1108,7 @@
       "Bash"
     ],
     "model": "sonnet",
+    "usesSkills": [],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent workflow-os-competitor-analyst",

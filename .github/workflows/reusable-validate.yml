@@ -38,3 +38,6 @@ jobs:
 
       - name: Validate rules
         run: node scripts/ci/validate-rules.js
+
+      - name: Validate agent skill refs
+        run: node scripts/ci/validate-agent-skill-refs.js

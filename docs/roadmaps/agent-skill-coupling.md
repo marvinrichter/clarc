@@ -1,6 +1,6 @@
 # Agent ↔ Skill Coupling Roadmap
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-09
 **Motivation:** Agents reference skills informally in their instructions ("see skill `X`"). Skills are unaware of which agents use them. When a skill is updated, agents expecting the old patterns have no notification mechanism. There is no formal dependency graph between the 61 agents and 222 skills.
 
@@ -141,7 +141,7 @@ related_agents: [tdd-guide, python-reviewer, e2e-runner]
 
 ## Success Criteria
 
-- [ ] 20 key agents have `uses_skills` frontmatter
-- [ ] All agent skill references are validated in CI
-- [ ] `skills/SKILL_AGENTS.md` is generated and up to date
-- [ ] `/skill-impact` correctly identifies at least 3 dependents for a core skill like `tdd-workflow`
+- [x] 20 key agents have `uses_skills` frontmatter (18 agents, 57 refs)
+- [x] All agent skill references are validated in CI (`scripts/ci/validate-agent-skill-refs.js`)
+- [x] `skills/SKILL_AGENTS.md` is generated and up to date
+- [x] `/skill-impact` correctly identifies at least 3 dependents for a core skill like `tdd-workflow` (4 agents)

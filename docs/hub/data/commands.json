@@ -36,6 +36,15 @@
     "filename": "agent-review.md"
   },
   {
+    "name": "agent-stats",
+    "slash": "/agent-stats",
+    "description": "Show agent usage statistics — top agents, heatmap, outcome ratio",
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-stats.md",
+    "filename": "agent-stats.md"
+  },
+  {
     "name": "analyze-feedback",
     "slash": "/analyze-feedback",
     "description": "Analyze raw user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify top pain points, cluster themes, and generate idea seeds. Delegates to the feedback-analyst agent.",
@@ -137,11 +146,20 @@
   {
     "name": "checkpoint",
     "slash": "/checkpoint",
-    "description": "Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.",
+    "description": "Create or verify a workflow checkpoint — create, verify, list, and restore git-backed checkpoints with Memory Bank integration.",
     "category": "General",
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/checkpoint.md",
     "filename": "checkpoint.md"
+  },
+  {
+    "name": "clarc-way",
+    "slash": "/clarc-way",
+    "description": "Interactive guide to The clarc Way methodology. Identifies your task type, recommends the right pipeline stage, and shows which commands and agents to use — with concrete examples for your current language.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/clarc-way.md",
+    "filename": "clarc-way.md"
   },
   {
     "name": "claw",
@@ -189,6 +207,15 @@
     "filename": "competitive-review.md"
   },
   {
+    "name": "context",
+    "slash": "/context",
+    "description": "Analyze the current project stack and surface the most relevant clarc skills, agents, and commands for this codebase.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/context.md",
+    "filename": "context.md"
+  },
+  {
     "name": "contract-test",
     "slash": "/contract-test",
     "description": "Set up consumer-driven contract testing with Pact — write consumer pact, configure Pact Broker, set up provider verification, and add can-i-deploy gate to CI",
@@ -223,6 +250,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/cursor-setup.md",
     "filename": "cursor-setup.md"
+  },
+  {
+    "name": "dark-mode-audit",
+    "slash": "/dark-mode-audit",
+    "description": "Audit a codebase's dark mode implementation — checks color strategy (not just CSS invert), elevation system, token structure, contrast ratios on dark surfaces, and common mistakes. Outputs a prioritized finding list with fixes.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/dark-mode-audit.md",
+    "filename": "dark-mode-audit.md"
   },
   {
     "name": "data-mesh-review",
@@ -304,6 +340,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/docs-review.md",
     "filename": "docs-review.md"
+  },
+  {
+    "name": "doctor",
+    "slash": "/doctor",
+    "description": "Health-check for your clarc installation. Verifies agents, skills, commands, hooks, symlinks, MEMORY.md size, and available updates. Runs scripts/doctor.js.",
+    "category": "Documentation",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/doctor.md",
+    "filename": "doctor.md"
   },
   {
     "name": "dora-baseline",
@@ -486,6 +531,15 @@
     "filename": "golden-path.md"
   },
   {
+    "name": "guide",
+    "slash": "/guide",
+    "description": "Get a step-by-step workflow plan for a specific task using clarc components. Usage: /guide <task> — e.g. /guide add auth, /guide write E2E tests, /guide deploy to k8s",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/guide.md",
+    "filename": "guide.md"
+  },
+  {
     "name": "hook-audit",
     "slash": "/hook-audit",
     "description": "Audit the clarc hook system for coverage, reliability, and performance — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and scripts/hooks/*.js.",
@@ -493,6 +547,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/hook-audit.md",
     "filename": "hook-audit.md"
+  },
+  {
+    "name": "hooks-config",
+    "slash": "/hooks-config",
+    "description": "Configure clarc workflow hooks — enable/disable nudges, set cooldowns, view hook status. Creates/updates .clarc/hooks-config.json.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/hooks-config.md",
+    "filename": "hooks-config.md"
   },
   {
     "name": "hooks-stats",
@@ -520,6 +583,15 @@
     "whenToUse": "Use /iac-review when: - Adding new Pulumi programs or CDK stacks to the codebase - Writing new ComponentResources or L3 Constructs",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/iac-review.md",
     "filename": "iac-review.md"
+  },
+  {
+    "name": "icon-system",
+    "slash": "/icon-system",
+    "description": "Generate an icon system specification — library selection recommendation, token definitions (size/stroke/color), naming convention, accessibility rules, and a React icon component template. Use when starting a new project or auditing existing icons.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/icon-system.md",
+    "filename": "icon-system.md"
   },
   {
     "name": "idea",
@@ -567,6 +639,15 @@
     "filename": "instinct-import.md"
   },
   {
+    "name": "instinct-outcome",
+    "slash": "/instinct-outcome",
+    "description": "Record an outcome (good/bad/neutral) for a specific instinct to adjust its confidence score",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-outcome.md",
+    "filename": "instinct-outcome.md"
+  },
+  {
     "name": "instinct-projects",
     "slash": "/instinct-projects",
     "description": "List registered projects and their instinct/observation counts — part of the continuous-learning-v2 system.",
@@ -574,6 +655,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-projects.md",
     "filename": "instinct-projects.md"
+  },
+  {
+    "name": "instinct-report",
+    "slash": "/instinct-report",
+    "description": "Ranked list of instincts by confidence with trend indicators (↑↓→) and decay candidates",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/instinct-report.md",
+    "filename": "instinct-report.md"
   },
   {
     "name": "instinct-status",
@@ -713,7 +803,7 @@
   {
     "name": "orchestrate",
     "slash": "/orchestrate",
-    "description": "Orchestrate multiple agents for complex tasks",
+    "description": "Orchestrate multiple agents for complex tasks — auto-selects coordination pattern (fan-out, split-role, explorer+validator, worktree, pipeline)",
     "category": "AI / Agents",
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/orchestrate.md",
@@ -774,6 +864,15 @@
     "filename": "profile.md"
   },
   {
+    "name": "project-init",
+    "slash": "/project-init",
+    "description": "Initialize a new project from a workflow starter-pack (rest-api, react-spa, python-pipeline, go-service, flutter-app, spring-boot)",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/project-init.md",
+    "filename": "project-init.md"
+  },
+  {
     "name": "promote",
     "slash": "/promote",
     "description": "Promote project-scoped instincts to global scope",
@@ -808,6 +907,15 @@
     "whenToUse": "- Before committing Python changes - After adding new features (verify tests pass) - When CI reports failing tests",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/python-test.md",
     "filename": "python-test.md"
+  },
+  {
+    "name": "quickstart",
+    "slash": "/quickstart",
+    "description": "Interactive onboarding for new clarc users. Guides through the first 5 minutes: explains the most important workflows, recommends which commands to start with, and gives a practical tour with concrete examples.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/quickstart.md",
+    "filename": "quickstart.md"
   },
   {
     "name": "refactor",
@@ -963,6 +1071,15 @@
     "filename": "skill-depth.md"
   },
   {
+    "name": "skill-impact",
+    "slash": "/skill-impact",
+    "description": "Show which agents depend on a skill and what would be affected by changing it",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md",
+    "filename": "skill-impact.md"
+  },
+  {
     "name": "slide-deck",
     "slash": "/slide-deck",
     "description": "Generate a slide deck structure from a topic, document, or notes. Produces a Reveal.js HTML presentation or Markdown slide structure (Marp-compatible). Invokes the presentation-designer agent.",
@@ -1033,6 +1150,15 @@
     "whenToUse": "Use /tdd when: - Implementing new features - Adding new functions/components",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/tdd.md",
     "filename": "tdd.md"
+  },
+  {
+    "name": "team-sync",
+    "slash": "/team-sync",
+    "description": "Sync team clarc installation — pull latest clarc + private rules/skills, re-run team install",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/team-sync.md",
+    "filename": "team-sync.md"
   },
   {
     "name": "test-coverage",
@@ -1150,6 +1276,24 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/webrtc-review.md",
     "filename": "webrtc-review.md"
+  },
+  {
+    "name": "whats-the-rule",
+    "slash": "/whats-the-rule",
+    "description": "Look up the rule constraint AND the linked skill for a given topic — makes the two-layer rules/skills system navigable",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/whats-the-rule.md",
+    "filename": "whats-the-rule.md"
+  },
+  {
+    "name": "wireframe",
+    "slash": "/wireframe",
+    "description": "Create a wireframe or user flow for a feature — generates ASCII/text wireframes, user flow diagrams, IA structure, and annotated specs. Use before writing UI code to validate structure and communicate intent.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/wireframe.md",
+    "filename": "wireframe.md"
   },
   {
     "name": "workflow-check",
