@@ -14,6 +14,7 @@ Load the postgres-patterns skill for this query optimization.
 ## Skill Categories
 
 ### Methodology
+
 | Skill | What it covers |
 |-------|---------------|
 | `clarc-way` | The clarc Way — full development methodology, skip matrix, pipeline |
@@ -23,6 +24,7 @@ Load the postgres-patterns skill for this query optimization.
 | `subagent-context-retrieval` | Progressive context loading for large codebases |
 
 ### Language Patterns
+
 | Skill | Languages |
 |-------|-----------|
 | `typescript-patterns` | TypeScript strict mode, utility types, module patterns |
@@ -42,6 +44,7 @@ Load the postgres-patterns skill for this query optimization.
 | `php-patterns` | PHP 8.4+, PSR-12, readonly classes |
 
 ### Architecture
+
 | Skill | What it covers |
 |-------|---------------|
 | `hexagonal-typescript` | Ports & adapters in TypeScript |
@@ -56,6 +59,7 @@ Load the postgres-patterns skill for this query optimization.
 | `grpc-patterns` | Protocol Buffers, streaming, service mesh |
 
 ### Infrastructure & DevOps
+
 | Skill | What it covers |
 |-------|---------------|
 | `kubernetes-patterns` | Pods, Services, operators, health checks |
@@ -67,6 +71,7 @@ Load the postgres-patterns skill for this query optimization.
 | `gitops-patterns` (via skill) | ArgoCD, Flux, progressive delivery |
 
 ### Data
+
 | Skill | What it covers |
 |-------|---------------|
 | `postgres-patterns` | Query optimization, indexes, RLS, Supabase |
@@ -77,6 +82,7 @@ Load the postgres-patterns skill for this query optimization.
 | `caching-patterns` | Cache invalidation, TTL strategies, Redis |
 
 ### Testing
+
 | Skill | What it covers |
 |-------|---------------|
 | `tdd-workflow` | TDD cycle, test isolation, mocking |
@@ -86,6 +92,7 @@ Load the postgres-patterns skill for this query optimization.
 | `visual-testing` | Visual regression, screenshot diffs |
 
 ### Security
+
 | Skill | What it covers |
 |-------|---------------|
 | `auth-patterns` | OAuth, JWT, session management |
@@ -94,6 +101,7 @@ Load the postgres-patterns skill for this query optimization.
 | `security-review` | OWASP checklist, threat modeling |
 
 ### AI/ML
+
 | Skill | What it covers |
 |-------|---------------|
 | `llm-app-patterns` | Prompt engineering, structured output, RAG |

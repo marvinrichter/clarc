@@ -30,6 +30,7 @@ node mcp-server/index.js
 Returns all learned instincts with confidence scores, grouped by domain.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `project_id` | string (opt) | Project hash — reads all projects if omitted |
@@ -44,6 +45,7 @@ Returns all learned instincts with confidence scores, grouped by domain.
 Returns the most recent session snapshot (summary, tasks, files modified).
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `max_chars` | number (opt) | Max characters to return (default: 3000) |
@@ -57,6 +59,7 @@ Returns the most recent session snapshot (summary, tasks, files modified).
 Returns the clarc skill catalog, optionally filtered.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `language` | string (opt) | Filter by language (e.g., "python", "typescript") |
@@ -71,6 +74,7 @@ Returns the clarc skill catalog, optionally filtered.
 Detects project type, frameworks, and recommends relevant clarc skills.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `cwd` | string (opt) | Project directory to analyze (defaults to process.cwd()) |
@@ -84,6 +88,7 @@ Detects project type, frameworks, and recommends relevant clarc skills.
 Search clarc skills by keyword, language, or domain.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `query` | string (req) | Keyword, language, or domain to search |
@@ -104,6 +109,7 @@ Search clarc skills by keyword, language, or domain.
 Returns full description and instructions for a named clarc agent.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `name` | string (req) | Agent name (e.g., "code-reviewer", "orchestrator") |
@@ -123,6 +129,7 @@ Returns full description and instructions for a named clarc agent.
 Returns the content of a specific clarc rule file.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `rule` | string (req) | Rule path, e.g., "common/coding-style", "typescript/testing" |
@@ -142,6 +149,7 @@ Returns the content of a specific clarc rule file.
 Suggests the best clarc workflow (commands + agents) for a task.
 
 **Input:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `task` | string (req) | Task description |

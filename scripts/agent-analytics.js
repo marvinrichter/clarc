@@ -100,7 +100,6 @@ if (!showHeatmap && !showOutcome) {
   console.log(`  ${'─'.repeat(colW)}  ─────   ───────    ───────  ─────────────`);
 
   for (const [name, s] of sorted) {
-    const pct = ((s.count / total) * 100).toFixed(1);
     const successRate = s.count > 0 ? ((s.success / s.count) * 100).toFixed(0) : '0';
     const avg = s.durations.length > 0 ? Math.round(s.durations.reduce((a, b) => a + b, 0) / s.durations.length) : '-';
     const bar = '█'.repeat(Math.round(s.count / total * 20));

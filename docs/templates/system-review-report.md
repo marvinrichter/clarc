@@ -85,7 +85,7 @@
 | Agent Invocation | X | |
 
 **Commands needing attention:**
-- [command-name]: [issue]
+- `command-name`: issue description
 
 ---
 
@@ -109,11 +109,13 @@
 ## Cross-Component Issues
 
 ### Broken References
+
 | Source | Target | Type |
 |--------|--------|------|
 | [file] | [file] | [command→agent \| agent→skill \| skill→skill] |
 
 ### Naming Violations
+
 | File | Issue |
 |------|-------|
 | [file] | [violation] |
@@ -158,6 +160,7 @@ Uncovered scenarios needing addition:
 3. [strength]
 
 **Top competitive gaps:**
+
 | Gap | Competitor(s) with feature | User Pain | Priority |
 |-----|---------------------------|-----------|---------|
 | [gap] | [competitors] | HIGH / MEDIUM | P0 / P1 |
