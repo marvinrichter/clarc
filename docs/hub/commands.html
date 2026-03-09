@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>130 Commands — clarc hub</title>
+  <title>146 Commands — clarc hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 <main>
   <div class="container">
     <div class="hero" style="padding-bottom:1rem">
-      <h1>130 Commands</h1>
+      <h1>146 Commands</h1>
       <p>Slash commands that activate skills and agents directly in Claude Code.</p>
       <div class="search-bar">
         <input id="search" type="search" placeholder="Search commands..." aria-label="Search commands">
@@ -32,17 +32,17 @@
     </div>
     <div class="filter-tabs">
   <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="General">General <small>(57)</small></button>
+  <button class="filter-btn" data-filter="General">General <small>(68)</small></button>
   <button class="filter-btn" data-filter="Code Review">Code Review <small>(31)</small></button>
+  <button class="filter-btn" data-filter="clarc System">clarc System <small>(9)</small></button>
   <button class="filter-btn" data-filter="Testing">Testing <small>(7)</small></button>
   <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(6)</small></button>
-  <button class="filter-btn" data-filter="clarc System">clarc System <small>(6)</small></button>
   <button class="filter-btn" data-filter="Architecture">Architecture <small>(4)</small></button>
   <button class="filter-btn" data-filter="Observability">Observability <small>(3)</small></button>
+  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(3)</small></button>
   <button class="filter-btn" data-filter="Product">Product <small>(3)</small></button>
-  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(2)</small></button>
+  <button class="filter-btn" data-filter="Documentation">Documentation <small>(3)</small></button>
   <button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <small>(2)</small></button>
-  <button class="filter-btn" data-filter="Documentation">Documentation <small>(2)</small></button>
   <button class="filter-btn" data-filter="Performance">Performance <small>(2)</small></button>
   <button class="filter-btn" data-filter="C / C++">C / C++ <small>(1)</small></button>
   <button class="filter-btn" data-filter="Go">Go <small>(1)</small></button>
@@ -93,6 +93,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-stats" data-category="AI / Agents">
+  <div class="card-header">
+    <h3 class="card-name"><code>/agent-stats</code></h3>
+    <span class="badge">AI / Agents</span>
+  </div>
+  <p class="card-desc">Show agent usage statistics — top agents, heatmap, outcome ratio</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-stats.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="analyze-feedback" data-category="General">
@@ -221,10 +232,21 @@
     <h3 class="card-name"><code>/checkpoint</code></h3>
     <span class="badge">General</span>
   </div>
-  <p class="card-desc">Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.</p>
+  <p class="card-desc">Create or verify a workflow checkpoint — create, verify, list, and restore git-backed checkpoints with Memory Bank integration.</p>
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/checkpoint.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="clarc-way" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/clarc-way</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Interactive guide to The clarc Way methodology. Identifies your task type, recommends the right pipeline stage, and shows which commands and agents to use — with concrete examples for your current language.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/clarc-way.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="claw" data-category="General">
@@ -282,6 +304,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/competitive-review.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="context" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/context</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Analyze the current project stack and surface the most relevant clarc skills, agents, and commands for this codebase.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/context.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="contract-test" data-category="Testing">
   <div class="card-header">
     <h3 class="card-name"><code>/contract-test</code></h3>
@@ -324,6 +357,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cursor-setup.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="dark-mode-audit" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/dark-mode-audit</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Audit a codebase's dark mode implementation — checks color strategy (not just CSS invert), elevation system, token structure, contrast ratios on dark surfaces, and common mistakes. Outputs a prioritized finding list with fixes.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dark-mode-audit.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="data-mesh-review" data-category="Code Review">
@@ -423,6 +467,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/docs-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="doctor" data-category="Documentation">
+  <div class="card-header">
+    <h3 class="card-name"><code>/doctor</code></h3>
+    <span class="badge">Documentation</span>
+  </div>
+  <p class="card-desc">Health-check for your clarc installation. Verifies agents, skills, commands, hooks, symlinks, MEMORY.md size, and available updates. Runs scripts/doctor.js.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/doctor.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="dora-baseline" data-category="General">
@@ -645,6 +700,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/golden-path.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="guide" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/guide</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Get a step-by-step workflow plan for a specific task using clarc components. Usage: /guide &lt;task&gt; — e.g. /guide add auth, /guide write E2E tests, /guide deploy to k8s</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/guide.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="hook-audit" data-category="clarc System">
   <div class="card-header">
     <h3 class="card-name"><code>/hook-audit</code></h3>
@@ -654,6 +720,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hook-audit.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="hooks-config" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/hooks-config</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Configure clarc workflow hooks — enable/disable nudges, set cooldowns, view hook status. Creates/updates .clarc/hooks-config.json.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hooks-config.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="hooks-stats" data-category="clarc System">
@@ -687,6 +764,17 @@
   <p class="card-when"><strong>When:</strong> Use /iac-review when: - Adding new Pulumi programs or CDK stacks to the codebase - Writing new ComponentResources or L3 Constructs</p>
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/iac-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="icon-system" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/icon-system</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Generate an icon system specification — library selection recommendation, token definitions (size/stroke/color), naming convention, accessibility rules, and a React icon component template. Use when starting a new project or auditing existing icons.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/icon-system.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="idea" data-category="Product">
@@ -744,6 +832,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-import.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="instinct-outcome" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/instinct-outcome</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Record an outcome (good/bad/neutral) for a specific instinct to adjust its confidence score</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-outcome.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="instinct-projects" data-category="General">
   <div class="card-header">
     <h3 class="card-name"><code>/instinct-projects</code></h3>
@@ -753,6 +852,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-projects.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="instinct-report" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/instinct-report</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Ranked list of instincts by confidence with trend indicators (↑↓→) and decay candidates</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-report.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="instinct-status" data-category="General">
@@ -925,7 +1035,7 @@
     <h3 class="card-name"><code>/orchestrate</code></h3>
     <span class="badge">AI / Agents</span>
   </div>
-  <p class="card-desc">Orchestrate multiple agents for complex tasks</p>
+  <p class="card-desc">Orchestrate multiple agents for complex tasks — auto-selects coordination pattern (fan-out, split-role, explorer+validator, worktree, pipeline)</p>
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/orchestrate.md" target="_blank" class="btn-ghost">Source</a>
@@ -997,6 +1107,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/profile.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="project-init" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/project-init</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Initialize a new project from a workflow starter-pack (rest-api, react-spa, python-pipeline, go-service, flutter-app, spring-boot)</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/project-init.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="promote" data-category="General">
   <div class="card-header">
     <h3 class="card-name"><code>/promote</code></h3>
@@ -1039,6 +1160,17 @@
   <p class="card-when"><strong>When:</strong> - Before committing Python changes - After adding new features (verify tests pass) - When CI reports failing tests</p>
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/python-test.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="quickstart" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/quickstart</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Interactive onboarding for new clarc users. Guides through the first 5 minutes: explains the most important workflows, recommends which commands to start with, and gives a practical tour with concrete examples.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/quickstart.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="refactor" data-category="General">
@@ -1228,6 +1360,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-depth.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="skill-impact" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/skill-impact</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Show which agents depend on a skill and what would be affected by changing it</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="slide-deck" data-category="Observability">
   <div class="card-header">
     <h3 class="card-name"><code>/slide-deck</code></h3>
@@ -1314,6 +1457,17 @@
   <p class="card-when"><strong>When:</strong> Use /tdd when: - Implementing new features - Adding new functions/components</p>
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/tdd.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="team-sync" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/team-sync</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Sync team clarc installation — pull latest clarc + private rules/skills, re-run team install</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/team-sync.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="test-coverage" data-category="Testing">
@@ -1457,6 +1611,28 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/webrtc-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="whats-the-rule" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/whats-the-rule</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Look up the rule constraint AND the linked skill for a given topic — makes the two-layer rules/skills system navigable</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/whats-the-rule.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="wireframe" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name"><code>/wireframe</code></h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Create a wireframe or user flow for a feature — generates ASCII/text wireframes, user flow diagrams, IA structure, and annotated specs. Use before writing UI code to validate structure and communicate intent.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wireframe.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="workflow-check" data-category="General">

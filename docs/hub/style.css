@@ -89,6 +89,18 @@ header { border-bottom: 1px solid var(--border); padding: 1rem 0; }
 
 code { background: var(--badge-bg); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
 
+/* Dependency pills */
+.skill-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; margin: 0.4rem 0 0.5rem; }
+.deps-label { color: var(--muted); font-size: 0.72rem; margin-right: 0.15rem; white-space: nowrap; }
+.skill-pill {
+  padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.7rem;
+  background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.25);
+}
+.agent-pill {
+  padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.7rem;
+  background: rgba(63,185,80,0.1); color: var(--green); border: 1px solid rgba(63,185,80,0.25);
+}
+
 @media (max-width: 600px) {
   .section-cards { grid-template-columns: 1fr; }
   .hero h1 { font-size: 1.8rem; }

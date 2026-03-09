@@ -41,10 +41,20 @@ function parseFrontmatter(content) {
   const yaml = content.slice(3, end);
   const body = content.slice(end + 4).trim();
   const meta = {};
+  let currentArrayKey = null;
 
   for (const line of yaml.split('\n')) {
+    // YAML array item:  "  - value"
+    if (/^\s{2}-\s+/.test(line) && currentArrayKey) {
+      const val = line.replace(/^\s{2}-\s+/, '').trim();
+      if (!Array.isArray(meta[currentArrayKey])) meta[currentArrayKey] = [];
+      meta[currentArrayKey].push(val);
+      continue;
+    }
+
     const colon = line.indexOf(':');
     if (colon === -1) continue;
+    currentArrayKey = null;
     const key = line.slice(0, colon).trim();
     let value = line.slice(colon + 1).trim();
     // Strip surrounding quotes
@@ -56,7 +66,9 @@ function parseFrontmatter(content) {
     if (value.startsWith('[')) {
       try { value = JSON.parse(value); } catch { /* keep as string */ }
     }
-    meta[key] = value;
+    // Blank value after key — might be followed by YAML array items
+    if (value === '') currentArrayKey = key;
+    meta[key] = value || null;
   }
 
   return { meta, body };
@@ -96,11 +108,13 @@ function collectAgents() {
       // Infer category from name
       const category = inferCategory(name, 'agent');
 
+      const usesSkills = Array.isArray(meta.uses_skills) ? meta.uses_skills : [];
       return {
         name,
         description: extractDescription(meta, body),
         tools: Array.isArray(meta.tools) ? meta.tools : [],
         model: meta.model || 'sonnet',
+        usesSkills,
         category,
         whenToUse: extractWhenToUse(body),
         installCmd: `npx github:marvinrichter/clarc --install-agent ${name}`,
@@ -130,6 +144,7 @@ function collectSkills() {
       description: extractDescription(meta, body),
       category,
       whenToUse: extractWhenToUse(body),
+      usedByAgents: [], // populated in main() after agents are collected
       installCmd: `npx github:marvinrichter/clarc --install-skill ${name}`,
       sourceUrl: `https://github.com/marvinrichter/clarc/blob/main/skills/${dir}/SKILL.md`,
       dir,
@@ -216,6 +231,18 @@ function categoryBadge(category) {
   return `<span class="badge">${escapeHtml(category)}</span>`;
 }
 
+function skillPills(skills) {
+  if (!skills || skills.length === 0) return '';
+  const pills = skills.map(s => `<span class="skill-pill">${escapeHtml(s)}</span>`).join('');
+  return `<div class="skill-pills"><span class="deps-label">uses:</span>${pills}</div>`;
+}
+
+function usedBySection(agents) {
+  if (!agents || agents.length === 0) return '';
+  const pills = agents.map(a => `<span class="agent-pill">${escapeHtml(a)}</span>`).join('');
+  return `<div class="skill-pills"><span class="deps-label">used by:</span>${pills}</div>`;
+}
+
 function agentCard(agent) {
   return `
 <div class="card" data-name="${escapeHtml(agent.name)}" data-category="${escapeHtml(agent.category)}">
@@ -225,6 +252,7 @@ function agentCard(agent) {
   </div>
   <p class="card-desc">${escapeHtml(agent.description)}</p>
   ${agent.whenToUse ? `<p class="card-when"><strong>When:</strong> ${escapeHtml(agent.whenToUse)}</p>` : ''}
+  ${skillPills(agent.usesSkills)}
   <div class="card-footer">
     <span class="model-badge">${escapeHtml(agent.model)}</span>
     <a href="${escapeHtml(agent.sourceUrl)}" target="_blank" class="btn-ghost">Source</a>
@@ -241,6 +269,7 @@ function skillCard(skill) {
   </div>
   <p class="card-desc">${escapeHtml(skill.description)}</p>
   ${skill.whenToUse ? `<p class="card-when"><strong>When:</strong> ${escapeHtml(skill.whenToUse)}</p>` : ''}
+  ${usedBySection(skill.usedByAgents)}
   <div class="card-footer">
     <a href="${escapeHtml(skill.sourceUrl)}" target="_blank" class="btn-ghost">Source</a>
   </div>
@@ -354,6 +383,18 @@ header { border-bottom: 1px solid var(--border); padding: 1rem 0; }
 .section-card .count { font-size: 2rem; font-weight: 700; color: var(--text); }
 
 code { background: var(--badge-bg); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
+
+/* Dependency pills */
+.skill-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; margin: 0.4rem 0 0.5rem; }
+.deps-label { color: var(--muted); font-size: 0.72rem; margin-right: 0.15rem; white-space: nowrap; }
+.skill-pill {
+  padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.7rem;
+  background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.25);
+}
+.agent-pill {
+  padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.7rem;
+  background: rgba(63,185,80,0.1); color: var(--green); border: 1px solid rgba(63,185,80,0.25);
+}
 
 @media (max-width: 600px) {
   .section-cards { grid-template-columns: 1fr; }
@@ -593,6 +634,18 @@ function main() {
   const agents = collectAgents();
   const skills = collectSkills();
   const commands = collectCommands();
+
+  // Build skill→agents reverse map from uses_skills declarations
+  const skillToAgents = new Map();
+  for (const agent of agents) {
+    for (const skill of agent.usesSkills) {
+      if (!skillToAgents.has(skill)) skillToAgents.set(skill, []);
+      skillToAgents.get(skill).push(agent.name);
+    }
+  }
+  for (const skill of skills) {
+    skill.usedByAgents = (skillToAgents.get(skill.name) || []).sort();
+  }
 
   console.log(`[generate-hub] Found: ${agents.length} agents, ${skills.length} skills, ${commands.length} commands`);
 
