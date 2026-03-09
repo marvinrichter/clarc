@@ -10,143 +10,213 @@ Use `/skill-impact <skill-name>` to query this index interactively.
 
 ## Other
 
-### `agent-reliability` — "Agent Reliability Patterns: retry with exponential backoff and jitter, timeout hierarchies (tool < agent < workflow), fallback chains, circuit breaker for agent calls, cost control (token budgets, model tiering), rate limiting, and observability (what to log per agent call)."
+### `agent-reliability`
+
+"Agent Reliability Patterns: retry with exponential backoff and jitter, timeout hierarchies (tool < agent < workflow), fallback chains, circuit breaker for agent calls, cost control (token budgets, model tiering), rate limiting, and observability (what to log per agent call)."
 
 **Used by:** `orchestrator`
 
-### `api-design` — REST API design patterns including resource naming, status codes, pagination, filtering, error responses, versioning, and rate limiting for production APIs.
+### `api-design`
+
+REST API design patterns including resource naming, status codes, pagination, filtering, error responses, versioning, and rate limiting for production APIs.
 
 **Used by:** `architect`, `planner`
 
-### `arc42-c4` — "arc42 architecture documentation template (all 12 sections) combined with C4 diagrams (Context, Container, Component, Deployment) in PlantUML. The standard for architecture documentation in this setup. Maps each section to the Claude skills that help fill it."
+### `arc42-c4`
+
+"arc42 architecture documentation template (all 12 sections) combined with C4 diagrams (Context, Container, Component, Deployment) in PlantUML. The standard for architecture documentation in this setup. Maps each section to the Claude skills that help fill it."
 
 **Used by:** `architect`, `planner`
 
-### `auth-patterns` — "Authentication and authorization implementation patterns: JWT, sessions (httpOnly cookies), OAuth2/OIDC, API keys, RBAC, and MFA. Covers TypeScript, Python, Go, and Java with security-hardened code examples."
+### `auth-patterns`
+
+"Authentication and authorization implementation patterns: JWT, sessions (httpOnly cookies), OAuth2/OIDC, API keys, RBAC, and MFA. Covers TypeScript, Python, Go, and Java with security-hardened code examples."
 
 **Used by:** `security-reviewer`
 
-### `cpp-testing` — Use only when writing/updating/fixing C++ tests, configuring GoogleTest/CTest, diagnosing failing or flaky tests, or adding coverage/sanitizers.
+### `cpp-testing`
+
+Use only when writing/updating/fixing C++ tests, configuring GoogleTest/CTest, diagnosing failing or flaky tests, or adding coverage/sanitizers.
 
 **Used by:** `cpp-reviewer`
 
-### `database-migrations` — Database migration best practices for schema changes, data migrations, rollbacks, and zero-downtime deployments across PostgreSQL, MySQL, and common ORMs (Prisma, Drizzle, Django, TypeORM, golang-migrate).
+### `database-migrations`
+
+Database migration best practices for schema changes, data migrations, rollbacks, and zero-downtime deployments across PostgreSQL, MySQL, and common ORMs (Prisma, Drizzle, Django, TypeORM, golang-migrate).
 
 **Used by:** `database-reviewer`
 
-### `ddd-java` — Domain-Driven Design tactical patterns for Java 25+. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in Java Spring Boot services.
+### `ddd-java`
+
+Domain-Driven Design tactical patterns for Java 25+. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in Java Spring Boot services.
 
 **Used by:** `java-reviewer`
 
-### `ddd-typescript` — Domain-Driven Design tactical patterns for TypeScript. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in TypeScript backend services.
+### `ddd-typescript`
+
+Domain-Driven Design tactical patterns for TypeScript. Value Objects, Entities, Aggregates, Domain Services, Domain Events, Ubiquitous Language, and Bounded Contexts. Use when modeling domain logic in TypeScript backend services.
 
 **Used by:** `architect`
 
-### `e2e-testing` — Playwright E2E testing patterns, Page Object Model, configuration, CI/CD integration, artifact management, and flaky test strategies.
+### `e2e-testing`
+
+Playwright E2E testing patterns, Page Object Model, configuration, CI/CD integration, artifact management, and flaky test strategies.
 
 **Used by:** `e2e-runner`
 
-### `elixir-patterns` — GenServer, Supervisors, OTP patterns, Phoenix contexts, LiveView lifecycle, and Broadway for Elixir/Phoenix applications.
+### `elixir-patterns`
+
+GenServer, Supervisors, OTP patterns, Phoenix contexts, LiveView lifecycle, and Broadway for Elixir/Phoenix applications.
 
 **Used by:** `elixir-reviewer`
 
-### `elixir-testing` — ExUnit testing patterns, Mox for mocking, StreamData for property-based testing, and Phoenix test cases for Elixir applications.
+### `elixir-testing`
+
+ExUnit testing patterns, Mox for mocking, StreamData for property-based testing, and Phoenix test cases for Elixir applications.
 
 **Used by:** `elixir-reviewer`
 
-### `gdpr-privacy` — "GDPR and data privacy implementation patterns: Right to Erasure, data retention policies, PII detection and anonymization, consent management, Data Subject Access Requests (DSAR), audit logs, and data minimization. Required for any EU-facing product."
+### `gdpr-privacy`
+
+"GDPR and data privacy implementation patterns: Right to Erasure, data retention policies, PII detection and anonymization, consent management, Data Subject Access Requests (DSAR), audit logs, and data minimization. Required for any EU-facing product."
 
 **Used by:** `security-reviewer`
 
-### `go-patterns` — Idiomatic Go patterns, best practices, and conventions for building robust, efficient, and maintainable Go applications.
+### `go-patterns`
+
+Idiomatic Go patterns, best practices, and conventions for building robust, efficient, and maintainable Go applications.
 
 **Used by:** `go-reviewer`
 
-### `go-testing` — Go testing patterns including table-driven tests, subtests, test helpers, and golden files. Core TDD methodology with idiomatic Go practices.
+### `go-testing`
+
+Go testing patterns including table-driven tests, subtests, test helpers, and golden files. Core TDD methodology with idiomatic Go practices.
 
 **Used by:** `go-reviewer`, `tdd-guide`
 
-### `hexagonal-java` — Hexagonal architecture (ports & adapters) for Java Spring Boot. Package structure, port definitions, use case implementation, adapter patterns, and testing strategy. Use when structuring or reviewing Java services.
+### `hexagonal-java`
+
+Hexagonal architecture (ports & adapters) for Java Spring Boot. Package structure, port definitions, use case implementation, adapter patterns, and testing strategy. Use when structuring or reviewing Java services.
 
 **Used by:** `java-reviewer`
 
-### `hexagonal-typescript` — Hexagonal architecture (ports & adapters) for TypeScript Node.js backends. Package structure, port definitions, use case implementation, adapter patterns, DI wiring, and testing strategy. Use when structuring or reviewing TypeScript backend services.
+### `hexagonal-typescript`
+
+Hexagonal architecture (ports & adapters) for TypeScript Node.js backends. Package structure, port definitions, use case implementation, adapter patterns, DI wiring, and testing strategy. Use when structuring or reviewing TypeScript backend services.
 
 **Used by:** `architect`, `typescript-reviewer`
 
-### `java-patterns` — "Java coding standards and idioms for Java 25+ — naming, immutability, Optional, streams, exceptions, generics, records, sealed classes. Applies to plain Java, Spring Boot, Quarkus, and Jakarta EE projects."
+### `java-patterns`
+
+"Java coding standards and idioms for Java 25+ — naming, immutability, Optional, streams, exceptions, generics, records, sealed classes. Applies to plain Java, Spring Boot, Quarkus, and Jakarta EE projects."
 
 **Used by:** `java-reviewer`
 
-### `java-testing` — "Java testing patterns: JUnit 5, Mockito, AssertJ, Testcontainers for integration tests, and coverage with JaCoCo. Core TDD methodology for plain Java projects (non-Spring). For Spring Boot, see springboot-tdd."
+### `java-testing`
+
+"Java testing patterns: JUnit 5, Mockito, AssertJ, Testcontainers for integration tests, and coverage with JaCoCo. Core TDD methodology for plain Java projects (non-Spring). For Spring Boot, see springboot-tdd."
 
 **Used by:** `java-reviewer`, `tdd-guide`
 
-### `kotlin-patterns` — "Idiomatic Kotlin patterns: sealed classes, data classes, extension functions, coroutines, Flow, DSL builders, value classes, and functional idioms. Use when writing or reviewing Kotlin code."
+### `kotlin-patterns`
+
+"Idiomatic Kotlin patterns: sealed classes, data classes, extension functions, coroutines, Flow, DSL builders, value classes, and functional idioms. Use when writing or reviewing Kotlin code."
 
 **Used by:** `kotlin-reviewer`
 
-### `kotlin-testing` — "Kotlin testing with JUnit 5, Kotest, MockK, coroutine testing, and Testcontainers. Covers TDD workflow, test structure, coroutine test utilities, and Spring Boot integration testing."
+### `kotlin-testing`
+
+"Kotlin testing with JUnit 5, Kotest, MockK, coroutine testing, and Testcontainers. Covers TDD workflow, test structure, coroutine test utilities, and Spring Boot integration testing."
 
 **Used by:** `kotlin-reviewer`
 
-### `multi-agent-patterns` — "Multi-Agent Systems: orchestration vs choreography, tool routing, state management, agent handoffs, parallelization (fan-out/fan-in), error handling in multi-agent workflows, Claude SDK patterns (Agent/Tool/Handoff), and observability with OpenTelemetry."
+### `multi-agent-patterns`
+
+"Multi-Agent Systems: orchestration vs choreography, tool routing, state management, agent handoffs, parallelization (fan-out/fan-in), error handling in multi-agent workflows, Claude SDK patterns (Agent/Tool/Handoff), and observability with OpenTelemetry."
 
 **Used by:** `orchestrator`
 
-### `python-patterns` — Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications.
+### `python-patterns`
+
+Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications.
 
 **Used by:** `python-reviewer`
 
-### `python-testing` — Python testing strategies using pytest, TDD methodology, fixtures, mocking, and parametrization. Core testing fundamentals.
+### `python-testing`
+
+Python testing strategies using pytest, TDD methodology, fixtures, mocking, and parametrization. Core testing fundamentals.
 
 **Used by:** `python-reviewer`, `tdd-guide`
 
-### `ruby-patterns` — Rails patterns, ActiveRecord best practices, Service Objects, Query Objects, Decorators, Form Objects, and idiomatic Ruby design.
+### `ruby-patterns`
+
+Rails patterns, ActiveRecord best practices, Service Objects, Query Objects, Decorators, Form Objects, and idiomatic Ruby design.
 
 **Used by:** `ruby-reviewer`
 
-### `ruby-testing` — RSpec testing patterns for Ruby and Rails — factories, mocks, request specs, feature specs, VCR, and SimpleCov coverage.
+### `ruby-testing`
+
+RSpec testing patterns for Ruby and Rails — factories, mocks, request specs, feature specs, VCR, and SimpleCov coverage.
 
 **Used by:** `ruby-reviewer`
 
-### `rust-testing` — Rust testing patterns — unit tests with mockall, integration tests with sqlx transactions, HTTP handler testing (axum), benchmarks (criterion), property tests (proptest), fuzzing, and CI with cargo-nextest.
+### `rust-testing`
+
+Rust testing patterns — unit tests with mockall, integration tests with sqlx transactions, HTTP handler testing (axum), benchmarks (criterion), property tests (proptest), fuzzing, and CI with cargo-nextest.
 
 **Used by:** `rust-reviewer`
 
-### `security-review` — Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
+### `security-review`
+
+Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
 
 **Used by:** `code-reviewer`, `cpp-reviewer`, `database-reviewer`, `elixir-reviewer`, `go-reviewer`, `java-reviewer`, `kotlin-reviewer`, `python-reviewer`, `ruby-reviewer`, `rust-reviewer`, `security-reviewer`, `swift-reviewer`, `typescript-reviewer`
 
-### `sql-patterns` — "SQL query patterns: parameterized queries, keyset pagination, UPSERT, window functions, CTEs, aggregation with FILTER, soft delete, audit trails, row-level security, and migration best practices. Use when writing or reviewing SQL queries and schema changes."
+### `sql-patterns`
+
+"SQL query patterns: parameterized queries, keyset pagination, UPSERT, window functions, CTEs, aggregation with FILTER, soft delete, audit trails, row-level security, and migration best practices. Use when writing or reviewing SQL queries and schema changes."
 
 **Used by:** `database-reviewer`
 
-### `supply-chain-security` — "Software supply chain security: SBOM generation (CycloneDX/SPDX with syft/grype), SLSA framework levels, Sigstore/cosign artifact signing, dependency hash pinning, reproducible builds, VEX documents, and SSDF compliance."
+### `supply-chain-security`
+
+"Software supply chain security: SBOM generation (CycloneDX/SPDX with syft/grype), SLSA framework levels, Sigstore/cosign artifact signing, dependency hash pinning, reproducible builds, VEX documents, and SSDF compliance."
 
 **Used by:** `security-reviewer`
 
-### `swift-patterns` — Core Swift patterns — value vs reference types, protocols, generics, optionals, Result, error handling, Codable, and module organization. Foundation for all Swift development.
+### `swift-patterns`
+
+Core Swift patterns — value vs reference types, protocols, generics, optionals, Result, error handling, Codable, and module organization. Foundation for all Swift development.
 
 **Used by:** `swift-reviewer`
 
-### `swift-testing` — "Swift testing patterns: Swift Testing framework (Swift 6+), XCTest for UI tests, async/await test cases, actor testing, Combine testing, and XCUITest for UI automation. TDD for Swift/SwiftUI."
+### `swift-testing`
+
+"Swift testing patterns: Swift Testing framework (Swift 6+), XCTest for UI tests, async/await test cases, actor testing, Combine testing, and XCUITest for UI automation. TDD for Swift/SwiftUI."
 
 **Used by:** `swift-reviewer`
 
-### `tdd-workflow` — Use this skill when writing new features, fixing bugs, or refactoring code. Enforces test-driven development with 80%+ coverage including unit, integration, and E2E tests.
+### `tdd-workflow`
+
+Use this skill when writing new features, fixing bugs, or refactoring code. Enforces test-driven development with 80%+ coverage including unit, integration, and E2E tests.
 
 **Used by:** `code-reviewer`, `python-reviewer`, `tdd-guide`, `typescript-reviewer`
 
-### `test-data` — "Test data management patterns: factory functions, fixtures, database seeders, test isolation strategies, and safely anonymizing production data for testing. Covers TypeScript, Python, and Go."
+### `test-data`
+
+"Test data management patterns: factory functions, fixtures, database seeders, test isolation strategies, and safely anonymizing production data for testing. Covers TypeScript, Python, and Go."
 
 **Used by:** `tdd-guide`
 
-### `typescript-patterns` — TypeScript patterns — type system best practices, strict mode, utility types, generics, discriminated unions, error handling with Result types, and module organization. Core patterns for production TypeScript.
+### `typescript-patterns`
+
+TypeScript patterns — type system best practices, strict mode, utility types, generics, discriminated unions, error handling with Result types, and module organization. Core patterns for production TypeScript.
 
 **Used by:** `typescript-reviewer`
 
-### `typescript-testing` — "TypeScript testing patterns: Vitest for unit/integration, Playwright for E2E, MSW for API mocking, Testing Library for React components. Core TDD methodology for TypeScript/JavaScript projects."
+### `typescript-testing`
+
+"TypeScript testing patterns: Vitest for unit/integration, Playwright for E2E, MSW for API mocking, Testing Library for React components. Core TDD methodology for TypeScript/JavaScript projects."
 
 **Used by:** `tdd-guide`, `typescript-reviewer`
 

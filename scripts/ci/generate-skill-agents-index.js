@@ -111,7 +111,7 @@ for (const dir of allSkillDirs) {
 const familyToSkills = new Map();
 const FAMILY_ORDER = ['testing', 'architecture', 'security', 'devops', 'ai-patterns', 'review', 'other'];
 
-for (const [skill, agents] of skillToAgents.entries()) {
+for (const [skill] of skillToAgents.entries()) {
   const family = skillFamily.get(skill) || 'other';
   if (!familyToSkills.has(family)) familyToSkills.set(family, []);
   familyToSkills.get(family).push(skill);
@@ -161,9 +161,10 @@ for (const family of sortedFamilies) {
 
   for (const skill of skills) {
     const agents = skillToAgents.get(skill) || [];
-    const desc = skillDesc.get(skill) ? ` — ${skillDesc.get(skill)}` : '';
-    lines.push(`### \`${skill}\`${desc}`);
+    const desc = skillDesc.get(skill) || '';
+    lines.push(`### \`${skill}\``);
     lines.push(``);
+    if (desc) { lines.push(desc); lines.push(``); }
     lines.push(`**Used by:** ${agents.map(a => `\`${a}\``).join(', ')}`);
     lines.push(``);
   }
