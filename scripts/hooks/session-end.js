@@ -252,11 +252,12 @@ ${summarySection}
  * never creates .clarc/ automatically (user must opt in).
  */
 function writeMemoryBank(summary, date, time) {
-  const clarcDir = path.join(process.cwd(), '.clarc');
+  const projectRoot = process.env.CLARC_PROJECT_ROOT || process.cwd();
+  const clarcDir = path.join(projectRoot, '.clarc');
   if (!fs.existsSync(clarcDir)) {
     // Hint if project-like directory (has package.json, go.mod, etc.)
     const markers = ['package.json', 'go.mod', 'Cargo.toml', 'pyproject.toml', 'build.gradle'];
-    const isProject = markers.some(m => fs.existsSync(path.join(process.cwd(), m)));
+    const isProject = markers.some(m => fs.existsSync(path.join(projectRoot, m)));
     if (isProject) {
       log('[SessionEnd] Tip: create .clarc/ to enable Memory Bank (see docs/memory-bank.md)');
     }

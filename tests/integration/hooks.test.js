@@ -14,6 +14,9 @@ import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Prevent test runs from writing to the real .clarc/ Memory Bank
+process.env.CLARC_PROJECT_ROOT = os.tmpdir();
+
 // Test helper
 function _test(name, fn) {
   try {

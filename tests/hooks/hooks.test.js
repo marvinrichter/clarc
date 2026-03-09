@@ -13,6 +13,9 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import * as utils from '../../scripts/lib/utils.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Prevent test runs from writing to the real .clarc/ Memory Bank
+process.env.CLARC_PROJECT_ROOT = os.tmpdir();
+
 // Test helper
 function test(name, fn) {
   try {
