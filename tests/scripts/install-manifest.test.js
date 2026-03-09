@@ -4,7 +4,7 @@
  */
 
 import { spawnSync } from 'child_process';
-import { mkdirSync, writeFileSync, symlinkSync, mkdtempSync, rmSync, existsSync } from 'fs';
+import { writeFileSync, symlinkSync, mkdtempSync, rmSync, existsSync } from 'fs';
 import { join } from 'path';
 import { tmpdir, homedir } from 'os';
 import { lstatSync, readlinkSync } from 'fs';
@@ -153,7 +153,7 @@ test('--dry-run typescript exits 0 and prints [DRY RUN]', () => {
 test('--dry-run does not create files (agents/ not touched)', () => {
   const tmpHome = mkdtempSync(join(tmpdir(), 'clarc-dryrun-'));
   try {
-    const result = spawnSync('bash', [INSTALL_SH, '--dry-run'], {
+    spawnSync('bash', [INSTALL_SH, '--dry-run'], {
       encoding: 'utf8',
       env: { ...process.env, HOME: tmpHome }
     });
