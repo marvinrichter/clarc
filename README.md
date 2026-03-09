@@ -1,7 +1,7 @@
 # clarc
 
 **A workflow OS for Claude Code.**
-59 agents · 208 skills · 128 commands · 20 language rule sets · continuous learning flywheel.
+60 agents · 214 skills · 136 commands · 20 language rule sets · continuous learning flywheel.
 
 ---
 
@@ -108,9 +108,9 @@ git clone git@github.com:marvinrichter/clarc.git ~/.clarc
 
 | Component | Count | Purpose |
 |-----------|------:|---------|
-| **Agents** | 59 | Specialized subagents — delegate planning, review, testing, debugging |
-| **Skills** | 208 | Domain knowledge — patterns, conventions, examples for specific tasks |
-| **Commands** | 128 | Slash commands — repeatable workflows triggered by `/command` |
+| **Agents** | 60 | Specialized subagents — delegate planning, review, testing, debugging |
+| **Skills** | 214 | Domain knowledge — patterns, conventions, examples for specific tasks |
+| **Commands** | 136 | Slash commands — repeatable workflows triggered by `/command` |
 | **Rules** | 20 | Language rule sets — always-on coding standards and checklists |
 | **Hooks** | — | Background automations — format, lint, persist state, weekly digests |
 
