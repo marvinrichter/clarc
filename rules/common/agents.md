@@ -126,6 +126,7 @@ Key rules:
 - **Worktree isolation** (`isolation: "worktree"`) for any agent that modifies files in parallel
 - **Minimal context per agent** — pass only what each agent needs, not the full problem
 - **Always synthesize** — collect all agent results and produce a unified output
-- **Security > quality > style** when reconciling conflicting agent recommendations
+- **Security > quality > style** when reconciling conflicting agent recommendations — see `docs/agent-priority-hierarchy.md` for the full 5-level hierarchy and 5 conflict classes
 
 > See skill `multi-agent-patterns` for pattern selection (Fan-Out, Split-Role, Explorer+Validator, Worktree Isolation, Sequential Pipeline) with examples.
+> See skill `agent-conflict-resolution` for conflict decision trees, escalation protocol, and real-world examples.

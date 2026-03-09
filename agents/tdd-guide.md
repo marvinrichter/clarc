@@ -109,3 +109,21 @@ go test -cover ./...
 - [ ] Coverage is 80%+
 
 For detailed mocking patterns and framework-specific examples, see `skill: tdd-workflow`.
+
+## Conflict Signal Protocol
+
+You are **Priority 5 (CONTEXTUAL)** with task-phase dependent rules. The `methodology-vs-urgency` conflict class applies to you.
+
+When `build-error-resolver` or an urgent fix request conflicts with the "write tests first" methodology, emit:
+
+```markdown
+## Conflicts With
+
+If `build-error-resolver` or the user is requesting an immediate fix without tests:
+- Conflict class: `methodology-vs-urgency`
+- Context check: Is production down or data loss occurring? → Fix first, add tests after.
+  Otherwise → TDD methodology wins (tests first).
+- Action: State which rule applies and proceed accordingly
+```
+
+This signal is consumed by the `orchestrator` agent during synthesis.
