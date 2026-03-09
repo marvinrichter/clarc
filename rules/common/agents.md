@@ -96,7 +96,7 @@ Invoked by **code-reviewer** automatically based on file extension. Can also be 
 | `modernization-planner` | Legacy codebase modernization roadmap | Analyzing legacy systems |
 | `orchestrator-designer` | Multi-agent system design | Architecting new multi-agent workflows |
 | `performance-analyst` | Performance hotspot analysis | Profiling output, flamegraphs, Lighthouse |
-| `php-reviewer` | PHP code review (PHP 8.2+) | All PHP code changes |
+| `php-reviewer` | PHP code review (PHP 8.4+) | All PHP code changes |
 | `platform-architect` | Internal Developer Platform design | Improving developer experience at scale |
 | `presentation-designer` | Slide deck design and structure | Any slide deck creation |
 | `prompt-quality-scorer` | Prompt engineering quality evaluation | Auditing agent/command instructions |
@@ -131,3 +131,28 @@ For complex analysis, use split-role sub-agents:
 - Senior engineer perspective
 - Security expert
 - Consistency checker
+
+---
+
+## Multi-Agent Coordination Patterns
+
+Use the **orchestrator** agent or `/orchestrate` command for tasks requiring 3+ agents.
+
+### Pattern Auto-Selection
+
+| Task Signal | Pattern |
+|-------------|---------|
+| Same task across N independent targets | Fan-Out → Fan-In |
+| Decision needing multiple perspectives | Split-Role |
+| Unknown codebase / research needed | Explorer + Validator |
+| N parallel write operations | Worktree Isolation |
+| Each phase depends on previous output | Sequential Pipeline |
+
+### Key Rules
+
+- **Worktree isolation** (`isolation: "worktree"`) for any agent that modifies files in parallel
+- **Minimal context per agent** — pass only what each agent needs, not the full problem
+- **Always synthesize** — collect all agent results and produce a unified output
+- **Security > quality > style** when reconciling conflicting agent recommendations
+
+See skill `multi-agent-coordination` for full pattern specifications.

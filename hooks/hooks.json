@@ -61,6 +61,18 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/agent-tracker.js\"",
+            "async": true,
+            "timeout": 5
+          }
+        ],
+        "description": "Agent tracker: log agent invocations to ~/.clarc/agent-log.jsonl for /agent-stats analytics"
+      },
+      {
         "matcher": "Edit|Write",
         "hooks": [
           {

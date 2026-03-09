@@ -62,6 +62,10 @@ CHECK_ONLY=false
 ENABLE_LEARNING=false
 LEARNING_FLAG_SET=false
 USE_SYMLINKS=true   # default: symlink files, not copy
+TEAM_MODE=false
+COMPANY_PREFIX=""
+PRIVATE_RULES=""
+PRIVATE_SKILLS=""
 # On native Windows (Git Bash / Cygwin / MSYS2) symlinks require admin rights → use copy
 if [[ "${OSTYPE:-}" == msys* || "${OSTYPE:-}" == cygwin* || "${OSTYPE:-}" == mingw* ]]; then
     USE_SYMLINKS=false
@@ -105,6 +109,38 @@ while [[ $# -gt 0 ]]; do
             # Non-interactive: skip learning prompt
             LEARNING_FLAG_SET=true
             shift
+            ;;
+        --team-mode)
+            # Enable team installation mode (shared prefix, private rules/skills)
+            TEAM_MODE=true
+            shift
+            ;;
+        --company-prefix)
+            # Prefix for team agents/commands directory (e.g. "acme")
+            if [[ -z "${2:-}" ]]; then
+                echo "Error: --company-prefix requires a value" >&2
+                exit 1
+            fi
+            COMPANY_PREFIX="$2"
+            shift 2
+            ;;
+        --private-rules)
+            # Path to directory with private rules to install alongside clarc rules
+            if [[ -z "${2:-}" ]]; then
+                echo "Error: --private-rules requires a path" >&2
+                exit 1
+            fi
+            PRIVATE_RULES="$2"
+            shift 2
+            ;;
+        --private-skills)
+            # Path to directory with private skills to install alongside clarc skills
+            if [[ -z "${2:-}" ]]; then
+                echo "Error: --private-skills requires a path" >&2
+                exit 1
+            fi
+            PRIVATE_SKILLS="$2"
+            shift 2
             ;;
         *)
             break
@@ -421,6 +457,49 @@ if [[ "$TARGET" == "claude" ]]; then
         echo ""
         echo -e "  ${_DIM}Files are symlinked → \`git pull\` in ~/.clarc updates everything automatically.${_RESET}"
         echo -e "  ${_DIM}To override a file: replace the symlink with your own version.${_RESET}"
+    fi
+
+    # --- Team-mode: private rules + skills ---
+    if [[ "$TEAM_MODE" == true ]]; then
+        hdr "Team mode"
+        local prefix_suffix=""
+        [[ -n "$COMPANY_PREFIX" ]] && prefix_suffix=" (prefix: $COMPANY_PREFIX)"
+        echo "  Team installation enabled${prefix_suffix}"
+
+        if [[ -n "$PRIVATE_RULES" ]]; then
+            if [[ -d "$PRIVATE_RULES" ]]; then
+                PRIVATE_RULES_DEST="$GLOBAL_RULES_DIR/private"
+                [[ -n "$COMPANY_PREFIX" ]] && PRIVATE_RULES_DEST="$GLOBAL_RULES_DIR/$COMPANY_PREFIX"
+                install_files "$PRIVATE_RULES" "$PRIVATE_RULES_DEST" "private-rules"
+            else
+                echo "  Warning: --private-rules path not found: $PRIVATE_RULES" >&2
+            fi
+        fi
+
+        if [[ -n "$PRIVATE_SKILLS" ]]; then
+            PRIVATE_SKILLS_DEST="$HOME/.claude/skills"
+            [[ -n "$COMPANY_PREFIX" ]] && PRIVATE_SKILLS_DEST="$HOME/.claude/skills/$COMPANY_PREFIX"
+            if [[ -d "$PRIVATE_SKILLS" ]]; then
+                mkdir -p "$PRIVATE_SKILLS_DEST"
+                for skill_dir in "$PRIVATE_SKILLS"/*/; do
+                    [[ -d "$skill_dir" ]] || continue
+                    skill_name="$(basename "$skill_dir")"
+                    dest_skill="$PRIVATE_SKILLS_DEST/$skill_name"
+                    if [[ "$USE_SYMLINKS" == true ]]; then
+                        ln -sfn "$skill_dir" "$dest_skill"
+                    else
+                        cp -r "$skill_dir" "$dest_skill"
+                    fi
+                    ok "private-skill/$skill_name  →  $dest_skill"
+                done
+            else
+                echo "  Warning: --private-skills path not found: $PRIVATE_SKILLS" >&2
+            fi
+        fi
+
+        echo ""
+        echo "  Team setup complete. Share this command with your team:"
+        echo "  ./install.sh --team-mode${COMPANY_PREFIX:+ --company-prefix $COMPANY_PREFIX}${PRIVATE_RULES:+ --private-rules $PRIVATE_RULES}${PRIVATE_SKILLS:+ --private-skills $PRIVATE_SKILLS} <language>"
     fi
 
     # --- Continuous Learning prompt (claude target only) ---

@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-**Stack:** Next.js 15 (App Router), TypeScript, Supabase (auth + DB), Stripe (billing), Tailwind CSS, Playwright (E2E)
+**Stack:** Next.js 16 (App Router), TypeScript, Supabase (auth + DB), Stripe (billing), Tailwind CSS, Playwright (E2E)
 
 **Architecture:** Server Components by default. Client Components only for interactivity. API routes for webhooks and server actions for mutations.
 

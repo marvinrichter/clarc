@@ -1,20 +1,20 @@
 ---
 name: php-patterns
-description: "PHP 8.2+ patterns: readonly classes/properties, enums, named arguments, match expressions, value objects, repository pattern, service layer with command/handler, Laravel controller/FormRequest, Symfony service wiring, Doctrine QueryBuilder, Fiber async. Use when writing or reviewing PHP code."
+description: "PHP 8.4+ patterns: readonly classes/properties, enums, named arguments, match expressions, value objects, repository pattern, service layer with command/handler, Laravel controller/FormRequest, Symfony service wiring, Doctrine QueryBuilder, Fiber async. Use when writing or reviewing PHP code."
 ---
 
 # PHP Patterns
 
 ## When to Activate
 
-- Writing PHP 8.2+ source files (`.php`)
+- Writing PHP 8.4+ source files (`.php`)
 - Designing service/repository layers
 - Reviewing PHP code for idiomatic patterns
 - Working with Laravel or Symfony frameworks
 
 ---
 
-## PHP 8.2+ Language Features
+## PHP 8.4+ Language Features
 
 ### Readonly Classes
 

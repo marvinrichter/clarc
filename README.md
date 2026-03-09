@@ -281,7 +281,7 @@ rules/
 ├── bash/            # set -euo pipefail, quoting, shellcheck
 ├── scala/           # Functional idioms, ADTs, effect systems
 ├── c/               # C11/C17, memory safety, opaque pointers
-├── php/             # PHP 8.2+, strict types, PSR-12
+├── php/             # PHP 8.4+, strict types, PSR-12
 ├── r/               # tidyverse, native pipe, renv
 ├── csharp/          # C# 12/.NET 8, nullable, records
 ├── sql/             # Query optimization, indexing, migrations

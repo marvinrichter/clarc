@@ -190,9 +190,9 @@ async function fallbackChain<T>(
 
 // Example: Opus → Sonnet → Haiku fallback
 const analysisWithFallback = () => fallbackChain([
-  () => runWithModel('claude-opus-4-6', task),      // Best quality
-  () => runWithModel('claude-sonnet-4-6', task),    // Balanced
-  () => runWithModel('claude-haiku-4-5-20251001', task, { simplified: true }),  // Fast, cheap
+  () => runWithModel('claude-opus-latest', task),      // Best quality
+  () => runWithModel('claude-sonnet-latest', task),    // Balanced
+  () => runWithModel('claude-haiku-latest', task, { simplified: true }),  // Fast, cheap
 ], 'code-analysis');
 ```
 
@@ -368,11 +368,11 @@ type TaskComplexity = 'simple' | 'medium' | 'complex';
 function selectModel(complexity: TaskComplexity): string {
   switch (complexity) {
     case 'simple':
-      return 'claude-haiku-4-5-20251001';  // ~3x cheaper, fast
+      return 'claude-haiku-latest';  // ~3x cheaper, fast
     case 'medium':
-      return 'claude-sonnet-4-6';           // Default for coding
+      return 'claude-sonnet-latest';           // Default for coding
     case 'complex':
-      return 'claude-opus-4-6';             // Deep reasoning only
+      return 'claude-opus-latest';             // Deep reasoning only
   }
 }
 
@@ -380,7 +380,7 @@ function selectModel(complexity: TaskComplexity): string {
 async function classifyTaskComplexity(task: string): Promise<TaskComplexity> {
   // Use cheap Haiku to decide if we need expensive Opus
   const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+    model: 'claude-haiku-latest',
     system: 'Classify task complexity: reply with exactly "simple", "medium", or "complex".',
     messages: [{ role: 'user', content: task }],
     max_tokens: 10,

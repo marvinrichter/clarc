@@ -98,7 +98,7 @@ Agents are Claude subagents that do specialized work.
 name: my-agent
 description: "When to use this agent. Be specific about the trigger."
 tools: Read, Grep, Glob, Bash
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 # My Agent

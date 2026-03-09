@@ -115,7 +115,7 @@
     "markdownlint-cli": "^0.47.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "type": "module"
 }

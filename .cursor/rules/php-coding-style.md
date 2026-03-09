@@ -9,7 +9,7 @@ paths:
 
 ## Standard
 
-Use PHP 8.2+ as the minimum. Enable strict types in every file:
+Use PHP 8.4+ as the minimum. Enable strict types in every file:
 
 ```php
 <?php

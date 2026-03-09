@@ -286,7 +286,7 @@ DJANGO VERIFICATION REPORT
 ==========================
 
 Phase 1: Environment Check
-  ✓ Python 3.11.5
+  ✓ Python 3.13.x
   ✓ Virtual environment active
   ✓ All environment variables set
 

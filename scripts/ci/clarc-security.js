@@ -130,7 +130,7 @@ Only include CRITICAL and HIGH severity issues that should block the PR. MEDIUM 
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-latest',
       max_tokens: 2048,
       messages: [{ role: 'user', content: prompt }],
     }),

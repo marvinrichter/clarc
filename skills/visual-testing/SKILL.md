@@ -395,7 +395,7 @@ await expect(page).toHaveScreenshot({
   maxDiffPixelRatio: 0.01,  // 1% of all pixels can differ
   // OR
   maxDiffPixels: 50,         // At most 50 pixels can differ
-  // OR (Playwright 1.35+)
+  // OR (Playwright 1.50+)
   threshold: 0.2,            // Per-pixel color difference threshold (0-1)
 });
 ```

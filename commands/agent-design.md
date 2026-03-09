@@ -67,7 +67,7 @@ async function orchestrate(goal: string): Promise<Result> {
 
   while (true) {
     const response = await claude.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-latest',
       tools: AGENT_TOOLS,  // Sub-agents registered as tools
       messages,
     });

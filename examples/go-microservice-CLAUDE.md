@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-**Stack:** Go 1.24+, PostgreSQL, gRPC + REST (grpc-gateway), Docker, sqlc (type-safe SQL), Wire (dependency injection)
+**Stack:** Go 1.26+, PostgreSQL, gRPC + REST (grpc-gateway), Docker, sqlc (type-safe SQL), Wire (dependency injection)
 
 **Architecture:** Clean architecture with domain, repository, service, and handler layers. gRPC as primary transport with REST gateway for external clients.
 

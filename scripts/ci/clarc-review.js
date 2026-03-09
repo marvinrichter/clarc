@@ -139,7 +139,7 @@ Only include findings that are real issues. Return empty findings array if the c
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-latest',
       max_tokens: 2048,
       messages: [{ role: 'user', content: prompt }],
     }),

@@ -1,20 +1,35 @@
 ---
-description: Orchestrate multiple agents for complex tasks
-agent: planner
+description: Orchestrate multiple agents for complex tasks — auto-selects coordination pattern (fan-out, split-role, explorer+validator, worktree, pipeline)
+agent: orchestrator
 subtask: true
 ---
 
 # Orchestrate Command
 
-Orchestrate multiple specialized agents for this complex task: $ARGUMENTS
+Orchestrate multiple specialized agents for: $ARGUMENTS
+
+## Pattern Auto-Selection
+
+Before creating the execution plan, analyze the task and select the best coordination pattern:
+
+| Task Signal | Pattern |
+|-------------|---------|
+| Review/analyze N files independently | **Fan-Out → Fan-In** |
+| Decision needing multiple perspectives | **Split-Role** |
+| Unknown codebase / research task | **Explorer + Validator** |
+| Parallel independent features | **Worktree Isolation** |
+| Feature from plan → test → code → review | **Sequential Pipeline** |
+
+Load skill `multi-agent-coordination` for full pattern specifications.
 
 ## Your Task
 
-1. **Analyze task complexity** and break into subtasks
-2. **Identify optimal agents** for each subtask
-3. **Create execution plan** with dependencies
-4. **Coordinate execution** - parallel where possible
-5. **Synthesize results** into unified output
+1. **Analyze the task** — identify complexity, dependencies, and domain
+2. **Select pattern** — choose from the 5 patterns above and justify
+3. **Identify optimal agents** — match agents to subtasks
+4. **Create execution plan** — phases with dependencies
+5. **Execute** — parallel where possible, sequential where required
+6. **Synthesize** — merge results into unified output
 
 ## Available Agents
 
@@ -32,57 +47,80 @@ Orchestrate multiple specialized agents for this complex task: $ARGUMENTS
 | go-reviewer | Go code | Go-specific review |
 | go-build-resolver | Go builds | Go build errors |
 | database-reviewer | Database | Query optimization |
+| typescript-reviewer | TypeScript/JS | TS/JS-specific review |
+| python-reviewer | Python | Python-specific review |
 
-## Orchestration Patterns
+## Coordination Patterns
 
-### Sequential Execution
+### Fan-Out / Fan-In
 ```
-planner → tdd-guide → code-reviewer → security-reviewer
+Orchestrator ─┬─ Agent A (target-1) ─┐
+              ├─ Agent B (target-2) ─┼─ Synthesizer
+              └─ Agent C (target-3) ─┘
 ```
-Use when: Later tasks depend on earlier results
+Use: identical task across multiple independent targets
 
-### Parallel Execution
+### Split-Role
 ```
-┌→ security-reviewer
-planner →├→ code-reviewer
-└→ architect
+Orchestrator ─┬─ Implementer (build it)
+              ├─ Critic (find issues)
+              └─ Security (find vulns)
+                       ↓ reconcile
 ```
-Use when: Tasks are independent
+Use: same task, different perspectives needed
 
-### Fan-Out/Fan-In
+### Explorer + Validator
 ```
-         ┌→ agent-1 ─┐
-planner →├→ agent-2 ─┼→ synthesizer
-         └→ agent-3 ─┘
+Phase 1: Explorer → findings
+Phase 2: Validator → verified-findings
+Phase 3: Implementer → uses verified-findings
 ```
-Use when: Multiple perspectives needed
+Use: unknown codebase, uncertain requirements
+
+### Worktree Isolation
+```
+Orchestrator ─┬─ Agent A (isolation: worktree, feature/A)
+              ├─ Agent B (isolation: worktree, feature/B)
+              └─ Agent C (isolation: worktree, fix/C)
+                       ↓ review + merge diffs
+```
+Use: parallel independent write operations
+
+### Sequential Pipeline
+```
+planner → tdd-guide → implementer → code-reviewer → security-reviewer
+```
+Use: each phase depends on the previous output
 
 ## Execution Plan Format
 
-### Phase 1: [Name]
+### Selected Pattern: [pattern-name]
+**Justification:** [why this pattern fits the task]
+
+### Phase 1: [Name] — [parallel|sequential]
 - Agent: [agent-name]
 - Task: [specific task]
 - Depends on: [none or previous phase]
+- isolation: [worktree|none]
 
 ### Phase 2: [Name] (parallel)
-- Agent A: [agent-name]
-  - Task: [specific task]
-- Agent B: [agent-name]
-  - Task: [specific task]
+- Agent A: [agent-name] — [task]
+- Agent B: [agent-name] — [task]
 - Depends on: Phase 1
 
-### Phase 3: Synthesis
-- Combine results from Phase 2
+### Phase N: Synthesis
+- Combine results from Phase N-1
 - Generate unified output
 
 ## Coordination Rules
 
-1. **Plan before execute** - Create full execution plan first
-2. **Minimize handoffs** - Reduce context switching
-3. **Parallelize when possible** - Independent tasks in parallel
-4. **Clear boundaries** - Each agent has specific scope
-5. **Single source of truth** - One agent owns each artifact
+1. **Pattern first** — select and justify pattern before planning
+2. **Parallelize by default** — only serialize when there's a dependency
+3. **Worktree for writes** — use `isolation: "worktree"` for any agent that modifies files
+4. **Minimal context per agent** — pass only what the agent needs
+5. **Synthesize explicitly** — always produce a unified final output
+6. **Fail gracefully** — if one agent fails, complete others and report partial results
 
 ---
 
-**NOTE**: Complex tasks benefit from multi-agent orchestration. Simple tasks should use single agents directly.
+**See also:** Skill `multi-agent-coordination` for full pattern specifications and failure handling.

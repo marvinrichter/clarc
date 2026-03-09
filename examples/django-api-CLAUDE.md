@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-**Stack:** Python 3.12+, Django 5.x, Django REST Framework, PostgreSQL, Celery + Redis, pytest, Docker Compose
+**Stack:** Python 3.13+, Django 5.x, Django REST Framework, PostgreSQL, Celery + Redis, pytest, Docker Compose
 
 **Architecture:** Domain-driven design with apps per business domain. DRF for API layer, Celery for async tasks, pytest for testing. All endpoints return JSON — no template rendering.
 

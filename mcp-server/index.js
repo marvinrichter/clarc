@@ -7,6 +7,10 @@
  *   get_session_context   — latest session snapshot
  *   get_skill_index       — skill catalog, optionally filtered by domain/language
  *   get_project_context   — detected project type + relevant skills
+ *   skill_search          — search skills by keyword/language/domain
+ *   agent_describe        — full description + instructions for a named agent
+ *   rule_check            — content of a specific clarc rule file
+ *   workflow_suggest      — suggests best clarc workflow for a task
  *
  * Usage:
  *   node mcp-server/index.js
@@ -30,6 +34,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HOMUNCULUS_DIR = path.join(os.homedir(), '.claude', 'homunculus');
 const SESSIONS_DIR = path.join(os.homedir(), '.claude', 'projects');
 const SKILLS_INDEX = path.join(__dirname, '..', 'skills', 'INDEX.md');
+const SKILLS_DIR = path.join(__dirname, '..', 'skills');
+const AGENTS_DIR = path.join(__dirname, '..', 'agents');
+const RULES_DIR = path.join(__dirname, '..', 'rules');
 
 // ─── Tool definitions ──────────────────────────────────────────────────────
 
@@ -92,6 +99,66 @@ const TOOLS = [
           description: 'Project directory to analyze (defaults to process.cwd())'
         }
       }
+    }
+  },
+  {
+    name: 'skill_search',
+    description: 'Search clarc skills by keyword, language, or domain. Returns matching skill names with descriptions.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Search query — keyword, language name, or domain (e.g., "testing", "python", "architecture")'
+        },
+        limit: {
+          type: 'number',
+          description: 'Maximum number of results (default: 10)'
+        }
+      },
+      required: ['query']
+    }
+  },
+  {
+    name: 'agent_describe',
+    description: 'Returns the full description, tools, model, and instructions for a named clarc agent.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'Agent name (e.g., "code-reviewer", "planner", "orchestrator")'
+        }
+      },
+      required: ['name']
+    }
+  },
+  {
+    name: 'rule_check',
+    description: 'Returns the content of a specific clarc rule file (common or language-specific). Use to look up coding standards, security requirements, or workflow rules.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        rule: {
+          type: 'string',
+          description: 'Rule file to retrieve, e.g., "common/coding-style", "common/security", "typescript/coding-style"'
+        }
+      },
+      required: ['rule']
+    }
+  },
+  {
+    name: 'workflow_suggest',
+    description: 'Suggests the best clarc workflow (commands, agents, skills) for a given task description.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        task: {
+          type: 'string',
+          description: 'Task description, e.g., "implement a REST API endpoint with tests", "review this PR for security issues"'
+        }
+      },
+      required: ['task']
     }
   }
 ];
@@ -281,6 +348,162 @@ function detectProjectTypeSync(dir) {
   };
 }
 
+function handleSkillSearch({ query, limit = 10 } = {}) {
+  const results = [];
+  const queryLower = query.toLowerCase();
+
+  if (!fs.existsSync(SKILLS_DIR)) {
+    return { found: false, message: 'skills/ directory not found.' };
+  }
+
+  for (const skillName of fs.readdirSync(SKILLS_DIR)) {
+    if (skillName === 'INDEX.md') continue;
+    const skillFile = path.join(SKILLS_DIR, skillName, 'SKILL.md');
+    if (!fs.existsSync(skillFile)) continue;
+
+    try {
+      const content = fs.readFileSync(skillFile, 'utf8');
+      const descMatch = content.match(/^description:\s*(.+)$/m);
+      const nameMatch = content.match(/^name:\s*(.+)$/m);
+      const description = descMatch ? descMatch[1].trim() : '';
+      const name = nameMatch ? nameMatch[1].trim() : skillName;
+
+      if (
+        skillName.toLowerCase().includes(queryLower) ||
+        name.toLowerCase().includes(queryLower) ||
+        description.toLowerCase().includes(queryLower) ||
+        content.toLowerCase().includes(queryLower)
+      ) {
+        results.push({ name, slug: skillName, description: description.slice(0, 120) });
+      }
+    } catch {
+      // Skip unreadable skills
+    }
+
+    if (results.length >= limit) break;
+  }
+
+  return { query, total: results.length, results };
+}
+
+function handleAgentDescribe({ name } = {}) {
+  if (!name) return { error: 'name is required' };
+
+  const agentFile = path.join(AGENTS_DIR, `${name}.md`);
+  if (!fs.existsSync(agentFile)) {
+    // Try listing available agents
+    const available = fs.existsSync(AGENTS_DIR)
+      ? fs.readdirSync(AGENTS_DIR).filter(f => f.endsWith('.md')).map(f => f.replace('.md', ''))
+      : [];
+    return { found: false, name, available_agents: available.slice(0, 20) };
+  }
+
+  const content = fs.readFileSync(agentFile, 'utf8');
+
+  // Parse frontmatter
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  const frontmatter = {};
+  if (fmMatch) {
+    for (const line of fmMatch[1].split('\n')) {
+      const idx = line.indexOf(':');
+      if (idx === -1) continue;
+      const k = line.slice(0, idx).trim();
+      const v = line.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+      frontmatter[k] = v;
+    }
+  }
+
+  const instructions = content.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
+
+  return {
+    found: true,
+    name,
+    description: frontmatter.description || '',
+    model: frontmatter.model || 'sonnet',
+    tools: frontmatter.tools || '',
+    instructions: instructions.slice(0, 2000)
+  };
+}
+
+function handleRuleCheck({ rule } = {}) {
+  if (!rule) return { error: 'rule is required' };
+
+  // Sanitize: only allow alphanumeric, slash, hyphen, underscore
+  if (!/^[a-zA-Z0-9/_-]+$/.test(rule)) {
+    return { error: 'Invalid rule name. Use format: "common/coding-style" or "typescript/testing"' };
+  }
+
+  // Try with .md extension
+  let rulePath = path.join(RULES_DIR, `${rule}.md`);
+  if (!fs.existsSync(rulePath)) {
+    // Try without extension (if rule already ends in .md)
+    rulePath = path.join(RULES_DIR, rule);
+  }
+
+  if (!fs.existsSync(rulePath)) {
+    // List available rules
+    const available = [];
+    if (fs.existsSync(RULES_DIR)) {
+      for (const dir of fs.readdirSync(RULES_DIR)) {
+        const dirPath = path.join(RULES_DIR, dir);
+        if (fs.statSync(dirPath).isDirectory()) {
+          for (const f of fs.readdirSync(dirPath)) {
+            if (f.endsWith('.md')) available.push(`${dir}/${f.replace('.md', '')}`);
+          }
+        }
+      }
+    }
+    return { found: false, rule, available_rules: available };
+  }
+
+  const content = fs.readFileSync(rulePath, 'utf8');
+  return { found: true, rule, content };
+}
+
+const WORKFLOW_PATTERNS = [
+  { keywords: ['new feature', 'implement', 'build', 'create'], workflow: ['/plan', '/tdd', '/code-review', '/verify'], description: 'Plan → TDD → Review → Verify' },
+  { keywords: ['review', 'pr', 'pull request'], workflow: ['/review-pr', '/code-review'], description: 'PR review + code quality' },
+  { keywords: ['bug', 'fix', 'error', 'broken'], workflow: ['/tdd', '/build-fix', '/verify'], description: 'TDD fix → build-fix → verify' },
+  { keywords: ['refactor', 'cleanup', 'dead code'], workflow: ['/refactor', '/verify'], description: 'Refactor + verify' },
+  { keywords: ['test', 'coverage', 'unit test'], workflow: ['/tdd', '/python-test', '/go-test', '/rust-test'], description: 'TDD workflow' },
+  { keywords: ['security', 'vulnerability', 'owasp', 'auth'], workflow: ['/security', '/code-review'], description: 'Security scan + review' },
+  { keywords: ['deploy', 'release', 'publish'], workflow: ['/verify', '/release'], description: 'Verify + release' },
+  { keywords: ['multi-agent', 'orchestrate', 'parallel', 'complex'], workflow: ['/orchestrate'], description: 'Multi-agent orchestration' },
+  { keywords: ['document', 'docs', 'readme'], workflow: ['/update-docs', '/update-codemaps'], description: 'Documentation update' },
+  { keywords: ['e2e', 'end-to-end', 'playwright', 'browser'], workflow: ['/e2e'], description: 'E2E test generation' }
+];
+
+function handleWorkflowSuggest({ task } = {}) {
+  if (!task) return { error: 'task is required' };
+
+  const taskLower = task.toLowerCase();
+  const matches = [];
+
+  for (const pattern of WORKFLOW_PATTERNS) {
+    const score = pattern.keywords.filter(k => taskLower.includes(k)).length;
+    if (score > 0) matches.push({ ...pattern, score });
+  }
+
+  matches.sort((a, b) => b.score - a.score);
+  const top = matches.slice(0, 3);
+
+  if (top.length === 0) {
+    return {
+      task,
+      suggestion: 'No specific workflow matched. General recommendation:',
+      workflow: ['/plan', '/tdd', '/code-review'],
+      description: 'Default: Plan → TDD → Review'
+    };
+  }
+
+  return {
+    task,
+    suggestions: top.map(m => ({ workflow: m.workflow, description: m.description })),
+    primary: top[0].workflow,
+    primary_description: top[0].description
+  };
+}
+
 // ─── MCP Server setup ──────────────────────────────────────────────────────
 
 const server = new Server({ name: 'clarc', version: '1.0.0' }, { capabilities: { tools: {} } });
@@ -304,6 +527,18 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
         break;
       case 'get_project_context':
         result = handleGetProjectContext(args);
+        break;
+      case 'skill_search':
+        result = handleSkillSearch(args);
+        break;
+      case 'agent_describe':
+        result = handleAgentDescribe(args);
+        break;
+      case 'rule_check':
+        result = handleRuleCheck(args);
+        break;
+      case 'workflow_suggest':
+        result = handleWorkflowSuggest(args);
         break;
       default:
         throw new Error(`Unknown tool: ${name}`);

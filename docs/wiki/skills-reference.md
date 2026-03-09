@@ -39,7 +39,7 @@ Load the postgres-patterns skill for this query optimization.
 | `ruby-patterns` | Rails idioms, ActiveRecord, RSpec |
 | `elixir-patterns` | GenServer, Supervisors, OTP design |
 | `cpp-patterns` | C++20, RAII, smart pointers |
-| `php-patterns` | PHP 8.2+, PSR-12, readonly classes |
+| `php-patterns` | PHP 8.4+, PSR-12, readonly classes |
 
 ### Architecture
 | Skill | What it covers |

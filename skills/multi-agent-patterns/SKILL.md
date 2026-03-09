@@ -62,7 +62,7 @@ const AGENT_REGISTRY = {
 
 async function route(task: string, context: string): Promise<AgentResult> {
   const classification = await claude.messages.create({
-    model: 'claude-haiku-4-5-20251001',  // Haiku for lightweight routing
+    model: 'claude-haiku-latest',  // Haiku for lightweight routing
     system: `Classify the task into one of: ${Object.keys(AGENT_REGISTRY).join(', ')}.
              Reply with ONLY the category name.`,
     messages: [{ role: 'user', content: task }],
@@ -209,7 +209,7 @@ async function handoffWithFullContext(
   nextAgentSystem: string
 ): Promise<string> {
   const response = await claude.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: 'claude-sonnet-latest',
     system: nextAgentSystem,
     messages: conversation,  // Full history passed through
     max_tokens: 4096,
@@ -228,7 +228,7 @@ async function summarizeForHandoff(
   maxTokens = 500
 ): Promise<string> {
   const summary = await claude.messages.create({
-    model: 'claude-haiku-4-5-20251001',  // Haiku for cheap summarization
+    model: 'claude-haiku-latest',  // Haiku for cheap summarization
     system: 'Summarize the key findings and decisions. Be concise.',
     messages: [{
       role: 'user',
@@ -252,7 +252,7 @@ interface SubTask {
 
 async function decomposeTasks(goal: string): Promise<SubTask[]> {
   const response = await claude.messages.create({
-    model: 'claude-opus-4-6',  // Opus for complex planning
+    model: 'claude-opus-latest',  // Opus for complex planning
     system: 'Decompose the goal into parallel and sequential sub-tasks. Output JSON.',
     messages: [{ role: 'user', content: goal }],
     max_tokens: 2048,
@@ -366,7 +366,7 @@ async function orchestratorLoop(goal: string): Promise<string> {
 
   while (true) {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-latest',
       system: ORCHESTRATOR_SYSTEM_PROMPT,
       tools: AVAILABLE_TOOLS,
       messages,

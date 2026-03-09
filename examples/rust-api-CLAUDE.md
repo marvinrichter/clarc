@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-**Stack:** Rust 1.78+, Axum (web framework), SQLx (async database), PostgreSQL, Tokio (async runtime), Docker
+**Stack:** Rust 1.94+, Axum (web framework), SQLx (async database), PostgreSQL, Tokio (async runtime), Docker
 
 **Architecture:** Layered architecture with handler → service → repository separation. Axum for HTTP, SQLx for type-checked SQL at compile time, Tower middleware for cross-cutting concerns.
 

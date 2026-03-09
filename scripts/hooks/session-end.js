@@ -193,6 +193,9 @@ async function main() {
   const toolCallCount = summary ? summary.toolsUsed.length : 0;
   logSessionCost(toolCallCount, shortId, today);
 
+  // Context window warning: fires when session > 90min and .clarc/context.md is absent or stale
+  checkContextWarning(sessionFile);
+
   if (fs.existsSync(sessionFile)) {
     // Update existing session file
     const updated = replaceInFile(sessionFile, /\*\*Last Updated:\*\*.*/, `**Last Updated:** ${currentTime}`);
@@ -400,6 +403,46 @@ _This digest was generated automatically. Delete this file after reviewing._
     log(`[SessionEnd] Weekly evolve digest written (${instinctCount} instincts). Run /evolve to review.`);
   } catch (err) {
     log(`[SessionEnd] Weekly evolve check error: ${err.message}`);
+  }
+}
+
+/**
+ * Warn when session > 90 minutes and .clarc/context.md is absent or stale (> 60 min old).
+ * The warning is written to the session file and logged — it is NOT blocking.
+ */
+function checkContextWarning(sessionFile) {
+  try {
+    const NINETY_MINUTES_MS = 90 * 60 * 1000;
+    const SIXTY_MINUTES_MS = 60 * 60 * 1000;
+
+    // Determine session start time from the session file mtime (creation time proxy)
+    if (!fs.existsSync(sessionFile)) return;
+    const sessionStat = fs.statSync(sessionFile);
+    const sessionAgeMs = Date.now() - sessionStat.birthtimeMs;
+
+    if (sessionAgeMs < NINETY_MINUTES_MS) return; // session < 90 min, no warning needed
+
+    // Check .clarc/context.md in cwd
+    const clarcDir = path.join(process.cwd(), '.clarc');
+    const contextFile = path.join(clarcDir, 'context.md');
+
+    let contextStale = true;
+    if (fs.existsSync(contextFile)) {
+      const contextStat = fs.statSync(contextFile);
+      const contextAgeMs = Date.now() - contextStat.mtimeMs;
+      contextStale = contextAgeMs > SIXTY_MINUTES_MS;
+    }
+
+    if (!contextStale) return; // context.md is fresh, no warning needed
+
+    const hasClarcDir = fs.existsSync(clarcDir);
+    const hint = hasClarcDir
+      ? 'Run /checkpoint create to save context before /compact.'
+      : 'Create .clarc/ to enable Memory Bank: mkdir .clarc';
+
+    log(`[SessionEnd] ⚠ Long session (${Math.round(sessionAgeMs / 60000)}min) without recent context checkpoint. ${hint}`);
+  } catch (err) {
+    log(`[SessionEnd] Context warning check error: ${err.message}`);
   }
 }
 

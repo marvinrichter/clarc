@@ -166,6 +166,25 @@ async function runWizard() {
     console.log(`  ${GREEN}✔${RESET} Common rules only\n`);
   }
 
+  // --- Starter-pack suggestion (claude target, new project) ---
+  const PACK_FOR_LANG = {
+    typescript: 'rest-api or react-spa',
+    python: 'python-pipeline',
+    go: 'go-service',
+    java: 'spring-boot',
+    flutter: 'flutter-app'
+  };
+  if (target === 'claude' && languages.length > 0) {
+    const primaryLang = languages[0];
+    const suggestion = PACK_FOR_LANG[primaryLang];
+    if (suggestion) {
+      console.log(`${BOLD}Starter-pack${RESET} ${DIM}(optional — bootstrap a new project with structure, CI, tests)${RESET}`);
+      console.log(`  Suggested for ${CYAN}${primaryLang}${RESET}: ${suggestion}`);
+      console.log(`  All packs: rest-api, react-spa, python-pipeline, go-service, flutter-app, spring-boot`);
+      console.log(`  ${DIM}Run /project-init <pack> inside Claude Code to bootstrap a new project.${RESET}\n`);
+    }
+  }
+
   // --- Continuous learning (claude target only) ---
   let enableLearning = false;
   if (target === 'claude') {

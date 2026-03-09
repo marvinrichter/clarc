@@ -275,7 +275,7 @@ log "Started:  $(date)"
 
 # ─── Step 0: Plan (omit for trivial) ─────────────────────────────────────────
 step "0: PLAN"
-claude -p --model claude-opus-4-5 "
+claude -p --model claude-opus-latest "
 Read the spec at $SPEC. Explore the codebase: README, folder structure, 3-5 key source files.
 Write a detailed implementation plan to $NOTES under '## Implementation Plan':
   - Files to create/modify and why

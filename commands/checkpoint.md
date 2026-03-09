@@ -1,14 +1,14 @@
 ---
-description: Create or verify a workflow checkpoint — create, verify, and list git-backed checkpoints.
+description: Create or verify a workflow checkpoint — create, verify, list, and restore git-backed checkpoints with Memory Bank integration.
 ---
 
 # Checkpoint Command
 
-Create or verify a checkpoint in your workflow.
+Create or verify a checkpoint in your workflow. Integrates with `.clarc/context.md` (Memory Bank) for context recovery after compaction.
 
 ## Usage
 
-`/checkpoint [create|verify|list] [name]`
+`/checkpoint [create|verify|list|restore] [name]`
 
 ## Create Checkpoint
 
@@ -16,13 +16,31 @@ When creating a checkpoint:
 
 1. Run `/verify quick` to ensure current state is clean
 2. Create a git stash or commit with checkpoint name
-3. Log checkpoint to `.claude/checkpoints.log`:
+3. Update `.clarc/context.md` with current progress (if `.clarc/` exists)
+4. Log checkpoint to `.claude/checkpoints.log`:
 
 ```bash
 echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> .claude/checkpoints.log
 ```
 
-4. Report checkpoint created
+5. If `.clarc/` exists, write context snapshot:
+
+```bash
+cat > .clarc/context.md << EOF
+# Checkpoint: $CHECKPOINT_NAME — $(date +%Y-%m-%d)
+
+## What was done
+[summarize completed tasks]
+
+## Current state
+[what files were modified, what decisions were made]
+
+## Next steps
+[what comes after this checkpoint]
+EOF
+```
+
+6. Report checkpoint created
 
 ## Verify Checkpoint
 
@@ -45,6 +63,16 @@ Coverage: +X% / -Y%
 Build: [PASS/FAIL]
 ```
 
+## Restore from Checkpoint
+
+When recovering after context compaction:
+
+1. Read `.clarc/context.md` (Memory Bank — most current state)
+2. Read checkpoint log: `cat .claude/checkpoints.log`
+3. Show git log since checkpoint: `git log --oneline <SHA>..HEAD`
+4. Summarize what was done and what remains
+5. Suggest next action
+
 ## List Checkpoints
 
 Show all checkpoints with:
@@ -62,6 +90,10 @@ Typical checkpoint flow:
    |
 [Implement] --> /checkpoint create "core-done"
    |
+[90-min mark] --> /checkpoint create "context-save"  ← prevents context loss
+   |
+[/compact needed] --> /checkpoint verify "core-done"  ← restore after compaction
+   |
 [Test] --> /checkpoint verify "core-done"
    |
 [Refactor] --> /checkpoint create "refactor-done"
@@ -69,10 +101,22 @@ Typical checkpoint flow:
 [PR] --> /checkpoint verify "feature-start"
 ```
 
+## Context Warning Integration
+
+The session-end hook warns when:
+- Session has run > 90 minutes AND
+- `.clarc/context.md` does not exist or is more than 60 minutes old
+
+When this warning fires, run:
+```
+/checkpoint create auto-$(date +%H%M)
+```
+
 ## Arguments
 
 $ARGUMENTS:
-- `create <name>` - Create named checkpoint
-- `verify <name>` - Verify against named checkpoint
-- `list` - Show all checkpoints
-- `clear` - Remove old checkpoints (keeps last 5)
+- `create <name>` — Create named checkpoint + update Memory Bank
+- `verify <name>` — Verify against named checkpoint
+- `restore` — Restore context from latest checkpoint + `.clarc/context.md`
+- `list` — Show all checkpoints
+- `clear` — Remove old checkpoints (keeps last 5)
