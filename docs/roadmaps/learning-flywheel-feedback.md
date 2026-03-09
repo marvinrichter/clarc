@@ -1,6 +1,6 @@
 # Learning Flywheel Feedback Loop Roadmap
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-09
 **Motivation:** `continuous-learning-v2` accumulates instincts across sessions, but there is no mechanism to measure whether an instinct actually improved outcomes. Instincts are written but never validated, never decay, and have no quality signal beyond the `/evolve` clustering step.
 
