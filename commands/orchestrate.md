@@ -29,7 +29,9 @@ Load skill `multi-agent-coordination` for full pattern specifications.
 3. **Identify optimal agents** — match agents to subtasks
 4. **Create execution plan** — phases with dependencies
 5. **Execute** — parallel where possible, sequential where required
-6. **Synthesize** — merge results into unified output
+6. **Detect conflicts** — compare agent outputs for contradictions at the same code locations
+7. **Resolve conflicts** — apply the priority hierarchy from `docs/agent-priority-hierarchy.md`; every conflict must appear in `### Conflicts Resolved`
+8. **Synthesize** — merge results into unified output
 
 ## Available Agents
 
@@ -120,7 +122,9 @@ Use: each phase depends on the previous output
 4. **Minimal context per agent** — pass only what the agent needs
 5. **Synthesize explicitly** — always produce a unified final output
 6. **Fail gracefully** — if one agent fails, complete others and report partial results
+7. **Conflict detection mandatory** — compare outputs for contradictions; resolve via priority hierarchy; never silently apply a lower-priority recommendation
 
 ---
 
-**See also:** Skill `multi-agent-coordination` for full pattern specifications and failure handling.
+**See also:** Skill `multi-agent-coordination` for full pattern specifications.
+**Conflict resolution:** Skill `agent-conflict-resolution` for priority hierarchy and decision trees.
