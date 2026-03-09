@@ -429,6 +429,9 @@ async function main() {
   // Project-local skills: scan .clarc/skills/ and surface to Claude
   loadLocalSkills(process.cwd());
 
+  // Agent instinct overlays: inject learned instincts for known agents
+  loadAgentInstinctOverlays();
+
   // Rules staleness banner: notify once per 7 days if rules > 30 days old
   checkRulesStaleness();
 
@@ -544,6 +547,59 @@ function loadLocalSkills(cwd) {
   const names = found.map(s => `[local] ${s.name}${s.isOverride ? ' (overrides global)' : ''}`).join(', ');
   log(`[SessionStart] Project-local skills loaded: ${found.map(s => s.name).join(', ')}`);
   output(`Loaded ${found.length} project-local skill${found.length !== 1 ? 's' : ''}: ${names}`);
+}
+
+/**
+ * Load agent instinct overlays from ~/.clarc/agent-instincts/.
+ *
+ * Each overlay file extends a specific agent with learned behaviors accumulated
+ * via continuous-learning-v2. Overlays are injected into the session context so
+ * Claude applies them when invoking the corresponding agents.
+ *
+ * Falls back silently if ~/.clarc/agent-instincts/ does not exist.
+ */
+function loadAgentInstinctOverlays() {
+  const overlaysDir = path.join(os.homedir(), '.clarc', 'agent-instincts');
+  if (!fs.existsSync(overlaysDir)) return;
+
+  let entries;
+  try {
+    entries = fs.readdirSync(overlaysDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  const overlays = [];
+  for (const entry of entries) {
+    if (!entry.name.endsWith('.md')) continue;
+    const agentName = entry.name.replace(/\.md$/, '');
+    const filePath = path.join(overlaysDir, entry.name);
+    try {
+      const content = fs.readFileSync(filePath, 'utf8').trim();
+      if (!content) continue;
+      // Count bullet-point instincts
+      const instinctCount = (content.match(/^- /gm) || []).length;
+      if (instinctCount === 0) continue;
+      overlays.push({ agentName, content, instinctCount });
+    } catch {
+      continue;
+    }
+  }
+
+  if (overlays.length === 0) return;
+
+  const summary = overlays
+    .map(o => `${o.agentName} (${o.instinctCount} instinct${o.instinctCount !== 1 ? 's' : ''})`)
+    .join(', ');
+  log(`[SessionStart] Agent instinct overlays loaded: ${summary}`);
+
+  let combined = '--- Agent Learned Instincts ---\n';
+  combined += 'When invoking these agents, apply the following learned instincts:\n';
+  for (const { agentName, content } of overlays) {
+    combined += `\n### ${agentName}\n${content}\n`;
+  }
+  combined += '\n---';
+  output(combined);
 }
 
 /**
