@@ -11,10 +11,11 @@ Analyze your repository's git history to extract coding patterns and generate SK
 ## Usage
 
 ```bash
-/skill-create                    # Analyze current repo
-/skill-create --commits 100      # Analyze last 100 commits
-/skill-create --output ./skills  # Custom output directory
-/skill-create --instincts        # Also generate instincts for continuous-learning-v2
+/skill-create                       # Analyze current repo, output to ~/.clarc/skills/
+/skill-create --local <name>        # Scaffold project-local skill in .clarc/skills/<name>/SKILL.md
+/skill-create --commits 100         # Analyze last 100 commits
+/skill-create --output ./skills     # Custom output directory
+/skill-create --instincts           # Also generate instincts for continuous-learning-v2
 ```
 
 ## What It Does
@@ -23,6 +24,53 @@ Analyze your repository's git history to extract coding patterns and generate SK
 2. **Detects Patterns** - Identifies recurring workflows and conventions
 3. **Generates SKILL.md** - Creates valid Claude Code skill files
 4. **Optionally Creates Instincts** - For the continuous-learning-v2 system
+
+## Creating a Project-Local Skill (`--local`)
+
+Use `--local <name>` to scaffold a new project-local skill in `.clarc/skills/<name>/SKILL.md`.
+This does **not** analyze git history — it creates an empty scaffold you fill in manually.
+
+```bash
+/skill-create --local our-auth-pattern
+/skill-create --local internal-api-guide
+/skill-create --local payment-flow-conventions
+```
+
+Claude will create the file with this template (date auto-filled):
+
+```markdown
+---
+title: <Name>
+scope: project-local
+tags: []
+created: <date>
+team:
+---
+
+## When to Use
+
+<describe the situation that calls for this skill>
+
+## Pattern
+
+<the approved approach, with code examples>
+
+## Anti-patterns
+
+<what NOT to do, with examples>
+
+## References
+
+<internal docs, tickets, ADRs>
+```
+
+After creation:
+1. Fill in the sections
+2. Commit `.clarc/skills/` to the project repo to share with your team
+3. Claude loads it automatically at every session start
+
+> **Tip:** Commit `.clarc/skills/` to share across the team.
+> Add `.clarc/instincts.md` to `.gitignore` to keep personal instincts private.
 
 ## Analysis Steps
 
@@ -165,6 +213,8 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 
 ## Related Commands
 
+- `/skills-local` - List all project-local skills in .clarc/skills/
+- `/promote-skill <name>` - Promote a local skill to global clarc
 - `/instinct-import` - Import generated instincts
 - `/instinct-status` - View learned instincts
 - `/evolve` - Cluster instincts into skills/agents
