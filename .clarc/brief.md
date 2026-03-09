@@ -13,9 +13,9 @@ Published as `npx github:marvinrichter/clarc` and symlinked into `~/.claude/` on
 - No build step — everything is plain Markdown + JSON + JS
 
 ## Key numbers (keep in sync with README.md)
-- Agents: 60
-- Skills: 214
-- Commands: 136
+- Agents: 61
+- Skills: 228
+- Commands: 152
 - Rule sets: 20+ (common + language-specific)
 
 ## Repository layout
@@ -27,7 +27,7 @@ commands/         Slash commands (/tdd, /plan, /breakdown, ...)
 hooks/hooks.json  Hook definitions → scripts/hooks/*.js
 rules/            Always-on guidelines (common/ + language dirs)
 scripts/          Node.js utilities (hooks, analytics, CI)
-mcp-server/       clarc MCP server (4 tools)
+mcp-server/       clarc MCP server (8 tools)
 docs/             Hub, specs, memory-bank standard
 tests/            Test suite for scripts
 ```

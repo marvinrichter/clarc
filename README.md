@@ -1,7 +1,7 @@
 # clarc
 
 **A workflow OS for Claude Code.**
-60 agents · 214 skills · 136 commands · 20 language rule sets · continuous learning flywheel.
+61 agents · 228 skills · 152 commands · 20 language rule sets · continuous learning flywheel.
 
 ---
 
@@ -108,9 +108,9 @@ git clone git@github.com:marvinrichter/clarc.git ~/.clarc
 
 | Component | Count | Purpose |
 |-----------|------:|---------|
-| **Agents** | 60 | Specialized subagents — delegate planning, review, testing, debugging |
-| **Skills** | 214 | Domain knowledge — patterns, conventions, examples for specific tasks |
-| **Commands** | 136 | Slash commands — repeatable workflows triggered by `/command` |
+| **Agents** | 61 | Specialized subagents — delegate planning, review, testing, debugging |
+| **Skills** | 228 | Domain knowledge — patterns, conventions, examples for specific tasks |
+| **Commands** | 152 | Slash commands — repeatable workflows triggered by `/command` |
 | **Rules** | 20 | Language rule sets — always-on coding standards and checklists |
 | **Hooks** | — | Background automations — format, lint, persist state, weekly digests |
 
@@ -308,7 +308,7 @@ clarc can expose its own state as an MCP server, letting subagents and external 
 { "mcpServers": { "clarc": { "command": "node", "args": ["<path>/mcp-server/index.js"] } } }
 ```
 
-Available tools: `get_instinct_status` · `get_session_context` · `get_skill_index` · `get_project_context`
+Available tools: `get_instinct_status` · `get_session_context` · `get_project_context` · `skill_search` · `agent_describe` · `rule_check` · `get_component_graph` · `get_health_status`
 
 ---
 
@@ -324,7 +324,7 @@ clarc/
 ├── scripts/hooks/   # Hook implementations (Node.js)
 ├── rules/           # Language rule sets (20 languages)
 ├── mcp-configs/     # MCP server configurations
-├── mcp-server/      # clarc as an MCP server (4 tools)
+├── mcp-server/      # clarc as an MCP server (8 tools)
 ├── .opencode/       # OpenCode commands and agent prompts
 ├── .cursor/         # Cursor rules (50+ language rule files)
 ├── codex/           # Codex CLI instructions and commands

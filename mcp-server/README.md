@@ -54,21 +54,6 @@ Returns the most recent session snapshot (summary, tasks, files modified).
 
 ---
 
-### `get_skill_index`
-
-Returns the clarc skill catalog, optionally filtered.
-
-**Input:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `language` | string (opt) | Filter by language (e.g., "python", "typescript") |
-| `domain` | string (opt) | Filter by domain section (e.g., "testing", "security") |
-
-**Output:** `{ found, content }` (Markdown INDEX.md content)
-
----
-
 ### `get_project_context`
 
 Detects project type, frameworks, and recommends relevant clarc skills.
