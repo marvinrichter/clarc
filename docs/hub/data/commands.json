@@ -27,6 +27,24 @@
     "filename": "agent-design.md"
   },
   {
+    "name": "agent-evolution",
+    "slash": "/agent-evolution",
+    "description": "Review high-confidence instincts and promote them to agent-specific overlay files (~/.clarc/agent-instincts/). Closes the continuous-learning-v2 feedback loop by making agents smarter over time.",
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-evolution.md",
+    "filename": "agent-evolution.md"
+  },
+  {
+    "name": "agent-instincts",
+    "slash": "/agent-instincts",
+    "description": "Show the learned instinct overlay for a specific agent, or list all overlays with instinct counts.",
+    "category": "AI / Agents",
+    "whenToUse": "- Before running /agent-evolution — check what is already promoted - After a session that corrected an agent — verify the correction was captured - Debugging: agent behaving unexpectedly — check if a bad instinct was promoted",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-instincts.md",
+    "filename": "agent-instincts.md"
+  },
+  {
     "name": "agent-review",
     "slash": "/agent-review",
     "description": "Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-review --all to review all agents at once.",
@@ -882,6 +900,15 @@
     "filename": "promote.md"
   },
   {
+    "name": "promote-skill",
+    "slash": "/promote-skill",
+    "description": "Promote a project-local skill from .clarc/skills/<name>/ to global clarc (~/.clarc/skills/). Optionally opens a PR to upstream clarc.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/promote-skill.md",
+    "filename": "promote-skill.md"
+  },
+  {
     "name": "prompt-review",
     "slash": "/prompt-review",
     "description": "Review a system prompt or prompt template for quality, safety, and effectiveness. Invokes the prompt-reviewer agent.",
@@ -952,6 +979,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/ruby-review.md",
     "filename": "ruby-review.md"
+  },
+  {
+    "name": "rules-diff",
+    "slash": "/rules-diff",
+    "description": "Preview what has changed in clarc rules since your installed version — without applying changes. Dry-run mode for /update-rules.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/rules-diff.md",
+    "filename": "rules-diff.md"
   },
   {
     "name": "rust-build",
@@ -1057,7 +1093,7 @@
     "slash": "/skill-create",
     "description": "Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.",
     "category": "clarc System",
-    "whenToUse": "",
+    "whenToUse": "<describe the situation that calls for this skill>",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skill-create.md",
     "filename": "skill-create.md"
   },
@@ -1078,6 +1114,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md",
     "filename": "skill-impact.md"
+  },
+  {
+    "name": "skills-local",
+    "slash": "/skills-local",
+    "description": "List all project-local skills in .clarc/skills/. Shows skill names, descriptions, and which ones override global clarc skills.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/skills-local.md",
+    "filename": "skills-local.md"
   },
   {
     "name": "slide-deck",
@@ -1222,6 +1267,15 @@
     "whenToUse": "",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/update-docs.md",
     "filename": "update-docs.md"
+  },
+  {
+    "name": "update-rules",
+    "slash": "/update-rules",
+    "description": "Apply latest clarc rule updates from upstream. Skips user-modified files. Use --dry-run to preview, --force to overwrite user modifications.",
+    "category": "clarc System",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/update-rules.md",
+    "filename": "update-rules.md"
   },
   {
     "name": "verify",

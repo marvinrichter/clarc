@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>146 Commands — clarc hub</title>
+  <title>152 Commands — clarc hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 <main>
   <div class="container">
     <div class="hero" style="padding-bottom:1rem">
-      <h1>146 Commands</h1>
+      <h1>152 Commands</h1>
       <p>Slash commands that activate skills and agents directly in Claude Code.</p>
       <div class="search-bar">
         <input id="search" type="search" placeholder="Search commands..." aria-label="Search commands">
@@ -34,12 +34,12 @@
   <button class="filter-btn active" data-filter="all">All</button>
   <button class="filter-btn" data-filter="General">General <small>(68)</small></button>
   <button class="filter-btn" data-filter="Code Review">Code Review <small>(31)</small></button>
-  <button class="filter-btn" data-filter="clarc System">clarc System <small>(9)</small></button>
+  <button class="filter-btn" data-filter="clarc System">clarc System <small>(13)</small></button>
   <button class="filter-btn" data-filter="Testing">Testing <small>(7)</small></button>
   <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(6)</small></button>
+  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(5)</small></button>
   <button class="filter-btn" data-filter="Architecture">Architecture <small>(4)</small></button>
   <button class="filter-btn" data-filter="Observability">Observability <small>(3)</small></button>
-  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(3)</small></button>
   <button class="filter-btn" data-filter="Product">Product <small>(3)</small></button>
   <button class="filter-btn" data-filter="Documentation">Documentation <small>(3)</small></button>
   <button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <small>(2)</small></button>
@@ -82,6 +82,28 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-design.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-evolution" data-category="AI / Agents">
+  <div class="card-header">
+    <h3 class="card-name"><code>/agent-evolution</code></h3>
+    <span class="badge">AI / Agents</span>
+  </div>
+  <p class="card-desc">Review high-confidence instincts and promote them to agent-specific overlay files (~/.clarc/agent-instincts/). Closes the continuous-learning-v2 feedback loop by making agents smarter over time.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-evolution.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-instincts" data-category="AI / Agents">
+  <div class="card-header">
+    <h3 class="card-name"><code>/agent-instincts</code></h3>
+    <span class="badge">AI / Agents</span>
+  </div>
+  <p class="card-desc">Show the learned instinct overlay for a specific agent, or list all overlays with instinct counts.</p>
+  <p class="card-when"><strong>When:</strong> - Before running /agent-evolution — check what is already promoted - After a session that corrected an agent — verify the correction was captured - Debugging: agent behaving unexpectedly — check if a bad instinct was promoted</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-instincts.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="agent-review" data-category="Code Review">
@@ -1129,6 +1151,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/promote.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="promote-skill" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/promote-skill</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Promote a project-local skill from .clarc/skills/&lt;name&gt;/ to global clarc (~/.clarc/skills/). Optionally opens a PR to upstream clarc.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/promote-skill.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="prompt-review" data-category="Code Review">
   <div class="card-header">
     <h3 class="card-name"><code>/prompt-review</code></h3>
@@ -1215,6 +1248,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/ruby-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="rules-diff" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/rules-diff</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Preview what has changed in clarc rules since your installed version — without applying changes. Dry-run mode for /update-rules.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rules-diff.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="rust-build" data-category="Rust">
@@ -1344,7 +1388,7 @@
     <span class="badge">clarc System</span>
   </div>
   <p class="card-desc">Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.</p>
-  
+  <p class="card-when"><strong>When:</strong> &lt;describe the situation that calls for this skill&gt;</p>
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-create.md" target="_blank" class="btn-ghost">Source</a>
   </div>
@@ -1369,6 +1413,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="skills-local" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/skills-local</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">List all project-local skills in .clarc/skills/. Shows skill names, descriptions, and which ones override global clarc skills.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skills-local.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="slide-deck" data-category="Observability">
@@ -1545,6 +1600,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-docs.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="update-rules" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name"><code>/update-rules</code></h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">Apply latest clarc rule updates from upstream. Skips user-modified files. Use --dry-run to preview, --force to overwrite user modifications.</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-rules.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="verify" data-category="General">
