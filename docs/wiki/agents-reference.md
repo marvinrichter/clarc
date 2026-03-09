@@ -32,6 +32,14 @@ These are invoked automatically by `code-reviewer` based on file extension, or d
 | `elixir-reviewer` | `.ex`, `.exs` | OTP patterns, Ecto, Sobelow |
 | `kotlin-reviewer` | `.kt` | Coroutines, null safety, Compose |
 | `cpp-reviewer` | `.cpp`, `.h` | C++20, RAII, memory safety |
+| `csharp-reviewer` | `.cs` | C# 12/.NET 8, nullable types, async/await |
+| `php-reviewer` | `.php` | PHP 8.4, strict types, Laravel/Symfony |
+| `scala-reviewer` | `.scala` | Cats Effect/ZIO, ADTs, functional idioms |
+| `r-reviewer` | `.r`, `.R` | tidyverse, purrr, Shiny, renv |
+| `bash-reviewer` | `.sh`, `.bash` | shellcheck, set -euo pipefail, BATS |
+| `c-reviewer` | `.c`, `.h` | C11/C17, memory safety, opaque pointers |
+| `android-reviewer` | `.kt` (Android) | Jetpack Compose, Hilt, Room, ViewModel |
+| `flutter-reviewer` | `.dart` | Flutter architecture, const, RepaintBoundary |
 | `database-reviewer` | `.sql`, `.prisma` | PostgreSQL, query optimization, RLS |
 
 ## Product & Strategy Agents
@@ -62,12 +70,23 @@ These are invoked automatically by `code-reviewer` based on file extension, or d
 | `frontend-architect` | Micro-frontend architecture |
 | `data-architect` | Data Mesh design |
 | `sdk-architect` | SDK architecture and release process |
-| `android-reviewer` | Jetpack Compose, Hilt, Room |
-| `flutter-reviewer` | Flutter/Dart patterns |
 | `devsecops-reviewer` | SAST, IaC misconfig, OWASP |
 | `supply-chain-auditor` | SBOM, unpinned deps, unsigned artifacts |
 | `performance-analyst` | Flamegraphs, N+1, profiling output |
 | `resilience-reviewer` | Circuit breakers, retry patterns |
+
+## System & Meta Agents
+
+These analyze and improve clarc itself:
+
+| Agent | Purpose | Invoked by |
+|-------|---------|-----------|
+| `agent-quality-reviewer` | Review a single agent file — scores across 8 dimensions | `/agent-review` |
+| `agent-system-reviewer` | Full system review — orchestrates all analyzers | `/system-review` |
+| `command-auditor` | UX ergonomics audit across all commands | `/command-audit` |
+| `hook-auditor` | Hook coverage, conflicts, and dead references | `/hook-audit` |
+| `prompt-quality-scorer` | Rate all agent/command prompts for quality | manual |
+| `skill-depth-analyzer` | Analyze a skill for prompt-engineering quality | `/skill-depth` |
 
 ## How to Invoke an Agent Manually
 
