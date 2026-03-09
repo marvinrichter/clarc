@@ -5,12 +5,12 @@
  * Tools:
  *   get_instinct_status   — current instincts + confidence (project + global)
  *   get_session_context   — latest session snapshot
- *   get_skill_index       — skill catalog, optionally filtered by domain/language
  *   get_project_context   — detected project type + relevant skills
  *   skill_search          — search skills by keyword/language/domain
  *   agent_describe        — full description + instructions for a named agent
  *   rule_check            — content of a specific clarc rule file
- *   workflow_suggest      — suggests best clarc workflow for a task
+ *   get_component_graph   — agent→skill dependency graph (unique MCP value)
+ *   get_health_status     — clarc installation health check (unique MCP value)
  *
  * Usage:
  *   node mcp-server/index.js
@@ -29,14 +29,15 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { fileURLToPath } from 'url';
+import { detectProjectType } from '../scripts/lib/project-detect.js';
+import { searchSkills } from '../scripts/lib/skill-search.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HOMUNCULUS_DIR = path.join(os.homedir(), '.claude', 'homunculus');
 const SESSIONS_DIR = path.join(os.homedir(), '.claude', 'projects');
-const SKILLS_INDEX = path.join(__dirname, '..', 'skills', 'INDEX.md');
-const SKILLS_DIR = path.join(__dirname, '..', 'skills');
 const AGENTS_DIR = path.join(__dirname, '..', 'agents');
 const RULES_DIR = path.join(__dirname, '..', 'rules');
+const SKILLS_DIR = path.join(__dirname, '..', 'skills');
 
 // ─── Tool definitions ──────────────────────────────────────────────────────
 
@@ -67,23 +68,6 @@ const TOOLS = [
         max_chars: {
           type: 'number',
           description: 'Maximum characters to return (default: 3000)'
-        }
-      }
-    }
-  },
-  {
-    name: 'get_skill_index',
-    description: 'Returns the clarc skill catalog. Can be filtered by language or domain.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        language: {
-          type: 'string',
-          description: 'Filter by language (e.g., "python", "typescript", "ruby", "elixir")'
-        },
-        domain: {
-          type: 'string',
-          description: 'Filter by domain section (e.g., "testing", "security", "architecture")'
         }
       }
     }
@@ -148,17 +132,33 @@ const TOOLS = [
     }
   },
   {
-    name: 'workflow_suggest',
-    description: 'Suggests the best clarc workflow (commands, agents, skills) for a given task description.',
+    name: 'get_component_graph',
+    description: 'Returns the agent→skill dependency graph. Shows which agents use which skills, and which skills are used by multiple agents. Unique MCP value — not available in CLI.',
     inputSchema: {
       type: 'object',
       properties: {
-        task: {
+        agent: {
           type: 'string',
-          description: 'Task description, e.g., "implement a REST API endpoint with tests", "review this PR for security issues"'
+          description: 'Filter by agent name (optional — returns full graph if omitted)'
+        },
+        skill: {
+          type: 'string',
+          description: 'Filter by skill slug (optional — returns all agents using this skill)'
         }
-      },
-      required: ['task']
+      }
+    }
+  },
+  {
+    name: 'get_health_status',
+    description: 'Returns clarc installation health: symlink status, hook registration, INDEX.md freshness, missing agents/skills. Designed for CI/CD integration.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        check: {
+          type: 'string',
+          description: 'Specific check to run: "symlinks", "hooks", "index", or "all" (default: "all")'
+        }
+      }
     }
   }
 ];
@@ -262,128 +262,17 @@ function handleGetSessionContext({ max_chars = 3000 } = {}) {
   return { found: true, file: latestFile, content };
 }
 
-function handleGetSkillIndex({ language, domain } = {}) {
-  if (!fs.existsSync(SKILLS_INDEX)) {
-    return { found: false, message: 'skills/INDEX.md not found. Run: node scripts/ci/validate-skills.js --generate-index' };
-  }
-
-  let content = fs.readFileSync(SKILLS_INDEX, 'utf8');
-
-  // Filter by language if specified
-  if (language) {
-    const langLower = language.toLowerCase();
-    const sections = content.split('\n## ');
-    const relevant = sections.filter(s => s.toLowerCase().includes(langLower) || s.startsWith('# '));
-    content = relevant.join('\n## ');
-  }
-
-  // Filter by domain if specified
-  if (domain) {
-    const domainLower = domain.toLowerCase();
-    const sections = content.split('\n## ');
-    const relevant = sections.filter(s => s.toLowerCase().includes(domainLower) || s.startsWith('# '));
-    content = relevant.join('\n## ');
-  }
-
-  return { found: true, content };
-}
-
 function handleGetProjectContext({ cwd } = {}) {
   const projectDir = cwd || process.env.CLAUDE_WORKDIR || process.cwd();
-
-  // Import project detection (dynamic import for ES module compat)
   try {
-    const _detectModule = path.join(__dirname, '..', 'scripts', 'lib', 'project-detect.js');
-    // Use synchronous approach: read project files directly
-    const result = detectProjectTypeSync(projectDir);
-    return result;
+    return detectProjectType(projectDir);
   } catch (err) {
     return { error: err.message, cwd: projectDir };
   }
 }
 
-function detectProjectTypeSync(dir) {
-  const languages = [];
-  const frameworks = [];
-  const markers = {
-    typescript: ['tsconfig.json'],
-    javascript: ['package.json'],
-    python: ['pyproject.toml', 'requirements.txt', 'setup.py'],
-    golang: ['go.mod'],
-    rust: ['Cargo.toml'],
-    ruby: ['Gemfile'],
-    java: ['pom.xml', 'build.gradle'],
-    elixir: ['mix.exs'],
-    swift: ['Package.swift']
-  };
-
-  for (const [lang, files] of Object.entries(markers)) {
-    if (files.some(f => fs.existsSync(path.join(dir, f)))) {
-      languages.push(lang);
-    }
-  }
-
-  const SKILL_MAP = {
-    typescript: ['typescript-patterns', 'typescript-coding-standards'],
-    python: ['python-patterns', 'python-testing'],
-    golang: ['go-patterns', 'go-testing'],
-    ruby: ['ruby-patterns', 'ruby-testing'],
-    elixir: ['elixir-patterns', 'elixir-testing'],
-    rust: ['rust-patterns', 'rust-testing'],
-    java: ['springboot-patterns', 'jpa-patterns'],
-    cpp: ['cpp-patterns', 'cpp-patterns-advanced', 'cpp-testing']
-  };
-
-  const skillSet = new Set();
-  for (const lang of languages) {
-    for (const skill of SKILL_MAP[lang] || []) skillSet.add(skill);
-  }
-
-  return {
-    cwd: dir,
-    languages,
-    frameworks,
-    primary: languages[0] || 'unknown',
-    relevant_skills: Array.from(skillSet)
-  };
-}
-
 function handleSkillSearch({ query, limit = 10 } = {}) {
-  const results = [];
-  const queryLower = query.toLowerCase();
-
-  if (!fs.existsSync(SKILLS_DIR)) {
-    return { found: false, message: 'skills/ directory not found.' };
-  }
-
-  for (const skillName of fs.readdirSync(SKILLS_DIR)) {
-    if (skillName === 'INDEX.md') continue;
-    const skillFile = path.join(SKILLS_DIR, skillName, 'SKILL.md');
-    if (!fs.existsSync(skillFile)) continue;
-
-    try {
-      const content = fs.readFileSync(skillFile, 'utf8');
-      const descMatch = content.match(/^description:\s*(.+)$/m);
-      const nameMatch = content.match(/^name:\s*(.+)$/m);
-      const description = descMatch ? descMatch[1].trim() : '';
-      const name = nameMatch ? nameMatch[1].trim() : skillName;
-
-      if (
-        skillName.toLowerCase().includes(queryLower) ||
-        name.toLowerCase().includes(queryLower) ||
-        description.toLowerCase().includes(queryLower) ||
-        content.toLowerCase().includes(queryLower)
-      ) {
-        results.push({ name, slug: skillName, description: description.slice(0, 120) });
-      }
-    } catch {
-      // Skip unreadable skills
-    }
-
-    if (results.length >= limit) break;
-  }
-
-  return { query, total: results.length, results };
+  return searchSkills(query, { limit, skillsDir: SKILLS_DIR });
 }
 
 function handleAgentDescribe({ name } = {}) {
@@ -460,47 +349,125 @@ function handleRuleCheck({ rule } = {}) {
   return { found: true, rule, content };
 }
 
-const WORKFLOW_PATTERNS = [
-  { keywords: ['new feature', 'implement', 'build', 'create'], workflow: ['/plan', '/tdd', '/code-review', '/verify'], description: 'Plan → TDD → Review → Verify' },
-  { keywords: ['review', 'pr', 'pull request'], workflow: ['/review-pr', '/code-review'], description: 'PR review + code quality' },
-  { keywords: ['bug', 'fix', 'error', 'broken'], workflow: ['/tdd', '/build-fix', '/verify'], description: 'TDD fix → build-fix → verify' },
-  { keywords: ['refactor', 'cleanup', 'dead code'], workflow: ['/refactor', '/verify'], description: 'Refactor + verify' },
-  { keywords: ['test', 'coverage', 'unit test'], workflow: ['/tdd', '/python-test', '/go-test', '/rust-test'], description: 'TDD workflow' },
-  { keywords: ['security', 'vulnerability', 'owasp', 'auth'], workflow: ['/security', '/code-review'], description: 'Security scan + review' },
-  { keywords: ['deploy', 'release', 'publish'], workflow: ['/verify', '/release'], description: 'Verify + release' },
-  { keywords: ['multi-agent', 'orchestrate', 'parallel', 'complex'], workflow: ['/orchestrate'], description: 'Multi-agent orchestration' },
-  { keywords: ['document', 'docs', 'readme'], workflow: ['/update-docs', '/update-codemaps'], description: 'Documentation update' },
-  { keywords: ['e2e', 'end-to-end', 'playwright', 'browser'], workflow: ['/e2e'], description: 'E2E test generation' }
-];
+function handleGetComponentGraph({ agent, skill } = {}) {
+  const graph = {}; // agent → [skills]
+  const reverseGraph = {}; // skill → [agents]
 
-function handleWorkflowSuggest({ task } = {}) {
-  if (!task) return { error: 'task is required' };
-
-  const taskLower = task.toLowerCase();
-  const matches = [];
-
-  for (const pattern of WORKFLOW_PATTERNS) {
-    const score = pattern.keywords.filter(k => taskLower.includes(k)).length;
-    if (score > 0) matches.push({ ...pattern, score });
+  if (!fs.existsSync(AGENTS_DIR)) {
+    return { error: 'agents/ directory not found', agents_dir: AGENTS_DIR };
   }
 
-  matches.sort((a, b) => b.score - a.score);
-  const top = matches.slice(0, 3);
+  for (const file of fs.readdirSync(AGENTS_DIR)) {
+    if (!file.endsWith('.md')) continue;
+    const agentName = file.replace('.md', '');
+    if (agent && agentName !== agent) continue;
 
-  if (top.length === 0) {
-    return {
-      task,
-      suggestion: 'No specific workflow matched. General recommendation:',
-      workflow: ['/plan', '/tdd', '/code-review'],
-      description: 'Default: Plan → TDD → Review'
+    try {
+      const content = fs.readFileSync(path.join(AGENTS_DIR, file), 'utf8');
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!fmMatch) continue;
+
+      // Parse uses_skills field (YAML list or inline array)
+      const usesMatch = fmMatch[1].match(/^uses_skills:\s*(.+)$/m);
+      if (!usesMatch) continue;
+
+      let skills = [];
+      const raw = usesMatch[1].trim();
+      if (raw.startsWith('[')) {
+        // Inline: [skill-a, skill-b]
+        skills = raw.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
+      } else {
+        // Multi-line list: grab subsequent "- skill" lines
+        const listMatch = fmMatch[1].match(/^uses_skills:\s*\n((?:\s+-\s+\S+\n?)+)/m);
+        if (listMatch) {
+          skills = listMatch[1].split('\n').map(l => l.trim().replace(/^-\s+/, '').replace(/^["']|["']$/g, '')).filter(Boolean);
+        }
+      }
+
+      if (skills.length === 0) continue;
+      graph[agentName] = skills;
+      for (const s of skills) {
+        if (!reverseGraph[s]) reverseGraph[s] = [];
+        reverseGraph[s].push(agentName);
+      }
+    } catch {
+      // Skip unreadable agent files
+    }
+  }
+
+  // Filter reverse graph by skill if requested
+  const filteredReverse = skill ? { [skill]: reverseGraph[skill] || [] } : reverseGraph;
+
+  return {
+    agents: Object.keys(graph).length,
+    skills_referenced: Object.keys(reverseGraph).length,
+    agent_to_skills: graph,
+    skill_to_agents: filteredReverse
+  };
+}
+
+function handleGetHealthStatus({ check = 'all' } = {}) {
+  const claudeDir = path.join(os.homedir(), '.claude');
+  const clarcDir = path.join(os.homedir(), '.clarc');
+  const results = {};
+
+  // Symlink checks
+  if (check === 'all' || check === 'symlinks') {
+    const targets = ['agents', 'skills', 'commands', 'hooks', 'rules'];
+    const symlinks = {};
+    for (const t of targets) {
+      const p = path.join(claudeDir, t);
+      try {
+        const stat = fs.lstatSync(p);
+        symlinks[t] = stat.isSymbolicLink() ? 'symlink' : stat.isDirectory() ? 'directory' : 'other';
+      } catch {
+        symlinks[t] = 'missing';
+      }
+    }
+    results.symlinks = symlinks;
+  }
+
+  // Hook registration check
+  if (check === 'all' || check === 'hooks') {
+    const hooksFile = path.join(claudeDir, 'hooks', 'hooks.json');
+    const clarcHooks = path.join(clarcDir, 'hooks', 'hooks.json');
+    results.hooks = {
+      claude_hooks_file: fs.existsSync(hooksFile) ? 'present' : 'missing',
+      clarc_hooks_file: fs.existsSync(clarcHooks) ? 'present' : 'missing'
     };
   }
 
+  // INDEX.md freshness check
+  if (check === 'all' || check === 'index') {
+    const indexFile = path.join(SKILLS_DIR, 'INDEX.md');
+    if (fs.existsSync(indexFile)) {
+      const stat = fs.statSync(indexFile);
+      const ageHours = (Date.now() - stat.mtimeMs) / 3600000;
+      results.index = {
+        present: true,
+        age_hours: Math.round(ageHours),
+        stale: ageHours > 168 // stale if > 1 week
+      };
+    } else {
+      results.index = { present: false };
+    }
+  }
+
+  // Overall health
+  const issues = [];
+  if (results.symlinks) {
+    for (const [k, v] of Object.entries(results.symlinks)) {
+      if (v === 'missing') issues.push(`${k} symlink missing`);
+    }
+  }
+  if (results.hooks?.claude_hooks_file === 'missing') issues.push('hooks.json not registered in ~/.claude/');
+  if (results.index?.stale) issues.push('skills/INDEX.md is stale (> 7 days)');
+  if (!results.index?.present) issues.push('skills/INDEX.md missing');
+
   return {
-    task,
-    suggestions: top.map(m => ({ workflow: m.workflow, description: m.description })),
-    primary: top[0].workflow,
-    primary_description: top[0].description
+    healthy: issues.length === 0,
+    issues,
+    checks: results
   };
 }
 
@@ -522,23 +489,23 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
       case 'get_session_context':
         result = handleGetSessionContext(args);
         break;
-      case 'get_skill_index':
-        result = handleGetSkillIndex(args);
-        break;
       case 'get_project_context':
         result = handleGetProjectContext(args);
         break;
       case 'skill_search':
         result = handleSkillSearch(args);
         break;
+      case 'get_component_graph':
+        result = handleGetComponentGraph(args);
+        break;
+      case 'get_health_status':
+        result = handleGetHealthStatus(args);
+        break;
       case 'agent_describe':
         result = handleAgentDescribe(args);
         break;
       case 'rule_check':
         result = handleRuleCheck(args);
-        break;
-      case 'workflow_suggest':
-        result = handleWorkflowSuggest(args);
         break;
       default:
         throw new Error(`Unknown tool: ${name}`);
