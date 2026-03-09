@@ -30,7 +30,11 @@ const testFiles = [
   'scripts/install-manifest.test.js',
   'evals/agents.eval.js',
   'evals/commands.eval.js',
-  'evals/skills.eval.js'
+  'evals/skills.eval.js',
+  'artifacts/hooks.test.js',
+  'mcp/mcp-server.test.js',
+  'scripts/install.test.js',
+  'scripts/validate-quality.test.js'
 ];
 
 const BOX_W = 58; // inner width between ║ delimiters
