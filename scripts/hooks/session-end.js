@@ -268,11 +268,20 @@ function writeMemoryBank(summary, date, time) {
     const contextContent = buildContextFile(summary, date);
     fs.writeFileSync(path.join(clarcDir, 'context.md'), contextContent, 'utf8');
 
-    // Append to progress.md
+    // Append to progress.md (rolling window: keep last 30 sessions)
     const progressEntry = buildProgressEntry(summary, date, time);
     const progressFile = path.join(clarcDir, 'progress.md');
-    const header = fs.existsSync(progressFile) ? '' : '# Session Progress Log\n\n';
-    fs.appendFileSync(progressFile, header + progressEntry, 'utf8');
+    const HEADER = '# Session Progress Log\n\n';
+    const MAX_SESSIONS = 30;
+
+    let existing = fs.existsSync(progressFile) ? fs.readFileSync(progressFile, 'utf8') : HEADER;
+    // Strip header for processing
+    const body = existing.startsWith(HEADER) ? existing.slice(HEADER.length) : existing;
+    // Split into individual session blocks (each starts with "## Session ")
+    const blocks = body.split(/(?=^## Session )/m).filter(Boolean);
+    // Keep last MAX_SESSIONS - 1 to make room for the new entry
+    const trimmed = blocks.slice(-(MAX_SESSIONS - 1));
+    fs.writeFileSync(progressFile, HEADER + trimmed.join('') + progressEntry, 'utf8');
 
     log(`[SessionEnd] Memory Bank updated: .clarc/context.md, .clarc/progress.md`);
   } catch (err) {
