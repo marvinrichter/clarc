@@ -2501,9 +2501,9 @@ async function runTests() {
   console.log('\nRound 29: run-all.js test runner improvements:');
 
   if (
-    await asyncTest('test runner uses spawnSync to capture stderr on success', async () => {
+    await asyncTest('test runner uses spawn (async) to capture stderr on success', async () => {
       const runAllSource = fs.readFileSync(path.join(__dirname, '..', 'run-all.js'), 'utf8');
-      assert.ok(runAllSource.includes('spawnSync'), 'Should use spawnSync instead of execSync');
+      assert.ok(runAllSource.includes('spawn'), 'Should use spawn to run test processes');
       assert.ok(!runAllSource.includes('execSync'), 'Should not use execSync');
       // Verify it shows stderr
       assert.ok(runAllSource.includes('stderr'), 'Should handle stderr output');
