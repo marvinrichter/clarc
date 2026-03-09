@@ -225,6 +225,18 @@
           }
         ],
         "description": "Evaluate session for extractable patterns"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/instinct-decay.js\"",
+            "async": true,
+            "timeout": 15
+          }
+        ],
+        "description": "instinct-decay-runner: weekly confidence decay for stale instincts (no-op if decay ran within 6 days)"
       }
     ]
   }
