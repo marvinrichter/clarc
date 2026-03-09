@@ -62,7 +62,7 @@ Commands: `/typescript-review`, `/e2e`, `/a11y-audit`, `/web-perf`
 **TypeScript / NestJS / Express (backend):**
 Skills: `nodejs-backend-patterns`, `api-design`, `auth-patterns`, `database-migrations`, `observability`
 Agents: `typescript-reviewer`, `database-reviewer`, `security-reviewer`
-Commands: `/typescript-review`, `/database-review`, `/security`, `/api-contract`
+Commands: `/typescript-review`, `/database-review`, `/security`
 
 **Go:**
 Skills: `go-patterns`, `go-patterns-advanced`, `go-testing`, `go-testing-advanced`, `api-design`

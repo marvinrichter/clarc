@@ -38,7 +38,7 @@ const SECRET_PATTERNS = [
   { type: 'GitHub Token',     re: /\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}\b/ },
   { type: 'PEM Private Key',  re: /-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
   { type: 'Slack Token',      re: /\bxox[baprs]-[0-9A-Za-z-]{10,}\b/ },
-  { type: 'Generic API Key',  re: /(?:^|\b)(?:api_key|api_secret|access_token|auth_token)\s*[=:]\s*["']?[A-Za-z0-9_\-]{32,}["']?/im },
+  { type: 'Generic API Key',  re: /(?:^|\b)(?:api_key|api_secret|access_token|auth_token)\s*[=:]\s*["']?[A-Za-z0-9_-]{32,}["']?/im },
 ];
 
 function scanForSecrets(text) {

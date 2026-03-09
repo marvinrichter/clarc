@@ -84,6 +84,7 @@ Invoked by **code-reviewer** automatically based on file extension. Can also be 
 | `csharp-reviewer` | C#/.NET code review | All C# code changes |
 | `data-architect` | Data Mesh architecture design | Designing new data platforms |
 | `design-critic` | Visual design critique | Screenshots, wireframes, UI code |
+| `design-system-reviewer` | Design system audit — CSS tokens, dark mode, icons, a11y, design-code consistency | Auditing frontend for design quality or before major UI release |
 | `devsecops-reviewer` | Security scan for code changes | Code touching auth, APIs, infrastructure |
 | `docs-architect` | Documentation strategy and platform selection | Planning or overhauling API docs |
 | `finops-advisor` | Cloud cost optimization | Terraform/K8s config cost review |

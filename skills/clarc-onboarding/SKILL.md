@@ -1,7 +1,6 @@
 ---
-title: clarc Onboarding
-tags: [clarc, onboarding, workflow, getting-started]
-when_to_use: New users, team onboarding, first day with clarc, setting up workflow for a new project
+name: clarc-onboarding
+description: Staged learning path for clarc — Day 1 survival commands, Week 1 workflow integration, Month 1 advanced agents. Includes solo, team, and role-specific paths.
 ---
 
 ## When to Use
@@ -88,6 +87,7 @@ Unlock the full workflow OS. Add these:
 - Who owns the `/doctor` health check (runs weekly)
 
 **Team commands that matter:**
+
 | Command | Team value |
 |---------|-----------|
 | `/code-review` | Consistent review quality across all PRs |

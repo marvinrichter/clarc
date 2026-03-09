@@ -1,7 +1,6 @@
 ---
-title: clarc Hooks Authoring
-tags: [clarc, hooks, automation, workflow]
-when_to_use: Writing new clarc hooks, debugging hook behavior, configuring hook suppression
+name: clarc-hooks-authoring
+description: Reference guide for writing, testing, and configuring clarc hooks — PreToolUse, PostToolUse, SessionStart, SessionEnd patterns with suppression and cooldown.
 ---
 
 ## When to Use

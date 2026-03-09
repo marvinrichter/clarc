@@ -49,7 +49,7 @@ Action: <specific instruction>
 
 ### API / REST / endpoint / route / OpenAPI
 1. Read skill `api-design`
-2. `/api-contract` — spec-first: write OpenAPI before code
+2. Read skill `api-contract` — spec-first: write OpenAPI before code
 3. `/plan` → `/tdd` → implement
 4. `/typescript-review` or `/go-review` (language-appropriate)
 5. `/docs-review` — review API documentation
@@ -116,7 +116,7 @@ Action: <specific instruction>
 1. Invoke `architect` or `planner` agent
 2. `/explore` — generate solution options with ADR
 3. `/arc42` — document architecture decision
-4. `/adr-writing` — create Architecture Decision Record
+4. Read skill `adr-writing` — create Architecture Decision Record
 
 ### feature / new feature / implement
 1. `/plan` — create implementation plan
@@ -147,7 +147,7 @@ Action: <specific instruction>
 
 ### GraphQL / schema / resolver
 1. Read skill `graphql-patterns`
-2. `/api-contract` — contract-first approach
+2. Read skill `api-contract` — contract-first approach
 3. `/code-review`
 
 ### release / version / changelog / publish
