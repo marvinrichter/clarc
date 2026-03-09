@@ -8,7 +8,7 @@
  *   node scripts/doctor.js
  */
 
-import { existsSync, readFileSync, readdirSync, lstatSync, readlinkSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, readlinkSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { execSync } from 'child_process';
@@ -72,23 +72,6 @@ function isValidJson(filePath) {
   }
 }
 
-function countSymlinks(dir) {
-  if (!existsSync(dir)) return { total: 0, broken: 0 };
-  let total = 0;
-  let broken = 0;
-  try {
-    const files = readdirSync(dir, { withFileTypes: true });
-    for (const f of files) {
-      if (f.isSymbolicLink()) {
-        total++;
-        if (!existsSync(join(dir, f.name))) broken++;
-      }
-    }
-  } catch {
-    // ignore
-  }
-  return { total, broken };
-}
 
 function getLatestVersion() {
   try {
