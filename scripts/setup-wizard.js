@@ -61,6 +61,13 @@ if (args.length > 0) {
     process.exit(result.status ?? 0);
   }
 
+  // Sub-command: uninstall [component] [--yes] [--dry-run]
+  if (args[0] === 'uninstall') {
+    const installSh = resolveInstallSh();
+    const result = spawnSync('bash', [installSh, '--uninstall', ...args.slice(1)], { stdio: 'inherit' });
+    process.exit(result.status ?? 0);
+  }
+
   const installSh = resolveInstallSh();
   const result = spawnSync('bash', [installSh, ...args], { stdio: 'inherit' });
   process.exit(result.status ?? 0);

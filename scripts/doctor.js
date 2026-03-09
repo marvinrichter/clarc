@@ -8,7 +8,7 @@
  *   node scripts/doctor.js
  */
 
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, readlinkSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { execSync } from 'child_process';
@@ -72,23 +72,6 @@ function isValidJson(filePath) {
   }
 }
 
-function countSymlinks(dir) {
-  if (!existsSync(dir)) return { total: 0, broken: 0 };
-  let total = 0;
-  let broken = 0;
-  try {
-    const files = readdirSync(dir, { withFileTypes: true });
-    for (const f of files) {
-      if (f.isSymbolicLink()) {
-        total++;
-        if (!existsSync(join(dir, f.name))) broken++;
-      }
-    }
-  } catch {
-    // ignore
-  }
-  return { total, broken };
-}
 
 function getLatestVersion() {
   try {
@@ -194,13 +177,51 @@ if (existsSync(hooksDir)) {
   warn('Hooks: not installed', '', 'Run: npx github:marvinrichter/clarc --enable-learning');
 }
 
-// 7. Symlink health (if ~/.clarc exists)
+// 7. Symlink health — scan agents, commands, and rules for orphan clarc symlinks
 if (existsSync(CLARC_HOME)) {
-  const { total, broken } = countSymlinks(agentsDir);
-  if (broken > 0) {
-    fail(`Symlinks: ${broken} broken (of ${total})`, '', `Run: cd ~/.clarc && git pull, then re-run installer`);
-  } else if (total > 0) {
-    ok(`Symlinks: ${total} healthy`);
+  const dirsToScan = [agentsDir, commandsDir, join(CLAUDE_DIR, 'rules')];
+  let totalLinks = 0;
+  let orphanLinks = 0;
+  const orphanPaths = [];
+
+  for (const scanDir of dirsToScan) {
+    if (!existsSync(scanDir)) continue;
+    try {
+      const walk = (dir, depth = 0) => {
+        if (depth > 2) return;
+        const entries = readdirSync(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = join(dir, entry.name);
+          if (entry.isSymbolicLink()) {
+            totalLinks++;
+            // Check if symlink is broken
+            if (!existsSync(fullPath)) {
+              try {
+                const target = readlinkSync(fullPath);
+                // Only report clarc-managed orphans (point to ~/.clarc/)
+                if (target.includes('/.clarc/') || target.includes(CLARC_HOME)) {
+                  orphanLinks++;
+                  orphanPaths.push(fullPath);
+                }
+              } catch { /* ignore read errors */ }
+            }
+          } else if (entry.isDirectory() && depth < 2) {
+            walk(fullPath, depth + 1);
+          }
+        }
+      };
+      walk(scanDir);
+    } catch { /* ignore permission errors */ }
+  }
+
+  if (orphanLinks > 0) {
+    fail(
+      `Symlinks: ${orphanLinks} orphan clarc symlink(s) (of ${totalLinks} total)`,
+      orphanPaths.slice(0, 3).join(', ') + (orphanPaths.length > 3 ? ` +${orphanPaths.length - 3} more` : ''),
+      `Run: ./install.sh --upgrade  (or cd ~/.clarc && git pull)`
+    );
+  } else if (totalLinks > 0) {
+    ok(`Symlinks: ${totalLinks} healthy (no orphans)`);
   }
 }
 

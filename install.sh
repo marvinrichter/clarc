@@ -7,6 +7,9 @@
 # Usage:
 #   ./install.sh [--target <claude|cursor|opencode|codex>] [<language> ...]
 #   ./install.sh --check [<language> ...]
+#   ./install.sh --dry-run [<language> ...]
+#   ./install.sh --uninstall [<component>]
+#   ./install.sh --upgrade
 #
 # No languages? Project files are auto-detected (package.json, go.mod, Gemfile, etc.)
 #
@@ -19,6 +22,10 @@
 #   ./install.sh --target codex
 #   ./install.sh --check                    # check common + all installed langs
 #   ./install.sh --check typescript python  # check specific languages
+#   ./install.sh --dry-run typescript       # preview install without changes
+#   ./install.sh --uninstall                # remove all clarc-managed symlinks
+#   ./install.sh --uninstall agents         # remove only agent symlinks
+#   ./install.sh --upgrade                  # clean orphans + re-install
 #
 # Targets:
 #   claude   (default) — Install rules to ~/.claude/rules/
@@ -66,6 +73,13 @@ TEAM_MODE=false
 COMPANY_PREFIX=""
 PRIVATE_RULES=""
 PRIVATE_SKILLS=""
+DRY_RUN=false
+UNINSTALL=false
+UNINSTALL_COMPONENT=""
+UPGRADE=false
+YES=false
+MANIFEST_TMP=""
+MANIFEST_FILE="$SCRIPT_DIR/install-manifest.json"
 # On native Windows (Git Bash / Cygwin / MSYS2) symlinks require admin rights → use copy
 if [[ "${OSTYPE:-}" == msys* || "${OSTYPE:-}" == cygwin* || "${OSTYPE:-}" == mingw* ]]; then
     USE_SYMLINKS=false
@@ -142,15 +156,182 @@ while [[ $# -gt 0 ]]; do
             PRIVATE_SKILLS="$2"
             shift 2
             ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --uninstall)
+            UNINSTALL=true
+            if [[ -n "${2:-}" && ! "${2:-}" == --* ]]; then
+                UNINSTALL_COMPONENT="$2"
+                shift
+            fi
+            shift
+            ;;
+        --upgrade)
+            UPGRADE=true
+            shift
+            ;;
+        --yes|-y)
+            YES=true
+            shift
+            ;;
         *)
             break
             ;;
     esac
 done
 
-if [[ "$CHECK_ONLY" == false && "$TARGET" != "claude" && "$TARGET" != "cursor" && "$TARGET" != "opencode" && "$TARGET" != "codex" ]]; then
+if [[ "$CHECK_ONLY" == false && "$UNINSTALL" == false && "$UPGRADE" == false && \
+      "$TARGET" != "claude" && "$TARGET" != "cursor" && "$TARGET" != "opencode" && "$TARGET" != "codex" ]]; then
     echo "Error: unknown target '$TARGET'. Must be 'claude', 'cursor', 'opencode', or 'codex'." >&2
     exit 1
+fi
+
+# --- Helper: write install manifest after symlink creation ---
+# Reads lines written to MANIFEST_TMP (format: src|dst|component) and writes JSON.
+write_manifest() {
+    [[ "$DRY_RUN" == true || "$USE_SYMLINKS" == false ]] && return 0
+    [[ ! -f "${MANIFEST_TMP:-}" ]] && return 0
+    local pkg_version
+    pkg_version="$(node -e "try{const fs=require('fs');console.log(JSON.parse(fs.readFileSync('$SCRIPT_DIR/package.json','utf8')).version)}catch(e){console.log('unknown')}" 2>/dev/null || echo "unknown")"
+    node - "$MANIFEST_FILE" "$pkg_version" "$TARGET" "$MANIFEST_TMP" <<'NODEEOF'
+const fs = require('fs');
+const [,,manifestFile, version, target, tmpFile] = process.argv;
+const content = fs.readFileSync(tmpFile, 'utf8').trim();
+const lines = content ? content.split('\n').filter(Boolean) : [];
+const symlinks = lines.map(line => {
+    const [src, dst, component] = line.split('|');
+    return { src, dst, component };
+});
+const backup = manifestFile.replace('.json', '.backup.json');
+if (fs.existsSync(manifestFile)) fs.copyFileSync(manifestFile, backup);
+const manifest = { version, installed_at: new Date().toISOString(), target, symlinks };
+fs.mkdirSync(require('path').dirname(manifestFile), { recursive: true });
+fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2) + '\n');
+console.log(`  Manifest: ${symlinks.length} symlinks tracked → ${manifestFile}`);
+NODEEOF
+    rm -f "$MANIFEST_TMP"
+}
+
+# --- Uninstall handler ---
+if [[ "$UNINSTALL" == true ]]; then
+    if [[ ! -f "$MANIFEST_FILE" ]]; then
+        echo "Error: no install manifest found at $MANIFEST_FILE" >&2
+        echo "Cannot uninstall automatically without a manifest." >&2
+        echo "To uninstall manually: find ~/.claude/ -type l -lname '*/.clarc/*' -delete" >&2
+        exit 1
+    fi
+    node - "$MANIFEST_FILE" "$UNINSTALL_COMPONENT" "$YES" "$DRY_RUN" <<'NODEEOF'
+const fs = require('fs');
+const [,,manifestFile, component, yesFlag, dryRunFlag] = process.argv;
+const YES = yesFlag === 'true';
+const DRY_RUN = dryRunFlag === 'true';
+
+const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+let entries = manifest.symlinks || [];
+if (component) {
+    entries = entries.filter(e => e.component === component);
+    if (entries.length === 0) {
+        console.error(`No symlinks found for component: ${component}`);
+        console.error(`Available components: ${[...new Set((manifest.symlinks||[]).map(e=>e.component))].join(', ')}`);
+        process.exit(1);
+    }
+}
+
+// Filter to only symlinks that still point to a clarc source
+const toRemove = entries.filter(e => {
+    try {
+        const lstat = fs.lstatSync(e.dst);
+        if (!lstat.isSymbolicLink()) return false;  // skip non-symlinks (user files)
+        const target = fs.readlinkSync(e.dst);
+        return target === e.src || target.startsWith(require('os').homedir() + '/.clarc/');
+    } catch { return false; }
+});
+
+if (toRemove.length === 0) {
+    console.log('No clarc-managed symlinks found to remove.');
+    process.exit(0);
+}
+
+// Print what will be removed
+console.log(`\nWill remove ${toRemove.length} symlink(s)${component ? ` (${component})` : ''}:`);
+if (!DRY_RUN) {
+    for (const e of toRemove.slice(0, 5)) console.log(`  ${e.dst}`);
+    if (toRemove.length > 5) console.log(`  ... and ${toRemove.length - 5} more`);
+} else {
+    for (const e of toRemove) console.log(`  [DRY RUN] would remove: ${e.dst}`);
+}
+
+if (DRY_RUN) { console.log('\nDry run complete. No changes made.'); process.exit(0); }
+
+// Confirm unless --yes
+if (!YES) {
+    const readline = require('readline');
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.question('\nProceed? [y/N] ', answer => {
+        rl.close();
+        if (answer.toLowerCase() !== 'y' && answer.toLowerCase() !== 'yes') {
+            console.log('Aborted.'); process.exit(0);
+        }
+        remove();
+    });
+} else {
+    remove();
+}
+
+function remove() {
+    let removed = 0;
+    for (const e of toRemove) {
+        try { fs.unlinkSync(e.dst); removed++; } catch (err) {
+            console.warn(`  Warning: could not remove ${e.dst}: ${err.message}`);
+        }
+    }
+    console.log(`\nRemoved ${removed} symlink(s) from ~/.claude/`);
+    if (!component) {
+        // Full uninstall: backup manifest, clear symlinks list
+        const backup = manifestFile.replace('.json', '.backup.json');
+        fs.copyFileSync(manifestFile, backup);
+        const m = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+        m.symlinks = [];
+        m.uninstalled_at = new Date().toISOString();
+        fs.writeFileSync(manifestFile, JSON.stringify(m, null, 2) + '\n');
+        console.log('Manifest cleared. Backup saved to install-manifest.backup.json');
+    }
+}
+NODEEOF
+    exit $?
+fi
+
+# --- Upgrade handler: detect orphan symlinks, remove them, then re-install ---
+if [[ "$UPGRADE" == true ]]; then
+    hdr "Upgrade — cleaning orphan symlinks"
+    CLAUDE_AGENTS_DIR_UP="$HOME/.claude/agents"
+    CLAUDE_COMMANDS_DIR_UP="$HOME/.claude/commands"
+    CLAUDE_RULES_DIR_UP="${CLAUDE_RULES_DIR:-$HOME/.claude/rules}"
+
+    orphan_count=0
+    for dir in "$CLAUDE_AGENTS_DIR_UP" "$CLAUDE_COMMANDS_DIR_UP" "$CLAUDE_RULES_DIR_UP"; do
+        [[ -d "$dir" ]] || continue
+        while IFS= read -r -d '' link; do
+            target="$(readlink "$link" 2>/dev/null || true)"
+            if [[ "$target" == *"/.clarc/"* && ! -e "$link" ]]; then
+                echo "  Removing orphan: $link"
+                rm "$link"
+                orphan_count=$((orphan_count + 1))
+            fi
+        done < <(find "$dir" -maxdepth 2 -type l -print0 2>/dev/null)
+    done
+
+    if [[ $orphan_count -eq 0 ]]; then
+        ok "No orphan symlinks found"
+    else
+        ok "Removed $orphan_count orphan symlink(s)"
+    fi
+
+    echo ""
+    echo "Re-installing…"
+    exec bash "$0" "${@}"
 fi
 
 # --- Auto-detect languages from project files in $PWD ---
@@ -203,12 +384,14 @@ detect_languages() {
 # Existing user-created non-symlink files are preserved (never overwritten).
 # Exception: if a non-symlink file is byte-for-byte identical to the source (old copy),
 # it is replaced with a symlink so future updates work automatically.
+# $4 = component name for manifest tracking (e.g. agents, commands, rules)
 install_files() {
     local src_dir="$1"
     local dest_dir="$2"
     local label="$3"
+    local component="${4:-other}"
     [[ -d "$src_dir" ]] || return 0
-    mkdir -p "$dest_dir"
+    [[ "$DRY_RUN" == false ]] && mkdir -p "$dest_dir"
     local count=0
     for f in "$src_dir"/*.md; do
         [[ -f "$f" ]] || continue
@@ -219,14 +402,17 @@ install_files() {
         # If content matches the source it's an old clarc copy → replace with symlink.
         if [[ -e "$dest" && ! -L "$dest" ]]; then
             if cmp -s "$f" "$dest"; then
-                rm "$dest"   # old copy identical to source → upgrade to symlink below
+                [[ "$DRY_RUN" == false ]] && rm "$dest"
             else
                 echo "  skip $name (custom file, content differs — not overwriting)"
                 continue
             fi
         fi
-        if [[ "$USE_SYMLINKS" == true ]]; then
+        if [[ "$DRY_RUN" == true ]]; then
+            echo "  [DRY RUN] would create: $dest ← $f"
+        elif [[ "$USE_SYMLINKS" == true ]]; then
             ln -sf "$f" "$dest"
+            echo "${f}|${dest}|${component}" >> "$MANIFEST_TMP"
         else
             cp "$f" "$dest"
         fi
@@ -426,14 +612,20 @@ if [[ "$TARGET" == "claude" ]]; then
 
     local_verb="symlinked"
     [[ "$USE_SYMLINKS" == false ]] && local_verb="copied"
+    [[ "$DRY_RUN" == true ]] && local_verb="preview (dry run)"
+
+    # Initialize manifest temp file for this install session
+    if [[ "$USE_SYMLINKS" == true && "$DRY_RUN" == false ]]; then
+        MANIFEST_TMP="$(mktemp)"
+    fi
 
     # --- Rules ---
     hdr "Rules ($local_verb)"
-    install_files "$RULES_DIR/common" "$GLOBAL_RULES_DIR/common" "common"
+    install_files "$RULES_DIR/common" "$GLOBAL_RULES_DIR/common" "common" "rules"
     # When installing project-locally, also symlink common into the project so that
     # relative references (../common/coding-style.md) in language rules resolve correctly.
     if [[ "$PROJECT_LOCAL" == true ]]; then
-        install_files "$RULES_DIR/common" "$LANG_DEST_DIR/common" "common (project-local)"
+        install_files "$RULES_DIR/common" "$LANG_DEST_DIR/common" "common (project-local)" "rules"
     fi
     for lang in "$@"; do
         if [[ ! "$lang" =~ ^[a-zA-Z0-9_-]+$ ]]; then
@@ -442,16 +634,16 @@ if [[ "$TARGET" == "claude" ]]; then
         if [[ ! -d "$RULES_DIR/$lang" ]]; then
             echo "Warning: rules/$lang/ not found, skipping." >&2; continue
         fi
-        install_files "$RULES_DIR/$lang" "$LANG_DEST_DIR/$lang" "$lang"
+        install_files "$RULES_DIR/$lang" "$LANG_DEST_DIR/$lang" "$lang" "rules"
     done
 
     # --- Agents ---
     hdr "Agents ($local_verb)"
-    install_files "$SCRIPT_DIR/agents" "$CLAUDE_AGENTS_DIR" "agents"
+    install_files "$SCRIPT_DIR/agents" "$CLAUDE_AGENTS_DIR" "agents" "agents"
 
     # --- Commands ---
     hdr "Commands ($local_verb)"
-    install_files "$SCRIPT_DIR/commands" "$CLAUDE_COMMANDS_DIR" "commands"
+    install_files "$SCRIPT_DIR/commands" "$CLAUDE_COMMANDS_DIR" "commands" "commands"
 
     if [[ "$USE_SYMLINKS" == true ]]; then
         echo ""
@@ -470,7 +662,7 @@ if [[ "$TARGET" == "claude" ]]; then
             if [[ -d "$PRIVATE_RULES" ]]; then
                 PRIVATE_RULES_DEST="$GLOBAL_RULES_DIR/private"
                 [[ -n "$COMPANY_PREFIX" ]] && PRIVATE_RULES_DEST="$GLOBAL_RULES_DIR/$COMPANY_PREFIX"
-                install_files "$PRIVATE_RULES" "$PRIVATE_RULES_DEST" "private-rules"
+                install_files "$PRIVATE_RULES" "$PRIVATE_RULES_DEST" "private-rules" "rules"
             else
                 echo "  Warning: --private-rules path not found: $PRIVATE_RULES" >&2
             fi
@@ -503,7 +695,18 @@ if [[ "$TARGET" == "claude" ]]; then
     fi
 
     # --- Continuous Learning prompt (claude target only) ---
-    enable_learning_prompt
+    [[ "$DRY_RUN" == false ]] && enable_learning_prompt
+
+    # --- Write install manifest ---
+    write_manifest
+
+    if [[ "$DRY_RUN" == true ]]; then
+        echo ""
+        echo -e "  ${_CYAN}Dry run complete — no changes were made.${_RESET}"
+        echo -e "  ${_DIM}Re-run without --dry-run to install.${_RESET}"
+        echo ""
+        exit 0
+    fi
 
     # --- Next steps ---
     hdr "Next steps"
@@ -511,6 +714,7 @@ if [[ "$TARGET" == "claude" ]]; then
     echo "  • Update: cd ~/.clarc && git pull  (symlinks update instantly)"
     echo "  • Activate hooks: merge hooks/hooks.json into ~/.claude/settings.json"
     echo "  • Check for updates: ./install.sh --check"
+    echo "  • Uninstall: ./install.sh --uninstall"
     echo "  • Docs:  https://github.com/marvinrichter/clarc"
     echo ""
 fi
