@@ -235,7 +235,7 @@ AFTER:  Use when designing Go packages, selecting error handling strategies (sen
 |----|------|------|----------|--------|--------|--------|
 | H1 | Hooks | auto-checkpoint.js secret guard bypass | P0 | 1 | 2h | ⬜ Open |
 | H2 | Hooks | security-scan-nudge path-based + no cooldown | P1 | 1 | 1h | ⬜ Open |
-| H3 | Hooks | observe.sh silent error on missing python3 | P1 | 1 | 30min | ⬜ Open |
+| H3 | Hooks | observe.sh silent error on missing python3 | P1 | 1 | 30min | ✅ Done |
 | A1 | Agents | security-reviewer: diff guardrail + example | P1 | 2 | 30min | ⬜ Open |
 | A2 | Agents | refactor-cleaner: dry-run step + example | P1 | 2 | 30min | ⬜ Open |
 | A3 | Agents | design-critic: 2 worked examples (currently zero) | P1 | 2 | 45min | ⬜ Open |

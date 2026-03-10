@@ -11,6 +11,8 @@
 # Can also be registered manually in ~/.claude/settings.json.
 
 set -e
+# Exit cleanly on any unhandled error — observation is best-effort, never block Claude Code
+trap 'exit 0' ERR
 
 # Hook phase from CLI argument: "pre" (PreToolUse) or "post" (PostToolUse)
 HOOK_PHASE="${1:-post}"
