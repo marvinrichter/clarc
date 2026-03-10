@@ -1,0 +1,18 @@
+{
+  "_comment": "Pre-existing skills exceeding 600-line limit. Each must be split before being removed from this list. Do not add new skills here — fix them instead.",
+  "exceptions": [
+    "api-contract",
+    "api-docs-patterns",
+    "autonomous-loops",
+    "cpp-testing",
+    "data-mesh-patterns",
+    "devsecops-patterns",
+    "django-tdd",
+    "frontend-patterns",
+    "go-patterns-advanced",
+    "iac-modern-patterns",
+    "mlops-patterns",
+    "nodejs-backend-patterns",
+    "sdk-design-patterns"
+  ]
+}

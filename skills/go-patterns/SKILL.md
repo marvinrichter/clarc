@@ -9,10 +9,12 @@ Idiomatic Go patterns and best practices for building robust, efficient, and mai
 
 ## When to Activate
 
-- Writing new Go code
-- Reviewing Go code
-- Refactoring existing Go code
-- Designing Go packages/modules
+- Designing Go package boundaries and module structure
+- Choosing an error handling strategy (sentinel errors, error wrapping, custom types)
+- Structuring a service with hexagonal architecture or clean architecture in Go
+- Deciding between interfaces and concrete types for a component
+- Writing idiomatic Go (avoiding anti-patterns, using standard library conventions)
+- Setting up dependency injection without a framework
 
 ## Core Principles
 
@@ -426,3 +428,4 @@ func NewServer(db *sql.DB) *Server {
 ```
 
 > For advanced patterns — full hexagonal architecture with working code (domain, ports, adapters, DI wiring, tests), struct design (functional options, embedding), memory optimization, Go tooling, `slices`/`maps` stdlib (Go 1.21+), and anti-patterns — see skill: `golang-patterns-advanced`.
+> For testing patterns — table-driven tests, mocks, integration tests with testcontainers, benchmarks, and fuzz testing — see skill: `go-testing`.

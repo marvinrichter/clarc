@@ -24,6 +24,13 @@ const SKILLS_DIR = path.join(__dirname, '../../skills');
 const strict = process.argv.includes('--strict');
 const generateIndex = process.argv.includes('--generate-index');
 
+const EXCEPTIONS_FILE = path.join(__dirname, 'skill-size-exceptions.json');
+const sizeExceptions = new Set(
+  fs.existsSync(EXCEPTIONS_FILE)
+    ? JSON.parse(fs.readFileSync(EXCEPTIONS_FILE, 'utf-8')).exceptions ?? []
+    : []
+);
+
 function extractFrontmatter(content) {
   const match = content.replace(/^\uFEFF/, '').match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
@@ -43,6 +50,19 @@ function countWords(text) {
 
 function validateQuality(dir, content, fm) {
   const warnings = [];
+  const errors = []; // Always fatal, regardless of --strict
+
+  // 0. Line count — warn >500, block >600 (exceptions: pre-existing violations)
+  const lineCount = content.split('\n').length;
+  if (lineCount > 600) {
+    if (sizeExceptions.has(dir)) {
+      warnings.push(`Skill too long (${lineCount} lines, max 600) — grandfathered, split before removing from skill-size-exceptions.json`);
+    } else {
+      errors.push(`Skill too long (${lineCount} lines, max 600) — split into focused sub-skills`);
+    }
+  } else if (lineCount > 500) {
+    warnings.push(`Skill getting long (${lineCount} lines, consider splitting at 600)`);
+  }
 
   // 1. At least 1 code block
   if (!/```/.test(content)) {
@@ -81,7 +101,7 @@ function validateQuality(dir, content, fm) {
     warnings.push(`Frontmatter 'description' too short (${desc.length} chars, min 20)`);
   }
 
-  return warnings;
+  return { warnings, errors };
 }
 
 function validateSkillQuality() {
@@ -95,6 +115,7 @@ function validateSkillQuality() {
     .map(e => e.name);
 
   const allWarnings = [];
+  const allErrors = [];
   let checkedCount = 0;
 
   for (const dir of dirs) {
@@ -109,15 +130,26 @@ function validateSkillQuality() {
     }
 
     const fm = extractFrontmatter(content);
-    const warnings = validateQuality(dir, content, fm);
+    const { warnings, errors } = validateQuality(dir, content, fm);
     checkedCount++;
 
     for (const w of warnings) {
       allWarnings.push(`  ${dir}/SKILL.md — ${w}`);
     }
+    for (const e of errors) {
+      allErrors.push(`  ${dir}/SKILL.md — ${e}`);
+    }
   }
 
-  // Report
+  // Report fatal errors (always block)
+  if (allErrors.length > 0) {
+    console.error(`\nSkill quality errors (${allErrors.length} — must fix before merge):`);
+    for (const e of allErrors) {
+      console.error(`ERROR: ${e}`);
+    }
+  }
+
+  // Report warnings
   if (allWarnings.length > 0) {
     console.warn(`\nSkill quality warnings (${allWarnings.length} across ${checkedCount} skills):`);
     for (const w of allWarnings) {
@@ -125,13 +157,18 @@ function validateSkillQuality() {
     }
     if (strict) {
       console.error('\n--strict mode: treating warnings as errors.');
-      process.exit(1);
     }
-  } else {
+  }
+
+  if (allErrors.length === 0 && allWarnings.length === 0) {
     console.log(`All ${checkedCount} skills meet quality standards.`);
   }
 
-  console.log(`\nQuality check complete: ${checkedCount} skills checked, ${allWarnings.length} warning(s).`);
+  console.log(`\nQuality check complete: ${checkedCount} skills checked, ${allErrors.length} error(s), ${allWarnings.length} warning(s).`);
+
+  if (allErrors.length > 0 || (strict && allWarnings.length > 0)) {
+    process.exit(1);
+  }
 
   if (generateIndex) {
     console.log('\nNote: --generate-index updates skills/INDEX.md manually.');
