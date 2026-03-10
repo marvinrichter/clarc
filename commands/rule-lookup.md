@@ -1,10 +1,10 @@
 ---
-name: whats-the-rule
+name: rule-lookup
 description: Look up the rule constraint AND the linked skill for a given topic — makes the two-layer rules/skills system navigable
 command: true
 ---
 
-# What's the Rule Command
+# Rule Lookup
 
 Given a topic, returns:
 1. The constraint from the relevant rule file (the "thou shalt")
@@ -13,13 +13,13 @@ Given a topic, returns:
 ## Usage
 
 ```
-/whats-the-rule <topic>
-/whats-the-rule security
-/whats-the-rule testing
-/whats-the-rule gitops
-/whats-the-rule agents
-/whats-the-rule git
-/whats-the-rule performance
+/rule-lookup <topic>
+/rule-lookup security
+/rule-lookup testing
+/rule-lookup gitops
+/rule-lookup agents
+/rule-lookup git
+/rule-lookup performance
 ```
 
 ## Topic → Rule Mapping

@@ -37,6 +37,10 @@ For each error:
 4. **Re-run build** — Verify the error is gone and no new errors introduced
 5. **Move to next** — Continue with remaining errors
 
+## Agent Delegation
+
+This command delegates to the **build-error-resolver** agent, which specializes in fixing build errors with minimal diffs across TypeScript, Go, Python, Java, Rust, and more. For Go-specific build failures, it additionally routes to **go-build-resolver**.
+
 ## Step 4: Guardrails
 
 Stop and ask the user if:

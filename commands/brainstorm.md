@@ -1,5 +1,5 @@
 ---
-description: Generate product ideas from a problem space using structured ideation frameworks (JTBD, How Might We, analogy thinking, constraint reversal). Produces concrete idea seeds, not vague concepts.
+description: From structured ideation frameworks — generate product ideas using JTBD, How Might We, analogy thinking, and constraint reversal. Produces concrete idea seeds without external research. For market-driven discovery (competitor features, Reddit/HN signals, trend analysis), use /discover instead.
 ---
 
 # Brainstorm

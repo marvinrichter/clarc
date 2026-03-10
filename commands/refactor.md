@@ -6,6 +6,10 @@ description: Safely identify and remove dead code with test verification at ever
 
 Safely identify and remove dead code with test verification at every step.
 
+## Agent Delegation
+
+This command delegates to the **refactor-cleaner** agent, which runs analysis tools (knip, depcheck, ts-prune, vulture) to identify dead code, presents a dry-run plan for confirmation, and only then removes code with test verification at every step.
+
 ## Step 1: Detect Dead Code
 
 Run analysis tools based on project type:

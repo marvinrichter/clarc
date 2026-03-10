@@ -260,3 +260,5 @@ pipdeptree 2>/dev/null || pip install pipdeptree && pipdeptree
 - `dependency-audit` — detailed per-language scanning commands
 - `supply-chain-security` — SBOM, SLSA, cosign
 - `/sbom` — generate and attach SBOM
+
+> Not covered here: outdated package upgrades and interactive version bumps — use `/deps` for those.

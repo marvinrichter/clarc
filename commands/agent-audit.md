@@ -1,16 +1,16 @@
 ---
-description: Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-review --all to review all agents at once.
+description: Audit a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-audit --all to audit all agents at once.
 ---
 
-# Agent Review
+# Agent Audit
 
 Invoke the **agent-quality-reviewer** agent to evaluate one or all clarc agents against a structured 8-dimension quality rubric.
 
 ## Usage
 
 ```
-/agent-review <agent-name>     — review a specific agent
-/agent-review --all            — review all agents in agents/
+/agent-audit <agent-name>     — audit a specific agent
+/agent-audit --all            — audit all agents in agents/
 ```
 
 ## What It Reviews
@@ -36,7 +36,7 @@ overall = clarity×0.25 + model×0.15 + tools×0.15 + trigger×0.15 +
 
 ## Output
 
-### Single Agent (`/agent-review code-reviewer`)
+### Single Agent (`/agent-audit code-reviewer`)
 
 ```json
 {
@@ -65,7 +65,7 @@ overall = clarity×0.25 + model×0.15 + tools×0.15 + trigger×0.15 +
 }
 ```
 
-### All Agents (`/agent-review --all`)
+### All Agents (`/agent-audit --all`)
 
 Summary table sorted by score ascending (lowest first), followed by full JSON for agents scoring below 7.0:
 
@@ -76,14 +76,14 @@ Summary table sorted by score ascending (lowest first), followed by full JSON fo
 | code-reviewer | 9.2 | — |
 ```
 
-Results saved to `docs/system-review/agent-review-<date>.json`.
+Results saved to `docs/system-review/agent-audit-<date>.json`.
 
 ## Steps Claude Should Follow
 
 1. **Delegate to agent-quality-reviewer**: Launch it with the agent name or `--all` flag
 2. **For single agent**: Display the JSON report and highlight any HIGH or MEDIUM issues
 3. **For --all mode**:
-   - Save results to `docs/system-review/agent-review-YYYY-MM-DD.json`
+   - Save results to `docs/system-review/agent-audit-YYYY-MM-DD.json`
    - Display the summary table (sorted by score ascending)
    - Print full JSON only for agents scoring below 7.0
 4. **Suggest fixes**: For each HIGH issue, offer a concrete suggestion on how to fix the agent
