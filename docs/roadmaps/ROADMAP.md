@@ -2,7 +2,9 @@
 
 ## Active
 
-_No active roadmaps. Start a new one when a system review or major initiative identifies work._
+| Roadmap | Goal |
+|---------|------|
+| [skill-content-depth](skill-content-depth.md) | Anti-Patterns + When-to expansion for 81% of skill corpus |
 
 ---
 
