@@ -106,3 +106,25 @@ For Elixir patterns and testing examples, see skills: `elixir-patterns`, `elixir
 ---
 
 Review with the mindset: "Would this pass code review at a top Elixir/Phoenix shop?"
+
+## Examples
+
+**Input:** 3 modified `.ex` files after adding a market publishing feature in a Phoenix app.
+
+**Output:**
+```
+## Review: lib/my_app/markets/market_context.ex
+
+### CRITICAL
+- [market_context.ex:28] SQL injection: string interpolation in `Repo.query("SELECT * FROM markets WHERE slug = '#{slug}'"` — Fix: use Ecto query DSL `from m in Market, where: m.slug == ^slug`
+- [market_context.ex:45] Unsupervised process: `spawn(fn -> send_notification(market) end)` — Fix: use `Task.Supervisor.start_child(MyApp.TaskSupervisor, fn -> ... end)`
+
+### HIGH
+- [market_context.ex:67] N+1 queries: accessing `market.owner` inside `Enum.map` loop — Fix: add `Repo.preload(markets, :owner)` before the map
+
+### MEDIUM
+- [market.ex:12] Missing @spec on public `publish/1` function — Fix: add `@spec publish(Market.t()) :: {:ok, Market.t()} | {:error, Ecto.Changeset.t()}`
+
+### Summary
+2 critical, 1 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

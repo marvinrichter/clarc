@@ -160,3 +160,31 @@ Run /evaluate <name> to assess each one.
 3. **Verbatim quotes are gold.** They become user stories and marketing copy.
 4. **Silence is data too.** What did users NOT complain about? What features went unmentioned?
 5. **Segment if you can.** Power users, new users, churned users, and free users all have different signals.
+
+## Examples
+
+**Input:** CSV file with 500 NPS survey comments and 200 support tickets from the past 90 days.
+
+**Output:** Structured findings report with ranked pain points, JTBD analysis, and idea seeds.
+
+```
+FEEDBACK ANALYSIS COMPLETE
+══════════════════════════
+Source:      nps-q1-2026.csv, support-tickets-q1-2026.csv
+Total items: 700
+Date range:  2026-01-01 – 2026-03-31
+
+TOP PAIN POINTS (ranked by opportunity score)
+────────────────────────────────────────────
+
+#1 — Slow report generation (134 mentions, pain: 4/5)
+     "Reports take 3+ minutes to generate, unusable in client meetings"
+     JTBD: I need to show live data during presentations without waiting
+     → Idea: /idea pre-computed-report-snapshots
+
+#2 — No bulk export (89 mentions, pain: 3/5)
+     "I want to export all my data to Excel and there's no way to do it"
+     → Idea: /idea bulk-csv-export
+
+CREATED IDEA SEEDS: docs/ideas/discovered/2026-03-10-report-snapshots.md
+```

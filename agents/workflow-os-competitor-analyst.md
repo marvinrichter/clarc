@@ -137,3 +137,37 @@ Top 3 competitive gaps:
 ```
 
 Save to: `docs/system-review/competitive-analysis-YYYY-MM-DD.md`
+
+## Examples
+
+**Input:** `/competitive-review` — full comparison against all 6 competitors.
+
+**Output:**
+```markdown
+# clarc Competitive Analysis — 2026-03-10
+
+## Executive Summary
+
+clarc strengths vs. the field:
+- Only tool with a continuous learning flywheel (instincts extracted from sessions, evolved via /evolve)
+- Only tool with a self-review system (/system-review) that audits its own agents/skills/hooks for quality
+- Only tool with product lifecycle support (idea → eval → explore → PRD → plan → implement)
+
+Top 3 competitive gaps:
+- IDE-native UI: Cursor/Windsurf have inline diff previews; clarc is CLI-only (HIGH pain)
+- Background agents: Devin runs tasks while user is away; clarc requires active session (MEDIUM pain)
+- Auto-PR creation: Copilot Workspace generates PR from issue; clarc has /commit-push-pr but less integrated (MEDIUM pain)
+
+## clarc-Unique Capabilities
+
+1. **Learning flywheel** — /learn-eval extracts patterns from sessions; /evolve clusters instincts into skills; no competitor has automated skill evolution
+2. **Agent quality system** — agent-quality-reviewer + hook-auditor + skill-depth-analyzer analyze clarc itself; competitors have no self-audit
+3. **Product lifecycle** — /idea → /evaluate → /explore → /prd covers discovery through spec; competitors start at implementation
+
+## Competitive Gaps (Prioritized)
+| Gap | Competitor | Pain | Effort | Priority |
+|-----|-----------|------|--------|---------|
+| IDE inline diff UI | Cursor | HIGH | HIGH | P1 |
+| Background agents | Devin | MEDIUM | HIGH | P2 |
+| File-pattern rule auto-activation | Cursor | MEDIUM | LOW | P0 |
+```

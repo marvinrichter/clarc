@@ -231,3 +231,46 @@ Each phase should be mergeable independently. Avoid plans that require all phase
 - Phases that cannot be delivered independently
 
 **Remember**: A great plan is specific, actionable, and considers both the happy path and edge cases. The best plans enable confident, incremental implementation.
+
+## Examples
+
+**Input:** "Add real-time notifications to our Next.js + PostgreSQL app — users should see in-app alerts when their order ships."
+
+**Output:**
+```markdown
+## clarc Components for This Plan
+Skills to read:   `realtime-patterns`, `api-design`
+Agents to invoke: `database-reviewer` (step 2), `typescript-reviewer` (step 5), `code-reviewer` (end)
+Commands to run:  `/tdd` (phase 1), `/e2e` (before PR)
+
+# Implementation Plan: Real-Time Order Notifications
+
+## Overview
+Add SSE-based push notifications using a Redis Pub/Sub fan-out. Postgres triggers publish events;
+a Next.js API route streams them to the browser via EventSource.
+
+## Implementation Steps
+
+### Phase 1: Database (1 file)
+1. **Notification trigger migration** (File: supabase/migrations/007_notifications.sql)
+   - Action: CREATE TABLE notifications + pg_notify trigger on orders.status = 'shipped'
+   - Dependencies: None | Risk: Low
+
+### Phase 2: Backend (2 files)
+2. **SSE API route** (File: src/app/api/notifications/stream/route.ts)
+   - Action: Subscribe to Redis channel, stream events with Content-Type: text/event-stream
+   - Dependencies: Step 1 | Risk: Medium — must handle client disconnect cleanup
+3. **Notification service** (File: src/lib/notifications.ts)
+   - Action: publish() helper, getUnread() query with cursor pagination
+   - Dependencies: Step 1 | Risk: Low
+
+### Phase 3: Frontend (2 files)
+4. **NotificationBell component** (File: src/components/NotificationBell.tsx)
+   - Action: useEventSource hook, badge count, dropdown with mark-as-read
+   - Dependencies: Step 3 | Risk: Low
+
+## Success Criteria
+- [ ] Notification appears within 2s of order status change
+- [ ] SSE connection recovers on reconnect (Last-Event-ID)
+- [ ] E2E test covers full flow
+```

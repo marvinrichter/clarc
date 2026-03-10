@@ -75,3 +75,26 @@ When invoked:
 
 - C# patterns, MediatR, EF Core, Minimal API: `skills/csharp-patterns`
 - xUnit, FluentAssertions, Testcontainers, Coverlet: `skills/csharp-testing`
+
+## Examples
+
+**Input:** 3 modified `.cs` files after adding a new user registration endpoint.
+
+**Output:**
+```
+## C# Review
+
+### CRITICAL
+- [src/Api/UserController.cs:38] SQL injection: raw string interpolation in `ExecuteSqlRaw($"... WHERE email = {email}")` — Fix: use LINQ query or parameterized `ExecuteSqlRaw("... WHERE email = {0}", email)`
+- [src/Service/UserService.cs:22] async void on non-event method `SendWelcomeEmailAsync` — Fix: change to `async Task`
+
+### HIGH
+- [src/Service/UserService.cs:45] Missing CancellationToken on `RegisterAsync` — Fix: add `CancellationToken ct = default` and propagate to all downstream calls
+- [src/Domain/User.cs:8] Public setter on `Email` — invariants unenforceable — Fix: use private setter + `User.ChangeEmail(Email email)` method
+
+### MEDIUM
+- [src/Service/UserService.cs:67] N+1: `.ToList()` then accessing `u.Roles` in loop — Fix: add `.Include(u => u.Roles)`
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

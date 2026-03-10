@@ -89,3 +89,26 @@ govulncheck ./...
 - **Block**: CRITICAL or HIGH issues found
 
 For detailed Go code examples and anti-patterns, see `skill: go-patterns`.
+
+## Examples
+
+**Input:** 3 modified `.go` files after adding a market publishing feature.
+
+**Output:**
+```
+## Review: internal/handler/market_handler.go, internal/service/market_service.go, internal/domain/market.go
+
+### CRITICAL
+- [market_service.go:34] Ignored error: `repo.Save(market)` — discarded with `_`; Fix: `if err := repo.Save(market); err != nil { return fmt.Errorf("save market: %w", err) }`
+- [market_handler.go:58] SQL injection via string concat in `db.Query("SELECT * FROM markets WHERE slug = '" + slug + "'")` — Fix: use parameterized query with `?` placeholder
+
+### HIGH
+- [market_handler.go:72] Business logic in handler: status check `if market.Status != "DRAFT"` belongs in `market.Publish()` domain method
+- [market_service.go:89] Goroutine leak: `go sendNotification(market)` has no context cancellation — Fix: pass `ctx` and use `context.WithTimeout`
+
+### MEDIUM
+- [market_service.go:45] String concatenation in loop: use `strings.Builder` for tag list assembly
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

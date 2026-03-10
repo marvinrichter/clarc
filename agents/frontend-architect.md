@@ -241,3 +241,14 @@ Produce an MFE Architecture Decision Record (ADR) with:
 - Route to `code-reviewer` agent for Shell + Remote implementation review
 - Reference `skills/microfrontend-patterns/` for detailed code patterns and configurations
 - Reference `skills/typescript-monorepo-patterns/` for managing MFE repos with pnpm workspaces
+
+## Examples
+
+**Input:** User asks to design a Micro-Frontend architecture for a 4-team e-commerce platform on a React monolith.
+
+**Output:** Structured ADR with team topology analysis, integration strategy, and migration plan. Example:
+- Option A: Module Federation (Webpack 5) — Pros: same framework (React), independent deploy, shared dependencies; Cons: requires Webpack 5, TypeScript setup effort
+- Option B: Web Components — Pros: framework-agnostic; Cons: TypeScript DX poor, no React integration without wrappers
+- **Recommendation:** Option A (Module Federation) because all 4 teams use React and independent deployment is the primary goal.
+
+Migration: Step 1 (extract Design System) → Step 2 (add MFE to Checkout) → Step 3 (validate in production) → Step 4 (Catalog and Account).

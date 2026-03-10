@@ -95,3 +95,27 @@ Fix: What to change
 ## Reference
 
 For Rust patterns, async architecture, and code examples, see skills: `rust-patterns`, `rust-testing`.
+
+## Examples
+
+**Input:** 3 modified `.rs` files after adding a market publishing feature to an Axum-based API.
+
+**Output:**
+```
+## Review: src/handler/market_handler.rs, src/service/market_service.rs, src/domain/market.rs
+
+### CRITICAL
+- [market_handler.rs:34] unsafe block without justification comment: `unsafe { ptr::read(market_ptr) }` — Fix: add // SAFETY: comment explaining invariant, or refactor to avoid unsafe
+- [market_service.rs:58] unwrap() in library code: `self.repo.find(id).unwrap()` — Fix: propagate with `?` and return `Result<Market, MarketError>`
+
+### HIGH
+- [market_handler.rs:71] Blocking in async: `std::thread::sleep(Duration::from_millis(100))` inside async fn — Fix: replace with `tokio::time::sleep(Duration::from_millis(100)).await`
+- [market_handler.rs:22] Business logic in handler: status check `if market.status != MarketStatus::Draft` — Fix: move to `market.publish()` domain method
+- [market_service.rs:44] Unnecessary clone: `.tags.clone()` where `&tags` suffices — Fix: accept `&[Tag]` in callee signature
+
+### MEDIUM
+- [market.rs:88] Missing derive macros: `Market` struct missing `#[derive(Debug, Clone, PartialEq)]` — Fix: add derives
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

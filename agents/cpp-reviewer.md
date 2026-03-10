@@ -98,3 +98,26 @@ Fix: What to change
 ## Reference
 
 For C++ patterns, RAII, and code examples, see skills: `cpp-patterns`, `cpp-patterns-advanced`, `cpp-testing`.
+
+## Examples
+
+**Input:** 3 modified `.cpp` files after implementing a resource manager with raw pointer ownership.
+
+**Output:**
+```
+## Review: src/ResourceManager.cpp
+
+### CRITICAL
+- [ResourceManager.cpp:24] Raw owning pointer: `Resource* _res` without RAII wrapper — Fix: use `std::unique_ptr<Resource> _res`
+- [ResourceManager.cpp:88] Manual delete in destructor: `delete _res` — Fix: RAII handles this automatically with unique_ptr
+
+### HIGH
+- [ResourceManager.cpp:45] Rule of Five violation: destructor defined but no copy/move constructor or assignment operator — Fix: either delete copy/move or implement all five
+- [ResourceManager.cpp:62] Data race: `_counter` incremented from multiple threads without synchronization — Fix: use `std::atomic<int> _counter`
+
+### MEDIUM
+- [resource.h:12] Pass-by-value for large struct `Config` — Fix: use `const Config&` for read-only parameter
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

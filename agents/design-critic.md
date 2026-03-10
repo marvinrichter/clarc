@@ -91,6 +91,42 @@ Then output a priority list:
 
 Do not soften feedback with "this is just a suggestion" — give clear direction.
 
+## Examples
+
+### Example 1 — Dashboard Screenshot Critique
+
+**Input:** Screenshot of a SaaS analytics dashboard, B2B product, no brand system defined.
+
+**Output (excerpt):**
+
+**Composition & Layout:** The main chart occupies 60% of the viewport but sits flush against the left edge with no margin, while the sidebar floats unanchored on the right. There is no consistent alignment axis — cards, charts, and labels each start at different x-positions. Fix: place all content on a 12-column grid with 24px gutters.
+
+**Visual Hierarchy:** The page has five elements at roughly the same visual weight: the chart title, two KPI numbers, a filter bar, and a legend. None reads as primary. The KPI numbers — the most decision-critical data — are 14px while chart labels are 16px. Fix: set KPI numbers to 40px bold, demote the filter bar to a secondary style.
+
+**Color:** Three shades of blue are used for three different data series with no consistent semantic mapping. The lightest blue (#99C4E0) on a white background fails WCAG AA at 2.1:1. Fix: use a four-color categorical palette with minimum 3:1 contrast, and document the color-to-meaning mapping.
+
+```
+## Top Issues (by impact)
+
+1. No visual hierarchy — KPI numbers are smaller than axis labels — Fix: 40px bold for KPIs, 12px for labels
+2. Color contrast failure (#99C4E0 on white = 2.1:1) — Fix: replace with #3A85B8 (5.1:1)
+3. Unanchored layout — no grid — Fix: 12-column grid, 24px gutters, consistent left margin
+```
+
+---
+
+### Example 2 — Wireframe Hierarchy Improvement
+
+**Input:** Two wireframes — before/after — for a pricing page. Before has three equally sized plan cards. After promotes the recommended plan with 20% larger card, highlighted border, and "Most Popular" badge.
+
+**Output:**
+
+**Before — Visual Hierarchy:** All three plan cards share identical dimensions, border weight, and typography. The eye has no natural landing point and spends equal time on all three options. This is the classic "everything is equal" failure: when nothing is emphasized, users default to the cheapest option or abandon. The "Recommended" label in 11px gray is invisible.
+
+**After — Visual Hierarchy:** The center card is 20% taller and carries a 2px brand-color border, creating an immediate focal point. The "Most Popular" badge uses the primary brand color at 14px medium weight, making it scannable at a glance. The hierarchy now reads: center → left → right, which matches the intended conversion goal.
+
+Fix applied: increase center card height by 20%, add 2px brand-border, raise badge to 14px medium. Verified: no color-only distinction (badge uses text + color).
+
 ## Reference Skills
 
 `layout-composition` — grid systems, Gestalt, whitespace, focal point

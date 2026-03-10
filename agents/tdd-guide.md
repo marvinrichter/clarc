@@ -96,6 +96,23 @@ go test -cover ./...
 - Asserting too little (passing tests that don't verify anything)
 - Not mocking external dependencies (Supabase, Redis, OpenAI, etc.)
 
+## Guardrail: Show Before Write
+
+**Never commit or push directly.** Before writing any test or implementation file, show what will be created:
+
+```
+About to write: src/lib/auth.test.ts
+Contents:
+  - describe('authenticateUser')
+    - it('returns user on valid credentials')
+    - it('throws on invalid password')
+    - it('throws on unknown email')
+
+Write this file? [yes/no]
+```
+
+Wait for confirmation before calling Write or Edit. This applies to both test files and implementation files.
+
 ## Quality Checklist
 
 - [ ] All public functions have unit tests

@@ -90,3 +90,34 @@ Consult these skills for detailed guidance:
 - `llm-app-patterns` — guardrails, fallback chains, observability
 - `cost-aware-llm-pipeline` — model tier selection, token budget
 - `rag-patterns` — RAG-specific prompt templates
+
+## Examples
+
+**Input:** System prompt for a customer support chatbot that concatenates user input directly into the prompt string.
+
+**Output:**
+```
+[CRITICAL] Prompt injection risk
+Prompt location: line 12, "User said: {user_input}" in system prompt
+Issue: User-controlled text is spliced into the system prompt — an attacker can inject "Ignore previous instructions and..." to override all constraints.
+Fix: Move user input to a separate user-turn message. System prompt must never contain interpolated user content.
+
+[HIGH] Missing output format
+Prompt location: constraint section, line 28
+Issue: "Return a helpful response" provides no schema. Responses will vary in structure across requests, breaking downstream parsing.
+Fix: Add an explicit JSON schema: { "answer": string, "escalate": boolean, "ticket_category": string }
+
+[MEDIUM] Contradictory instructions
+Prompt location: lines 8 and 31
+Issue: Line 8 says "Be brief and direct"; line 31 says "Provide thorough explanations with examples". These conflict — the model will pick one inconsistently.
+Fix: Choose one and remove the other. If context-dependent, add a rule: "Be brief for simple questions (<3 words); provide examples for technical questions."
+
+## Review Summary
+| Severity | Count | Status |
+|----------|-------|--------|
+| CRITICAL | 1     | block  |
+| HIGH     | 1     | warn   |
+| MEDIUM   | 1     | info   |
+
+Verdict: BLOCK — fix CRITICAL prompt injection before deploying.
+```

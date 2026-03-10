@@ -188,3 +188,40 @@ cat ~/.npmrc 2>/dev/null | grep registry
 - `dependency-audit` — per-language vulnerability scanning, license compliance
 - `/sbom` command — generate and attach SBOM to releases
 - `/dep-audit` command — run full dependency vulnerability audit
+
+## Examples
+
+**Input:** Pre-release audit of a Node.js + Dockerfile project with GitHub Actions CI.
+
+**Output:**
+```
+## Supply Chain Security Audit
+Repository: my-api | Date: 2026-03-10
+
+### CRITICAL
+1. **Unpinned Dockerfile base image** — FROM node:18 (no digest)
+   File: Dockerfile:1
+   Risk: Image can be replaced with a malicious version silently
+   Fix: FROM node@sha256:a1b2c3... (pin to digest)
+
+### HIGH
+1. **GitHub Actions not pinned to SHA** — 4 third-party actions use tag pinning
+   Files: .github/workflows/ci.yml (actions/checkout@v4, actions/setup-node@v4)
+   Fix: Pin to full commit SHA, e.g. actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+2. **npm install in CI instead of npm ci**
+   File: .github/workflows/ci.yml:38
+   Fix: Replace with npm ci to enforce lockfile
+
+### MEDIUM
+1. **No SBOM generation** — no sbom.json or sbom-action in workflows
+   Fix: Add anchore/sbom-action@v1 to release.yml
+
+### Summary
+| Category | Status |
+|---|---|
+| Dependency pinning | CRITICAL issues |
+| Lock files committed | OK (package-lock.json present) |
+| GitHub Actions pinned | HIGH — 4 actions on tags |
+| SBOM | Missing |
+```

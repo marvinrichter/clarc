@@ -193,3 +193,26 @@ grep -rn "Platform.isIOS\|Platform.isAndroid\|defaultTargetPlatform" --include="
 - `flutter-patterns` — BLoC, Riverpod, navigation, Isolates
 - `dart-patterns` — null safety, sealed classes, error handling
 - `flutter-testing` — testing patterns for the issues found
+
+## Examples
+
+**Input:** 3 modified `.dart` files after implementing a product listing screen with BLoC.
+
+**Output:**
+```
+## Flutter Review
+
+### CRITICAL
+- [lib/features/products/product_card.dart:38] Force unwrap on nullable: `product!.imageUrl` — Fix: use `product?.imageUrl ?? 'assets/placeholder.png'`
+
+### HIGH
+- [lib/features/products/product_list_screen.dart:22] Missing `const` on 11 widget constructors — Fix: run `dart fix --apply` to auto-fix most cases
+- [lib/features/products/product_list_screen.dart:55] `ListView(children: products.map(...).toList())` with unbounded list — Fix: replace with `ListView.builder(itemCount: products.length, itemBuilder: ...)`
+- [lib/features/products/product_bloc.dart:12] `BlocBuilder` without `buildWhen` on heavy screen widget — Fix: add `buildWhen: (prev, curr) => prev.products != curr.products`
+
+### Positive Patterns
+- Async errors handled correctly with `FutureBuilder` error case in `product_detail_screen.dart`
+
+### Summary
+1 critical, 3 high. Block merge until CRITICAL and HIGH are resolved.
+```

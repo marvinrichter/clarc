@@ -201,3 +201,19 @@ Overall system score: X.X / 10
   ]
 }
 ```
+
+## Examples
+
+**Input:** `/command-audit --all` — audit the full clarc command system.
+
+**Output:** Structured findings report with dimension scores, specific commands flagged, and recommended actions. Example excerpt:
+
+```
+## Command System Audit — 48 commands — Score: 8.1 / 10
+
+### Issues
+| Severity | Dimension | Finding | Suggestion |
+|----------|-----------|---------|------------|
+| MEDIUM | missing_commands | No command for `supply-chain-auditor` agent | Add commands/supply-chain-audit.md |
+| LOW | feedback_loop | `/plan` output lacks "next steps" suggestion | Add "Run /tdd next" at the end |
+```

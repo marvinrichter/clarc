@@ -76,3 +76,27 @@ When invoked:
 
 - Tidyverse, purrr, R6, tidy evaluation: `skills/r-patterns`
 - testthat, mockery, covr, shinytest2: `skills/r-testing`
+
+## Examples
+
+**Input:** 3 modified R files after adding a Shiny dashboard with user-driven SQL filtering and data export.
+
+**Output:**
+```
+## R Review
+
+### CRITICAL
+- [R/data_fetch.R:22] SQL injection: `paste0("SELECT * FROM sales WHERE region = '", input$region, "'")` — Fix: `DBI::dbGetQuery(con, "SELECT * FROM sales WHERE region = ?", params = list(input$region))`
+- [app.R:45] Shiny input not validated: `input$date_range` used directly in filter without `shiny::validate(need(...))` — Fix: add `shiny::validate(need(is.Date(input$date_range), "Invalid date range"))`
+
+### HIGH
+- [R/analysis.R:18] `1:nrow(results)` in loop — Fix: use `seq_len(nrow(results))` to handle empty data frames safely
+- [R/utils.R:34] `setwd("data/raw")` — Fix: use `here::here("data", "raw")` for portable paths
+- [renv.lock] Missing update — `writexl` added to DESCRIPTION without `renv::snapshot()`
+
+### MEDIUM
+- [R/compute.R:56] `mean(revenue)` without `na.rm = TRUE` — NA rows will silently return NA; add `na.rm = TRUE`
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

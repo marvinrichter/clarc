@@ -137,3 +137,35 @@ Summary table format:
 | hook-auditor | 6.1 | HIGH: no exit criteria |
 | code-reviewer | 9.2 | — |
 ```
+
+## Examples
+
+**Input:** `agent-quality-reviewer code-reviewer` — review the code-reviewer agent.
+
+**Output:**
+```json
+{
+  "agent": "code-reviewer",
+  "file": "agents/code-reviewer.md",
+  "overall_score": 8.1,
+  "dimensions": {
+    "instruction_clarity":   { "score": 9, "note": "Steps are concrete and ordered" },
+    "model_appropriateness": { "score": 8, "note": "Sonnet correct for routing orchestration" },
+    "tool_coverage":         { "score": 9, "note": "All needed tools present" },
+    "trigger_precision":     { "score": 7, "note": "Description clearly scoped to orchestration" },
+    "exit_criteria":         { "score": 8, "note": "Output format and verdict defined" },
+    "example_density":       { "score": 5, "issue": "Only 1 partial example" },
+    "overlap_detection":     { "score": 9, "note": "Distinct as orchestrator, not reviewer" },
+    "safety_guardrails":     { "score": 10, "note": "Read-only agent" }
+  },
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "dimension": "example_density",
+      "finding": "Only 1 example showing output format",
+      "suggestion": "Add 2nd example showing multi-language fan-out"
+    }
+  ],
+  "verdict": "GOOD — 1 medium issue to address"
+}
+```

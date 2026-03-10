@@ -158,3 +158,28 @@ LOW      — Naming inconsistency, style duplication, minor polish
 `design-ops` — token sync pipeline, Figma Variables, handoff
 `accessibility` — WCAG 2.2, ARIA, focus management
 `css-architecture` — Tailwind conventions, CSS custom properties
+
+## Examples
+
+**Input:** Audit the `src/design-system/` directory of a React + Tailwind frontend before a major UI release.
+
+**Output:** Structured findings report with severity ratings, specific tokens and components flagged, and prioritized quick wins.
+
+```markdown
+## Design System Audit — src/design-system/
+**Framework:** React  **Styling:** Tailwind CSS
+
+### Summary
+| Dimension | Score | Critical | High | Medium | Low |
+|-----------|-------|----------|------|--------|-----|
+| Token Structure | 5 | 0 | 3 | 2 | 1 |
+| Dark Mode | 3 | 2 | 1 | 0 | 0 |
+| Accessibility | 7 | 0 | 1 | 2 | 0 |
+
+### Critical Findings
+- `components/Button.tsx:12` — dark mode background is pure `#000000` — Fix: use `--color-surface-dark` token (off-black)
+
+### Quick Wins
+1. Replace 14 hardcoded `#3B82F6` values with `--color-brand-primary` token (30 min)
+2. Add `aria-hidden="true"` to 8 decorative icons (15 min)
+```

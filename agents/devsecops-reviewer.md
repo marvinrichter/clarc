@@ -301,3 +301,34 @@ fi
 | **LOW** | Best practice violation, theoretical risk | Track in backlog |
 
 **Remember:** CRITICAL findings are blockers — do not approve the PR until resolved. Escalate to the security team for any finding involving exposed secrets or active production exploitation.
+
+## Examples
+
+**Input:** PR touching `src/auth/login.py`, `src/api/users.py`, and `.github/workflows/deploy.yml`.
+
+**Output:** Structured findings report with severity ratings, vulnerable code snippets, and concrete fixes.
+
+```markdown
+# DevSecOps Security Review
+**Files Reviewed:** src/auth/login.py, src/api/users.py, .github/workflows/deploy.yml
+
+## CRITICAL — Block Immediately
+
+### [FINDING-001] SQL Injection in user lookup
+- **File:** `src/api/users.py`, line 34
+- **Category:** OWASP A03: Injection
+- **Fix:**
+  ```python
+  # Vulnerable (before)
+  query = f"SELECT * FROM users WHERE email = {email}"
+  # Secure (after)
+  query = "SELECT * FROM users WHERE email = %s"
+  cursor.execute(query, (email,))
+  ```
+
+## HIGH — Fix Before Release
+
+### [FINDING-002] JWT without expiration
+- **File:** `src/auth/login.py`, line 22
+- **Fix:** Add `"exp": datetime.utcnow() + timedelta(hours=1)` to JWT payload
+```

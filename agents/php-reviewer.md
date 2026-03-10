@@ -75,3 +75,28 @@ When invoked:
 
 - PHP patterns and architecture: `skills/php-patterns`
 - PHPUnit, Pest, Laravel/Symfony testing: `skills/php-testing`
+
+## Examples
+
+**Input:** 3 modified `.php` files after adding a user registration endpoint in a Laravel application.
+
+**Output:**
+```
+## PHP Review
+
+### CRITICAL
+- [src/Http/Controllers/UserController.php:1] Missing declare(strict_types=1) — add as first statement after opening tag
+- [src/Repository/UserRepository.php:38] SQL injection: `$db->query("SELECT * FROM users WHERE email = '{$email}'")`  — Fix: use `$db->prepare('SELECT * FROM users WHERE email = ?')` with bound param
+
+### HIGH
+- [src/Http/Controllers/UserController.php:44] Fat controller: `register()` is 52 lines — extract to UserRegistrationService
+- [src/Model/User.php:22] Missing return type on public `getFullName()` — add `: string`
+- [src/Http/Controllers/UserController.php:18] Mutable value object: `Email` has a `setAddress()` setter — add `readonly` to properties
+
+### MEDIUM
+- [src/Http/Controllers/UserController.php:11] Raw `$_POST['email']` in controller — pass a validated FormRequest DTO instead
+- [src/Service/UserService.php:55] Magic string: `'active'` status used in 4 places — introduce `UserStatus` enum
+
+### Summary
+2 critical, 3 high, 2 medium. Block merge until CRITICAL and HIGH are resolved.
+```

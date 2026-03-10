@@ -103,3 +103,39 @@ Pass the output of each phase as input to the next.
 ### Recommendations
 [final unified recommendation]
 ```
+
+## Examples
+
+**Input:** `/orchestrate` — "Review the new checkout feature: 8 changed files across TypeScript and SQL. Check code quality, security, and database query safety."
+
+**Output:**
+```
+## Orchestration Plan
+
+**Task:** Review checkout feature — 8 files (TypeScript + SQL)
+**Pattern:** Fan-Out → Fan-In (3 independent review dimensions)
+**Agents:** typescript-reviewer (files: *.ts), security-reviewer (all files), database-reviewer (files: *.sql, *.prisma)
+
+### Execution
+Phase 1 (parallel): typescript-reviewer + security-reviewer + database-reviewer
+Phase 2: synthesize findings, resolve conflicts by priority (security > quality > style)
+
+### Synthesis
+Unified findings table sorted by severity across all reviewers.
+
+---
+
+## Results
+
+### Agreements
+All 3 agents flagged missing input validation on CheckoutController.ts:34.
+
+### Conflicts Resolved
+| Conflict | Agents | Class | Winner | Rationale |
+|----------|--------|-------|--------|-----------|
+| Parameterized query vs. ORM | database-reviewer (parameterize) vs. typescript-reviewer (use Prisma) | Implementation | database-reviewer | Security takes precedence; Prisma migration is a separate task |
+
+### Recommendations
+CRITICAL: Fix SQL injection in checkout_repository.ts:28 before merge.
+HIGH: Add @Valid on CheckoutRequest DTO, add missing FK index on order_items.checkout_id.
+```

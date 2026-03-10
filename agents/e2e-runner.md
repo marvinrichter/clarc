@@ -107,3 +107,20 @@ For detailed Playwright patterns, Page Object Model examples, configuration temp
 ---
 
 **Remember**: E2E tests are your last line of defense before production. They catch integration issues that unit tests miss. Invest in stability, speed, and coverage.
+
+## Examples
+
+**Input:** `/e2e checkout` — generate and run E2E tests for the checkout user journey.
+
+**Output:** Created test file and execution results:
+```
+Generated: tests/e2e/checkout.spec.ts (3 scenarios)
+  ✓ Scenario: Add item to cart and proceed to checkout (2.1s)
+  ✓ Scenario: Complete purchase with valid credit card (4.3s)
+  ✗ Scenario: Show error on expired card — FLAKY (intermittent timeout on payment confirmation)
+
+Quarantined: "Show error on expired card" → test.fixme(true, 'Flaky - Issue #234')
+
+Artifacts: screenshots/checkout-success.png, traces/checkout-failure.zip
+Pass rate: 2/3 (67%) — 1 quarantined. Fix Issue #234 to reach 100%.
+```

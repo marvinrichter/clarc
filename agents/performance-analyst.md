@@ -211,3 +211,47 @@ If `[agent-name]` recommended [opposite action — e.g., always recompute / keep
 ```
 
 This signal is consumed by the `orchestrator` agent during synthesis.
+
+## Examples
+
+**Input:** pprof CPU profile from a Go API showing p99 latency of 850ms (SLO: 200ms) and a Lighthouse report for the React frontend (LCP: 5.2s).
+
+**Output:**
+```
+## Performance Analysis Report
+
+### Baseline & Context
+- Backend p99 latency: 850ms | Target: 200ms | Gap: 325%
+- Frontend LCP: 5.2s | Target: 2.5s | Bottleneck: I/O-bound (backend) + render-blocking (frontend)
+
+---
+
+### Finding 1: N+1 Queries in UserRepository.FindWithOrders
+**Severity:** CRITICAL | **Expected Impact:** 60-70% p99 reduction (850ms → ~280ms)
+**Location:** internal/repository/user_repository.go:87
+
+Root cause: `orders` relation loaded in a loop (N=250 avg) → 251 DB round-trips per request.
+
+Fix: Replace loop with single JOIN query using Preload or raw SELECT with IN clause.
+
+How to Verify: Re-run `go test -bench=BenchmarkGetUsers -count=5` — p99 should drop below 300ms.
+
+---
+
+### Finding 2: Missing Index on orders.user_id
+**Severity:** HIGH | **Expected Impact:** 80% query speedup for order lookups
+**Location:** db/migrations/003_orders.sql
+
+orders.user_id has no index — full table scan on every join (1.2M rows).
+Fix: `CREATE INDEX CONCURRENTLY idx_orders_user_id ON orders(user_id);`
+
+---
+
+### Summary
+| Priority | Finding | Impact | Effort |
+|----------|---------|--------|--------|
+| 1 | N+1 in UserRepository | HIGH (60-70% lat reduction) | Low (2h) |
+| 2 | Missing index orders.user_id | HIGH (80% query speedup) | Low (15min) |
+
+Recommended order: Fix #1, re-profile, then #2. Re-profile after each fix.
+```

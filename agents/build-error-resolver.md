@@ -112,3 +112,24 @@ npx eslint . --fix
 ---
 
 **Remember**: Fix the error, verify the build passes, move on. Speed and precision over perfection.
+
+## Examples
+
+**Input:** `npx tsc --noEmit` fails with 3 type errors after adding a new API route.
+
+**Output:**
+```
+[FIXED] src/routes/orders.ts:42
+Error: Argument of type 'string | undefined' is not assignable to parameter of type 'string'
+Fix: Added null check — `const id = req.params.id ?? ''` replaced with `if (!req.params.id) return res.status(400).json(...)`
+
+[FIXED] src/types/order.ts:15
+Error: Property 'customerId' does not exist on type 'Order'
+Fix: Added `customerId: string` field to Order interface
+
+[FIXED] src/services/orderService.ts:88
+Error: 'await' outside async function
+Fix: Added `async` keyword to `getOrder` function signature
+
+Build Status: SUCCESS | Errors Fixed: 3 | Files Modified: src/routes/orders.ts, src/types/order.ts, src/services/orderService.ts
+```

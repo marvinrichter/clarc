@@ -113,3 +113,27 @@ For detailed Python patterns, security examples, and code samples, see skill: `p
 ---
 
 Review with the mindset: "Would this code pass review at a top Python shop or open-source project?"
+
+## Examples
+
+**Input:** 3 modified `.py` files after implementing a market publishing feature in a FastAPI / hexagonal architecture project.
+
+**Output:**
+```
+## Review: app/domain/market.py, app/use_cases/publish_market.py, app/adapters/in_/http/market_router.py
+
+### CRITICAL
+- [market_router.py:34] SQL injection: f"SELECT * FROM markets WHERE slug = '{slug}'" — Fix: use parameterized query `await db.fetch_one("SELECT * FROM markets WHERE slug = :slug", {"slug": slug})`
+- [publish_market.py:18] Bare except: `except: pass` swallows all errors including KeyboardInterrupt — Fix: `except MarketNotFoundError as e: raise` with specific type
+
+### HIGH
+- [market.py:12] Domain imports FastAPI: `from fastapi import HTTPException` in domain/ — Fix: raise a pure domain exception `MarketPublishError`, map to HTTP in the router adapter
+- [publish_market.py:44] Missing type hint on public method `publish(market_id)` — Fix: `async def publish(self, market_id: UUID) -> Market:`
+- [market_router.py:58] Non-RFC 7807 error: `raise HTTPException(422, detail="invalid state")` — Fix: return `JSONResponse(content={"type": "...", "title": "...", "status": 422, "detail": "..."}, media_type="application/problem+json")`
+
+### MEDIUM
+- [market.py:67] Mutable default argument: `def build(tags=[])` — Fix: `def build(tags: list[str] | None = None)`
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

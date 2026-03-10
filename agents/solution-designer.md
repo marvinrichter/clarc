@@ -181,3 +181,16 @@ High-level picture of what building the chosen option looks like:
 4. **Build vs. buy is always a valid option.** Always consider whether a library or SaaS handles 80%+ of the problem.
 5. **Phase approaches are often best.** A phased design (start simple, extend) often beats both the minimal and the full option.
 6. **Document what was rejected and why.** Future developers will face the same choices — save them the time.
+
+## Examples
+
+**Input:** `/explore real-time-notifications` — product-evaluator gave Go on SSE-based order shipping notifications.
+
+**Output:** ADR with 3 options compared. Example:
+- **Option A: Server-Sent Events + Redis Pub/Sub** — Shell SSE route subscribes to Redis channel populated by Postgres trigger; minimal new deps (Redis already in stack)
+- **Option B: WebSockets (Socket.io)** — bidirectional but notification is unidirectional; higher complexity, adds Socket.io dep, requires sticky sessions
+- **Option C: Polling (30s interval)** — zero infra change; poor UX (30s delay), chatty, does not meet "within 2s" SLO
+
+Trade-off table: Option A wins on codebase fit (Redis in use), complexity (SSE is simpler than WS), and risk (battle-tested). Option C rejected outright (fails latency SLO). Option B rejected (unnecessary bidirectionality adds ops overhead).
+
+**Decision:** Option A — SSE + Redis. Main trade-off accepted: SSE not supported by IE11 (no IE users in customer base per analytics). Next: `/prd real-time-notifications`.

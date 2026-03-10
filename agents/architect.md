@@ -223,3 +223,15 @@ This signal is consumed by the `orchestrator` agent during synthesis.
 ---
 
 **Remember**: Good architecture enables rapid development, easy maintenance, and confident scaling. The best architecture is simple, clear, and follows established patterns.
+
+## Examples
+
+**Input:** User asks to design a real-time notification system for a multi-tenant SaaS application.
+
+**Output:** Structured design with context, options, trade-offs, recommendation, and next steps. Example:
+- Option A: WebSocket server (stateful) — Pros: low latency, bidirectional; Cons: horizontal scaling complexity, sticky sessions needed
+- Option B: Server-Sent Events + Redis pub/sub — Pros: simpler scaling, HTTP-native, no sticky sessions; Cons: unidirectional only
+- Option C: Third-party push service (Pusher/Ably) — Pros: zero ops, global edge; Cons: vendor lock-in, per-message cost
+- **Recommendation:** Option B (SSE + Redis pub/sub) because the system already runs Redis, horizontal scaling is a key requirement, and all notifications are server-to-client only.
+
+Next steps: `/arc42 section-5` to update building blocks, then run `/explore notification-system` to generate the ADR.
