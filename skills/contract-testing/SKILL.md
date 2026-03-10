@@ -14,6 +14,9 @@ Test API contracts between services to catch breaking changes before deployment.
 - Checking schema compatibility (JSON Schema, Protobuf, Avro)
 - Detecting breaking changes in CI with oasdiff
 - Implementing `can-i-deploy` gates before deployment
+- Establishing a safety net between two independently deployed microservices so either team can release without coordinating manually
+- Adding a CI gate that blocks any pull request that introduces a field removal, rename, or type change to a public REST API
+- Testing a Kafka event consumer against the exact message schema that the producer publishes, without spinning up the full event pipeline
 
 ---
 

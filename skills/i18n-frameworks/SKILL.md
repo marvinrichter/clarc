@@ -11,6 +11,10 @@ description: "Framework-specific i18n implementation: i18next + react-i18next (R
 - Migrating from a custom solution to a framework-standard approach
 - Adding a new locale to an existing i18n setup
 - Debugging missing translations or locale switching issues
+- Choosing between i18next and next-intl for a new Next.js App Router project
+- Configuring lazy-loaded translation namespaces to avoid bundling all locale strings upfront
+- Setting up `makemessages` and `compilemessages` workflows in a Django project with multiple languages
+- Migrating an iOS app from Localizable.strings to the Xcode 15 String Catalogs format
 
 ---
 

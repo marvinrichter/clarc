@@ -11,6 +11,9 @@ description: "PHP 8.4+ patterns: readonly classes/properties, enums, named argum
 - Designing service/repository layers
 - Reviewing PHP code for idiomatic patterns
 - Working with Laravel or Symfony frameworks
+- Replacing stringly-typed status comparisons with backed enums and `match` expressions for exhaustive, type-safe branching
+- Modeling domain value objects as `readonly` classes to enforce immutability and input validation at construction time
+- Structuring command/handler pairs to keep controllers thin and business logic independently testable
 
 ---
 

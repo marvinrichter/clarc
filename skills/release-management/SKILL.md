@@ -15,6 +15,9 @@ A release is not just a deploy. It's a versioned, documented, communicable event
 - Setting up automated release notes
 - Planning a hotfix release
 - Documenting rollback procedures
+- Determining whether a commit warrants a MAJOR, MINOR, or PATCH bump based on conventional commit types
+- Automating the release PR workflow with `release-please` in GitHub Actions
+- Creating a hotfix branch from a release tag when a production incident requires a targeted patch
 
 ---
 

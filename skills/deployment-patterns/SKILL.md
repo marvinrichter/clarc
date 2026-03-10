@@ -15,6 +15,8 @@ Production deployment workflows and CI/CD best practices.
 - Implementing health checks and readiness probes
 - Preparing for a production release
 - Configuring environment-specific settings
+- Designing a rollback plan for a risky schema change or infrastructure update
+- Validating environment variable configuration at application startup to fail fast on misconfiguration
 
 ## Deployment Strategies
 

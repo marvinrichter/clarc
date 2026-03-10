@@ -14,6 +14,9 @@ Invoke this skill:
 - Before creating a PR
 - When you want to ensure quality gates pass
 - After refactoring
+- When CI is failing and the root cause spans multiple quality dimensions (build, types, lint, tests)
+- Before a release to confirm no secrets, stray `console.log` calls, or unintended file changes are present
+- After a merge conflict resolution to verify that the build and test suite are still green
 
 ## Verification Phases
 

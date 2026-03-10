@@ -15,6 +15,8 @@ Patterns for adopting Swift 6.2's concurrency model where code runs single-threa
 - Offloading CPU-intensive work to background threads
 - Implementing protocol conformances on MainActor-isolated types
 - Enabling Approachable Concurrency build settings in Xcode 26
+- Understanding why an async function no longer implicitly hops to a background thread in Swift 6.2
+- Deciding when to annotate a function with `@concurrent` versus keeping it on the calling actor
 
 ## Core Problem: Implicit Background Offloading
 

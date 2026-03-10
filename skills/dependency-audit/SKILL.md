@@ -14,6 +14,8 @@ Your dependencies are your attack surface. Log4Shell, colors.js, event-stream â€
 - Setting up automated dependency updates (Renovate/Dependabot)
 - License compliance review before open-sourcing or commercial distribution
 - Investigating a suspicious transitive dependency
+- Verifying that internal package names are protected against dependency confusion attacks
+- Adding automated vulnerability scanning to a CI/CD pipeline for the first time
 
 ---
 

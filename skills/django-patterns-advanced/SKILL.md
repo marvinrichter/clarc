@@ -14,6 +14,8 @@ description: Advanced Django patterns — service layer, caching, signals, middl
 - Using Django signals or custom middleware
 - Applying DDD concepts in Django (bounded contexts, domain events)
 - Production performance tuning
+- Moving business logic out of views and serializers into a dedicated service layer
+- Modeling Django apps as bounded contexts with fat models and use-case-style service functions
 
 ## Service Layer Pattern
 

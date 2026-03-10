@@ -12,6 +12,9 @@ description: "Internationalization architecture: locale detection strategy, tran
 - Supporting RTL languages (Arabic, Hebrew, Persian)
 - Fixing locale-sensitive formatting (dates, numbers, currency)
 - Auditing for hardcoded user-visible strings
+- Choosing a translation key naming convention (flat, namespaced, or ICU MessageFormat) before building a multi-locale feature
+- Implementing pseudo-localization in development to catch layout breaks caused by string length expansion
+- Configuring a fallback locale chain so partially translated locales gracefully fall back to English
 
 ---
 

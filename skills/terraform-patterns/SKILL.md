@@ -14,6 +14,9 @@ Infrastructure as Code: describe desired state → Terraform plans the diff → 
 - Creating reusable infrastructure modules
 - Migrating manually-created resources under Terraform control
 - Reviewing infrastructure changes in CI/CD
+- Structuring multi-environment infrastructure (dev, staging, prod) with separate state files
+- Debugging a `terraform plan` that shows unexpected resource replacements or drift
+- Enforcing IAM least-privilege policies for ECS task roles or Kubernetes workloads
 
 ---
 

@@ -15,6 +15,9 @@ Reference for building and customizing Backstage — the open-source Internal De
 - Setting up TechDocs for a service
 - Configuring GitHub App integration
 - Designing the software catalog entity model
+- Onboarding a new microservice into an existing Internal Developer Portal with team ownership and dependency tracking
+- Implementing a self-service workflow so developers can provision new services, databases, or queues through the Scaffolder UI
+- Migrating documentation from a wiki to TechDocs so it stays co-located with the code that it describes
 
 ---
 

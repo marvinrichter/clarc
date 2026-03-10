@@ -14,6 +14,10 @@ Not a tool collection — a structured process from raw idea to shipped code.
 - User is unsure which commands or agents to use
 - User wants to understand the recommended workflow
 - Starting a new feature, fixing a bug, or refactoring
+- Onboarding a developer who is new to clarc and needs a guided tour of the full pipeline from idea to merged PR
+- Deciding which phases to skip for a well-defined ticket versus an exploratory feature with unclear scope
+- Explaining why quality gates (TDD, code review, security scan) are mandatory steps rather than optional add-ons
+- Comparing the clarc way to another AI-assisted development framework like SPARC or a custom workflow
 
 ---
 

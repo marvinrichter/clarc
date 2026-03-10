@@ -13,6 +13,8 @@ description: "Kotlin testing with JUnit 5, Kotest, MockK, coroutine testing, and
 - Mocking dependencies with MockK
 - Writing integration tests with Testcontainers
 - Configuring Kover for coverage
+- Diagnosing test failures caused by `runBlocking` ignoring virtual time in coroutine tests
+- Replacing H2 in-memory databases with Testcontainers to match production database behavior
 
 ---
 

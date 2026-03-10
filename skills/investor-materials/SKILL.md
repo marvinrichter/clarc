@@ -14,6 +14,9 @@ Build investor-facing materials that are consistent, credible, and easy to defen
 - building a financial model, milestone plan, or use-of-funds table
 - answering accelerator or incubator application questions
 - aligning multiple fundraising docs around one source of truth
+- reconciling conflicting metrics or projections that appear in different fundraising assets before a partner meeting
+- structuring bear, base, and bull case scenarios in a financial model where key assumptions are uncertain
+- preparing an appendix with supporting data to defend traction claims or market sizing during investor due diligence
 
 ## Golden Rule
 

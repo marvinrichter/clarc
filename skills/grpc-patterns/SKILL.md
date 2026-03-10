@@ -14,6 +14,9 @@ Binary RPC framework built on HTTP/2. Use when you need: strong typing between s
 - Performance-critical service calls (gRPC is ~10x smaller than JSON)
 - Building microservices that need a strongly-typed contract
 - Replacing REST endpoints between internal services
+- Versioning a proto schema safely after an already-deployed service has external consumers
+- Setting up `buf lint` and `buf breaking` checks in CI to prevent accidental wire-incompatible changes
+- Choosing between unary, server-streaming, client-streaming, and bidirectional streaming for a new RPC method
 
 ## gRPC vs REST — Decision
 

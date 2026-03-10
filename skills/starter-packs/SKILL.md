@@ -14,6 +14,9 @@ Bootstrap a new project from a battle-tested archetype with correct structure, C
 - User runs `/project-init <pack-name>`
 - User asks "set up a REST API project" or similar
 - After language detection in the setup wizard
+- Bootstrapping a service that must follow hexagonal architecture with correct folder structure from day one
+- Onboarding a new team to clarc where a preconfigured CI, test setup, and rule set should be ready immediately
+- Evaluating which archetype (rest-api, react-spa, go-service, etc.) best matches a new project's requirements
 
 ## Available Packs
 

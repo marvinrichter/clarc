@@ -14,6 +14,8 @@ Docker and Docker Compose best practices for containerized development.
 - Troubleshooting container networking or volume issues
 - Reviewing Dockerfiles for security and size
 - Migrating from local dev to containerized workflow
+- Separating dev and production Dockerfile stages to keep the production image minimal and rootless
+- Configuring custom bridge networks so database containers are unreachable from the frontend service
 
 ## Docker Compose for Local Development
 

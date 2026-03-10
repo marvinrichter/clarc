@@ -13,6 +13,9 @@ description: "CLI user experience patterns: error messages that guide (not just 
 - Implementing autocomplete for shell (bash/zsh/fish)
 - Adding spinners or progress bars
 - Reviewing the UX of an existing CLI tool
+- Designing the initial UX for a new CLI tool where flag naming, config hierarchy, and output format decisions have long-term consequences
+- Auditing a CLI that developers find hard to use or frequently get wrong — focusing on error message quality and help text clarity
+- Adding `--json` and `--quiet` output modes so a CLI can be scripted and piped without breaking human-readable output
 
 ---
 

@@ -12,6 +12,9 @@ description: "RAG (Retrieval-Augmented Generation) architecture patterns: chunki
 - Reducing LLM hallucinations by grounding answers in retrieved context
 - Building chatbots, Q&A systems, or AI assistants
 - Designing prompt templates and managing prompt versions
+- Selecting a chunking strategy for structured documents like Markdown, PDFs, or code files
+- Adding a reranking step to improve retrieval precision before passing context to the LLM
+- Optimizing RAG pipeline cost by introducing semantic caching for repeated or similar queries
 
 ---
 

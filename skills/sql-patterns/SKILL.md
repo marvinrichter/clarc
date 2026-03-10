@@ -13,6 +13,8 @@ description: "SQL query patterns: parameterized queries, keyset pagination, UPSE
 - Writing database migrations
 - Optimizing slow queries
 - Setting up row-level security or audit logging
+- Replacing OFFSET pagination with keyset cursors on a large or growing table
+- Adding UPSERT logic to eliminate check-then-insert race conditions in concurrent writes
 
 ---
 

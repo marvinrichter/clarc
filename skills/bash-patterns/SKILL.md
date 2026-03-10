@@ -12,6 +12,9 @@ description: "Idiomatic Bash scripting patterns: script structure, argument pars
 - Debugging unexpected script behavior
 - Converting ad-hoc commands into a reusable script
 - Deciding whether Bash or another language is appropriate
+- Creating CI/CD helper scripts that need robust error handling, argument parsing, and cross-platform portability
+- Adding retry logic with exponential backoff to a deployment or health-check script that calls an external API
+- Hardening an existing script that has no `set -euo pipefail`, unquoted variables, or missing cleanup traps
 
 ---
 

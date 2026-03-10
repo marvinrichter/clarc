@@ -11,6 +11,10 @@ description: "C testing patterns: Unity framework (TEST_ASSERT_*), CMocka mockin
 - Setting up CMake CTest integration
 - Running tests with AddressSanitizer or Valgrind
 - Mocking C functions for isolation testing
+- Adding test coverage to a C library that currently has no automated tests and needs to be validated before a release
+- Replacing a slow Valgrind CI step with a fast AddressSanitizer build that catches the same heap and stack errors
+- Isolating a C module that calls a network or filesystem function by wrapping it with CMocka `__wrap_` mocks
+- Wiring CTest into a CMake build so `cmake --build build && ctest` gives a single pass/fail result in CI
 
 ---
 

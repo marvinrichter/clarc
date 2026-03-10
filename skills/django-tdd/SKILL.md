@@ -13,6 +13,9 @@ Test-driven development for Django applications using pytest, factory_boy, and D
 - Implementing Django REST Framework APIs
 - Testing Django models, views, and serializers
 - Setting up testing infrastructure for Django projects
+- Setting up factory_boy factories to replace manual test data creation and database fixtures
+- Writing integration tests for a complete user flow through multiple Django views or API endpoints
+- Configuring pytest-django with `--reuse-db` and `--nomigrations` to speed up a slow test suite
 
 ## TDD Workflow for Django
 

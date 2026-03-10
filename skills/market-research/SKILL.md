@@ -14,6 +14,8 @@ Produce research that supports decisions, not research theater.
 - comparing competitors or adjacent products
 - preparing investor dossiers before outreach
 - pressure-testing a thesis before building, funding, or entering a market
+- gathering technology or vendor intelligence before committing to a stack decision
+- synthesizing qualitative and quantitative signals into a concise decision recommendation with sourced evidence
 
 ## Research Standards
 

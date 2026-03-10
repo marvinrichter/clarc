@@ -14,6 +14,8 @@ Run before PRs, after major changes, and pre-deploy.
 - Pre-deployment verification for staging or production
 - Running full build → lint → test → security scan pipeline
 - Validating test coverage meets thresholds
+- After adding a new dependency to confirm no OWASP CVEs were introduced
+- Reviewing a diff for leftover debug logging, unchecked exceptions, or misconfigured CORS before merge
 
 ## Phase 1: Build
 

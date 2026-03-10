@@ -13,6 +13,10 @@ Cache expensive file processing results (PDF parsing, text extraction, image ana
 - Processing cost is high and same files are processed repeatedly
 - Need a `--cache/--no-cache` CLI option
 - Want to add caching to existing pure functions without modifying them
+- Adding caching to a batch LLM pipeline that processes the same uploaded documents across multiple runs or user sessions
+- Designing a cache layer that must survive file renames and directory reorganizations without invalidating existing entries
+- Implementing cache invalidation that is automatic and correct without requiring a manual cache-clear step when file content changes
+- Separating caching concerns from a pure extraction or analysis function using a service layer wrapper that respects the single-responsibility principle
 
 ## Core Pattern
 

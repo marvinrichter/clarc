@@ -11,6 +11,9 @@ description: "C# testing patterns: xUnit with [Fact]/[Theory], FluentAssertions,
 - Setting up FluentAssertions and Moq
 - Writing WebApplicationFactory integration tests
 - Using Testcontainers for database integration tests
+- Generating realistic test data with Bogus instead of hand-crafted fixtures
+- Enforcing a minimum code coverage threshold via Coverlet in CI
+- Migrating from MSTest or NUnit to xUnit and needing idiomatic test structure
 
 ---
 

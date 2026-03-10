@@ -9,6 +9,12 @@ description: RFC 7807 / RFC 9457 Problem Details for HTTP APIs — standard erro
 
 Use this skill whenever you need to implement HTTP error responses. Apply it to every REST/HTTP API regardless of language or framework.
 
+- Adding or reviewing error handling in any REST or HTTP API endpoint
+- Replacing ad-hoc `{ "error": "..." }` JSON responses with the RFC 7807 standard format
+- Implementing validation error aggregation using the RFC 9457 `errors` array extension
+- Setting up a global error handler or middleware in Express, FastAPI, Spring Boot, or Go
+- Ensuring the `Content-Type: application/problem+json` header is used consistently for all error responses
+
 ## Standard Fields
 
 RFC 9457 defines these fields (all optional, `status` is strongly recommended):

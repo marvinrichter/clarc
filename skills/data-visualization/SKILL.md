@@ -12,6 +12,8 @@ description: "Data visualization implementation: chart type selection framework 
 - Adding accessibility (ARIA, color-blind-safe palettes) to existing charts
 - Optimizing chart performance for large datasets
 - Making SVG charts responsive
+- Deciding between SVG and Canvas rendering based on data volume and interaction needs
+- Selecting a React chart library (Recharts vs. Victory vs. Chart.js vs. D3) for a new feature
 
 ---
 

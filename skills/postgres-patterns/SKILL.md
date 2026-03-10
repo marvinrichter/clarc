@@ -14,6 +14,9 @@ Quick reference for PostgreSQL best practices. For detailed guidance, use the `d
 - Troubleshooting slow queries
 - Implementing Row Level Security
 - Setting up connection pooling
+- Choosing the right index type (B-tree, GIN, BRIN, partial) for a query pattern
+- Detecting anti-patterns such as unindexed foreign keys or N+1 query loops
+- Configuring PostgreSQL system settings for memory, timeouts, and monitoring extensions
 
 ## Quick Reference
 

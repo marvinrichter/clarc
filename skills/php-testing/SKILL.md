@@ -11,6 +11,9 @@ description: "PHP testing patterns: PHPUnit 11 with mocks and data providers, Pe
 - Setting up Laravel/Symfony test suites
 - Configuring PHPStan for static analysis
 - Adding mutation testing with Infection
+- Applying TDD layer by layer: domain value objects first, then application handlers, then infrastructure repositories, then HTTP controllers
+- Verifying that test assertions are meaningful (not just coverage-padding) by running Infection mutation testing with an 80% MSI gate
+- Choosing between PHPUnit data providers and Pest datasets to parameterize tests across multiple input variants
 
 ---
 

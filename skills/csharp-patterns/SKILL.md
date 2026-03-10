@@ -11,6 +11,9 @@ description: "C# 12 / .NET 8 patterns: records, primary constructors, pattern ma
 - Designing domain models with records and value objects
 - Building ASP.NET Core Web APIs with MediatR
 - Reviewing C# code for idiomatic patterns and async correctness
+- Implementing CQRS handlers, repositories, or application services in a .NET project
+- Choosing between class hierarchies and discriminated unions via the Result pattern
+- Setting up Entity Framework Core with separate configuration classes and owned types
 
 ---
 

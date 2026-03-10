@@ -12,6 +12,9 @@ description: "Real-time communication patterns: WebSocket with reconnection and 
 - Streaming LLM responses to the client
 - Real-time dashboards or live metrics
 - Chat or messaging features
+- Choosing between SSE, WebSocket, and WebRTC for a given use case
+- Scaling WebSocket connections across multiple server instances using Redis pub/sub
+- Implementing connection state management, offline queuing, and reconnection with backoff
 
 ---
 

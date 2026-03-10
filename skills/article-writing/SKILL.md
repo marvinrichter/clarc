@@ -13,6 +13,9 @@ Write long-form content that sounds like a real person or brand, not generic AI 
 - turning notes, transcripts, or research into polished articles
 - matching an existing founder, operator, or brand voice from examples
 - tightening structure, pacing, and evidence in already-written long-form copy
+- writing a technical post-mortem or retrospective that needs narrative structure and a clear lesson arc
+- creating a launch announcement that must balance engineering detail with accessible storytelling for a mixed audience
+- converting internal documentation or design docs into a publishable developer guide or case study
 
 ## Core Rules
 

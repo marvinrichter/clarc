@@ -13,6 +13,8 @@ description: "Motion and animation patterns for web: CSS transitions for simple 
 - List items reordering or filtering
 - Designing loading and progress animations
 - Ensuring animations respect `prefers-reduced-motion`
+- Auditing existing UI animations that feel slow or jarring to calibrate duration and easing curves
+- Choosing between CSS transitions and Framer Motion for a given interaction complexity level
 
 ---
 

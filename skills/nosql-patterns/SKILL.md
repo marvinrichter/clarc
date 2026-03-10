@@ -12,6 +12,8 @@ description: "NoSQL database patterns: MongoDB document design (embedding vs. re
 - Designing DynamoDB tables (single-table design, access patterns)
 - Building high-throughput key/value or session storage
 - Handling unstructured or highly variable document shapes
+- Defining all DynamoDB access patterns upfront before committing to a key schema and GSI layout
+- Deciding whether to embed or reference child data in MongoDB to avoid unbounded document growth or N+1 lookup patterns
 
 ---
 

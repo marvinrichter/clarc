@@ -12,6 +12,7 @@ description: "Prepare a talk from scratch: audience analysis, time boxing per se
 - Writing speaker notes that aid delivery without being read verbatim
 - Preparing for Q&A with difficult questions
 - Rehearsing effectively within available time
+- Adapting a talk for a new audience or conference format
 
 ---
 

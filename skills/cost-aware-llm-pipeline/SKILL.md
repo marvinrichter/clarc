@@ -13,6 +13,10 @@ Patterns for controlling LLM API costs while maintaining quality. Combines model
 - Processing batches of items with varying complexity
 - Need to stay within a budget for API spend
 - Optimizing cost without sacrificing quality on complex tasks
+- Designing a multi-model pipeline where simple classification tasks should use Haiku and complex reasoning tasks should escalate to Sonnet or Opus automatically
+- Adding a hard budget cap to a batch processing job so it fails fast rather than silently overspending when processing hundreds or thousands of files
+- Implementing prompt caching for a system prompt that is longer than 1024 tokens and is repeated on every API call in a high-volume pipeline
+- Auditing an existing LLM integration that currently uses the most expensive model for all requests regardless of task complexity
 
 ## Core Concepts
 

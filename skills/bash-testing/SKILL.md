@@ -12,6 +12,10 @@ description: "Bash script testing with BATS (Bash Automated Testing System): tes
 - Setting up BATS in a project
 - Debugging why a BATS test is failing
 - Mocking external commands in tests
+- Adding BATS to a CI pipeline so shell scripts are tested alongside application code on every pull request
+- Isolating a flaky integration test that depends on a real external command like `git`, `curl`, or `docker`
+- Verifying every exit code path in a complex script that branches on multiple error conditions
+- Writing unit tests for individual Bash functions by sourcing the script under test rather than executing it whole
 
 ---
 

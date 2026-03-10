@@ -13,6 +13,9 @@ description: "React Native patterns: navigation (Expo Router), platform-specific
 - Implementing push notifications
 - Debugging performance issues (re-renders, list scrolling)
 - Handling offline / flaky network conditions
+- Choosing the right local storage option between SecureStore, MMKV, and SQLite based on data type and sensitivity
+- Optimizing FlatList rendering with `getItemLayout`, `removeClippedSubviews`, and memoized callbacks
+- Setting up Expo Router file-based navigation and dynamic route segments
 
 ---
 

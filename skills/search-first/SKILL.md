@@ -14,6 +14,9 @@ Use this skill when:
 - Adding a dependency or integration
 - The user asks "add X functionality" and you're about to write code
 - Before creating a new utility, helper, or abstraction
+- Evaluating whether to build custom code or adopt a library for a well-known problem domain
+- The planner or architect agent is about to choose a technology stack or integration pattern
+- Checking whether an MCP server already provides a capability before implementing it natively
 
 ## Workflow
 

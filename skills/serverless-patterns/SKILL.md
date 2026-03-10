@@ -15,6 +15,8 @@ Production patterns for AWS Lambda and serverless architectures — cold starts,
 - Adding structured logging/tracing with Lambda Powertools
 - Calculating serverless cost vs. container cost
 - Implementing idempotency for at-least-once delivery
+- Choosing between Provisioned Concurrency, SnapStart, or keep-warm pings for a latency-sensitive function
+- Debugging partial batch failures in SQS or DynamoDB Streams event source mappings
 
 ---
 

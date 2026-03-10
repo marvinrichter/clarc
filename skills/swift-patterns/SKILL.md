@@ -13,6 +13,9 @@ Core language patterns for production Swift (5.9+).
 - Designing protocols and generics
 - Handling errors and optionals safely
 - Serializing/deserializing data with Codable
+- Reviewing Swift code for force unwraps, bare `catch` blocks, or public mutable state that should be private
+- Choosing between `struct` and `class` for a new model or service type
+- Deciding between existentials (`any Protocol`) and generics (`<T: Protocol>`) for a function signature
 
 ## Value Types vs Reference Types
 

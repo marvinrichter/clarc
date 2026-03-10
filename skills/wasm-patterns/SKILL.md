@@ -14,6 +14,8 @@ Practical reference for compiling Rust to WebAssembly, integrating with JavaScri
 - Exposing Rust functions to JavaScript via wasm-bindgen
 - Running WebAssembly in non-browser environments (WASI)
 - Optimizing WASM binary size and performance
+- Offloading CPU-intensive computation (parsing, encoding, crypto) from JavaScript to a WASM Web Worker
+- Defining language-agnostic component interfaces using the WIT format and WebAssembly Component Model
 
 ---
 

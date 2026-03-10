@@ -13,6 +13,10 @@ description: Advanced Python testing — async testing with pytest-asyncio, exce
 - Structuring large test suites
 - Setting up pytest configuration for projects
 - Testing database layers, API endpoints, or class methods in depth
+- Mocking async functions and async context managers with `AsyncMock`
+- Writing integration tests for FastAPI endpoints using `httpx.AsyncClient`
+- Configuring `pytest.ini` or `pyproject.toml` with coverage thresholds and custom markers
+- Organizing tests into unit, integration, and e2e directories with appropriate shared conftest fixtures
 
 ## Testing Async Code
 

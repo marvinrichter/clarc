@@ -14,6 +14,8 @@ Does your service hold up under real traffic? Unit tests say nothing about perfo
 - Setting up performance regression tests in CI
 - Diagnosing a production performance issue
 - Validating database indexes under realistic load
+- Establishing SLO thresholds (p95, p99 latency, error rate) as enforceable k6 test gates
+- Running soak tests to detect memory leaks or gradual performance degradation over hours of sustained traffic
 
 ---
 

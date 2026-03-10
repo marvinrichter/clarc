@@ -13,6 +13,9 @@ A practical decision framework for parsing structured text (quizzes, forms, invo
 - Deciding between regex and LLM for text extraction
 - Building hybrid pipelines that combine both approaches
 - Optimizing cost/accuracy tradeoffs in text processing
+- Implementing a confidence scorer to identify which extractions fall below an acceptable threshold
+- Reducing LLM API costs on document processing pipelines where regex handles the majority of cases
+- Processing invoices, receipts, quiz files, or any format where most input follows a predictable pattern
 
 ## Decision Framework
 

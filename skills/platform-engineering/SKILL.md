@@ -14,6 +14,9 @@ Reference for building Internal Developer Platforms (IDPs) — from strategy to 
 - Designing a Golden Path for a standard service type
 - Measuring platform adoption and impact on DORA metrics
 - Planning platform team structure and operating model
+- Assessing the current platform maturity level and identifying gaps
+- Reducing developer toil by introducing self-service infrastructure provisioning
+- Building or auditing a service catalog to track ownership and dependencies across teams
 
 ---
 

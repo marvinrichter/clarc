@@ -14,6 +14,8 @@ SaaS products serve multiple customers on shared infrastructure. The most import
 - Implementing Postgres Row-Level Security
 - Testing tenant data isolation
 - Migrating from single-tenant to multi-tenant architecture
+- Choosing between shared-schema RLS, schema-per-tenant, or database-per-tenant isolation models based on compliance and cost requirements
+- Writing cross-tenant isolation tests to verify that tenant A cannot read or write tenant B's data under any code path
 
 ---
 

@@ -14,6 +14,9 @@ Load tests tell you if your service handles traffic. Chaos Engineering tells you
 - Validating that circuit breakers, retries, and fallbacks actually work
 - Moving from "we think we're resilient" to "we have evidence"
 - Setting up continuous chaos in CI/CD
+- Verifying that a new dependency (external API, database, message queue) has correct timeout and fallback handling before go-live
+- Preparing a team for an on-call rotation by building evidence that the service degrades gracefully under realistic failure scenarios
+- Simulating a database latency spike with Toxiproxy to confirm connection pool exhaustion behavior and alert thresholds
 
 ---
 

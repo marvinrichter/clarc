@@ -14,6 +14,9 @@ Turn one idea into strong, platform-native content instead of posting the same t
 - scripting short-form video or YouTube explainers
 - repurposing articles, podcasts, demos, or docs into social content
 - building a lightweight content plan around a launch, milestone, or theme
+- turning a long engineering blog post into a series of platform-native X threads and a LinkedIn summary without duplicating copy
+- creating a content calendar for a product launch that sequences announcements across multiple platforms over one to two weeks
+- adapting a recorded conference talk or demo video into short-form TikTok or YouTube Shorts scripts with strong opening hooks
 
 ## First Questions
 

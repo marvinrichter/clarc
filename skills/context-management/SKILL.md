@@ -15,6 +15,9 @@ Strategies for detecting, responding to, and recovering from context window pres
 - User is mid-task and worried about context loss
 - After recovering from a context reset
 - Planning a large multi-file implementation
+- Starting a multi-phase refactor that will span more than 20 files so checkpoints are created between phases to prevent losing progress
+- Recovering a session after an unexpected compaction wiped the conversation state mid-task and the next steps are unclear
+- Setting up a new project to use the `.clarc/` memory bank so session-end hooks automatically persist context across restarts
 
 ## Context Pressure Signals
 

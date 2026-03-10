@@ -14,6 +14,9 @@ description: Advanced Python patterns — concurrency (threading, multiprocessin
 - Optimizing memory usage in Python
 - Configuring Python tooling (ruff, mypy, pytest)
 - Reviewing anti-patterns
+- Structuring a FastAPI project with domain, application, and adapter layers
+- Wiring dependency injection and output port protocols without a DI framework
+- Implementing RFC 7807 Problem Details error handling across all HTTP exception types
 
 ## Concurrency Patterns
 

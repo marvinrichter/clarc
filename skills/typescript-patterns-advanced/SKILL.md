@@ -13,6 +13,9 @@ description: Advanced TypeScript — mapped types, template literal types, condi
 - Writing type-level transformations (mapped/conditional types)
 - Testing TypeScript with Vitest or Jest
 - Optimizing TypeScript compilation and bundle size
+- Extracting route parameter names from URL patterns using template literal types and `infer`
+- Debugging slow TypeScript compilation caused by deep recursive conditional types
+- Creating decorator-based patterns for logging, validation, or method interception in TypeScript 5+
 
 ## Mapped Types
 

@@ -12,6 +12,9 @@ description: "Presentation structure, narrative design, and slide layout princip
 - Choosing between narrative frameworks (technical talk, executive update, investor pitch)
 - Writing an opening hook or closing CTA
 - Adapting the same content for different audiences
+- Reducing slide density when too many ideas compete on a single slide
+- Selecting the correct data-slide headline format (conclusion-first, not metric name)
+- Preparing a conference talk, demo day, or board presentation where audience engagement is critical
 
 ---
 

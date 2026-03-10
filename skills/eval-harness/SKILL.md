@@ -15,6 +15,9 @@ A formal evaluation framework for Claude Code sessions, implementing eval-driven
 - Measuring agent reliability with pass@k metrics
 - Creating regression test suites for prompt or agent changes
 - Benchmarking agent performance across model versions
+- Designing a shadow evaluation pipeline to compare a new model against the production champion without user exposure
+- Implementing an LLM-as-judge grader for open-ended outputs where deterministic grading is not feasible
+- Setting up a delayed-label ground-truth pipeline for production ML systems
 
 ## Philosophy
 
