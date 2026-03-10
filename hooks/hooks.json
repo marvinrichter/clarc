@@ -105,14 +105,14 @@
         "description": "Log PR URL and provide review command after PR creation"
       },
       {
-        "matcher": "Edit",
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-dispatch.js\""
           }
         ],
-        "description": "Auto-format + console.log check after edits: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat), Rust (rustfmt)"
+        "description": "Auto-format + console.log check after edits/writes: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat), Rust (rustfmt)"
       },
       {
         "matcher": "Edit|Write",
@@ -153,7 +153,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck.js\"",
+            "async": true
           }
         ],
         "description": "TypeScript check after editing .ts/.tsx files"
@@ -163,7 +164,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck-rust.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck-rust.js\"",
+            "async": true
           }
         ],
         "description": "Rust cargo check after editing .rs files"
