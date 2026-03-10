@@ -4,7 +4,7 @@
 
 | Roadmap | Goal |
 |---------|------|
-| [skill-content-depth](skill-content-depth.md) | Anti-Patterns + When-to expansion for 81% of skill corpus |
+| _(none)_ | |
 
 ---
 
@@ -29,10 +29,11 @@ New roadmap template:
 
 ---
 
-## Done (14)
+## Done (15)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [skill-content-depth](done/skill-content-depth.md) | Anti-Patterns (27 skills), When-to expansion (127 skills), agent disambiguation (4 pairs) | #24–#26 |
 | [pre-launch-quality-sprints](done/pre-launch-quality-sprints.md) | 5 quality sprints (H1-H3, A1-A7, S1-S9, C1-C7, G1+G3) — system health 8.4→9.0 | #17–#23 |
 | [agent-skill-dependency-graph](done/agent-skill-dependency-graph.md) | `uses_skills` frontmatter, CI validator, reverse index `SKILL_AGENTS.md` | #5 |
 | [learning-flywheel](done/learning-flywheel.md) | Instinct lifecycle: observe→evolve→promote→export | #4 |
