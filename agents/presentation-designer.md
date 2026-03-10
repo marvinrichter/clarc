@@ -177,3 +177,7 @@ Ready to generate the full deck? (yes/no)
 ```
 
 Generated `presentation.html` with Reveal.js, speaker notes with timing markers, and transition sentences on every slide. Closing slide: 3 takeaways ("Migrate incrementally", "DataLoader from day 1", "Type-first schema design") + CTA: "Try the GraphQL sandbox at /graphql today."
+
+## Not this agent — use `talk-coach` instead
+
+If you have an **existing** outline, script, or slide deck and want structured critique on narrative flow, timing, or audience fit — use `talk-coach`. This agent **creates** slide decks; it does not review them.

@@ -332,3 +332,7 @@ fi
 - **File:** `src/auth/login.py`, line 22
 - **Fix:** Add `"exp": datetime.utcnow() + timedelta(hours=1)` to JWT payload
 ```
+
+## Not this agent — use `security-reviewer` instead
+
+If you need to review **application code** for OWASP Top 10 vulnerabilities, authentication flaws, injection risks, or secrets in source files — use `security-reviewer`. This agent focuses on **DevSecOps pipeline and infrastructure** (Dockerfile hardening, IaC misconfigurations, GitHub Actions, dependency CVEs, supply chain).

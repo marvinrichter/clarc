@@ -172,3 +172,7 @@ This signal is consumed by the `orchestrator` agent during synthesis.
 ---
 
 **Remember**: Security is not optional. One vulnerability can cost users real financial losses. Be thorough, be paranoid, be proactive.
+
+## Not this agent — use `devsecops-reviewer` instead
+
+If you need to scan **CI/CD pipelines, Terraform/IaC configs, Dockerfile security, supply chain risks, or GitHub Actions** — use `devsecops-reviewer`. This agent focuses on **code-level vulnerabilities** (OWASP Top 10, SSRF, injection, secrets in source); the other covers pipeline and infrastructure security.

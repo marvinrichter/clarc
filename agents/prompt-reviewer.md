@@ -121,3 +121,7 @@ Fix: Choose one and remove the other. If context-dependent, add a rule: "Be brie
 
 Verdict: BLOCK — fix CRITICAL prompt injection before deploying.
 ```
+
+## Not this agent — use `prompt-quality-scorer` instead
+
+If you want to **audit all clarc agents and commands** for prompt-engineering quality with scores and a ranked report — use `prompt-quality-scorer`. This agent reviews a **single prompt or template** in depth; the other scores the entire system.

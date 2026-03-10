@@ -129,3 +129,7 @@ This agent reviews **existing** talk outlines, scripts, and slide decks. For cre
 
 `presentation-design` — narrative arcs, slide density, slide type catalogue, opening hooks, closing patterns
 `talk-preparation` — time boxing rules, audience analysis, Q&A preparation
+
+## Not this agent — use `presentation-designer` instead
+
+If you need to **generate** a slide deck, write speaker notes from scratch, or produce Reveal.js/Marp output — use `presentation-designer`. This agent only **reviews and critiques** existing material; it does not create content.

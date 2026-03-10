@@ -184,3 +184,7 @@ USER SENTIMENT HIGHLIGHTS
 What users hate (our opportunity):
 - "Setting up automations requires a developer" — Reddit r/projectmanagement
 ```
+
+## Not this agent — use `workflow-os-competitor-analyst` instead
+
+If you want to compare **clarc specifically** against Cursor, Copilot, Windsurf, Aider, Devin, or Continue.dev — use `workflow-os-competitor-analyst`. This agent covers **any market or product category**; the other agent is clarc-vs-tools only.
