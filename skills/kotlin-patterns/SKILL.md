@@ -241,6 +241,114 @@ fun findUserOrders(userId: UserId): List<Order> =
 
 ---
 
+## Anti-Patterns
+
+### Using !! (Not-Null Assertion) Instead of Safe Null Handling
+
+**Wrong:**
+```kotlin
+val name = user!!.profile!!.displayName!! // NullPointerException at runtime with no context
+```
+
+**Correct:**
+```kotlin
+val name = user?.profile?.displayName ?: "Anonymous"
+// Or, when null is a programming error:
+val name = requireNotNull(user?.profile?.displayName) { "displayName must not be null for registered users" }
+```
+
+**Why:** `!!` throws an opaque `NullPointerException`; safe calls with `?:` or `requireNotNull` provide explicit fallbacks and meaningful error messages.
+
+### Using var and Mutable Data Classes Instead of copy()
+
+**Wrong:**
+```kotlin
+data class Order(var status: OrderStatus, var total: Money)
+
+fun confirm(order: Order): Order {
+    order.status = OrderStatus.CONFIRMED // Mutates the original — hidden side effect
+    return order
+}
+```
+
+**Correct:**
+```kotlin
+data class Order(val status: OrderStatus, val total: Money)
+
+fun confirm(order: Order): Order =
+    order.copy(status = OrderStatus.CONFIRMED) // Returns a new instance
+```
+
+**Why:** Mutating data class fields in-place creates hidden side effects that are invisible at the call site; `copy()` makes state transitions explicit and safe to share.
+
+### Using Sealed Class with else Branch in when
+
+**Wrong:**
+```kotlin
+fun handleAuth(result: AuthResult) = when (result) {
+    is AuthResult.Success -> redirect("/dashboard")
+    else -> showError() // New subtypes silently fall through to this branch
+}
+```
+
+**Correct:**
+```kotlin
+fun handleAuth(result: AuthResult) = when (result) {
+    is AuthResult.Success -> redirect("/dashboard")
+    is AuthResult.InvalidCredentials -> showRetryForm(result.attemptsRemaining)
+    AuthResult.AccountLocked -> showLockedPage()
+    is AuthResult.Error -> showError(result.cause)
+    // No else — compiler enforces exhaustiveness
+}
+```
+
+**Why:** An `else` branch defeats the exhaustiveness check that sealed classes provide; adding a new subtype compiles silently but takes the wrong code path at runtime.
+
+### Launching Coroutines Without Structured Concurrency
+
+**Wrong:**
+```kotlin
+fun loadDashboard(userId: UserId) {
+    GlobalScope.launch { // Unstructured — leaks if caller is cancelled
+        val user = userRepo.findById(userId)
+        _state.value = UiState.Success(user)
+    }
+}
+```
+
+**Correct:**
+```kotlin
+fun loadDashboard(userId: UserId) {
+    viewModelScope.launch { // Tied to ViewModel lifecycle — cancelled automatically
+        val user = userRepo.findById(userId)
+        _state.value = UiState.Success(user)
+    }
+}
+```
+
+**Why:** `GlobalScope` coroutines are not tied to any lifecycle and continue running even after the owning component is destroyed, causing memory leaks and stale state updates.
+
+### Using Raw String Primitives for Domain Identifiers
+
+**Wrong:**
+```kotlin
+fun findUser(id: String): User?      // id could be an email, a UUID, or anything else
+fun sendWelcome(email: String): Unit // Nothing stops passing an id as the email
+```
+
+**Correct:**
+```kotlin
+@JvmInline value class UserId(val value: String)
+@JvmInline value class Email(val value: String) {
+    init { require(value.contains('@')) { "Invalid email: $value" } }
+}
+
+fun findUser(id: UserId): User?
+fun sendWelcome(to: Email): Unit
+```
+
+**Why:** Raw `String` parameters allow callers to accidentally pass the wrong kind of string; value classes are erased at runtime (no boxing overhead) and make type errors compile-time failures.
+
 ## Checklist
 
 - [ ] `val` used instead of `var` wherever possible

@@ -645,6 +645,164 @@ TEST_CASE("Clamp function", "[calculator]") {
 }
 ```
 
+## Anti-Patterns
+
+### Using `sleep` for Async Synchronization
+
+**Wrong:**
+```cpp
+TEST(AsyncServiceTest, EventuallyPublishesEvent) {
+    AsyncService svc;
+    svc.Trigger();
+    std::this_thread::sleep_for(std::chrono::milliseconds{200}); // arbitrary wait
+    EXPECT_TRUE(svc.DidPublish());
+}
+```
+
+**Correct:**
+```cpp
+TEST(AsyncServiceTest, EventuallyPublishesEvent) {
+    std::mutex mu;
+    std::condition_variable cv;
+    bool received = false;
+
+    AsyncService svc;
+    svc.OnPublish([&] {
+        std::lock_guard lock{mu};
+        received = true;
+        cv.notify_one();
+    });
+    svc.Trigger();
+
+    std::unique_lock lock{mu};
+    EXPECT_TRUE(cv.wait_for(lock, std::chrono::seconds{2}, [&] { return received; }));
+}
+```
+
+**Why:** Fixed sleeps are both slow and still flaky; condition variables provide a deterministic, bounded wait.
+
+### Mocking Simple Value Objects
+
+**Wrong:**
+```cpp
+class MockPoint : public Point {
+public:
+    MOCK_METHOD(double, X, (), (const, override));
+    MOCK_METHOD(double, Y, (), (const, override));
+};
+
+TEST(DistanceTest, ComputesCorrectly) {
+    MockPoint a, b;
+    ON_CALL(a, X()).WillByDefault(Return(0.0));
+    ON_CALL(b, X()).WillByDefault(Return(3.0));
+    // ... overly complex setup for a trivial struct
+}
+```
+
+**Correct:**
+```cpp
+TEST(DistanceTest, ComputesCorrectly) {
+    Point a{0.0, 0.0};
+    Point b{3.0, 4.0};
+    EXPECT_DOUBLE_EQ(Distance(a, b), 5.0);
+}
+```
+
+**Why:** Mocking simple value types adds boilerplate with no isolation benefit; use real instances directly.
+
+### Using a Fixed Temporary Directory Path
+
+**Wrong:**
+```cpp
+TEST(FileParserTest, ParsesValidFile) {
+    std::ofstream out("/tmp/test_input.txt");  // shared path, collides between tests
+    out << "data";
+    out.close();
+    EXPECT_TRUE(ParseFile("/tmp/test_input.txt").ok());
+}
+```
+
+**Correct:**
+```cpp
+TEST(FileParserTest, ParsesValidFile) {
+    auto tmp = std::filesystem::temp_directory_path() /
+               ("test_" + std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
+    std::filesystem::create_directories(tmp);
+    std::ofstream out(tmp / "input.txt");
+    out << "data";
+    out.close();
+    EXPECT_TRUE(ParseFile((tmp / "input.txt").string()).ok());
+    std::filesystem::remove_all(tmp);
+}
+```
+
+**Why:** Shared temp paths cause test interference when tests run in parallel; use unique directories per test.
+
+### Using `EXPECT_*` for Preconditions That Should Abort the Test
+
+**Wrong:**
+```cpp
+TEST(UserStoreTest, FindsUser) {
+    auto user = store->Find("alice");
+    EXPECT_TRUE(user.has_value());         // test continues even if nullopt
+    EXPECT_EQ(user->name, "alice");        // dereferences nullopt — UB crash
+}
+```
+
+**Correct:**
+```cpp
+TEST(UserStoreTest, FindsUser) {
+    auto user = store->Find("alice");
+    ASSERT_TRUE(user.has_value());         // stops test immediately on failure
+    EXPECT_EQ(user->name, "alice");        // only reached when user is valid
+}
+```
+
+**Why:** `EXPECT_*` continues execution after failure; use `ASSERT_*` for preconditions whose failure would cause a crash or invalid state.
+
+### Relying on Global State Between Tests
+
+**Wrong:**
+```cpp
+static std::vector<std::string> g_log;
+
+TEST(ServiceTest, LogsOnStart) {
+    Service svc;
+    svc.Start();
+    EXPECT_EQ(g_log.size(), 1);
+}
+
+TEST(ServiceTest, LogsOnStop) {
+    // g_log already has 1 entry from previous test — order-dependent
+    Service svc;
+    svc.Stop();
+    EXPECT_EQ(g_log.size(), 2);
+}
+```
+
+**Correct:**
+```cpp
+class ServiceTest : public ::testing::Test {
+protected:
+    void SetUp() override { g_log.clear(); }  // reset before each test
+    std::vector<std::string> g_log;
+};
+
+TEST_F(ServiceTest, LogsOnStart) {
+    Service svc{g_log};
+    svc.Start();
+    EXPECT_EQ(g_log.size(), 1);
+}
+
+TEST_F(ServiceTest, LogsOnStop) {
+    Service svc{g_log};
+    svc.Stop();
+    EXPECT_EQ(g_log.size(), 1);
+}
+```
+
+**Why:** Global state makes test execution order matter; fixtures with `SetUp`/`TearDown` ensure each test starts clean.
+
 ## Alternatives to GoogleTest
 
 - **Catch2**: expressive syntax, BDD-style sections, built-in parameterized tests

@@ -285,6 +285,106 @@ jobs:
 - Traces: artifacts/*.zip
 ```
 
+## Anti-Patterns
+
+### Using `waitForTimeout` (Arbitrary Sleeps) to Handle Async UI
+
+**Wrong:**
+```typescript
+await page.click('[data-testid="submit"]')
+await page.waitForTimeout(3000) // hope the response arrives in time
+expect(await page.locator('[data-testid="success"]').isVisible()).toBe(true)
+```
+
+**Correct:**
+```typescript
+await page.locator('[data-testid="submit"]').click()
+await page.waitForResponse(resp => resp.url().includes('/api/submit') && resp.status() === 200)
+await expect(page.locator('[data-testid="success"]')).toBeVisible()
+```
+
+**Why:** Fixed sleeps make tests slow on fast machines and still flaky on slow ones; waiting for explicit conditions is deterministic and fast.
+
+### Selecting Elements by CSS Class or XPath Instead of Semantic Locators
+
+**Wrong:**
+```typescript
+await page.click('.btn-primary.submit-action')
+await page.click('//div[@class="card"]/button[1]')
+```
+
+**Correct:**
+```typescript
+await page.getByRole('button', { name: /submit order/i }).click()
+// or with test ID when no semantic role is available
+await page.locator('[data-testid="submit-order"]').click()
+```
+
+**Why:** CSS classes and XPaths break when designers restyle components; ARIA roles and `data-testid` attributes express intent and survive visual refactors.
+
+### Duplicating Page Interaction Logic Across Tests Instead of Using Page Objects
+
+**Wrong:**
+```typescript
+test('admin can delete user', async ({ page }) => {
+  await page.goto('/login')
+  await page.fill('[name="email"]', 'admin@example.com')
+  await page.fill('[name="password"]', 'secret')
+  await page.click('[type="submit"]')
+  await page.waitForURL('/dashboard')
+  // ... actual test logic buried 10 lines in
+})
+```
+
+**Correct:**
+```typescript
+test('admin can delete user', async ({ page }) => {
+  const auth = new AuthPage(page)
+  await auth.loginAs('admin')  // encapsulated in Page Object
+  // ... test logic starts immediately
+})
+```
+
+**Why:** Duplicated interaction sequences make every test update a multi-file change; Page Objects centralise selectors and flows so one change fixes all tests.
+
+### Running Tests Against a Shared Staging Database With Real User Data
+
+**Wrong:**
+```typescript
+// playwright.config.ts
+use: { baseURL: 'https://staging.example.com' }
+// Tests create and delete real records affecting shared state
+```
+
+**Correct:**
+```typescript
+// Use ephemeral test environment or API mocking
+use: { baseURL: process.env.BASE_URL || 'http://localhost:3000' }
+// Seed known test data per test run via API before assertions
+```
+
+**Why:** Shared staging environments cause test interference, expose PII, and make tests non-deterministic when other developers or jobs are running concurrently.
+
+### Ignoring Flaky Tests Instead of Quarantining and Fixing Them
+
+**Wrong:**
+```typescript
+test('dashboard loads', async ({ page }) => {
+  // intermittently fails — team just re-runs CI until it passes
+})
+```
+
+**Correct:**
+```typescript
+test('dashboard loads', async ({ page }) => {
+  test.fixme(true, 'Flaky race condition — Issue #456, owner: @alice')
+  // quarantined until root cause fixed
+})
+// Track in issue tracker; fix within one sprint
+```
+
+**Why:** Tolerated flakiness erodes trust in the entire test suite — teams stop treating failures as signals; quarantine makes flakiness visible and actionable.
+
 > For wallet connection testing and blockchain E2E patterns (MetaMask mocking, async confirmations) — see skill `e2e-testing-web3`.
 
 ## Financial / Critical Flow Testing

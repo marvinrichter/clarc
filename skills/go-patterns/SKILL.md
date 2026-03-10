@@ -427,5 +427,123 @@ func NewServer(db *sql.DB) *Server {
 }
 ```
 
+## Anti-Patterns
+
+### Returning Interfaces Instead of Concrete Types
+
+**Wrong:**
+```go
+// Locks callers to the interface, hides the concrete type unnecessarily
+func NewUserService() UserServiceInterface {
+    return &userServiceImpl{}
+}
+```
+
+**Correct:**
+```go
+// Return the concrete type; callers define interfaces they need
+func NewUserService(store UserStore) *UserService {
+    return &UserService{store: store}
+}
+```
+
+**Why:** Returning interfaces forces a specific abstraction on callers and prevents them from accessing concrete methods; accept interfaces, return structs.
+
+### Using init() for Side Effects and Dependency Setup
+
+**Wrong:**
+```go
+var db *sql.DB
+
+func init() {
+    var err error
+    db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+    if err != nil {
+        log.Fatal(err) // Hard to test, no error propagation
+    }
+}
+```
+
+**Correct:**
+```go
+func NewServer(databaseURL string) (*Server, error) {
+    db, err := sql.Open("postgres", databaseURL)
+    if err != nil {
+        return nil, fmt.Errorf("open database: %w", err)
+    }
+    return &Server{db: db}, nil
+}
+```
+
+**Why:** `init()` functions run silently at startup, cannot return errors cleanly, and make code untestable; explicit constructors with error returns are always preferable.
+
+### Comparing Errors with == Instead of errors.Is
+
+**Wrong:**
+```go
+if err == sql.ErrNoRows {
+    // Misses wrapped errors
+}
+```
+
+**Correct:**
+```go
+if errors.Is(err, sql.ErrNoRows) {
+    // Works through any chain of wrapped errors
+}
+```
+
+**Why:** The `==` operator only matches the exact error value and silently fails when the error has been wrapped with `fmt.Errorf("...: %w", err)`.
+
+### Defining Large Interfaces in the Provider Package
+
+**Wrong:**
+```go
+// package repository
+type UserRepository interface {
+    FindByID(id string) (*User, error)
+    FindAll() ([]*User, error)
+    Save(user *User) error
+    Delete(id string) error
+    // ... 10 more methods
+}
+```
+
+**Correct:**
+```go
+// package service — define only what this service needs
+type UserFinder interface {
+    FindByID(id string) (*User, error)
+}
+
+type UserService struct { finder UserFinder }
+```
+
+**Why:** Large interfaces defined by the provider couple all consumers to every method; define small, consumer-side interfaces containing only the methods each caller actually uses.
+
+### Forgetting to Cancel a Context
+
+**Wrong:**
+```go
+func fetchData(url string) ([]byte, error) {
+    ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+    // cancel is discarded — context leaks until timeout
+    req, _ := http.NewRequestWithContext(ctx, "GET", url, nil)
+    // ...
+}
+```
+
+**Correct:**
+```go
+func fetchData(url string) ([]byte, error) {
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel() // Always cancel to release resources immediately
+    req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+    // ...
+}
+```
+
+**Why:** Discarding the cancel function keeps the context and its resources alive until the deadline, causing resource leaks especially in high-throughput code paths.
+
 > For advanced patterns — full hexagonal architecture with working code (domain, ports, adapters, DI wiring, tests), struct design (functional options, embedding), memory optimization, Go tooling, `slices`/`maps` stdlib (Go 1.21+), and anti-patterns — see skill: `golang-patterns-advanced`.
 > For testing patterns — table-driven tests, mocks, integration tests with testcontainers, benchmarks, and fuzz testing — see skill: `go-testing`.

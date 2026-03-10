@@ -217,6 +217,126 @@ Target: **80%+ line coverage** — enforce in CI via `xccov` or `slather`.
 3. **REFACTOR**: Extract protocols, use value types, clean up — all tests stay green
 4. **VERIFY**: Run `swift test --enable-code-coverage`, check report
 
+## Anti-Patterns
+
+### Force-Unwrapping in Tests
+
+**Wrong:**
+```swift
+func testFetchUser_returnsUser() async throws {
+    let user = try await sut.fetchUser(id: "123")
+    XCTAssertEqual(user!.id, "123") // crashes on nil, hides the real failure
+}
+```
+
+**Correct:**
+```swift
+func testFetchUser_returnsUser() async throws {
+    let user = try await sut.fetchUser(id: "123")
+    XCTAssertEqual(user.id, "123") // throws and reports properly on failure
+}
+```
+
+**Why:** Force-unwrapping in tests causes a crash instead of a test failure, hiding the root cause and making CI output unreadable.
+
+### Using `sleep` to Wait for Async Results
+
+**Wrong:**
+```swift
+@Test func publishesEvent() async {
+    sut.triggerAsyncWork()
+    try await Task.sleep(for: .seconds(1)) // arbitrary wait, brittle
+    #expect(sut.didPublish == true)
+}
+```
+
+**Correct:**
+```swift
+@Test func publishesEvent() async throws {
+    let didPublish = try await withTimeout(.seconds(5)) {
+        await sut.triggerAsyncWork()
+        return sut.didPublish
+    }
+    #expect(didPublish == true)
+}
+```
+
+**Why:** Fixed sleeps make tests slow and still flaky; use structured concurrency with bounded waits instead.
+
+### Testing Implementation Details Instead of Behavior
+
+**Wrong:**
+```swift
+@Test func incrementUpdatesPrivateCount() {
+    let vm = CounterViewModel()
+    vm.increment()
+    #expect(vm._internalCount == 1) // accesses private state
+}
+```
+
+**Correct:**
+```swift
+@Test func incrementUpdatesDisplayedValue() {
+    let vm = CounterViewModel()
+    vm.increment()
+    #expect(vm.displayText == "1") // tests observable output
+}
+```
+
+**Why:** Tests coupled to private implementation break on safe refactors; test observable behavior instead.
+
+### Sharing Mutable State Between Tests
+
+**Wrong:**
+```swift
+var sharedService = UserService(client: MockHTTPClient())
+
+@Test func firstTest() async throws {
+    sharedService.reset()
+    // ... test A modifies sharedService
+}
+
+@Test func secondTest() async throws {
+    // relies on sharedService state from firstTest — order-dependent
+}
+```
+
+**Correct:**
+```swift
+@Suite("UserService")
+struct UserServiceTests {
+    @Test func fetchUser() async throws {
+        let service = UserService(client: MockHTTPClient()) // fresh instance
+        // test A
+    }
+
+    @Test func handleError() async throws {
+        let service = UserService(client: MockHTTPClient()) // fresh instance
+        // test B
+    }
+}
+```
+
+**Why:** Shared mutable state causes order-dependent flakiness; create fresh instances per test.
+
+### Using UI Label Text Instead of Accessibility Identifiers in XCUITest
+
+**Wrong:**
+```swift
+func testLoginFlow() throws {
+    app.buttons["Log In"].tap() // breaks if button label is localized or renamed
+}
+```
+
+**Correct:**
+```swift
+func testLoginFlow() throws {
+    app.buttons["login.submit"].tap() // stable accessibilityIdentifier set in SwiftUI
+}
+```
+
+**Why:** Querying by label text breaks with localization changes or copy rewrites; `accessibilityIdentifier` is stable and locale-independent.
+
 ## Common Pitfalls
 
 - **Avoid `@MainActor` in test bodies**: Marks the entire test synchronous — use `await` instead

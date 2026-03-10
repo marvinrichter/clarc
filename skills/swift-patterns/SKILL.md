@@ -393,4 +393,126 @@ public struct Order {
 | `Codable` | JSON encode/decode |
 | `private(set)` | Read-only outside, writable inside |
 
+## Anti-Patterns
+
+### Force Unwrapping Optionals in Production Code
+
+**Wrong:**
+```swift
+func displayUser(id: String) {
+    let user = findUser(id: id)!  // crashes at runtime if nil
+    label.text = user.name
+}
+```
+
+**Correct:**
+```swift
+func displayUser(id: String) {
+    guard let user = findUser(id: id) else {
+        showError("User not found")
+        return
+    }
+    label.text = user.name
+}
+```
+
+**Why:** Force unwrapping silently propagates assumptions; `guard let` makes the nil case explicit and recoverable.
+
+### Using Class When Struct Suffices
+
+**Wrong:**
+```swift
+class Point {          // heap allocation, reference semantics, thread-unsafe by default
+    var x: Double
+    var y: Double
+    init(x: Double, y: Double) { self.x = x; self.y = y }
+}
+```
+
+**Correct:**
+```swift
+struct Point {         // stack allocation, value semantics, naturally thread-safe
+    var x: Double
+    var y: Double
+}
+```
+
+**Why:** Classes carry reference semantics and shared-mutability risks; use structs for data without identity.
+
+### Catching All Errors with a Bare `catch`
+
+**Wrong:**
+```swift
+func loadProfile() async {
+    do {
+        let profile = try await fetchProfile()
+        display(profile)
+    } catch {
+        // swallows everything — NetworkError, DecodingError, CancellationError all look the same
+        showGenericError()
+    }
+}
+```
+
+**Correct:**
+```swift
+func loadProfile() async {
+    do {
+        let profile = try await fetchProfile()
+        display(profile)
+    } catch NetworkError.noConnection {
+        showOfflineBanner()
+    } catch NetworkError.httpError(let code, _) where code == 401 {
+        redirectToLogin()
+    } catch {
+        showGenericError(error)
+    }
+}
+```
+
+**Why:** A bare `catch` collapses typed error information and makes distinct failure modes indistinguishable to callers.
+
+### Existential `any Protocol` Where Generic `<T: Protocol>` Is Better
+
+**Wrong:**
+```swift
+func processItems(_ items: [any Persistable]) {
+    // dynamic dispatch on every call, box allocation per element
+    for item in items { save(item) }
+}
+```
+
+**Correct:**
+```swift
+func processItems<T: Persistable>(_ items: [T]) {
+    // static dispatch, no boxing, inlineable
+    for item in items { save(item) }
+}
+```
+
+**Why:** Existentials (`any`) incur heap allocation and dynamic dispatch; prefer generics when the concrete type is uniform at the call site.
+
+### Exposing Mutable State Publicly
+
+**Wrong:**
+```swift
+public struct Order {
+    public var status: OrderStatus = .pending  // callers can set any status directly
+}
+```
+
+**Correct:**
+```swift
+public struct Order {
+    public private(set) var status: OrderStatus = .pending
+
+    public mutating func confirm() throws {
+        guard status == .pending else { throw OrderError.invalidTransition }
+        status = .confirmed
+    }
+}
+```
+
+**Why:** Public mutable properties let callers bypass business rules; `private(set)` with mutating methods enforces invariants at compile time.
+
 > For advanced Swift — property wrappers, result builders, Combine, opaque/existential types, advanced protocol patterns, and performance optimization — see skill: `swift-patterns-advanced`.

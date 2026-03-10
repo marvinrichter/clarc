@@ -452,6 +452,151 @@ describe('PrismaMarketRepository', () => {
 })
 ```
 
+## Anti-Patterns
+
+### Domain Model Importing Framework Dependencies
+
+**Wrong:**
+```typescript
+// domain/model/market.ts
+import { Entity, Column } from 'typeorm'  // ORM leaks into domain
+import { Injectable } from '@nestjs/common'
+
+@Entity()
+@Injectable()
+export class Market {
+  @Column() name: string
+}
+```
+
+**Correct:**
+```typescript
+// domain/model/market.ts
+// No framework imports — pure TypeScript only
+export interface Market {
+  readonly id: MarketId | null
+  readonly name: string
+  readonly status: MarketStatus
+}
+```
+
+**Why:** Framework annotations in the domain couple your business logic to infrastructure, making it impossible to test without starting the full framework.
+
+---
+
+### Use Case Depending on the Concrete Adapter
+
+**Wrong:**
+```typescript
+// application/usecase/CreateMarketService.ts
+import { PrismaMarketRepository } from '../../adapter/out/persistence/PrismaMarketRepository'
+
+export class CreateMarketService {
+  constructor(private readonly repo: PrismaMarketRepository) {}  // concrete class
+}
+```
+
+**Correct:**
+```typescript
+// application/usecase/CreateMarketService.ts
+import type { MarketRepository } from '../../domain/port/out/MarketRepository'
+
+export class CreateMarketService {
+  constructor(private readonly repo: MarketRepository) {}  // port interface
+}
+```
+
+**Why:** Depending on the concrete adapter prevents swapping implementations and forces integration tests even for pure business logic.
+
+---
+
+### HTTP Handler Calling the Repository Directly
+
+**Wrong:**
+```typescript
+// adapter/in/http/createMarketHandler.ts
+import { PrismaMarketRepository } from '../../out/persistence/PrismaMarketRepository'
+
+export function createMarketHandler(repo: PrismaMarketRepository) {
+  return async (req, res) => {
+    const market = await repo.save({ name: req.body.name })  // skips use case
+    res.status(201).json(market)
+  }
+}
+```
+
+**Correct:**
+```typescript
+// adapter/in/http/createMarketHandler.ts
+import type { CreateMarketUseCase } from '../../../domain/port/in/CreateMarketUseCase'
+
+export function createMarketHandler(createMarket: CreateMarketUseCase) {
+  return async (req, res, next) => {
+    const market = await createMarket.execute(req.body)
+    res.status(201).json(market)
+  }
+}
+```
+
+**Why:** Bypassing the use case skips business rule enforcement and breaks the inward dependency rule — adapters may only call ports, never each other.
+
+---
+
+### Zod Validation Inside the Domain Model
+
+**Wrong:**
+```typescript
+// domain/model/market.ts
+import { z } from 'zod'  // framework dependency inside domain
+
+export const marketSchema = z.object({ name: z.string().min(1) })
+export type Market = z.infer<typeof marketSchema>
+```
+
+**Correct:**
+```typescript
+// adapter/in/http/marketSchemas.ts  ← validation belongs in the inbound adapter
+import { z } from 'zod'
+export const createMarketSchema = z.object({ name: z.string().min(1).max(200) })
+
+// domain/model/market.ts  ← domain enforces invariants through pure logic
+export function createMarket(name: string): Market {
+  if (!name || name.trim() === '') throw new InvalidMarketError('name is required')
+  return { id: null, name: name.trim(), status: 'DRAFT' }
+}
+```
+
+**Why:** Schema validation libraries belong in the inbound adapter layer; the domain owns business invariants through pure guard clauses, not library-specific schemas.
+
+---
+
+### Unbranded Primitive IDs Crossing Boundaries
+
+**Wrong:**
+```typescript
+// domain/port/in/CreateMarketUseCase.ts
+export interface GetMarketUseCase {
+  execute(marketId: string): Promise<Market>  // plain string — any string accepted
+}
+```
+
+**Correct:**
+```typescript
+// domain/model/MarketId.ts
+export type MarketId = string & { readonly _brand: 'MarketId' }
+export function marketId(v: string): MarketId {
+  if (!v) throw new Error('MarketId cannot be empty')
+  return v as MarketId
+}
+
+// domain/port/in/CreateMarketUseCase.ts
+export interface GetMarketUseCase {
+  execute(id: MarketId): Promise<Market>  // branded — compiler prevents mixing up IDs
+}
+```
+
+**Why:** Unbranded primitives allow accidentally passing a `UserId` where a `MarketId` is expected; branding catches these mistakes at compile time.
+
 ## Architecture Violation Checklist
 
 - [ ] Domain model imports from `express`, `prisma`, `pg`, or any library → **violation**

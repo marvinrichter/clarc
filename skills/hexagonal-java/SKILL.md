@@ -345,6 +345,156 @@ class JpaMarketRepositoryTest {
 }
 ```
 
+## Anti-Patterns
+
+### Domain Class Importing Spring or JPA Annotations
+
+**Wrong:**
+```java
+// domain/model/Market.java
+import org.springframework.stereotype.Component;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "markets")
+@Component
+public class Market { ... }  // framework annotations pollute domain
+```
+
+**Correct:**
+```java
+// domain/model/Market.java
+// No framework imports — plain Java only
+public class Market {
+    private final MarketId id;
+    private final String name;
+    private MarketStatus status;
+
+    private Market(MarketId id, String name, MarketStatus status) { ... }
+}
+```
+
+**Why:** JPA and Spring annotations in the domain couple business logic to persistence and the container, breaking testability without a running Spring context.
+
+---
+
+### Controller Injecting the Use Case Implementation Instead of the Port
+
+**Wrong:**
+```java
+// adapter/in/web/MarketController.java
+@RestController
+class MarketController {
+    private final CreateMarketService createMarketService;  // concrete class
+
+    MarketController(CreateMarketService createMarketService) {
+        this.createMarketService = createMarketService;
+    }
+}
+```
+
+**Correct:**
+```java
+// adapter/in/web/MarketController.java
+@RestController
+class MarketController {
+    private final CreateMarketUseCase createMarket;  // input port interface
+
+    MarketController(CreateMarketUseCase createMarket) {
+        this.createMarket = createMarket;
+    }
+}
+```
+
+**Why:** Depending on the concrete service class instead of the port interface prevents mocking in `@WebMvcTest` and leaks application-layer details into the adapter.
+
+---
+
+### @Transactional Placed on Domain Model Methods
+
+**Wrong:**
+```java
+// domain/model/Market.java
+public class Market {
+    @Transactional  // Spring annotation has no business being here
+    public Market publish() {
+        if (this.status != MarketStatus.DRAFT) throw new MarketAlreadyPublishedException(slug);
+        return new Market(id, name, slug, MarketStatus.ACTIVE);
+    }
+}
+```
+
+**Correct:**
+```java
+// application/usecase/PublishMarketService.java
+@Transactional  // transaction boundary belongs on the use case
+public class PublishMarketService implements PublishMarketUseCase {
+    public Market publish(MarketId id) {
+        var market = marketRepository.findById(id).orElseThrow();
+        var published = market.publish();  // pure domain call
+        return marketRepository.save(published);
+    }
+}
+```
+
+**Why:** `@Transactional` is an infrastructure concern; placing it on the domain model introduces a Spring dependency and the wrong transactional scope.
+
+---
+
+### Use Case Importing JPA Entity or Repository Interface
+
+**Wrong:**
+```java
+// application/usecase/CreateMarketService.java
+import com.example.adapter.out.persistence.MarketEntity;
+import com.example.adapter.out.persistence.MarketJpaRepository;
+
+public class CreateMarketService implements CreateMarketUseCase {
+    private final MarketJpaRepository jpaRepository;  // Spring Data leaks into application layer
+}
+```
+
+**Correct:**
+```java
+// application/usecase/CreateMarketService.java
+import com.example.domain.port.out.MarketRepository;  // output port only
+
+public class CreateMarketService implements CreateMarketUseCase {
+    private final MarketRepository marketRepository;  // domain-defined interface
+}
+```
+
+**Why:** Importing JPA artifacts into the use case couples the application layer to the persistence technology, breaking the ability to swap databases without touching business logic.
+
+---
+
+### Mapping Skipped — Returning JPA Entity from Use Case
+
+**Wrong:**
+```java
+// application/usecase/ListMarketsService.java
+public List<MarketEntity> listActive() {  // JPA entity escapes the adapter
+    return jpaRepository.findByStatus(MarketStatus.ACTIVE, Pageable.unpaged());
+}
+```
+
+**Correct:**
+```java
+// application/usecase/ListMarketsService.java
+public List<Market> listActive(Pageable pageable) {
+    return marketRepository.findAllActive(pageable);  // returns domain objects via output port
+}
+
+// adapter/out/persistence/JpaMarketRepository.java — mapper lives here
+public List<Market> findAllActive(Pageable pageable) {
+    return jpaRepo.findByStatus(MarketStatus.ACTIVE, pageable)
+        .stream().map(MarketMapper::toDomain).toList();
+}
+```
+
+**Why:** Allowing JPA entities to escape the persistence adapter exposes database schema details to callers and makes schema changes break the entire codebase.
+
 ## Architecture Violation Checklist
 
 - [ ] Domain classes import `org.springframework.*` → **violation**

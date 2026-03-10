@@ -187,6 +187,108 @@ vitest run --coverage --reporter=verbose src/lib/
 3. **REFACTOR**: Clean up implementation without breaking tests
 4. **VERIFY**: `vitest run --coverage` — confirm 80%+ coverage
 
+## Anti-Patterns
+
+### Testing Implementation Details Instead of Behaviour
+
+**Wrong:**
+```typescript
+it('sets internal loading state', () => {
+  const service = new UserService()
+  service.fetchUser('1')
+  expect(service['_isLoading']).toBe(true) // private field access
+})
+```
+
+**Correct:**
+```typescript
+it('shows loading indicator while fetching', async () => {
+  render(<UserProfile id="1" />)
+  expect(screen.getByRole('progressbar')).toBeInTheDocument()
+  await screen.findByText('John Doe')
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+})
+```
+
+**Why:** Tests tied to internal state break on refactors even when behaviour is unchanged; only test what the user or caller observes.
+
+### Using `fireEvent` Instead of `userEvent` for Interactions
+
+**Wrong:**
+```typescript
+fireEvent.click(screen.getByRole('button', { name: /submit/i }))
+fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'a@b.com' } })
+```
+
+**Correct:**
+```typescript
+const user = userEvent.setup()
+await user.type(screen.getByLabelText('Email'), 'a@b.com')
+await user.click(screen.getByRole('button', { name: /submit/i }))
+```
+
+**Why:** `fireEvent` dispatches synthetic events that skip browser input processing (blur, focus, input validation), causing false positives that miss real-world bugs.
+
+### Mocking Internal Module Functions Instead of Boundaries
+
+**Wrong:**
+```typescript
+vi.mock('./user-service', () => ({ getUser: vi.fn().mockResolvedValue(mockUser) }))
+vi.mock('./format-date', () => ({ formatDate: vi.fn().mockReturnValue('Jan 1') }))
+```
+
+**Correct:**
+```typescript
+// Mock at the network boundary with MSW
+server.use(
+  http.get('/api/users/:id', () => HttpResponse.json(mockUser))
+)
+```
+
+**Why:** Mocking internal helpers couples tests to the call graph; mocking at the network/DB boundary keeps tests robust to internal refactors.
+
+### Skipping `beforeEach` Cleanup Leading to Shared State
+
+**Wrong:**
+```typescript
+const mockFn = vi.fn()
+vi.mock('./logger', () => ({ log: mockFn }))
+
+it('logs on success', async () => { await doWork(); expect(mockFn).toHaveBeenCalledOnce() })
+it('logs on error', async () => { await doWork(); expect(mockFn).toHaveBeenCalledOnce() }) // fails: called twice
+```
+
+**Correct:**
+```typescript
+beforeEach(() => vi.clearAllMocks())
+
+it('logs on success', async () => { await doWork(); expect(mockFn).toHaveBeenCalledOnce() })
+it('logs on error', async () => { await doWork(); expect(mockFn).toHaveBeenCalledOnce() })
+```
+
+**Why:** Without clearing mocks between tests, call counts accumulate across the suite, causing order-dependent failures.
+
+### Asserting on Snapshot Blobs for Business Logic
+
+**Wrong:**
+```typescript
+it('formats user response', () => {
+  expect(formatUser(raw)).toMatchSnapshot() // brittle mega-snapshot
+})
+```
+
+**Correct:**
+```typescript
+it('formats user response', () => {
+  const result = formatUser(raw)
+  expect(result.name).toBe('John Doe')
+  expect(result.email).toBe('john@example.com')
+  expect(result).not.toHaveProperty('password')
+})
+```
+
+**Why:** Snapshot tests on complex objects silently accept wrong output after regeneration; explicit assertions document exactly what matters.
+
 ## Common Pitfalls
 
 - **Don't test implementation details**: Test observable behaviour, not internal state

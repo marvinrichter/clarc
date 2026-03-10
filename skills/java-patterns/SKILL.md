@@ -197,4 +197,126 @@ items.getFirst(); // instead of items.get(0)
 items.getLast();  // instead of items.get(items.size() - 1)
 ```
 
+## Anti-Patterns
+
+### Calling `Optional.get()` Without Checking Presence
+
+**Wrong:**
+```java
+Optional<User> user = userRepository.findByEmail(email);
+return user.get().getName();  // throws NoSuchElementException if empty
+```
+
+**Correct:**
+```java
+return userRepository.findByEmail(email)
+    .map(User::getName)
+    .orElseThrow(() -> new UserNotFoundException(email));
+```
+
+**Why:** `Optional.get()` on an empty Optional throws an uninformative exception; `orElseThrow` makes the failure explicit and provides a meaningful domain error.
+
+---
+
+### Using Raw Types Instead of Generics
+
+**Wrong:**
+```java
+List users = new ArrayList();        // raw type — no compile-time safety
+users.add("not a user");             // silently accepted
+User u = (User) users.get(0);        // ClassCastException at runtime
+```
+
+**Correct:**
+```java
+List<User> users = new ArrayList<>();
+users.add(new User("Alice"));
+User u = users.get(0);               // no cast needed, type-safe
+```
+
+**Why:** Raw types bypass the compiler's type-checker, moving errors that could be caught at compile time to unpredictable runtime failures.
+
+---
+
+### Catching `Exception` Broadly and Swallowing It
+
+**Wrong:**
+```java
+try {
+    return orderRepository.save(order);
+} catch (Exception e) {
+    return null;  // hides DataAccessException, NullPointerException, everything
+}
+```
+
+**Correct:**
+```java
+try {
+    return orderRepository.save(order);
+} catch (DataAccessException e) {
+    throw new OrderPersistenceException("Failed to save order: " + order.id(), e);
+}
+```
+
+**Why:** Catching `Exception` silently discards programming bugs and infrastructure failures; catching a specific exception and re-throwing with context preserves the stack trace and makes the failure observable.
+
+---
+
+### Mutable Public Fields Instead of Records or Final Fields
+
+**Wrong:**
+```java
+public class Money {
+    public BigDecimal amount;   // mutable, no encapsulation
+    public String currency;
+}
+
+Money price = new Money();
+price.amount = new BigDecimal("9.99");
+price.amount = price.amount.negate();  // any caller can mutate
+```
+
+**Correct:**
+```java
+public record Money(BigDecimal amount, String currency) {
+    public Money {
+        Objects.requireNonNull(amount, "amount");
+        Objects.requireNonNull(currency, "currency");
+    }
+
+    public Money negate() {
+        return new Money(amount.negate(), currency);  // returns new value
+    }
+}
+```
+
+**Why:** Mutable public fields break encapsulation and enable uncontrolled state changes; records provide an immutable value type with built-in `equals`, `hashCode`, and `toString`.
+
+---
+
+### Using `instanceof` Without Pattern Matching in Java 21+
+
+**Wrong:**
+```java
+if (shape instanceof Circle) {
+    Circle c = (Circle) shape;    // redundant cast
+    return c.area();
+}
+```
+
+**Correct:**
+```java
+if (shape instanceof Circle c) {  // binding variable in the pattern
+    return c.area();
+}
+
+// Or with sealed types, prefer switch:
+return switch (shape) {
+    case Circle c    -> c.area();
+    case Rectangle r -> r.width() * r.height();
+};
+```
+
+**Why:** The old pattern repeats the type check and cast redundantly; pattern matching in `instanceof` and `switch` (stable since Java 21) eliminates the cast and is exhaustive with sealed types.
+
 **Remember**: Keep code intentional, typed, and observable. Optimize for maintainability over micro-optimizations unless proven necessary.

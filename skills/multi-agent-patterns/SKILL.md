@@ -497,6 +497,133 @@ describe('Orchestrator', () => {
 
 ---
 
+## Anti-Patterns
+
+### Running Independent Sub-Agents Sequentially Instead of in Parallel
+
+**Wrong:**
+```typescript
+// Runs one at a time — wastes latency when tasks are independent
+const reviewResult = await codeReviewAgent.run(code)
+const securityResult = await securityAgent.run(code)
+const docsResult = await docAgent.run(code)
+```
+
+**Correct:**
+```typescript
+// Fan-out: all three run concurrently
+const [reviewResult, securityResult, docsResult] = await Promise.all([
+  codeReviewAgent.run(code),
+  securityAgent.run(code),
+  docAgent.run(code),
+])
+```
+
+**Why:** Sequential execution of independent agents multiplies latency unnecessarily — fan-out with `Promise.all` reduces wall-clock time to the slowest single agent.
+
+---
+
+### Passing the Full Conversation History to Every Sub-Agent
+
+**Wrong:**
+```typescript
+// Sub-agent receives 50 turns of unrelated orchestrator history
+async function handoff(fullConversation: Message[], nextSystem: string) {
+  return claude.messages.create({
+    system: nextSystem,
+    messages: fullConversation,  // bloats context, raises cost, degrades focus
+    max_tokens: 4096,
+  })
+}
+```
+
+**Correct:**
+```typescript
+// Compress to only what the next agent needs
+const summary = await summarizeForHandoff(context, 500)
+return claude.messages.create({
+  system: nextSystem,
+  messages: [{ role: 'user', content: summary }],
+  max_tokens: 4096,
+})
+```
+
+**Why:** Passing irrelevant history inflates token costs, risks hitting context limits, and distracts sub-agents with information they don't need.
+
+---
+
+### Using Opus for Lightweight Routing Decisions
+
+**Wrong:**
+```typescript
+const classification = await claude.messages.create({
+  model: 'claude-opus-latest',   // overkill for a one-word classification
+  system: 'Classify as: code-review | security-scan | documentation.',
+  messages: [{ role: 'user', content: task }],
+  max_tokens: 10,
+})
+```
+
+**Correct:**
+```typescript
+const classification = await claude.messages.create({
+  model: 'claude-haiku-latest',  // fast and cheap for routing
+  system: 'Classify as: code-review | security-scan | documentation. Reply with the category only.',
+  messages: [{ role: 'user', content: task }],
+  max_tokens: 10,
+})
+```
+
+**Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
+
+---
+
+### Treating Agent Failures as Unrecoverable Without Fallback
+
+**Wrong:**
+```typescript
+async function reviewCode(code: string): Promise<string> {
+  return primaryAgent.run(code)  // throws on transient API errors — workflow halts
+}
+```
+
+**Correct:**
+```typescript
+async function reviewCode(code: string): Promise<string> {
+  return runWithFallback(
+    () => primaryAgent.run(code),
+    () => fallbackAgent.run(code),
+    2  // retry twice before fallback
+  )
+}
+```
+
+**Why:** Transient API errors (rate limits, overload) are expected in multi-agent systems; a fallback chain keeps the workflow alive without manual intervention.
+
+---
+
+### Mutating Shared State Across Parallel Agents
+
+**Wrong:**
+```typescript
+const sharedResults: ReviewResult[] = []
+
+await Promise.all(files.map(async file => {
+  const result = await reviewAgent.run(file)
+  sharedResults.push(result)  // concurrent mutation — race condition
+}))
+```
+
+**Correct:**
+```typescript
+// Each agent returns its result independently; fan-in happens after
+const results = await Promise.all(
+  files.map(file => reviewAgent.run(file).catch(err => ({ file, error: err.message, issues: [] })))
+)
+```
+
+**Why:** Mutating a shared array from concurrent async functions is a race condition; collect results via `Promise.all` return values instead.
+
 ## Reference
 
 - `agent-reliability` — retry strategies, circuit breakers, timeout hierarchies, cost control

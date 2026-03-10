@@ -249,6 +249,123 @@ async function anonymize() {
 
 ---
 
+## Anti-Patterns
+
+### Using Hard-Coded Fixture Files Shared Across Tests
+
+**Wrong:**
+```typescript
+// tests/fixtures/users.json — shared by all tests
+[{ "id": "1", "email": "alice@example.com", "role": "admin" }]
+
+// test-a.test.ts
+const user = fixtures.users[0]
+user.role = 'customer' // mutates shared object — breaks test-b
+```
+
+**Correct:**
+```typescript
+// Each test creates isolated data via factory
+const user = await createUser({ role: 'admin' })
+// No shared mutable state — test runs in any order
+```
+
+**Why:** Shared fixture files create hidden dependencies between tests; factories produce isolated, independent data for every test run.
+
+### Using Predictable or Real-Looking PII as Test Data
+
+**Wrong:**
+```typescript
+const user = await createUser({
+  email: 'test@test.com',
+  name: 'Test User',
+  phone: '555-1234',
+})
+```
+
+**Correct:**
+```typescript
+import { faker } from '@faker-js/faker'
+
+const user = await createUser({
+  email: faker.internet.email(),
+  name: faker.person.fullName(),
+  phone: faker.phone.number(),
+})
+```
+
+**Why:** Placeholder values like `test@test.com` can end up in logs, emails, or analytics; faker-generated data is realistic enough to catch formatting bugs without leaking patterns.
+
+### Not Cleaning Up Between Tests (Leaving DB State)
+
+**Wrong:**
+```typescript
+it('creates an order', async () => {
+  const order = await createOrder({ userId: 'user-1' })
+  expect(order.status).toBe('pending')
+  // no cleanup — next test sees this order
+})
+
+it('lists pending orders', async () => {
+  const orders = await listPendingOrders()
+  expect(orders).toHaveLength(1) // fails if previous test ran first and left data
+})
+```
+
+**Correct:**
+```typescript
+beforeEach(async () => { await db.execute(sql`TRUNCATE orders RESTART IDENTITY CASCADE`) })
+
+it('creates an order', async () => { ... })
+it('lists pending orders', async () => { expect(orders).toHaveLength(0) }) // always clean
+```
+
+**Why:** Tests that rely on implicit pre-existing data fail unpredictably depending on run order, parallelism, or leftover data from prior failures.
+
+### Using Seeders (Dev Scripts) Inside Unit/Integration Tests
+
+**Wrong:**
+```typescript
+beforeAll(async () => {
+  await runSeedScript() // seeds 50 users, 100 orders — slow and imprecise
+})
+
+it('finds admin users', async () => {
+  const admins = await findByRole('admin')
+  expect(admins.length).toBeGreaterThan(0) // fragile — depends on seed content
+})
+```
+
+**Correct:**
+```typescript
+it('finds admin users', async () => {
+  await createUser({ role: 'admin' })
+  await createUser({ role: 'customer' }) // control exact state
+
+  const admins = await findByRole('admin')
+  expect(admins).toHaveLength(1)
+})
+```
+
+**Why:** Seeders are designed for developer convenience with bulk data, not test precision; factories give each test exact control over what exists in the database.
+
+### Bringing Real Production Data Into Development Without Anonymization
+
+**Wrong:**
+```bash
+# Restore prod dump directly to dev DB
+pg_restore --dbname=myapp_dev prod-backup.dump
+# Real emails, names, payment tokens now in dev
+```
+
+**Correct:**
+```bash
+pg_restore --dbname=myapp_dev prod-backup.dump
+tsx scripts/anonymize.ts  # replace PII before any developer touches the data
+```
+
+**Why:** Real PII in dev environments violates GDPR, risks accidental emails to real users, and exposes payment tokens — anonymize immediately after restore, never after.
+
 ## Checklist
 
 - [ ] Tests use factories, not shared fixture files

@@ -491,6 +491,140 @@ func writeProblem(w http.ResponseWriter, r *http.Request, status int,
 }
 ```
 
+## Anti-Patterns
+
+### Using 200 OK for Every Response
+
+**Wrong:**
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{ "success": false, "error": "User not found" }
+```
+
+**Correct:**
+```json
+HTTP/1.1 404 Not Found
+Content-Type: application/problem+json
+
+{
+  "type": "https://api.example.com/problems/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "User abc-123 not found.",
+  "instance": "/api/v1/users/abc-123"
+}
+```
+
+**Why:** Returning 200 for errors forces clients to parse the body to detect failure, breaks HTTP caches and load balancers, and defeats the purpose of the status code system.
+
+---
+
+### Generating the OpenAPI Spec from Code Annotations
+
+**Wrong:**
+```typescript
+// Spec is auto-generated from decorators at runtime — drifts silently
+@ApiOperation({ summary: 'Create user' })
+@Post('/users')
+async createUser(@Body() dto: CreateUserDto) { ... }
+```
+
+**Correct:**
+```yaml
+# api/v1/openapi.yaml — written first, before any implementation
+paths:
+  /users:
+    post:
+      summary: Create a user
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully.
+```
+
+**Why:** Annotation-driven spec generation inverts the contract-first principle — the spec becomes a trailing artifact that drifts from what clients actually depend on.
+
+---
+
+### Putting Verbs in URLs
+
+**Wrong:**
+```
+POST /api/v1/cancelOrder/42
+GET  /api/v1/getUsers
+PUT  /api/v1/updateUser/7
+```
+
+**Correct:**
+```
+POST   /api/v1/orders/42/cancel
+GET    /api/v1/users
+PUT    /api/v1/users/7
+```
+
+**Why:** URLs identify resources (nouns); HTTP methods express actions (verbs) — mixing both makes APIs unpredictable and breaks REST semantics for caching and idempotency.
+
+---
+
+### Returning 500 for Validation Errors
+
+**Wrong:**
+```json
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+
+{ "error": "Invalid email format" }
+```
+
+**Correct:**
+```json
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/problem+json
+
+{
+  "type": "https://api.example.com/problems/validation-failed",
+  "title": "Validation Failed",
+  "status": 422,
+  "errors": [
+    { "field": "email", "detail": "must be a valid email address" }
+  ]
+}
+```
+
+**Why:** Validation errors are client mistakes (4xx), not server failures (5xx) — misusing 500 triggers false alerts, hides real server errors, and confuses API consumers.
+
+---
+
+### Breaking the API Contract Without a Version Bump
+
+**Wrong:**
+```yaml
+# v1 response — field renamed in-place, silently breaking all clients
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          properties:
+            full_name: { type: string }  # was "name" — breaking change without /v2/
+```
+
+**Correct:**
+```yaml
+# /api/v1/ keeps "name" intact; /api/v2/ introduces "full_name"
+# Deprecate v1 with Sunset header over a 6-month notice period
+Sunset: Sat, 01 Jan 2027 00:00:00 GMT
+```
+
+**Why:** Renaming, removing, or retyping fields in an existing version silently breaks all existing clients; any breaking change must be introduced under a new API version.
+
 ## API Design Checklist
 
 Before shipping a new endpoint:
