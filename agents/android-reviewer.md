@@ -121,3 +121,25 @@ For Android architecture patterns, Compose examples, and Hilt scoping details, s
 ### Summary
 1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.kt` files after migrating a feature from LiveData to StateFlow in a multi-module project.
+
+**Output:**
+```
+## Review: feature/profile/ProfileViewModel.kt
+
+### HIGH
+- [ProfileViewModel.kt:22] — Hardcoded `Dispatchers.IO` instead of injected dispatcher — Fix: inject `CoroutineDispatchers` interface via Hilt and use `dispatchers.io` for testability
+- [ProfileViewModel.kt:41] — `collectAsState()` used in ProfileScreen — Fix: replace with `collectAsStateWithLifecycle()` to stop background collection when screen is off
+
+### MEDIUM
+- [ProfileViewModel.kt:15] — LiveData import still present after migration (`androidx.lifecycle.MutableLiveData`) — Fix: remove unused import; linter will catch this but warrants explicit cleanup
+
+## Review: feature/profile/ProfileScreen.kt
+
+### LOW
+- [ProfileScreen.kt:88] — `LazyColumn` displaying profile posts has no `key` lambda — Fix: add `key = { post.id }` for stable recomposition
+
+### Summary
+0 critical, 2 high, 1 medium, 1 low. Merge blocked — fix HIGH issues before landing.
+```

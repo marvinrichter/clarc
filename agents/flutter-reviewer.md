@@ -216,3 +216,26 @@ grep -rn "Platform.isIOS\|Platform.isAndroid\|defaultTargetPlatform" --include="
 ### Summary
 1 critical, 3 high. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.dart` files after implementing a user profile settings screen with form fields and image upload.
+
+**Output:**
+```
+## Flutter Review
+
+### CRITICAL
+- [lib/features/profile/profile_screen.dart:71] Unhandled async in initState: `loadUserProfile()` called without `.catchError` or `unawaited()` — crashes silently on network failure
+
+### HIGH
+- [lib/features/profile/profile_screen.dart:34] `setState` scope too wide: entire screen rebuilds on each keystroke in name field — Fix: extract `NameField` as a separate `StatefulWidget`
+- [lib/features/profile/avatar_upload.dart:18] Fire-and-forget Future: `uploadAvatar(file)` result ignored — Fix: await result and handle error with a SnackBar
+
+### MEDIUM
+- [lib/features/profile/avatar_upload.dart:9] `IconButton` missing `tooltip` for accessibility — Fix: add `tooltip: 'Upload profile photo'`
+
+### Positive Patterns
+- `FutureBuilder` in `ProfileBadge` correctly handles loading, error, and data states
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

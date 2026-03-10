@@ -141,3 +141,24 @@ Review with the mindset: "Would this pass code review at a top Rails shop?"
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.rb` files after adding a user search endpoint to a Rails API (Pundit authorization, Kaminari pagination).
+
+**Output:**
+```
+## Review: app/controllers/api/v1/users_controller.rb, app/models/user.rb
+
+### CRITICAL
+- [users_controller.rb:19] Missing authorization: policy_scope not called before User.all — Fix: use policy_scope(User) to enforce Pundit scope
+- [users_controller.rb:33] Mass assignment risk: User.update(params[:user].permit!) — Fix: explicit allowlist, e.g. params.require(:user).permit(:name, :email)
+
+### HIGH
+- [users_controller.rb:44] N+1 queries: user.roles.each in serializer without eager loading — Fix: includes(:roles) on the relation before pagination
+- [users_controller.rb:28] Synchronous external call: Clearbit.enrich(email:) in request cycle — Fix: enqueue EnrichUserJob instead
+
+### MEDIUM
+- [user.rb:67] Using each + push instead of map: roles.each { |r| arr << r.name } — Fix: roles.map(&:name)
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

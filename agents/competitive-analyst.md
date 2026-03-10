@@ -185,6 +185,31 @@ What users hate (our opportunity):
 - "Setting up automations requires a developer" — Reddit r/projectmanagement
 ```
 
+**Input:** `/discover developer-observability-tools` — analyze competitors in the APM / observability space (Datadog, New Relic, Grafana Cloud, Honeycomb).
+
+**Output:** Excerpt from positioning and gap analysis:
+
+```
+POSITIONING MAP
+───────────────
+
+| Competitor   | Target User          | Core Value Prop            | Price Point     | Differentiator          |
+|-------------|----------------------|---------------------------|-----------------|------------------------|
+| Datadog      | Enterprise DevOps    | Everything in one platform | ~$23/host/mo    | Breadth of integrations |
+| Honeycomb    | High-scale eng teams | Query-based exploration    | Usage-based     | Columnar trace storage  |
+| Grafana Cloud| OSS-familiar orgs    | Open-source + managed      | Free tier + $   | OSS ecosystem lock-in   |
+| Us           | Mid-market SRE teams | ...                        | ...             | ...                     |
+
+MARKET GAPS (opportunities)
+────────────────────────────
+
+#1 — Affordable distributed tracing for teams < 50 engineers
+     Evidence: 83 Hacker News comments cite Datadog bill shock
+     Who suffers: Series A/B startups outgrowing free tiers
+     Opportunity size: ~15,000 companies in this band
+     → Draft idea: /idea trace-cost-optimizer
+```
+
 ## Not this agent — use `workflow-os-competitor-analyst` instead
 
 If you want to compare **clarc specifically** against Cursor, Copilot, Windsurf, Aider, Devin, or Continue.dev — use `workflow-os-competitor-analyst`. This agent covers **any market or product category**; the other agent is clarc-vs-tools only.

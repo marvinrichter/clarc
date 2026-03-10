@@ -192,3 +192,14 @@ Most platform initiatives fail not because of technical choices but because:
 - **90-day roadmap:** Month 1 (catalog live, all services have catalog-info.yaml) → Month 2 (Node.js Golden Path, new service in <10 min) → Month 3 (DB self-service template, DORA baseline measured)
 
 **Biggest risk:** Platform team mandates catalog adoption before it proves value — run as opt-in until all engineers self-select in.
+
+**Input:** User asks to design an IDP for a 25-engineer startup on GCP with a single monolith. Pain point: "Onboarding a new engineer takes 3–4 weeks — nobody documents anything."
+
+**Output:** Structured IDP architecture document. Example:
+- **Diagnosis:** Documentation and onboarding gap — the org doesn't need a full catalog yet (only one repo), it needs a portal with runbooks and a fast setup path.
+- **Component priority:** 1. TechDocs in Backstage (or Confluence + a structured template) → 2. Onboarding Golden Path (one-command dev env via Makefile + devcontainer) → 3. Service Catalog (deferred — 1 service doesn't need discovery)
+- **Make vs. Buy:** 25 engineers, no dedicated platform FTE → Port or Notion-backed TechDocs (SaaS). Self-hosted Backstage would consume the only DevOps engineer for 3 months. 1-year TCO SaaS: ~$6k vs. self-hosted ~$40k.
+- **Pilot:** New engineer hired next month is the live test — measure days-to-first-commit before and after.
+- **90-day roadmap:** Month 1 (devcontainer + Makefile setup; target: new engineer productive in <1 day) → Month 2 (TechDocs for top 5 runbooks + architecture overview) → Month 3 (NPS survey from last 3 hires; decide if Backstage justified at next headcount milestone)
+
+**Biggest risk:** Overengineering — a 25-person startup does not need Backstage. Ship a devcontainer and a well-structured README first; introduce portal tooling when onboarding pain is still felt at 50+ engineers.

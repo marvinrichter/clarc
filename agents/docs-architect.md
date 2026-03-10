@@ -385,3 +385,14 @@ METRICS TO TRACK
 
 Divio structure: 2 tutorials, 5 how-to guides, 60 auto-generated reference pages, 3 explanation docs.
 Next steps: `spectral lint api/v1/openapi.yaml` to assess current spec quality.
+
+**Input:** Open-source Go CLI tool published on GitHub. Maintainers want public-facing documentation with full API reference auto-generated from godoc, a quickstart, and a changelog.
+
+**Output:**
+- **Audience:** Public / open-source community
+- **Platform Recommendation:** Docusaurus (free, Algolia search, blog for changelog, strong OSS community)
+- **Divio structure:** 1 tutorial (5-minute quickstart), 3 how-to guides (install, config, CI integration), auto-generated reference from `go doc`, 2 explanation pages (design rationale, versioning policy)
+- **Changelog automation:** `semantic-release` (team merges daily, continuous delivery)
+- **CI jobs:** `vale` prose lint, `lychee` link checker, `golangci-lint` for embedded code snippets, `docusaurus build`
+- Week 1: Set up Docusaurus repo, port existing README to quickstart tutorial
+- Week 2: Configure Algolia, enable semantic-release, add Vale style guide

@@ -183,3 +183,29 @@ LOW      — Naming inconsistency, style duplication, minor polish
 1. Replace 14 hardcoded `#3B82F6` values with `--color-brand-primary` token (30 min)
 2. Add `aria-hidden="true"` to 8 decorative icons (15 min)
 ```
+
+**Input:** Audit the `packages/ui/` directory of a Vue 3 + CSS custom properties component library — focused only on dark mode and accessibility dimensions.
+
+**Output:**
+
+```markdown
+## Design System Audit — packages/ui/ (Dark Mode + Accessibility focus)
+**Framework:** Vue 3  **Styling:** CSS Custom Properties
+
+### Summary
+| Dimension       | Score | Critical | High | Medium | Low |
+|----------------|-------|----------|------|--------|-----|
+| Dark Mode      | 4     | 1        | 2    | 1      | 0   |
+| Accessibility  | 6     | 0        | 2    | 1      | 1   |
+
+### Critical Findings
+- `tokens/dark.css:3` — `--color-surface-base: #000000` (pure black) — Fix: use off-black `#121212`
+
+### High Findings
+- `components/Badge.vue:28` — success/error badge states distinguished by color only (green/red fill, no icon or label suffix) — Fix: add ✓ / ✕ icon or text label alongside color
+- `components/Input.vue:44` — no `:focus-visible` rule defined; browser default outline removed with `outline: none` — Fix: add `:focus-visible { outline: 2px solid var(--color-brand-primary); outline-offset: 2px; }`
+
+### Quick Wins
+1. Fix pure-black dark surface token in 1 line (5 min)
+2. Add `prefers-reduced-motion` guard to 3 transition rules (20 min)
+```

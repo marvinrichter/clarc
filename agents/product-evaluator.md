@@ -216,3 +216,37 @@ the `/release` command. Do not try to be a general-purpose changelog tool.
 1. Scope to clarc-internal use only (not a standalone product)
 2. Run `/explore clarc-changelog-generator` to design options
 ```
+
+**Input:** Idea document for "Offline-first mobile expense tracker — capture receipts and sync when connected."
+
+**Output:**
+```
+## Evaluation: offline-expense-tracker
+
+## Summary
+Mobile-first expense capture with local-first sync. Strong user fit for traveling employees, but
+feasibility is medium-high (CRDT sync is non-trivial) and the market is saturated. Recommend Modify.
+
+## Scoring
+| Dimension         | Score | Reason |
+|-------------------|-------|--------|
+| Problem Clarity   | 5/5   | Concrete: employees lose receipts when offline at airports/conferences |
+| User Fit          | 4/5   | Road warriors at 50+ person companies — specific and reachable |
+| Solution Fit      | 4/5   | Local-first sync directly addresses the root cause |
+| Feasibility       | 3/5   | Medium — CRDT or last-write-wins sync + conflict resolution is 4–8 weeks |
+| Differentiation   | 2/5   | Expensify, Ramp, and Brex all have offline modes; Notion-based workarounds exist |
+| Opportunity Cost  | 2/5   | The team has 2 higher-priority items in backlog with clearer ROI |
+| **Total**         | **20/30** | |
+
+## Recommendation
+
+### ~ MODIFY
+
+**Reason:** Real problem, wrong scope. Don't build a full expense tracker — build a receipt capture
+widget (photo + OCR + local queue) that exports to the company's existing Expensify/Ramp account.
+Narrow to capture-only; let established tools handle approval workflows and accounting sync.
+
+**Next steps:**
+1. Validate: interview 5 road warriors — is capture the bottleneck or is it approval latency?
+2. If capture confirmed: run `/explore receipt-capture-widget` for a scoped solution
+```

@@ -260,3 +260,24 @@ Generated: 2026-03-10
 
 **Payback period:** < 1 week of engineering time
 ```
+
+**Input:** Kubernetes YAML manifests for a Python data-processing service with no resource limits defined and 6 replicas running on `n2-standard-8` GCE nodes.
+
+**Output:**
+```markdown
+# FinOps Advisory Report — data-processor
+Generated: 2026-03-10
+
+## Cloud Cost Summary
+- **Estimated Monthly Spend:** $1,840 (GKE compute, 6 × n2-standard-8)
+- **Optimization Potential:** ~$740/month (~40%)
+
+## Quick Wins — Implement This Week
+| # | Recommendation | Monthly Savings | Effort |
+|---|---------------|----------------|--------|
+| 1 | Add CPU/memory requests+limits (currently unset — nodes over-provisioned) | ~$400 | 2 hours |
+| 2 | Scale from 6 → 3 replicas during off-peak (17:00–07:00 UTC) via KEDA CronScaler | ~$220 | 3 hours |
+| 3 | Downsize nodes from n2-standard-8 → n2-standard-4 after rightsizing | ~$120 | 1 day |
+
+**Payback period:** < 1 week of engineering time
+```

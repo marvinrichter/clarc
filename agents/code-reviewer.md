@@ -161,3 +161,20 @@ Also check `CLAUDE.md` and project rules for:
 
 Verdict: BLOCK — 1 CRITICAL issue (hardcoded API key in login.ts:12) must be fixed before merge.
 ```
+
+**Input:** `git diff --staged` shows changes in `scripts/migrate.sh` and `migrations/0012_add_audit_log.sql`.
+
+**Output:** Detects `.sh` → routes to `bash-reviewer`; detects `.sql` → routes to `database-reviewer`. Both run in parallel. After both complete:
+
+```
+## Review Summary (bash-reviewer + database-reviewer)
+
+| Severity | Count | Status |
+|----------|-------|--------|
+| CRITICAL | 0     | pass   |
+| HIGH     | 1     | warn   |
+| MEDIUM   | 2     | info   |
+| LOW      | 1     | note   |
+
+Verdict: WARNING — 1 HIGH issue (migration script missing `set -euo pipefail` — partial migration possible on failure) should be resolved before merge.
+```

@@ -235,3 +235,14 @@ This signal is consumed by the `orchestrator` agent during synthesis.
 - **Recommendation:** Option B (SSE + Redis pub/sub) because the system already runs Redis, horizontal scaling is a key requirement, and all notifications are server-to-client only.
 
 Next steps: `/arc42 section-5` to update building blocks, then run `/explore notification-system` to generate the ADR.
+
+**Input:** User asks how to split a growing Django monolith into independently deployable services without a big-bang rewrite.
+
+**Output:** Strangler Fig decomposition plan with component boundaries and migration phases:
+- **Phase 1 — Proxy installation**: Add an nginx/Traefik routing layer in front of the monolith. Zero behavior change. All traffic still hits Django.
+- **Phase 2 — Extract auth service**: Auth is stateless and well-bounded. New FastAPI service handles `/api/auth/**`. Proxy routes auth traffic to it; everything else stays on Django.
+- **Phase 3 — Extract reporting**: Reporting reads from a replica DB and has no write path. Safe to extract next; use the Anti-Corruption Layer pattern to translate Django ORM field names to the new service's domain model.
+- **Phase 4 — Data ownership**: Each extracted service owns its own Postgres schema. Shared tables are migrated via dual-write + backfill.
+- **Recommendation:** Strangler Fig over Branch-by-Abstraction because the monolith is HTTP-accessible; no shared-library seam needed. Delete Django modules as each service reaches 100% traffic.
+
+Next steps: `/arc42 section-3` to update the system context diagram, then `/explore auth-service-extraction` to generate the ADR.

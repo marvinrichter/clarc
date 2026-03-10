@@ -225,3 +225,40 @@ Repository: my-api | Date: 2026-03-10
 | GitHub Actions pinned | HIGH — 4 actions on tags |
 | SBOM | Missing |
 ```
+
+**Input:** Pre-release audit of a Python ML service with a `requirements.txt`, `setup.py`, and a GitHub Actions release workflow.
+
+**Output:**
+```
+## Supply Chain Security Audit
+Repository: ml-inference-service | Date: 2026-03-10
+
+### CRITICAL
+1. **Suspicious setup.py** — subprocess.run(['curl', ...]) in setup.py install step
+   File: setup.py:22
+   Risk: Executes arbitrary network download during pip install — classic supply chain attack vector
+   Action: Remove network call from setup.py; download assets at runtime or bundle them
+
+### HIGH
+1. **Unpinned Python dependencies** — 6 of 14 packages use >= without upper bound
+   File: requirements.txt (e.g. "torch>=2.0", "transformers>=4.35")
+   Risk: Silent major-version upgrades can introduce breaking changes or malicious versions
+   Fix: Pin to exact versions and add hash pinning: --hash=sha256:...
+
+2. **GitHub Actions release workflow uses tag pinning**
+   Files: .github/workflows/release.yml (pypa/gh-action-pypi-publish@v1)
+   Fix: Pin to full commit SHA
+
+### MEDIUM
+1. **No poetry.lock or requirements-lock.txt** — only unpinned requirements.txt committed
+   Fix: Switch to Poetry (poetry.lock) or pip-compile to generate a fully pinned lockfile
+
+### Summary
+| Category | Status |
+|---|---|
+| Dependency pinning | HIGH — unpinned ranges |
+| Lock file | Missing |
+| GitHub Actions pinned | HIGH — tag pinning |
+| Suspicious scripts | CRITICAL — setup.py network call |
+| SBOM | Missing |
+```

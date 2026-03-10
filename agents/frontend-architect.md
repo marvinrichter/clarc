@@ -252,3 +252,12 @@ Produce an MFE Architecture Decision Record (ADR) with:
 - **Recommendation:** Option A (Module Federation) because all 4 teams use React and independent deployment is the primary goal.
 
 Migration: Step 1 (extract Design System) → Step 2 (add MFE to Checkout) → Step 3 (validate in production) → Step 4 (Catalog and Account).
+
+**Input:** User asks whether a 2-team Angular + React hybrid dashboard should adopt Micro-Frontends.
+
+**Output:**
+- **Decision gate triggered:** Only 2 teams, no independent deployment requirement — full MFE is premature.
+- **Recommendation:** Modular monolith with clear internal boundaries using Nx workspaces. Each team owns a `libs/` domain (Angular Shell team owns `libs/core`, React widget team owns `libs/widgets` compiled as Web Components for embedding).
+- Integration strategy: Web Components for the React widgets, consumed by Angular host — no Module Federation needed at this scale.
+- Revisit MFE if a third team joins or deploy cadences diverge beyond once per week.
+- ADR written: `docs/decisions/2026-03-10-no-mfe-yet-adr.md`

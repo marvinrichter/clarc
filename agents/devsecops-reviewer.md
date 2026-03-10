@@ -333,6 +333,41 @@ fi
 - **Fix:** Add `"exp": datetime.utcnow() + timedelta(hours=1)` to JWT payload
 ```
 
+**Input:** PR touching `terraform/rds.tf`, `terraform/s3_artifacts.tf`, and `k8s/deployments/api.yaml`.
+
+**Output:**
+
+```markdown
+# DevSecOps Security Review
+**Files Reviewed:** terraform/rds.tf, terraform/s3_artifacts.tf, k8s/deployments/api.yaml
+
+## CRITICAL — Block Immediately
+
+### [FINDING-001] Public S3 bucket — artifacts exposed to internet
+- **File:** `terraform/s3_artifacts.tf`, line 12
+- **Category:** IaC Misconfiguration — public storage
+- **Fix:**
+  ```hcl
+  # Before (vulnerable)
+  acl = "public-read"
+  # After (secure)
+  acl = "private"
+  # Add explicit block:
+  block_public_acls       = true
+  block_public_policy     = true
+  ```
+
+## HIGH — Fix Before Release
+
+### [FINDING-002] RDS instance without encryption at rest
+- **File:** `terraform/rds.tf`, line 28
+- **Fix:** Add `storage_encrypted = true` and specify `kms_key_id`
+
+### [FINDING-003] Kubernetes pod running as root
+- **File:** `k8s/deployments/api.yaml`, line 41
+- **Fix:** Add `securityContext: { runAsNonRoot: true, runAsUser: 1000, allowPrivilegeEscalation: false }`
+```
+
 ## Not this agent — use `security-reviewer` instead
 
 If you need to review **application code** for OWASP Top 10 vulnerabilities, authentication flaws, injection risks, or secrets in source files — use `security-reviewer`. This agent focuses on **DevSecOps pipeline and infrastructure** (Dockerfile hardening, IaC misconfigurations, GitHub Actions, dependency CVEs, supply chain).

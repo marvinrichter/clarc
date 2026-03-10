@@ -127,6 +127,26 @@ Do not soften feedback with "this is just a suggestion" — give clear direction
 
 Fix applied: increase center card height by 20%, add 2px brand-border, raise badge to 14px medium. Verified: no color-only distinction (badge uses text + color).
 
+### Example 3 — Mobile Onboarding Screen (HTML/CSS Review)
+
+**Input:** HTML/CSS code for a 4-step mobile onboarding flow. Audience: first-time users of a budgeting app.
+
+**Output:**
+
+**Composition & Layout:** The progress indicator (4 dots) is centered top-right, separated from the headline by 48px of unstructured space. There is no grid — card content starts at x=12px on step 1 and x=20px on step 2, creating a visible misalignment when swiping. All illustrations are positioned with absolute pixel values that break at non-375px screen widths.
+
+**Visual Hierarchy:** The CTA button "Next" is 36px tall and 16px font-weight 400. It reads as body copy, not an action. The step headline above it is 24px bold — making the headline and the CTA compete at similar visual weight. Fix: increase button to 48px tall, 18px medium, full-width; reduce headline to 20px.
+
+**Accessibility:** Touch targets on the back-arrow icon are 28×28px — below the 44×44px minimum. The "Skip" link is 11px gray on white at 2.4:1 contrast, failing WCAG AA. Fix: enlarge tap zones to 44px, raise "Skip" contrast to 4.5:1 minimum (#767676 minimum on white).
+
+```
+## Top Issues (by impact)
+
+1. Touch targets below 44px (back arrow 28px, skip link tap area 32px) — WCAG 2.5.5 failure — Fix: wrap in 44px tap zone with padding
+2. CTA button visually demoted below headline — conversion risk — Fix: 48px height, bold weight, full-width, primary brand color
+3. No responsive layout — absolute px positioning breaks on non-375px devices — Fix: use flexbox column with percentage or rem spacing
+```
+
 ## Reference Skills
 
 `layout-composition` — grid systems, Gestalt, whitespace, focal point

@@ -225,3 +225,15 @@ Migration phases:
 - Phase 0 (Week 1–2): Add tests for top 5 untested hotspots, set up auth success rate + checkout completion monitoring
 - Phase 1 (Week 3–6): Extract AuthService via Strangler Fig — shadow mode 2 weeks → canary 10% → 100%
 - Phase 2 (Month 2–4): Extract OrderService with dual-write DB migration using Expand-Contract pattern
+
+**Input:** Django monolith (Python), 80K lines, 8 years old. Single PostgreSQL database shared by billing, inventory, and notifications modules. Team wants to move toward separate services but can't afford downtime.
+
+**Output:** Modernization roadmap for a shared-database monolith. Example findings:
+- **P0 Hotspot:** `billing/views.py` (61 changes in 6 months, 1,102 lines, CC=22) — handles invoicing, payment retries, and Stripe webhooks in one file — Strategy: Branch-by-Abstraction behind `BillingPort` interface; toggle via feature flag
+- **P1 Hotspot:** `inventory/models.py` (38 changes, 780 lines) — ORM model with embedded business logic in `save()` overrides — add seams first (extract `InventoryDomainService`), then Strangler Fig via internal API
+- **Database coupling risk:** All three modules share `billing_invoices` table with cross-module FK constraints — use Expand-Contract: add new columns alongside legacy, dual-write, migrate reads, drop old columns
+
+Migration phases:
+- Phase 0 (Week 1–2): Add integration tests for billing success/failure flows; instrument shared DB query count per module as baseline
+- Phase 1 (Week 3–6): Extract `BillingService` behind `BillingPort` interface with feature flag — shadow mode: run both implementations, compare invoice totals for 2 weeks
+- Phase 2 (Month 2–4): Separate billing DB schema (Expand-Contract dual-write) → migrate inventory reads → drop cross-module FKs

@@ -113,3 +113,18 @@ Fix: Removed unused variable — logic moved to order.Validate()
 
 Build Status: SUCCESS | Errors Fixed: 3 | Files Modified: internal/service/order.go, internal/handler/order_handler.go, internal/domain/order.go
 ```
+
+**Input:** `go mod tidy` + `go build ./...` fail after upgrading a dependency — checksum mismatch and an import cycle introduced by the new version.
+
+**Output:**
+```
+[FIXED] go.sum
+Error: verifying module: checksum mismatch (downloaded vs expected)
+Fix: Ran `go clean -modcache && go mod download` to rebuild the module cache
+
+[FIXED] internal/config/loader.go:6
+Error: import cycle not allowed — config imports logger, logger imports config
+Fix: Extracted shared LogLevel type to internal/types/log.go; both packages now import types instead of each other
+
+Build Status: SUCCESS | Errors Fixed: 2 | Files Modified: go.sum, internal/types/log.go (new), internal/config/loader.go, internal/logger/logger.go
+```

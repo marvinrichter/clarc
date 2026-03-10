@@ -178,3 +178,32 @@ For each HIGH/MEDIUM breaking change, provide:
 ### Recommended Action
 BLOCK — coordinate with mobile-app team before merging.
 ```
+
+**Input:** `git diff HEAD~1` shows changes to `api/v1/events.proto` — a Protobuf field removed and a new required field added to a request message.
+
+**Output:**
+
+```markdown
+## API Contract Review
+
+**Files changed:** api/v1/events.proto
+**Pact files found:** 0 pact files (consumers undocumented — recommend adopting Pact)
+
+| Change | Type | Severity | Affected Consumers |
+|--------|------|----------|--------------------|
+| EventRequest.source_ip field removed (field 4) | BREAKING | MEDIUM | Unknown — no pacts |
+| EventRequest.tenant_id added as required (field 5) | BREAKING | MEDIUM | Unknown — no pacts |
+
+### BREAKING Changes — Action Required
+
+#### EventRequest.source_ip removed (field 4)
+**Severity:** MEDIUM — no pact files, but any consumer reading field 4 will silently receive zero-value
+**Migration:** Reserve field number 4 with `reserved 4; reserved "source_ip";` — do not reuse
+
+#### EventRequest.tenant_id added as required
+**Severity:** MEDIUM — existing consumers that don't set this field will fail server validation
+**Migration:** Make field optional for one release, update consumers, then enforce required in next version
+
+### Recommended Action
+WARN — no pact files found; recommend adopting consumer-driven contract tests before next breaking change.
+```

@@ -100,3 +100,25 @@ When invoked:
 ### Summary
 2 critical, 3 high, 2 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.php` files after adding a file upload endpoint for invoice PDFs in a Symfony application.
+
+**Output:**
+```
+## PHP Review
+
+### CRITICAL
+- [src/Controller/InvoiceController.php:1] Missing declare(strict_types=1) — add as first statement after opening tag
+- [src/Controller/InvoiceController.php:33] Unvalidated file upload: MIME type not checked and original filename used directly for storage — Fix: validate with $file->getMimeType() === 'application/pdf', generate a UUID filename with pathinfo() extension check before persisting
+- [src/Service/InvoiceStorageService.php:51] Shell injection: user-supplied filename passed to shell_exec("pdfinfo $filename") — Fix: use PHP PDF library (e.g., FPDI) instead of shell_exec, or sanitize with escapeshellarg
+
+### HIGH
+- [src/Controller/InvoiceController.php:28] Fat controller: upload() is 68 lines — extract to InvoiceUploadHandler service
+- [src/Service/InvoiceStorageService.php:19] Ignored exception: catch (FilesystemException $e) {} swallows storage errors — Fix: log and rethrow as InvoiceStorageException
+
+### MEDIUM
+- [src/Service/InvoiceStorageService.php:42] Magic string: 'invoices/' directory prefix hardcoded in 3 places — introduce a named constant or config parameter
+
+### Summary
+3 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

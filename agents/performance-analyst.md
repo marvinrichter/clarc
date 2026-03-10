@@ -255,3 +255,54 @@ Fix: `CREATE INDEX CONCURRENTLY idx_orders_user_id ON orders(user_id);`
 
 Recommended order: Fix #1, re-profile, then #2. Re-profile after each fix.
 ```
+
+**Input:** Lighthouse report for a Next.js e-commerce product page: LCP 6.1s, TBT 980ms, CLS 0.31. No backend profiling — frontend only.
+
+**Output:**
+```
+## Performance Analysis Report
+
+### Baseline & Context
+- LCP: 6.1s | Target: 2.5s | Gap: 144%
+- TBT: 980ms | Target: <200ms | Bottleneck: CPU-bound (main thread blocking)
+- CLS: 0.31 | Target: <0.1 | Layout instability detected
+
+---
+
+### Finding 1: Render-blocking third-party scripts inflating TBT
+**Severity:** CRITICAL | **Expected Impact:** 60-70% TBT reduction (~300ms)
+**Location:** `pages/_document.tsx` — 4 analytics/chat scripts loaded synchronously in <head>
+
+Root cause: Scripts block the main thread before hydration. TBT of 980ms matches combined parse+execute time of these scripts.
+
+Fix: Add `strategy="lazyOnload"` to each Script component (Next.js `<Script>`); defer non-critical analytics until after hydration.
+
+How to Verify: Re-run Lighthouse after deploy — TBT should drop below 400ms.
+
+---
+
+### Finding 2: LCP image not preloaded and served without CDN
+**Severity:** HIGH | **Expected Impact:** LCP reduction from 6.1s to ~2.8s
+**Location:** `components/ProductHero.tsx:12` — hero <img> has no priority prop; served from origin
+
+Fix: Add `priority` prop to Next.js `<Image>` and ensure image is served via CDN (Vercel Image Optimization or Cloudflare).
+
+---
+
+### Finding 3: CLS from dynamically injected promotional banner
+**Severity:** HIGH | **Expected Impact:** CLS from 0.31 to <0.05
+**Location:** `components/PromoBanner.tsx` — banner inserted after hydration, shifts product title down
+
+Fix: Reserve banner height with `min-h-[56px]` in the layout even before data loads; use skeleton placeholder.
+
+---
+
+### Summary
+| Priority | Finding | Impact | Effort |
+|----------|---------|--------|--------|
+| 1 | Render-blocking scripts | HIGH (TBT -60%) | Low (1h) |
+| 2 | LCP hero image not preloaded | HIGH (LCP -50%) | Low (30min) |
+| 3 | CLS from dynamic banner | HIGH (CLS -84%) | Low (1h) |
+
+Recommended order: Fix #1 (scripts), re-run Lighthouse, then fix #2 and #3 in parallel. Re-profile after each change.
+```

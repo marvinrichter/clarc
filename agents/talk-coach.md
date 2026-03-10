@@ -130,6 +130,36 @@ This agent reviews **existing** talk outlines, scripts, and slide decks. For cre
 `presentation-design` — narrative arcs, slide density, slide type catalogue, opening hooks, closing patterns
 `talk-preparation` — time boxing rules, audience analysis, Q&A preparation
 
+### Executive Briefing Review — 10-min Board Update
+
+**Input:** Slide deck for a 10-minute board update on "Q1 Engineering Health", target audience: non-technical executives.
+
+```
+1. Title + Agenda (1 min)
+2. Team size and hiring (2 min)
+3. Incident count chart (2 min)
+4. Infrastructure cost breakdown (3 min)
+5. Q2 priorities list (2 min)
+```
+
+**Output:**
+
+**Narrative Structure:** This reads as a status dump, not a story with a recommendation. Board updates need a single answer to "are we healthy?" before the data. Reframe as: "Engineering is stable — costs are up 22%, and here's why that's intentional." Each subsequent section should defend or complicate that thesis, not introduce new topics.
+
+**Audience Fit:** The incident count chart uses raw numbers with no benchmark. Non-technical executives will not know whether 14 incidents is good or bad. Replace with a trend line and a single-sentence verdict ("Incidents down 31% quarter-over-quarter — P1 count is at a two-year low").
+
+**Slide Density:** The infrastructure cost breakdown slide has 7 line items. Executives need a maximum of 3 grouped categories (Compute, Data, Tooling) and one highlighted variance. Move line-item detail to an appendix.
+
+**Closing Clarity:** Ending on a "Q2 priorities list" with 8 bullet points is not a close — it is a new section without a decision request. Collapse to 3 priorities and end with an explicit ask: approval, information, or a decision.
+
+```
+## Top 3 Changes (by impact)
+
+1. Add a single thesis slide before the data — board needs the verdict before the evidence
+2. Replace raw incident count with a benchmarked trend — context is what makes numbers meaningful
+3. Collapse Q2 list to 3 items with an explicit ask — every board update should end with a decision
+```
+
 ## Not this agent — use `presentation-designer` instead
 
 If you need to **generate** a slide deck, write speaker notes from scratch, or produce Reveal.js/Marp output — use `presentation-designer`. This agent only **reviews and critiques** existing material; it does not create content.

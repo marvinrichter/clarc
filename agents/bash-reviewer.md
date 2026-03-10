@@ -101,3 +101,23 @@ Then:
 ### Summary
 1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 1 modified `.sh` file — a CI release script that tags a git commit and uploads a binary to S3.
+
+**Output:**
+```
+## Review: scripts/release.sh
+
+### CRITICAL
+- [release.sh:14] — `eval "aws s3 cp $ARTIFACT_PATH s3://$BUCKET"` with user-controlled `$ARTIFACT_PATH` — Fix: remove eval entirely; call `aws s3 cp "$ARTIFACT_PATH" "s3://$BUCKET"` directly with quoted variables
+
+### HIGH
+- [release.sh:2] — Missing `set -euo pipefail`; if `git tag` fails, the upload step still runs — Fix: add `set -euo pipefail` immediately after the shebang
+- [release.sh:29] — `aws`, `git`, and `jq` used without checking existence — Fix: add `command -v aws git jq || { echo "required tools missing" >&2; exit 1; }` at startup
+
+### MEDIUM
+- [release.sh] — No BATS tests exist for this script — Fix: add at least one test that mocks `aws` and `git` and verifies exit code on missing `VERSION` env var
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

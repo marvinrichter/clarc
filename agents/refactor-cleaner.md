@@ -129,6 +129,35 @@ Apply this plan? [yes / skip <item>]
 **Step 3 — after "yes":** removes the 3 SAFE items, runs tests, commits.
 Skips `lodash` and explains why.
 
+### Duplicate Consolidation → Confirm → Remove
+
+**Input:** User asks to consolidate duplicated date formatting utilities scattered across a Python Django project.
+
+**Step 1 — run analysis:**
+```
+$ grep -r "def format_date" --include="*.py" -l
+apps/orders/utils.py
+apps/invoices/helpers.py
+apps/reports/formatters.py
+```
+Three near-identical `format_date()` implementations found. `apps/orders/utils.py` is most complete (handles timezone, locale).
+
+**Step 2 — present plan (dry-run):**
+```
+## Removal Plan
+
+### SAFE (2 items)
+- [ ] apps/invoices/helpers.py:format_date — 4 call sites, all replaceable with apps/orders/utils.format_date
+- [ ] apps/reports/formatters.py:format_date — 2 call sites, all replaceable
+
+### CAREFUL (0 items)
+
+Canonical implementation: apps/orders/utils.format_date (move to apps/common/utils.py first)
+Apply this plan? [yes / skip <item>]
+```
+
+**Step 3 — after "yes":** moves canonical function to `apps/common/utils.py`, updates all 6 call sites, removes duplicates, runs `pytest`, commits with message `refactor: consolidate format_date into apps/common/utils`.
+
 ## Success Metrics
 
 - All tests passing

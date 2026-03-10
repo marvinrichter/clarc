@@ -139,3 +139,37 @@ All 3 agents flagged missing input validation on CheckoutController.ts:34.
 CRITICAL: Fix SQL injection in checkout_repository.ts:28 before merge.
 HIGH: Add @Valid on CheckoutRequest DTO, add missing FK index on order_items.checkout_id.
 ```
+
+**Input:** `/orchestrate` — "Implement the new user notification feature: plan it, write tests first, implement, then review the result."
+
+**Output:**
+```
+## Orchestration Plan
+
+**Task:** Implement user notification feature end-to-end
+**Pattern:** Sequential Pipeline (each phase depends on previous output)
+**Agents:** planner → tdd-guide → code-reviewer + security-reviewer (parallel)
+
+### Execution
+Phase 1: planner — produce task breakdown and interface contracts
+Phase 2: tdd-guide — write failing tests based on planner output
+Phase 3 (parallel): code-reviewer + security-reviewer — review implementation
+
+### Synthesis
+Unified findings table; security-reviewer findings take precedence over code-reviewer style notes.
+
+---
+
+## Results
+
+### Agreements
+planner and tdd-guide both scoped the feature to a single NotificationService with an async dispatch interface.
+
+### Conflicts Resolved
+| Conflict | Agents | Class | Winner | Rationale |
+|----------|--------|-------|--------|-----------|
+| Inline template strings vs. DB-stored templates | planner (inline) vs. security-reviewer (stored, to prevent injection) | security-vs-simplicity | security-reviewer | Template injection is a CRITICAL risk; stored templates with strict validation required |
+
+### Recommendations
+Feature plan approved. Tests written and passing. CRITICAL: Validate all template variables against allowlist before render (security-reviewer finding).
+```

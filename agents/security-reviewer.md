@@ -138,6 +138,38 @@ Apply this fix? [yes/no]
 
 After user confirms, calls Edit with the parameterized query fix.
 
+### SSRF — Finding to Fix
+
+**Input:** Reviewing `src/api/preview.ts` after a new URL-preview feature was added.
+
+**Finding (HIGH):**
+```typescript
+// src/api/preview.ts:31
+const response = await fetch(req.body.url);
+```
+
+**Output:**
+```
+## Security Report
+
+### HIGH: Server-Side Request Forgery (SSRF) — src/api/preview.ts:31
+
+User-supplied URL is fetched directly with no domain validation.
+Attack: POST body {"url": "http://169.254.169.254/latest/meta-data/"} leaks AWS instance credentials.
+Attack: {"url": "http://internal-admin.svc.cluster.local/reset"} reaches internal services.
+
+Proposed fix:
+- const response = await fetch(req.body.url);
++ const ALLOWED_HOSTS = ['example.com', 'cdn.example.com'];
++ const parsed = new URL(req.body.url);
++ if (!ALLOWED_HOSTS.includes(parsed.hostname)) throw new ForbiddenError('Domain not allowed');
++ const response = await fetch(parsed.toString());
+
+Apply this fix? [yes/no]
+```
+
+After user confirms, calls Edit with the domain-allowlist guard.
+
 ## Success Metrics
 
 - No CRITICAL issues found

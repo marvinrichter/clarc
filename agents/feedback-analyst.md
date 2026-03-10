@@ -188,3 +188,28 @@ TOP PAIN POINTS (ranked by opportunity score)
 
 CREATED IDEA SEEDS: docs/ideas/discovered/2026-03-10-report-snapshots.md
 ```
+
+**Input:** 80 app store reviews (iOS + Android) for a mobile invoicing app, exported as plain text.
+
+**Output:**
+```
+FEEDBACK ANALYSIS COMPLETE
+══════════════════════════
+Source:      app-store-reviews.txt
+Total items: 80
+Date range:  2026-01-15 – 2026-03-08
+
+TOP PAIN POINTS (ranked by opportunity score)
+────────────────────────────────────────────
+
+#1 — Recurring invoice setup is too manual (31 mentions, pain: 4/5)
+     "I have to copy the same invoice every month — there's no repeat option"
+     JTBD: I need to bill the same clients monthly without rebuilding invoices from scratch
+     → Idea: /idea recurring-invoice-templates
+
+#2 — No offline mode (22 mentions, pain: 3/5)
+     "App is useless on the train — needs internet just to view past invoices"
+     → Idea: /idea offline-invoice-cache
+
+CREATED IDEA SEEDS: docs/ideas/discovered/2026-03-10-recurring-invoices.md
+```

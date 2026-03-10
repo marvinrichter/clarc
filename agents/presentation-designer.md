@@ -178,6 +178,21 @@ Ready to generate the full deck? (yes/no)
 
 Generated `presentation.html` with Reveal.js, speaker notes with timing markers, and transition sentences on every slide. Closing slide: 3 takeaways ("Migrate incrementally", "DataLoader from day 1", "Type-first schema design") + CTA: "Try the GraphQL sandbox at /graphql today."
 
+**Input:** "Create a 10-minute board-level update on our Q1 infrastructure cost overrun. Audience: executives (CFO, CEO). Format: marp."
+
+**Output:**
+```
+## Outline (3 slides, 10 minutes)
+
+1. "Q1 infrastructure spend exceeded budget by 34%" — hook: one number, one cause (GPU cluster provisioned for ML spike, never deprovisioned)
+2. What we're doing — 3 actions already taken (rightsizing, reserved instances, auto-shutdown policy) + projected savings ($180k/quarter)
+3. Decision needed — approve $40k migration project to reclaim remaining overspend; expected 5-month payback
+
+Ready to generate the full deck? (yes/no)
+```
+
+Generated `slides.md` as Marp markdown. Opening slide leads with the cost delta ("34% over budget") — not agenda or team name. Data slide 2 headline reads "Three actions cut Q2 spend by $180k/quarter", not "Cost Reduction Initiatives". Closing slide has one CTA: "Approve migration budget — vote today."
+
 ## Not this agent — use `talk-coach` instead
 
 If you have an **existing** outline, script, or slide deck and want structured critique on narrative flow, timing, or audience fit — use `talk-coach`. This agent **creates** slide decks; it does not review them.

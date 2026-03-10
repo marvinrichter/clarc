@@ -129,4 +129,27 @@ Steps taken:
 
 ---
 
+### New Dependency Added → Integration Codemap Update
+
+**Input:** `package.json` — `@aws-sdk/client-s3` added; `src/lib/storage.ts` created with `uploadFile`, `deleteFile`, `getSignedUrl` exports.
+
+**Output:** `docs/CODEMAPS/integrations.md` updated:
+```markdown
+## External Services
+- @aws-sdk/client-s3 v3.x — S3 file uploads, signed URL generation, object deletion
+
+## Key Modules
+| Module | Purpose | Exports |
+| src/lib/storage.ts | S3 file operations | uploadFile, deleteFile, getSignedUrl |
+```
+
+Steps taken:
+1. Detected new dependency in `package.json` diff
+2. Grepped `src/lib/storage.ts` for exported function signatures
+3. Added new row to integrations table in `docs/CODEMAPS/integrations.md`
+4. Verified no existing docs reference a previous storage abstraction
+5. Updated `**Last Updated:** 2026-03-10` timestamp
+
+---
+
 **Remember**: Documentation that doesn't match reality is worse than no documentation. Always generate from the source of truth.

@@ -124,3 +124,17 @@ Quarantined: "Show error on expired card" → test.fixme(true, 'Flaky - Issue #2
 Artifacts: screenshots/checkout-success.png, traces/checkout-failure.zip
 Pass rate: 2/3 (67%) — 1 quarantined. Fix Issue #234 to reach 100%.
 ```
+
+**Input:** `/e2e auth` — generate and run E2E tests for the authentication user journey (login, logout, password reset).
+
+**Output:** Created test file and execution results:
+```
+Generated: tests/e2e/auth.spec.ts (4 scenarios)
+  ✓ Scenario: Login with valid credentials and redirect to dashboard (1.8s)
+  ✓ Scenario: Show inline error on wrong password (0.9s)
+  ✓ Scenario: Logout clears session and redirects to /login (1.1s)
+  ✓ Scenario: Password reset email sent via forgot-password flow (2.4s)
+
+Artifacts: screenshots/auth-login-success.png, screenshots/auth-error-state.png
+Pass rate: 4/4 (100%) — stable across 5 runs. No flaky tests detected.
+```

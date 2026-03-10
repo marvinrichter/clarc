@@ -254,3 +254,28 @@ node scripts/ci/generate-coverage-map.js
 |-------|-------------------|--------|-----------------|
 | No command for database-review | commands/ | Users can't invoke agent | Add commands/database-review.md |
 ```
+
+**Input:** `/system-review full --quick` — re-uses existing component JSON files from `docs/system-review/components-2026-03-10/` and skips re-running individual analyzers.
+
+**Output:** Dependency graph excerpt and systemic pattern finding:
+
+```markdown
+## Dependency Graph
+
+Command→Agent chains: 41 fully connected
+Orphan agents (no invoking command): [resilience-reviewer, data-architect]
+Orphan skills (no referencing agent): [api-versioning, twelve-factor]
+Broken references: 0
+
+## Systemic Patterns Found
+
+### Pattern B: Coverage Asymmetry
+Rust has a reviewer agent and skill but no rules directory. Swift has rules but no `swift-testing` skill.
+Affects: rules/swift/, skills/, agents/rust-reviewer.md
+Recommendation: Add rules/rust/ and skills/swift-testing/ in the next sprint
+
+### Pattern C: Model Miscalibration
+4 agents use `opus` for tasks (single-file review, format dispatch) where `sonnet` is sufficient.
+Estimated cost impact: ~3× per invocation on low-complexity tasks.
+Recommendation: Downgrade android-reviewer, bash-reviewer, c-reviewer, flutter-reviewer to sonnet
+```

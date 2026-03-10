@@ -274,3 +274,51 @@ a Next.js API route streams them to the browser via EventSource.
 - [ ] SSE connection recovers on reconnect (Last-Event-ID)
 - [ ] E2E test covers full flow
 ```
+
+**Input:** "We need a Django REST Framework API for managing medical appointments — create, reschedule, cancel, and notify patients by email."
+
+**Output:**
+```markdown
+## clarc Components for This Plan
+Skills to read:   `api-design`, `django-patterns`
+Agents to invoke: `database-reviewer` (step 1), `security-reviewer` (step 4), `python-reviewer` (step 5), `code-reviewer` (end)
+Commands to run:  `/tdd` (phase 1), `/api-contract` (before phase 2)
+
+# Implementation Plan: Medical Appointment API
+
+## Overview
+Expose CRUD endpoints for appointments with state-machine transitions (scheduled → rescheduled → cancelled)
+and async email notifications via Celery. Patients receive confirmation and cancellation emails within 30s.
+
+## Implementation Steps
+
+### Phase 1: Data Model (2 files)
+1. **Appointment migration** (File: appointments/migrations/0001_appointments.sql)
+   - Action: CREATE TABLE appointments (id, patient_id, doctor_id, slot_at, status ENUM, created_at)
+   - Dependencies: None | Risk: Low
+2. **Appointment model** (File: appointments/models.py)
+   - Action: Django Model with `schedule()`, `reschedule(new_slot)`, `cancel()` methods enforcing valid transitions
+   - Dependencies: Step 1 | Risk: Low
+
+### Phase 2: API (3 files)
+3. **Serializers** (File: appointments/serializers.py)
+   - Action: AppointmentSerializer with slot_at validation (no past dates, business hours only)
+   - Dependencies: Step 2 | Risk: Medium — validation must reject invalid transitions at serializer level
+4. **ViewSet** (File: appointments/views.py)
+   - Action: ModelViewSet with `@action` for reschedule/cancel; `transaction.atomic()` on all mutations
+   - Dependencies: Step 3 | Risk: Low
+5. **Email tasks** (File: appointments/tasks.py)
+   - Action: Celery tasks `send_confirmation()`, `send_cancellation()` with retry policy (max 3, backoff 60s)
+   - Dependencies: Step 2 | Risk: Medium — idempotency key to prevent duplicate emails on retry
+
+## Testing Strategy
+- Unit tests: transition guard logic in model, slot validation in serializer
+- Integration tests: full create/reschedule/cancel API flow, Celery task execution
+- E2E tests: patient books, reschedules, and cancels an appointment
+
+## Success Criteria
+- [ ] Invalid state transitions (e.g., cancel a cancelled appointment) return 409 Conflict
+- [ ] Email sent within 30s of booking confirmation (Celery flower visible)
+- [ ] Past-slot bookings rejected with RFC 7807 error response
+- [ ] 80%+ test coverage on all appointment modules
+```

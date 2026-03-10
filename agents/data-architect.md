@@ -335,3 +335,29 @@ Produce a Data Mesh Architecture Decision Record:
 - **Recommendation:** Option A (Delta Lake + Databricks) because the team is small (3 data engineers) and the managed catalog removes significant operational overhead.
 
 Next steps: Phase 0 (platform setup, 4 weeks) → Phase 1 (Orders domain extraction, 6 weeks) → Phase 2 (Customers domain).
+
+**Input:** User asks to design a Data Mesh for a healthcare SaaS platform with 3 domains (Patients, Claims, Providers) currently sharing a single PostgreSQL database directly across teams, with HIPAA compliance required.
+
+**Output:** Excerpt from governance and ownership design:
+
+```
+OWNERSHIP ASSIGNMENT
+┌──────────────────────────┬─────────────────────┬─────────────┬──────────────────────────────┐
+│ Data Product             │ Owner Team          │ Confidence  │ Notes                        │
+├──────────────────────────┼─────────────────────┼─────────────┼──────────────────────────────┤
+│ patient-demographics     │ patient-eng          │ HIGH        │ PHI — HIPAA BAA required     │
+│ claims-submissions       │ claims-eng           │ HIGH        │ PHI + financial — dual audit │
+│ provider-directory       │ provider-eng         │ MEDIUM      │ PII (NPI, address)           │
+└──────────────────────────┴─────────────────────┴─────────────┴──────────────────────────────┘
+
+TECHNOLOGY RECOMMENDATION
+- Lakehouse: Apache Iceberg + AWS S3 — required for multi-engine access (Spark + Athena for compliance reports)
+- Catalog: DataHub with HIPAA tag taxonomy — column-level masking on all PHI fields mandatory before consumer access
+- Quality: Great Expectations with PHI completeness suite — missing SSN or DOB fails pipeline, never silently passes
+- Federated Query: Athena — audit log on every query (HIPAA audit trail requirement)
+
+GOVERNANCE HIGHLIGHTS
+- All PHI columns tagged in catalog before consumers can query
+- RTBF (Right to Erasure) implemented via patient-demographics data product erasure API
+- Cross-domain joins (Claims × Patients) allowed only via Trino with column masking — never raw export
+```
