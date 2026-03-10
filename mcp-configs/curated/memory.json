@@ -1,0 +1,10 @@
+{
+  "_description": "Memory MCP server — persistent key-value store across sessions. Useful for projects with long-running context.",
+  "_install": "No auth required. Data stored locally.",
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "_description": "Supabase MCP server — tables, storage, edge functions, and SQL queries via Supabase project",
+  "_install": "Requires your Supabase project reference (found in project settings URL)",
+  "_token_url": "https://supabase.com/dashboard/project/_/settings/api",
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=YOUR_PROJECT_REF"]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_description": "Exa MCP server — semantic web search, research, and data ingestion. Best for research-first development workflow.",
+  "_install": "Requires an Exa API key (free tier available)",
+  "_token_url": "https://dashboard.exa.ai/api-keys",
+  "mcpServers": {
+    "exa-web-search": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "YOUR_EXA_API_KEY_HERE"
+      }
+    }
+  }
+}

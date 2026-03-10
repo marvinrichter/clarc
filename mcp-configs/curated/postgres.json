@@ -1,0 +1,15 @@
+{
+  "_description": "PostgreSQL MCP server — run queries, inspect schema, explore data directly from Claude",
+  "_install": "Requires a PostgreSQL connection string. Use a read-only user for safety.",
+  "_warning": "Never use a superuser or production write-capable connection. Use read-only credentials.",
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://YOUR_USER:YOUR_PASSWORD@YOUR_HOST:5432/YOUR_DATABASE"
+      ]
+    }
+  }
+}

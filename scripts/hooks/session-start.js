@@ -333,6 +333,122 @@ function detectGlobRules(cwd) {
   return matched;
 }
 
+/**
+ * Generate a compact codebase map from git history and file structure.
+ * Uses git log (hot files) + regex symbol extraction — no tree-sitter required.
+ * Result is cached in .clarc/repomap.txt for 24h to avoid redundant work.
+ *
+ * Pass forceRefresh=true to bypass the cache (used by /repomap --refresh).
+ */
+function generateCompactRepomap(cwd, forceRefresh = false) {
+  const cacheFile = path.join(cwd, '.clarc', 'repomap.txt');
+  const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+
+  // Return cached version if fresh (unless refresh requested)
+  if (!forceRefresh) {
+    try {
+      if (fs.existsSync(cacheFile)) {
+        const stat = fs.statSync(cacheFile);
+        if (Date.now() - stat.mtimeMs < CACHE_TTL_MS) {
+          const cached = fs.readFileSync(cacheFile, 'utf8');
+          if (cached) return cached;
+        }
+      }
+    } catch { /* ignore */ }
+  }
+
+  // 1. Get recently modified files (hot files) from git log
+  const hotFilesResult = spawnSync('git', [
+    'log', '--name-only', '--pretty=format:', '-50'
+  ], { cwd, encoding: 'utf8', stdio: 'pipe', timeout: 5000 });
+
+  const hotFiles = hotFilesResult.status === 0
+    ? [...new Set(
+        hotFilesResult.stdout.split('\n')
+          .map(f => f.trim())
+          .filter(f => f && !f.startsWith('.'))
+      )].slice(0, 20)
+    : [];
+
+  // 2. Get all tracked files for directory summary
+  const lsResult = spawnSync('git', ['ls-files'], {
+    cwd, encoding: 'utf8', stdio: 'pipe', timeout: 5000
+  });
+  const allFiles = lsResult.status === 0
+    ? lsResult.stdout.trim().split('\n').filter(Boolean)
+    : [];
+
+  // Nothing to map (not a git repo or empty)
+  if (hotFiles.length === 0 && allFiles.length === 0) return null;
+
+  // 3. Build directory summary from all tracked files
+  const dirCounts = {};
+  for (const f of allFiles) {
+    const parts = f.split('/');
+    const dir = parts.length > 1 ? parts[0] : '.';
+    dirCounts[dir] = (dirCounts[dir] || 0) + 1;
+  }
+
+  // 4. Extract key exported symbols from hot files (regex, no tree-sitter)
+  // Patterns cover TS/JS, Rust, Python, Go — intentionally simple
+  const SYMBOL_PATTERNS = [
+    /^export\s+(?:default\s+)?(?:async\s+)?(?:class|function\*?|const|type|interface|enum)\s+(\w+)/m,
+    /^(?:pub(?:\s+(?:async|fn))?|fn|struct|trait|impl)\s+(\w+)/m,
+    /^(?:async\s+)?def\s+(\w+)|^class\s+(\w+)/m,
+    /^(?:func|type)\s+(\w+)/m,
+  ];
+
+  const hotFileLines = hotFiles.map(f => {
+    const fullPath = path.join(cwd, f);
+    try {
+      const content = fs.readFileSync(fullPath, 'utf8');
+      const lineCount = content.split('\n').length;
+      const found = [];
+      for (const pat of SYMBOL_PATTERNS) {
+        const matches = content.match(new RegExp(pat.source, 'gm')) || [];
+        for (const m of matches.slice(0, 5)) {
+          const match = m.match(pat);
+          const name = match?.[1] || match?.[2];
+          if (name && !found.includes(name)) found.push(name);
+        }
+      }
+      const symbolStr = found.length > 0 ? found.slice(0, 5).join(', ') : '';
+      const label = symbolStr ? `${symbolStr} [${lineCount}L]` : `[${lineCount}L]`;
+      return `  ${f.padEnd(42)} ${label}`;
+    } catch {
+      return `  ${f}`;
+    }
+  });
+
+  // 5. Assemble compact map
+  const date = new Date().toISOString().slice(0, 10);
+  const dirSummary = Object.entries(dirCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([d, n]) => `  ${(d + '/').padEnd(22)} ${n} file${n !== 1 ? 's' : ''}`)
+    .join('\n');
+
+  const parts = [`--- Codebase Map (${date}) ---`];
+  if (hotFileLines.length > 0) {
+    parts.push(`Hot files (recently modified):\n${hotFileLines.join('\n')}`);
+  }
+  if (dirSummary) {
+    parts.push(`\nStructure (${Object.keys(dirCounts).length} dirs, ${allFiles.length} files):\n${dirSummary}`);
+  }
+  parts.push('\nRun /repomap --refresh to regenerate.\n---');
+
+  const map = parts.join('\n');
+
+  // 6. Cache and return (cap at 3000 chars to protect context window)
+  const capped = map.length > 3000 ? map.slice(0, 2980) + '\n...(truncated)\n---' : map;
+  try {
+    fs.mkdirSync(path.dirname(cacheFile), { recursive: true });
+    fs.writeFileSync(cacheFile, capped, 'utf8');
+  } catch { /* ignore */ }
+
+  return capped;
+}
+
 async function main() {
   const sessionsDir = getSessionsDir();
   const learnedDir = getLearnedSkillsDir();
@@ -425,6 +541,13 @@ async function main() {
 
   // Memory Bank: load .clarc/ project context (higher priority than MEMORY.md)
   loadMemoryBank(process.cwd());
+
+  // Repomap: inject compact codebase map (hot files + symbols + directory structure)
+  const repomap = generateCompactRepomap(process.cwd());
+  if (repomap) {
+    output(repomap);
+    log('[SessionStart] Repomap injected');
+  }
 
   // Project-local skills: scan .clarc/skills/ and surface to Claude
   loadLocalSkills(process.cwd());
