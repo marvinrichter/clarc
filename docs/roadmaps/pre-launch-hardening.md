@@ -50,13 +50,13 @@ After completing the skill-content-depth roadmap (PRs #24–#26), the following 
 
 | ID | Item | Status |
 |----|------|--------|
-| H1-P0-B | auto-checkpoint scanForSecrets | ⬜ |
-| H1-P0-H2 | format-dispatch exitCode fix | ⬜ |
-| H1-P1-B | security-scan-nudge content + cooldown | ⬜ |
-| H1-P1-I | observe.sh error trap | ⬜ |
-| H2-P0-D | evaluate-session.js config path | ⬜ |
-| H3-P1-G | Remove Solana/Web3 from 2 skills | ⬜ |
-| H3-P1-H | tdd-workflow GH Actions v3 → v4 | ⬜ |
-| H4-P1-D | agent-review → agent-audit rename | ⬜ |
-| H4-P1-E | deps/dep-audit + discover/brainstorm cross-refs | ⬜ |
-| H5-P1-C | ## Examples: 45 agents | ⬜ |
+| H1-P0-B | auto-checkpoint scanForSecrets | ✅ already implemented |
+| H1-P0-H2 | format-dispatch exitCode fix | ✅ |
+| H1-P1-B | security-scan-nudge content + cooldown | ✅ |
+| H1-P1-I | observe.sh error trap | ✅ already implemented |
+| H2-P0-D | evaluate-session.js config path | ✅ already fixed |
+| H3-P1-G | Remove Solana/Web3 from 2 skills | ✅ |
+| H3-P1-H | tdd-workflow GH Actions v3 → v4 | ✅ |
+| H4-P1-D | agent-review → agent-audit rename | ✅ |
+| H4-P1-E | deps/dep-audit + discover/brainstorm cross-refs | ✅ already in descriptions |
+| H5-P1-C | ## Examples: 54 agents | 🔄 |
