@@ -281,27 +281,6 @@ Add to your CI pipeline:
     path: playwright-report/
 ```
 
-## PMX-Specific Critical Flows
-
-For PMX, prioritize these E2E tests:
-
-**🔴 CRITICAL (Must Always Pass):**
-1. User can connect wallet
-2. User can browse markets
-3. User can search markets (semantic search)
-4. User can view market details
-5. User can place trade (with test funds)
-6. Market resolves correctly
-7. User can withdraw funds
-
-**🟡 IMPORTANT:**
-1. Market creation flow
-2. User profile updates
-3. Real-time price updates
-4. Chart rendering
-5. Filter and sort markets
-6. Mobile responsive layout
-
 ## Best Practices
 
 **DO:**
@@ -322,11 +301,9 @@ For PMX, prioritize these E2E tests:
 
 ## Important Notes
 
-**CRITICAL for PMX:**
-- E2E tests involving real money MUST run on testnet/staging only
-- Never run trading tests against production
-- Set `test.skip(process.env.NODE_ENV === 'production')` for financial tests
-- Use test wallets with small test funds only
+- Never run E2E tests against production — use staging or a dedicated test environment
+- Financial or payment flows must use sandbox/test mode only
+- Set `test.skip(process.env.NODE_ENV === 'production')` as a safeguard for destructive tests
 
 ## Integration with Other Commands
 
