@@ -1,6 +1,6 @@
 # Skill Content Depth
 
-**Status:** 📋 Planned
+**Status:** 🔄 In Progress
 **Date:** 2026-03-10
 **Goal:** Add Anti-Patterns sections and expand When-to-Activate triggers across the skill corpus — the two largest quality gaps identified in the post-Sprint-5 system review.
 
@@ -71,6 +71,6 @@ Add one-line `## Not this agent — use X instead` note to each.
 
 | ID | Item | Status |
 |----|------|--------|
-| S1 | Anti-Patterns: top 50 skills | ⬜ |
+| S1 | Anti-Patterns: top 27 high-traffic skills | ✅ PR #24 |
 | S2 | When-to expansion: 127 skills | ⬜ |
 | A1 | Agent disambiguation: 4 pairs | ⬜ |
