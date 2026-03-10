@@ -272,7 +272,7 @@ Broken references: 0
 ### Pattern B: Coverage Asymmetry
 Rust has a reviewer agent and skill but no rules directory. Swift has rules but no `swift-testing` skill.
 Affects: rules/swift/, skills/, agents/rust-reviewer.md
-Recommendation: Add rules/rust/ and skills/swift-testing/ in the next sprint
+Recommendation: Add `rules/rust/` and `skills/swift-testing/` in the next sprint
 
 ### Pattern C: Model Miscalibration
 4 agents use `opus` for tasks (single-file review, format dispatch) where `sonnet` is sufficient.
