@@ -4,7 +4,7 @@
 
 | Roadmap | Goal |
 |---------|------|
-| _(none)_ | |
+| [pre-launch-hardening](pre-launch-hardening.md) | Close all remaining P0/P1 issues: hook security, stale paths, agent examples, command naming, skill cleanup |
 
 ---
 
