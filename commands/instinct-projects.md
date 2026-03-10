@@ -1,5 +1,5 @@
 ---
-name: projects
+name: instinct-projects
 description: List registered projects and their instinct/observation counts — part of the continuous-learning-v2 system.
 command: true
 ---

@@ -67,6 +67,9 @@ Every agent MUST contain:
 2. **When to invoke** — Triggers, explicit examples of when the user or system should call this agent
 3. **Step-by-step instructions** — Numbered list or ordered sections describing how the agent does its work
 4. **Output format** — What the agent returns (findings list, code diff, report, etc.)
+5. **Examples** — At least one concrete before/after or input/output example showing the agent in action
+
+> **Why examples are mandatory:** Agents without examples score ~0.5 lower on average across all quality dimensions. An example immediately disambiguates trigger conditions, output format, and severity calibration — reducing miscalibration and routing errors.
 
 ---
 
@@ -88,6 +91,8 @@ Before adding or modifying an agent file:
 - [ ] All `uses_skills` entries resolve to existing `skills/<name>/SKILL.md`
 - [ ] Agent is listed in `rules/common/agents.md`
 - [ ] Description is one sentence, action-oriented, starting with the agent's role
+- [ ] At least one `## Examples` section with a concrete input/output or before/after case
+- [ ] Description disambiguates from overlapping agents (e.g. planner vs architect)
 
 ---
 

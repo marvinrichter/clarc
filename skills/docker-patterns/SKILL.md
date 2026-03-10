@@ -43,7 +43,7 @@ services:
     command: npm run dev
 
   db:
-    image: postgres:18-alpine
+    image: postgres:17-alpine
     ports:
       - "5432:5432"
     environment:
@@ -60,7 +60,7 @@ services:
       retries: 5
 
   redis:
-    image: redis:8-alpine
+    image: redis:7.4-alpine
     ports:
       - "6379:6379"
     volumes:

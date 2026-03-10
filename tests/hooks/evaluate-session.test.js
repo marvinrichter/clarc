@@ -193,7 +193,7 @@ function runTests() {
     const transcript = createTranscript(testDir, 4);
 
     // Run the script from the testDir so it finds config relative to script location
-    // The config path is: path.join(__dirname, '..', '..', 'skills', 'continuous-learning', 'config.json')
+    // The config path is: path.join(__dirname, '..', '..', 'skills', 'continuous-learning-v2', 'config.json')
     // __dirname = scripts/hooks, so config = repo_root/skills/continuous-learning/config.json
     // We can't easily change __dirname, so we test that the REAL config path doesn't interfere
     // Instead, test that 4 messages with default threshold (10) is indeed too short
@@ -318,9 +318,9 @@ function runTests() {
 
   if (test('falls back to defaults when config file contains invalid JSON', () => {
     // The evaluate-session.js script reads config from:
-    //   path.join(__dirname, '..', '..', 'skills', 'continuous-learning', 'config.json')
+    //   path.join(__dirname, '..', '..', 'skills', 'continuous-learning-v2', 'config.json')
     // where __dirname = scripts/hooks/ → config = repo_root/skills/continuous-learning/config.json
-    const configPath = path.join(__dirname, '..', '..', 'skills', 'continuous-learning', 'config.json');
+    const configPath = path.join(__dirname, '..', '..', 'skills', 'continuous-learning-v2', 'config.json');
     let originalContent = null;
     try {
       originalContent = fs.readFileSync(configPath, 'utf8');
@@ -371,7 +371,7 @@ function runTests() {
     //     learnedSkillsPath = config.learned_skills_path.replace(/^~/, os.homedir());
     //   }
     // This branch was never tested — only the parse error (Round 85) and default path.
-    const configPath = path.join(__dirname, '..', '..', 'skills', 'continuous-learning', 'config.json');
+    const configPath = path.join(__dirname, '..', '..', 'skills', 'continuous-learning-v2', 'config.json');
     let originalContent = null;
     try {
       originalContent = fs.readFileSync(configPath, 'utf8');

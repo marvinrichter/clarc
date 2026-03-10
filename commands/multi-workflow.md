@@ -20,7 +20,7 @@ Structured development workflow with quality gates, MCP services, and multi-mode
 ## Usage
 
 ```bash
-/workflow <task description>
+/multi-workflow <task description>
 ```
 
 ## Context

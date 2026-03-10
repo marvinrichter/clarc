@@ -30,6 +30,28 @@
     "dir": "adr-writing"
   },
   {
+    "name": "agent-conflict-resolution",
+    "description": "Decision framework for resolving conflicts between clarc agents — priority hierarchy, conflict classes, escalation protocol, and real-world examples",
+    "category": "AI / Agents",
+    "whenToUse": "Use this skill when: - Two or more agents give contradictory recommendations in the same session - The orchestrator agent's synthesis phase encounters conflicting outputs",
+    "usedByAgents": [
+      "orchestrator"
+    ],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill agent-conflict-resolution",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/agent-conflict-resolution/SKILL.md",
+    "dir": "agent-conflict-resolution"
+  },
+  {
+    "name": "agent-evolution-patterns",
+    "description": "How the agent evolution system works — capturing instincts, promoting them to agent overlays, approval workflow, rollback, and the full continuous-learning flywheel pipeline",
+    "category": "AI / Agents",
+    "whenToUse": "Use this skill when: - Understanding why an agent keeps making the same mistake across sessions - Promoting a high-confidence instinct to a specific agent",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill agent-evolution-patterns",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/agent-evolution-patterns/SKILL.md",
+    "dir": "agent-evolution-patterns"
+  },
+  {
     "name": "agent-reliability",
     "description": "Agent Reliability Patterns: retry with exponential backoff and jitter, timeout hierarchies (tool < agent < workflow), fallback chains, circuit breaker for agent calls, cost control (token budgets, model tiering), rate limiting, and observability (what to log per agent call).",
     "category": "AI / Agents",
@@ -248,6 +270,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill clarc-hooks-authoring",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/clarc-hooks-authoring/SKILL.md",
     "dir": "clarc-hooks-authoring"
+  },
+  {
+    "name": "clarc-mcp-integration",
+    "description": "Patterns for using clarc MCP server in multi-agent workflows, CI pipelines, and external tools",
+    "category": "General",
+    "whenToUse": "- Building a multi-agent workflow where one agent needs to inspect clarc state - Setting up a CI/CD pipeline that checks clarc installation health - Integrating clarc into Claude Desktop, Cursor, or another MCP-compatible client",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill clarc-mcp-integration",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/clarc-mcp-integration/SKILL.md",
+    "dir": "clarc-mcp-integration"
   },
   {
     "name": "clarc-onboarding",
@@ -1428,7 +1460,7 @@
   },
   {
     "name": "observability",
-    "description": "Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, Go, and Java with code examples.",
+    "description": "Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, and Go with code examples.",
     "category": "Observability",
     "whenToUse": "- Setting up a new service for production - Debugging production issues without enough information - Adding monitoring or alerting to an existing service",
     "usedByAgents": [],
@@ -1565,6 +1597,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill product-lifecycle",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/product-lifecycle/SKILL.md",
     "dir": "product-lifecycle"
+  },
+  {
+    "name": "project-local-skills",
+    "description": "How to create, manage, and share project-local skills — .clarc/skills/ structure, scope hierarchy, team workflow, and promotion to global clarc",
+    "category": "clarc System",
+    "whenToUse": "Use project-local skills when: - A team has project-specific conventions (internal API patterns, company auth library) - Conventions differ from clarc's global rules for this codebase",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill project-local-skills",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/project-local-skills/SKILL.md",
+    "dir": "project-local-skills"
   },
   {
     "name": "prompt-engineering",

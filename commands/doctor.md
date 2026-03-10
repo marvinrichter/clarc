@@ -41,9 +41,9 @@ clarc doctor — checking your installation
 
 ✅ Node.js 20.11.0
 ✅ ~/.claude/ exists
-✅ Agents: 59 installed
-✅ Skills: 209 installed
-✅ Commands: 130 installed
+✅ Agents: 61 installed
+✅ Skills: 228 installed
+✅ Commands: 160 installed
 ✅ Hooks: active (12 hooks)
 ✅ Symlinks: 59 healthy
 ⚠️  MEMORY.md: 193 lines (approaching 200-line limit — clean up soon)

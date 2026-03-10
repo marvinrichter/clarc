@@ -35,9 +35,9 @@ Expected output:
 ```
 ✅ Node.js 20.x
 ✅ ~/.claude/ exists
-✅ Agents: 59 installed
-✅ Skills: 209 installed
-✅ Commands: 130 installed
+✅ Agents: 61 installed
+✅ Skills: 228 installed
+✅ Commands: 160 installed
 ✅ Hooks: active
 ✅ clarc version: 0.9.0
 

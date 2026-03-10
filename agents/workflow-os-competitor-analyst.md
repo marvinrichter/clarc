@@ -1,7 +1,7 @@
 ---
 name: workflow-os-competitor-analyst
 description: Researches and compares clarc against competing AI engineering workflow systems — Cursor, GitHub Copilot, Windsurf, Aider, Devin, and Continue.dev. Produces a feature matrix, identifies clarc-unique capabilities, and prioritizes competitive gaps. Use via /competitive-review or called by agent-system-reviewer.
-tools: ["Read", "Grep", "Glob", "WebSearch", "Bash"]
+tools: ["Read", "Grep", "Glob", "WebSearch"]
 model: sonnet
 ---
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>224 Skills — clarc hub</title>
+  <title>228 Skills — clarc hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 <main>
   <div class="container">
     <div class="hero" style="padding-bottom:1rem">
-      <h1>224 Skills</h1>
+      <h1>228 Skills</h1>
       <p>Deep workflow patterns for frameworks, languages, and engineering practices.</p>
       <div class="search-bar">
         <input id="search" type="search" placeholder="Search skills..." aria-label="Search skills">
@@ -32,7 +32,7 @@
     </div>
     <div class="filter-tabs">
   <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="General">General <small>(96)</small></button>
+  <button class="filter-btn" data-filter="General">General <small>(97)</small></button>
   <button class="filter-btn" data-filter="Testing">Testing <small>(29)</small></button>
   <button class="filter-btn" data-filter="Architecture">Architecture <small>(14)</small></button>
   <button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <small>(9)</small></button>
@@ -40,21 +40,21 @@
   <button class="filter-btn" data-filter="Java / JVM">Java / JVM <small>(7)</small></button>
   <button class="filter-btn" data-filter="Security">Security <small>(7)</small></button>
   <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(7)</small></button>
+  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(6)</small></button>
   <button class="filter-btn" data-filter="Swift / iOS">Swift / iOS <small>(5)</small></button>
-  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(4)</small></button>
   <button class="filter-btn" data-filter="Documentation">Documentation <small>(4)</small></button>
   <button class="filter-btn" data-filter="Database">Database <small>(4)</small></button>
   <button class="filter-btn" data-filter="Infrastructure">Infrastructure <small>(4)</small></button>
   <button class="filter-btn" data-filter="API Design">API Design <small>(3)</small></button>
   <button class="filter-btn" data-filter="Observability">Observability <small>(3)</small></button>
   <button class="filter-btn" data-filter="Performance">Performance <small>(3)</small></button>
+  <button class="filter-btn" data-filter="clarc System">clarc System <small>(3)</small></button>
   <button class="filter-btn" data-filter="C / C++">C / C++ <small>(2)</small></button>
   <button class="filter-btn" data-filter="Elixir">Elixir <small>(2)</small></button>
   <button class="filter-btn" data-filter="Go">Go <small>(2)</small></button>
   <button class="filter-btn" data-filter="Product">Product <small>(2)</small></button>
   <button class="filter-btn" data-filter="Ruby">Ruby <small>(2)</small></button>
   <button class="filter-btn" data-filter="Rust">Rust <small>(2)</small></button>
-  <button class="filter-btn" data-filter="clarc System">clarc System <small>(2)</small></button>
   <button class="filter-btn" data-filter="Git Workflow">Git Workflow <small>(1)</small></button>
   <button class="filter-btn" data-filter="PHP">PHP <small>(1)</small></button>
   <button class="filter-btn" data-filter="Code Review">Code Review <small>(1)</small></button>
@@ -94,6 +94,30 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/skills/adr-writing/SKILL.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-conflict-resolution" data-category="AI / Agents">
+  <div class="card-header">
+    <h3 class="card-name">agent-conflict-resolution</h3>
+    <span class="badge">AI / Agents</span>
+  </div>
+  <p class="card-desc">Decision framework for resolving conflicts between clarc agents — priority hierarchy, conflict classes, escalation protocol, and real-world examples</p>
+  <p class="card-when"><strong>When:</strong> Use this skill when: - Two or more agents give contradictory recommendations in the same session - The orchestrator agent's synthesis phase encounters conflicting outputs</p>
+  <div class="skill-pills"><span class="deps-label">used by:</span><span class="agent-pill">orchestrator</span></div>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/skills/agent-conflict-resolution/SKILL.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="agent-evolution-patterns" data-category="AI / Agents">
+  <div class="card-header">
+    <h3 class="card-name">agent-evolution-patterns</h3>
+    <span class="badge">AI / Agents</span>
+  </div>
+  <p class="card-desc">How the agent evolution system works — capturing instincts, promoting them to agent overlays, approval workflow, rollback, and the full continuous-learning flywheel pipeline</p>
+  <p class="card-when"><strong>When:</strong> Use this skill when: - Understanding why an agent keeps making the same mistake across sessions - Promoting a high-confidence instinct to a specific agent</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/skills/agent-evolution-patterns/SKILL.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="agent-reliability" data-category="AI / Agents">
@@ -346,6 +370,18 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/skills/clarc-hooks-authoring/SKILL.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="clarc-mcp-integration" data-category="General">
+  <div class="card-header">
+    <h3 class="card-name">clarc-mcp-integration</h3>
+    <span class="badge">General</span>
+  </div>
+  <p class="card-desc">Patterns for using clarc MCP server in multi-agent workflows, CI pipelines, and external tools</p>
+  <p class="card-when"><strong>When:</strong> - Building a multi-agent workflow where one agent needs to inspect clarc state - Setting up a CI/CD pipeline that checks clarc installation health - Integrating clarc into Claude Desktop, Cursor, or another MCP-compatible client</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/skills/clarc-mcp-integration/SKILL.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="clarc-onboarding" data-category="Documentation">
@@ -1721,7 +1757,7 @@
     <h3 class="card-name">observability</h3>
     <span class="badge">Observability</span>
   </div>
-  <p class="card-desc">Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, Go, and Java with code examples.</p>
+  <p class="card-desc">Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, and Go with code examples.</p>
   <p class="card-when"><strong>When:</strong> - Setting up a new service for production - Debugging production issues without enough information - Adding monitoring or alerting to an existing service</p>
   
   <div class="card-footer">
@@ -1882,6 +1918,18 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/skills/product-lifecycle/SKILL.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="project-local-skills" data-category="clarc System">
+  <div class="card-header">
+    <h3 class="card-name">project-local-skills</h3>
+    <span class="badge">clarc System</span>
+  </div>
+  <p class="card-desc">How to create, manage, and share project-local skills — .clarc/skills/ structure, scope hierarchy, team workflow, and promotion to global clarc</p>
+  <p class="card-when"><strong>When:</strong> Use project-local skills when: - A team has project-specific conventions (internal API patterns, company auth library) - Conventions differ from clarc's global rules for this codebase</p>
+  
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/skills/project-local-skills/SKILL.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="prompt-engineering" data-category="General">

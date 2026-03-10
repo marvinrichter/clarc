@@ -1,7 +1,7 @@
 ---
 name: kotlin-reviewer
 description: Reviews Kotlin code for correctness, idiomatic style, null safety, coroutine usage, architecture patterns, and security. Covers val/var discipline, sealed classes, coEvery/coVerify, CancellationException handling, SQL injection, and ktlint compliance. Invoked by code-reviewer for .kt/.kts files.
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
 uses_skills:
   - kotlin-patterns

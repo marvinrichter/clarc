@@ -628,7 +628,8 @@
     "model": "opus",
     "usesSkills": [
       "multi-agent-patterns",
-      "agent-reliability"
+      "agent-reliability",
+      "agent-conflict-resolution"
     ],
     "category": "AI / Agents",
     "whenToUse": "",

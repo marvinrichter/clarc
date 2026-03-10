@@ -107,7 +107,7 @@ function askClaude(systemPrompt, history, userMessage) {
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env, CLAUDECODE: '' },
-    timeout: 300000 // 5 minute timeout
+    timeout: parseInt(process.env.CLAW_SUBPROCESS_TIMEOUT || '300000', 10)
   });
 
   if (result.error) {

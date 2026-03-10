@@ -117,3 +117,36 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md). Skills are Markdown files in `skil
 ### I found a bug. Where do I report it?
 
 [GitHub Issues](https://github.com/marvinrichter/clarc/issues). For questions, use [GitHub Discussions](https://github.com/marvinrichter/clarc/discussions).
+
+---
+
+## Continuous Learning
+
+### What is the learning loop?
+
+clarc observes patterns across your sessions and captures them as "instincts" — structured observations with a confidence score. Over time, high-confidence instincts get promoted into skills and agent overlays that make clarc smarter for your specific workflow.
+
+The cycle: **observe → capture → promote → apply**
+
+- `/learn-eval` — extract reusable patterns from the current session
+- `/instinct-status` — view all captured instincts and confidence scores
+- `/evolve` — cluster instincts into new permanent skills
+- `/agent-evolution` — promote instincts directly into agent instructions
+
+### What are agent instincts?
+
+Agent instincts are learned behaviors attached to a specific agent. When confidence is high enough (≥ 0.75 by default), an instinct is promoted to an overlay file in `~/.clarc/agent-instincts/<agent>.md`. At session start, clarc injects those overlays into Claude's context — the agent applies them automatically without any manual invocation.
+
+Example: if the `typescript-reviewer` repeatedly catches the same pattern (e.g., missing error boundaries), that becomes an instinct and is injected on every future review.
+
+### Does the learning loop affect other users?
+
+No. Instincts and overlays are stored in `~/.clarc/` — they're user-local and never committed to the repo. Your learned patterns stay private.
+
+### How do I roll back a bad instinct?
+
+```
+/instinct-outcome <id> bad --reason "Made agent too aggressive"
+```
+
+The confidence score drops below the promotion threshold. Run `/agent-evolution` to confirm removal from the overlay.
