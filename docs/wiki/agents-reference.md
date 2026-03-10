@@ -81,7 +81,7 @@ These analyze and improve clarc itself:
 
 | Agent | Purpose | Invoked by |
 |-------|---------|-----------|
-| `agent-quality-reviewer` | Review a single agent file — scores across 8 dimensions | `/agent-review` |
+| `agent-quality-reviewer` | Review a single agent file — scores across 8 dimensions | `/agent-audit` |
 | `agent-system-reviewer` | Full system review — orchestrates all analyzers | `/system-review` |
 | `command-auditor` | UX ergonomics audit across all commands | `/command-audit` |
 | `hook-auditor` | Hook coverage, conflicts, and dead references | `/hook-audit` |

@@ -45,13 +45,13 @@
     "filename": "agent-instincts.md"
   },
   {
-    "name": "agent-review",
-    "slash": "/agent-review",
-    "description": "Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-review --all to review all agents at once.",
+    "name": "agent-audit",
+    "slash": "/agent-audit",
+    "description": "Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-audit --all to review all agents at once.",
     "category": "Code Review",
     "whenToUse": "",
-    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-review.md",
-    "filename": "agent-review.md"
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/agent-audit.md",
+    "filename": "agent-audit.md"
   },
   {
     "name": "agent-stats",
