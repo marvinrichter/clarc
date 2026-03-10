@@ -11,6 +11,9 @@ description: "Webhook patterns for receiving, verifying (HMAC), and idempotently
 - Building your own webhook system to notify customers
 - Handling duplicate webhook deliveries correctly
 - Testing webhooks locally without exposing ports
+- Implementing HMAC signature verification with timing-safe comparison to prevent spoofed events
+- Designing the `webhook_events` database table with idempotency keys and retry tracking
+- Setting up exponential-backoff retry queues (e.g. BullMQ) for outbound webhook deliveries
 
 ---
 

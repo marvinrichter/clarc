@@ -15,6 +15,9 @@ Modern Python API development with FastAPI, Pydantic v2, and async/await.
 - Writing async database queries (SQLAlchemy async, Motor)
 - Setting up FastAPI testing with pytest + HTTPX
 - Structuring a FastAPI project (routers, services, repositories)
+- Migrating a Flask or Django REST Framework app to FastAPI
+- Adding background tasks or lifespan event handlers to an existing FastAPI application
+- Configuring global exception handlers to return RFC 7807 Problem Details responses
 
 ---
 

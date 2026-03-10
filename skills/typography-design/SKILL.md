@@ -13,6 +13,8 @@ description: "Typography as a creative discipline: typeface selection criteria, 
 - Optimising for web and mobile rendering
 - Defining letter-spacing and line-height ratios
 - Evaluating a font pairing
+- Selecting a modular scale ratio appropriate for the information density of a UI
+- Diagnosing FOUT or FOIT issues and choosing the right `font-display` strategy for body vs. display fonts
 
 ---
 

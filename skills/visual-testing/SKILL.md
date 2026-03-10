@@ -14,6 +14,8 @@ Visual regression testing — detecting unintended UI changes automatically.
 - Configuring baseline management (when to update, when to flag)
 - Debugging flaky visual tests (antialiasing, font loading, animations)
 - Integrating visual tests into CI/CD pipeline
+- Preventing cross-platform baseline drift caused by macOS vs. Linux font rendering differences
+- Masking dynamic content (timestamps, user avatars, random banners) to eliminate false positives
 
 ---
 

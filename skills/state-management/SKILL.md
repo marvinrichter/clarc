@@ -12,6 +12,8 @@ description: "Frontend state management patterns: TanStack Query for server stat
 - Global state causing unnecessary re-renders
 - Form state is getting complex
 - URL not reflecting application state (back button broken)
+- Migrating server data out of Zustand into TanStack Query to eliminate manual cache sync
+- Adding optimistic updates to a mutation so the UI responds instantly before the server confirms
 
 ---
 

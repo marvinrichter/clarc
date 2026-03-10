@@ -12,6 +12,8 @@ description: "Brand identity development: color palette construction (primary/se
 - Defining the design system foundation before token implementation
 - Writing a brief for a designer or design agency
 - Reviewing brand consistency across touchpoints
+- Constructing an HSL-based color palette with WCAG AA contrast compliance for all text and UI controls
+- Defining a brand voice document (3-word personality, Do/Don't word lists, tonality scale) before copy is written
 
 ---
 

@@ -14,6 +14,9 @@ Write investor communication that is short, personalized, and easy to act on.
 - sending follow-ups after a meeting or no response
 - writing investor updates during a process
 - tailoring outreach based on fund thesis or partner fit
+- personalizing outreach by referencing a specific investor's portfolio, thesis, or public writing
+- writing a forwardable blurb for a connector to pass along to an investor with minimal editing
+- structuring a post-meeting update email that addresses open questions and moves the conversation forward
 
 ## Core Rules
 

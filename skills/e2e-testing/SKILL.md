@@ -15,6 +15,9 @@ Comprehensive Playwright patterns for building stable, fast, and maintainable E2
 - Configuring CI/CD pipelines for E2E testing
 - Implementing the Page Object Model pattern
 - Managing test artifacts (screenshots, videos, traces)
+- Adding cross-browser coverage (Chromium, Firefox, WebKit) to an existing test suite
+- Implementing test isolation strategies to prevent shared state between test runs
+- Setting up visual diff checks or accessibility assertions as part of automated test flows
 
 ## Test File Organization
 

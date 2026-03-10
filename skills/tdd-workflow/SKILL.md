@@ -16,6 +16,9 @@ This skill ensures all code development follows TDD principles with comprehensiv
 - Refactoring existing code
 - Adding API endpoints
 - Creating new components
+- Setting up coverage thresholds in CI to enforce the 80%+ minimum
+- Reviewing a PR where tests were written after the implementation (anti-pattern)
+- Onboarding a developer who is unfamiliar with the Red-Green-Refactor cycle
 
 ## Core Principles
 

@@ -16,6 +16,7 @@ Authentication (who are you?) and authorization (what can you do?) are where mos
 - Adding role-based access control (RBAC)
 - Implementing refresh token rotation
 - Adding MFA (multi-factor authentication)
+- Auditing an existing auth flow for security gaps or token leakage
 
 ---
 

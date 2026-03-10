@@ -13,6 +13,10 @@ Comprehensive testing strategies for Python applications using pytest, TDD metho
 - Designing test suites for Python projects
 - Reviewing Python test coverage
 - Setting up testing infrastructure
+- Choosing the correct scope (`function`, `module`, `session`) for a pytest fixture
+- Debugging flaky tests caused by shared mutable state or incorrect mock namespaces
+- Parametrizing tests to cover multiple inputs without duplicating test logic
+- Enforcing 80%+ coverage with `pytest --cov` and understanding which lines are uncovered
 
 ## Core Testing Philosophy
 

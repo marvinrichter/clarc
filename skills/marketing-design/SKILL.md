@@ -12,6 +12,8 @@ description: "Marketing asset design for developers: Open Graph / social media c
 - Creating social media asset specifications
 - Defining ad creative dimensions for a campaign
 - Ensuring marketing materials match brand guidelines
+- Generating print-safe PDFs or documents that must render correctly in Outlook and other restrictive email clients
+- Auditing an existing marketing page or email for missing OG tags, brand token violations, or platform dimension mismatches
 
 ---
 

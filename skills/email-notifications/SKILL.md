@@ -12,6 +12,9 @@ description: "Email and notification architecture: transactional email with Rese
 - Adding in-app notifications or activity feeds
 - Setting up push notifications for web or mobile
 - Email deliverability issues (landing in spam)
+- Choosing between Resend, SendGrid, and Postmark for a new project
+- Designing a queue-backed email pipeline that retries on failure
+- Implementing GDPR-compliant unsubscribe flows with List-Unsubscribe headers
 
 ---
 

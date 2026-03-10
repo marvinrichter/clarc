@@ -15,6 +15,9 @@ Reference for building on edge runtimes — Cloudflare Workers, Vercel Edge, and
 - Debugging "not supported in edge runtime" errors
 - Implementing geo-routing, A/B testing, or auth at the edge
 - Setting up edge caching strategies
+- Migrating a Node.js API route to an edge-compatible runtime to reduce cold-start latency
+- Designing stateful edge logic using Durable Objects or Deno KV
+- Choosing between Cloudflare, Vercel Edge, and Deno Deploy for a new globally distributed service
 
 ---
 

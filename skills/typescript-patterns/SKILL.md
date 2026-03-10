@@ -13,6 +13,9 @@ Production-grade TypeScript patterns for type-safe, maintainable applications.
 - Designing type-safe APIs and domain models
 - Handling errors without exceptions
 - Structuring TypeScript modules and configurations
+- Replacing runtime `any` types or unsafe `as` casts with properly narrowed types
+- Modeling complex state machines or API response shapes using discriminated unions
+- Setting up a strict `tsconfig.json` for a new project to prevent common runtime errors
 
 ## TypeScript Configuration
 

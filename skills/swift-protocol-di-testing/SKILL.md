@@ -13,6 +13,9 @@ Patterns for making Swift code testable by abstracting external dependencies (fi
 - Need to test error handling paths without triggering real failures
 - Building modules that work across environments (app, test, SwiftUI preview)
 - Designing testable architecture with Swift concurrency (actors, Sendable)
+- Abstracting iCloud, CoreData, or URLSession behind protocols to keep domain logic framework-free
+- Creating mock implementations that simulate specific error conditions for deterministic Swift Testing tests
+- Applying hexagonal architecture (ports and adapters) to a Swift module for the first time
 
 ## Core Pattern
 

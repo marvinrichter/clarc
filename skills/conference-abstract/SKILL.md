@@ -11,6 +11,9 @@ description: "Write CFP (Call for Papers/Proposals) abstracts and speaker bios t
 - Writing a talk abstract for a company blog, internal proposal, or conference site
 - Writing a speaker bio for any event
 - Getting feedback on an existing abstract that was rejected
+- Adapting a single talk idea to different CFP word-count requirements (200, 300, or 500 words) without losing the core argument
+- Helping an engineer who has strong technical content but struggles to frame it as a compelling audience benefit
+- Crafting a title for a talk that currently has a generic name like "Introduction to Observability" and needs a hook format that stands out
 
 ---
 

@@ -14,6 +14,8 @@ Audit your Claude Code configuration for security issues using [AgentShield](htt
 - Before committing configuration changes
 - When onboarding to a new repository with existing Claude Code configs
 - Periodic security hygiene checks
+- After adding a new MCP server or hook command to verify no injection or secret-exposure risks
+- Before sharing or open-sourcing a clarc-based configuration with other teams
 
 ## What It Scans
 

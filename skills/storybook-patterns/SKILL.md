@@ -15,6 +15,8 @@ Component development environment and living documentation system.
 - Setting up Chromatic for visual regression
 - Auditing existing Storybook setup
 - Building automated accessibility checks into stories
+- Migrating legacy CSF2 stories to CSF3 with `satisfies Meta` for full type safety
+- Running stories as automated tests in CI using `@storybook/test-runner` and axe-playwright
 
 ---
 

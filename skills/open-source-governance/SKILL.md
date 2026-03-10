@@ -12,6 +12,8 @@ description: "Open source project governance: GitHub issue/PR templates, CODEOWN
 - Onboarding the first external contributors
 - Reducing maintainer review burden through automation
 - Setting up a CHANGELOG and release process
+- Configuring branch protection rules, CODEOWNERS, and required status checks to enforce quality gates on every PR
+- Automating releases and CHANGELOG generation from Conventional Commits using release-please or a similar tool
 
 ---
 

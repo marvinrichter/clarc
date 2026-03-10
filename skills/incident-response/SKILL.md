@@ -15,6 +15,9 @@ When production breaks, you need a process — not improvisation. A clear incide
 - Writing a post-mortem after an incident
 - Setting up on-call rotation
 - Creating runbooks for known failure modes
+- Drafting a blameless post-mortem document after a P0 or P1 incident has been resolved
+- Establishing severity classification (P0–P3) and response-time SLAs for a team that lacks a formal incident process
+- Building a runbook library for known database, cache, or queue failure modes before they occur in production
 
 ---
 

@@ -14,6 +14,8 @@ You know what DORA metrics are (see `engineering-metrics` skill). This skill cov
 - Integrating deployment tracking into CI/CD pipeline
 - Connecting incident data from PagerDuty/OpsGenie to calculate MTTR
 - Selecting DORA tooling (build vs. buy)
+- Extracting deployment frequency or lead time data from the GitHub Deployments or Pull Requests API
+- Running a quarterly engineering metrics review and needing a structured template for the team
 
 ---
 

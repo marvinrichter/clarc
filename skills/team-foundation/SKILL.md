@@ -15,6 +15,8 @@ Patterns and workflows for running clarc as a shared engineering team OS — con
 - Onboarding a new developer to a team using clarc
 - Distributing private rules or skills across a team
 - Defining team-wide workflow conventions
+- Creating a `company-clarc` private repository to house organization-specific rules and skills
+- Troubleshooting why a team member's Claude session does not pick up the shared rules after an update
 
 ## Team Installation Model
 

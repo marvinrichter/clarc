@@ -13,6 +13,10 @@ The complete workflow from "I have an idea" to "code is shipped." Ensures that e
 - User invokes `/idea`, `/evaluate`, `/explore`, or `/prd`
 - User asks "is this worth building?" or "what's the best approach for X?"
 - User wants to understand the full development process
+- Multiple solution approaches exist and a trade-off analysis is needed before coding begins
+- Acceptance criteria are missing or too vague to guide implementation
+- Stakeholders need to align on scope before engineering work starts
+- A feature was built but its value or success metrics were never defined
 
 ---
 

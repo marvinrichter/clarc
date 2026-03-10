@@ -15,6 +15,7 @@ Patterns for building reliable, scalable multi-agent systems with Claude.
 - Managing state across agent invocations
 - Building reliable agent-to-agent handoffs
 - Adding observability (tracing, latency) across agent boundaries
+- Selecting the right coordination pattern (fan-out, pipeline, split-role)
 
 ---
 

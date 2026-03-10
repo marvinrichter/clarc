@@ -12,6 +12,8 @@ description: "CSS architecture for modern web apps: Tailwind conventions and whe
 - Responsive design is inconsistent across breakpoints
 - Typography and spacing feel arbitrary, not systematic
 - Deciding between Tailwind, CSS Modules, or CSS-in-JS
+- Adding complex animations or pseudo-element styles that Tailwind utilities cannot express
+- Implementing fluid typography with `clamp()` for smooth viewport-based scaling
 
 ---
 

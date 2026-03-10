@@ -13,6 +13,9 @@ description: "SaaS pricing strategy patterns: value metric selection, usage-base
 - Designing pricing tiers (free, pro, enterprise)
 - Building the pricing page
 - Considering freemium
+- Identifying the correct value metric that scales with what customers actually receive
+- Implementing the entitlement and usage-metering system in code to enforce plan limits
+- Analyzing pricing analytics to discover why most customers cluster on the lowest tier
 
 ---
 

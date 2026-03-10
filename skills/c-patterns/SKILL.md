@@ -11,6 +11,10 @@ description: "C programming patterns (C11/C17): opaque pointer encapsulation, er
 - Designing C module APIs (opaque pointers, error codes)
 - Reviewing C code for memory safety
 - Setting up a C project with Makefile or CMake
+- Refactoring a C module to use the opaque pointer pattern so internal struct fields are hidden from callers
+- Auditing a codebase for unsafe string functions (`gets`, `sprintf`, `strcpy`) that could cause buffer overflows
+- Implementing multi-resource cleanup with `goto` to ensure every allocation is freed on every error path
+- Integrating AddressSanitizer or Valgrind into a CI pipeline to catch memory leaks and use-after-free bugs automatically
 
 ---
 

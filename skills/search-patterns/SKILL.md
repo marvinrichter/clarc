@@ -13,6 +13,8 @@ description: "Search implementation patterns: full-text search with Postgres tsv
 - Faceted filtering (by category, price, date, etc.)
 - Semantic/AI search over your content
 - Migrating away from LIKE queries in Postgres
+- Choosing between Typesense, Elasticsearch, Algolia, or Postgres full-text for a new use case
+- Designing a search index schema or planning a re-index strategy after schema changes
 
 ---
 

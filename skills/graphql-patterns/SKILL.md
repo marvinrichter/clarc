@@ -12,6 +12,9 @@ description: "GraphQL API patterns: schema-first design, resolvers, DataLoader f
 - Implementing real-time subscriptions
 - Designing a type-safe schema with code generation
 - Adding auth (field-level or operation-level) to GraphQL
+- Migrating list endpoints from plain arrays to Relay-style cursor-paginated connections
+- Choosing between Apollo Server with SDL-first resolvers and Pothos code-first schema builders
+- Configuring query depth limits and complexity scoring to protect against expensive client-sent queries
 
 ---
 

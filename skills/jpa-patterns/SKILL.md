@@ -17,6 +17,7 @@ Use for persistence adapter implementation and performance tuning in Spring Boot
 - Configuring transactions, auditing, or soft deletes
 - Setting up pagination, sorting, or custom repository methods
 - Tuning connection pooling (HikariCP) or second-level caching
+- Debugging LazyInitializationException or slow query performance issues
 
 ## Entity Design
 

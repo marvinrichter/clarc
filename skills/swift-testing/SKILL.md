@@ -15,6 +15,9 @@ Core testing patterns for Swift using the Swift Testing framework, XCTest, and X
 - Testing async/actor code
 - Writing UI automation tests
 - Achieving 80%+ code coverage in Swift projects
+- Migrating an existing XCTest suite to the Swift Testing framework (`@Test`, `#expect`)
+- Debugging flaky tests caused by shared mutable state or fixed `sleep` waits
+- Adding parameterized test cases to cover multiple input combinations efficiently
 
 ## Framework Selection
 

@@ -14,6 +14,8 @@ Tactical Domain-Driven Design patterns for Python projects. Uses dataclasses or 
 - Defining repository interfaces and SQLAlchemy implementations
 - Adding domain events and application service layers
 - Refactoring Django/FastAPI code towards hexagonal architecture
+- Deciding how to model a domain concept as an entity vs. a value object in Python
+- Wiring DDD patterns into a FastAPI or Django project without leaking domain logic into views
 
 ---
 

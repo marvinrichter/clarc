@@ -14,6 +14,8 @@ Techniques for reducing WASM binary size and maximizing runtime performance.
 - Memory usage is growing unexpectedly
 - Implementing compute-intensive features in WASM
 - Enabling SIMD or multi-threading for heavy workloads
+- Reducing JS↔Wasm boundary crossings by batching calls or sharing linear memory directly
+- Using `twiggy` or `cargo-bloat` to identify which crate or function is dominating binary size
 
 ---
 

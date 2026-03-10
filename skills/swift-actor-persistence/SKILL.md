@@ -13,6 +13,9 @@ Patterns for building thread-safe data persistence layers using Swift actors. Co
 - Need thread-safe access to shared mutable state
 - Want to eliminate manual synchronization (locks, DispatchQueues)
 - Building offline-first apps with local storage
+- Replacing legacy `DispatchQueue`-based thread safety with the Swift concurrency actor model
+- Designing a generic repository that reuses file-backed storage across multiple model types
+- Combining an actor-based repository with `@Observable` ViewModels for reactive SwiftUI updates
 
 ## Core Pattern
 

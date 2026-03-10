@@ -15,6 +15,8 @@ Patterns for orchestrating multiple Claude agents on complex tasks. Use via `/or
 - Complex feature implementation spanning multiple domains
 - Review task requiring multiple specialist perspectives
 - Large refactor requiring parallel analysis and implementation
+- Selecting the right coordination pattern (Fan-Out, Split-Role, Explorer+Validator, Worktree Isolation, Sequential Pipeline) for a given task structure
+- Synthesizing conflicting agent recommendations using the security > quality > style priority hierarchy
 
 ## Pattern Catalogue
 

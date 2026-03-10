@@ -17,6 +17,9 @@ Core testing patterns for plain Java using JUnit 5, Mockito, AssertJ, and Testco
 - Writing integration tests with Testcontainers
 - Configuring JaCoCo coverage enforcement
 - Applying TDD in Java without Spring context
+- Diagnosing flaky or order-dependent tests caused by shared mutable state
+- Adding parameterized tests to cover multiple input variants without duplicating test methods
+- Enforcing 80% line coverage via JaCoCo as a build gate in CI
 
 ## Dependencies
 

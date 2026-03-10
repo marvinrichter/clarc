@@ -14,6 +14,9 @@ External dependencies fail. Networks partition. Databases become slow. This skil
 - Implementing circuit breakers for external calls
 - Reviewing architecture for single points of failure
 - Preparing for a resilience audit or chaos experiment
+- Deciding which HTTP error codes should be retried vs. treated as permanent failures
+- Isolating slow dependencies using bulkhead thread-pool or connection-pool partitioning
+- Configuring Kubernetes liveness, readiness, and startup probes for a new service
 
 ---
 

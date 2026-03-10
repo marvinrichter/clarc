@@ -12,6 +12,10 @@ TDD guidance for Spring Boot services with 80%+ coverage (unit + integration).
 - New features or endpoints
 - Bug fixes or refactors
 - Adding data access logic or security rules
+- Writing MockMvc tests for controller layer validation and error response shapes
+- Setting up Testcontainers for integration tests against a real PostgreSQL database
+- Enforcing 80%+ line coverage with JaCoCo in a Maven or Gradle build pipeline
+- Adding parameterized tests to cover multiple input variants without duplicating test code
 
 ## Workflow
 

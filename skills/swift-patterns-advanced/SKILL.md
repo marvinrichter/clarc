@@ -13,6 +13,9 @@ description: Advanced Swift patterns — property wrappers, result builders, Com
 - Using result builders for DSLs (like SwiftUI's ViewBuilder)
 - Setting up Combine pipelines for reactive data flow
 - Optimizing performance with inlining and value type semantics
+- Implementing copy-on-write semantics for value types with large internal storage
+- Using Swift macros (`@Model`, `@Observable`, `#UUID`) or writing a custom freestanding macro
+- Migrating from `ObservableObject`/`@Published` to the `@Observable` macro in a SwiftUI app
 
 ## Property Wrappers
 

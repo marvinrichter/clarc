@@ -10,6 +10,10 @@ Use this skill when:
 - Debugging why a hook fires or doesn't fire
 - Configuring per-project hook suppression
 - Understanding the difference between blocking and advisory hooks
+- Writing a PreToolUse hook that validates or blocks a Bash command before Claude executes it
+- Creating a PostToolUse nudge that reminds the developer to run a security review after editing auth-related files
+- Implementing a cooldown mechanism so an advisory nudge fires at most once per N minutes instead of on every file save
+- Combining multiple checks for the same event into a single dispatch script to avoid spawning one Node.js process per check
 
 ## Hook System Overview
 

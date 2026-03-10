@@ -13,6 +13,8 @@ A meta-pipeline that decides *which* autonomous pattern fits your feature before
 - User invokes `/overnight <feature description>`
 - User asks how to automate a development pipeline
 - User asks which loop pattern to use for a task
+- Choosing between Sequential Pipeline, Continuous Claude, Ralphinho, or Infinite Agentic Loop based on feature scope and iteration style
+- Setting up a SHARED_TASK_NOTES.md context bridge so multiple sequential `claude -p` steps can share state across fresh context windows
 
 ---
 

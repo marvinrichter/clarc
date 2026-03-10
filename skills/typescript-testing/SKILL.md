@@ -15,6 +15,9 @@ Core testing patterns for TypeScript and JavaScript projects using Vitest, Testi
 - Configuring Vitest, Jest, or Playwright
 - Mocking APIs with MSW
 - Achieving 80%+ code coverage
+- Migrating from Jest to Vitest on an ESM or Vite-based project
+- Debugging tests that share mock state across runs and fail non-deterministically
+- Setting up React Testing Library with `userEvent` for realistic component interaction testing
 
 ## Framework Selection
 

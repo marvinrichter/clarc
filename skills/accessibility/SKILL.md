@@ -12,6 +12,10 @@ description: "Web accessibility (a11y) patterns: WCAG 2.2 compliance, semantic H
 - Building forms (error messages, validation)
 - Adding focus management (routing, modal open/close)
 - Reviewing UI for WCAG compliance
+- Preparing a UI for an accessibility audit or legal compliance review (EU EAA, ADA)
+- Adding keyboard navigation support to custom interactive widgets like sliders or tree views
+- Integrating screen reader announcements for dynamic content updates (live regions, toast notifications)
+- Checking color contrast ratios before shipping a design system or component library
 
 ---
 

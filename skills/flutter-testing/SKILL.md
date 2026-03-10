@@ -14,6 +14,9 @@ Flutter provides three test levels built into the framework. This skill covers t
 - Testing BLoC state machines
 - Debugging flaky widget tests
 - Setting up CI test pipeline for Flutter
+- Choosing the right test level (unit, widget, or integration) for a given piece of logic
+- Mocking dependencies with mocktail when code generation from mockito is not desirable
+- Adding code coverage gating to a Flutter CI pipeline with lcov and Codecov
 
 ---
 

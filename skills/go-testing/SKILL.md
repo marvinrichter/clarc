@@ -14,6 +14,9 @@ Comprehensive Go testing patterns for writing reliable, maintainable tests follo
 - Creating benchmarks for performance-critical code
 - Implementing fuzz tests for input validation
 - Following TDD workflow in Go projects
+- Structuring table-driven tests for a function with many input variations or edge cases
+- Setting up golden file tests for functions that produce formatted text or structured output
+- Debugging a test that fails intermittently due to parallel subtest variable capture or shared state
 
 ## TDD Workflow for Go
 

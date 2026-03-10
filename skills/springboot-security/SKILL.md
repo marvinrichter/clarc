@@ -16,6 +16,7 @@ Use when adding auth, handling input, creating endpoints, or dealing with secret
 - Managing secrets (Vault, environment variables)
 - Adding rate limiting or brute-force protection
 - Scanning dependencies for CVEs
+- Reviewing an existing Spring Boot app for security hardening opportunities
 
 ## Authentication
 

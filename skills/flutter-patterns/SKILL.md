@@ -15,6 +15,9 @@ Flutter turns Dart into a cross-platform UI framework for iOS, Android, Web, and
 - Running CPU-intensive work without blocking the UI
 - Diagnosing Flutter performance issues (jank, rebuilds)
 - Reviewing Flutter architecture choices
+- Choosing between BLoC and Riverpod for a specific feature or team context
+- Setting up Fastlane or GitHub Actions for Flutter iOS and Android CI/CD pipelines
+- Optimizing widget rebuild scope using `const`, `RepaintBoundary`, or `ListView.builder`
 
 ---
 

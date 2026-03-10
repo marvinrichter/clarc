@@ -13,6 +13,9 @@ Production-grade Django architecture patterns for scalable, maintainable applica
 - Designing Django REST Framework APIs
 - Working with Django ORM and models
 - Setting up Django project structure
+- Implementing custom QuerySets, Managers, or serializers for a DRF ViewSet
+- Preventing N+1 queries by adding `select_related` or `prefetch_related` to an existing queryset
+- Structuring a Django project with split settings for development, testing, and production environments
 
 ## Project Structure
 

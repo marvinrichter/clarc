@@ -13,6 +13,8 @@ description: "Design system architecture: design tokens (color, spacing, typogra
 - Setting up dark mode or multiple themes
 - Building a component library
 - Documenting components for a team
+- Migrating hardcoded color or spacing values to a token-based system that supports theming
+- Structuring components across Primitive, Composite, and Pattern layers to avoid circular dependencies
 
 ---
 

@@ -14,6 +14,8 @@ Comprehensive security guidelines for Django applications to protect against com
 - Configuring production security settings
 - Reviewing Django application for security issues
 - Deploying Django applications to production
+- Hardening a Django REST Framework API with rate limiting, CSRF, and JWT authentication
+- Auditing a Django codebase for raw SQL injection risks or unsafe use of `mark_safe`
 
 ## Core Security Settings
 

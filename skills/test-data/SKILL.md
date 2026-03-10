@@ -14,6 +14,9 @@ Bad test data leads to flaky tests, test interdependence, and production data le
 - Tests fail when run in different order (order-dependent tests)
 - Writing integration tests that need DB rows
 - Creating realistic seed data for development
+- Replacing hard-coded fixture JSON files with programmatic factory functions
+- Ensuring production data is anonymized before being restored to a staging or development environment
+- Choosing between transaction rollback, truncation, or unique-ID strategies for test isolation
 
 ---
 

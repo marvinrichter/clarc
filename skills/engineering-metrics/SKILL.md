@@ -14,6 +14,9 @@ description: "Engineering effectiveness metrics: DORA Four Keys (Deployment Freq
 - Reporting engineering team performance to leadership
 - Diagnosing why a team feels slow despite high activity
 - Designing a Developer Experience (DevEx) initiative
+- Establishing a DORA baseline for a newly formed engineering team
+- Evaluating whether to track velocity, cycle time, or throughput for a specific team context
+- Identifying leading indicators that predict deployment frequency or change failure rate before problems surface
 
 ---
 

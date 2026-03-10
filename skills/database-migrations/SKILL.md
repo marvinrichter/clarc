@@ -14,6 +14,8 @@ Safe, reversible database schema changes for production systems.
 - Running data migrations (backfill, transform)
 - Planning zero-downtime schema changes
 - Setting up migration tooling for a new project
+- Renaming a column or table in a live system without dropping application availability
+- Troubleshooting a migration that ran fine on staging but causes a lock on production data
 
 ## Core Principles
 

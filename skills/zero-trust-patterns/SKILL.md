@@ -13,6 +13,7 @@ description: Skill: Zero-Trust Patterns
 - Writing Kubernetes NetworkPolicies
 - Reviewing east-west traffic security
 - Building BeyondCorp-style access controls
+- Auditing existing cluster network policies for trust boundary gaps
 
 ---
 

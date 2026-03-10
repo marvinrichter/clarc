@@ -11,6 +11,10 @@ description: "R testing patterns: testthat 3e with expect_* assertions, snapshot
 - Mocking HTTP calls or functions in tests
 - Setting up coverage reporting with covr
 - Testing Shiny applications with shinytest2
+- Choosing between `expect_equal` and `expect_identical` for numeric vs. exact comparison
+- Using snapshot testing to lock in the printed output of S3 objects or complex data structures
+- Enforcing a minimum coverage percentage in CI with `covr::percent_coverage`
+- Running property-based tests with `hedgehog` to verify algebraic laws like commutativity or idempotence
 
 ---
 

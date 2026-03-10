@@ -14,6 +14,9 @@ Standards for readable, maintainable Java (25+) code. Applies to any Java projec
 - Working with records, sealed classes, or pattern matching (Java 25+)
 - Reviewing use of Optional, streams, or generics
 - Structuring packages and project layout
+- Onboarding a new Java project and establishing coding standards before the first PR
+- Refactoring legacy Java code to remove raw types, mutation, or broad catch blocks
+- Evaluating whether Java 21+ features (virtual threads, pattern matching, sequenced collections) can simplify existing code
 
 ## Core Principles
 

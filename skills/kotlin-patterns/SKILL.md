@@ -13,6 +13,8 @@ description: "Idiomatic Kotlin patterns: sealed classes, data classes, extension
 - Implementing async workflows with coroutines
 - Building Kotlin DSLs or builder APIs
 - Debugging coroutine or Flow issues
+- Replacing nullable `String` or `Int` primitives with value classes to enforce type safety at compile time
+- Refactoring Java-style mutable data classes to use `val` and `copy()` for immutable updates
 
 ---
 

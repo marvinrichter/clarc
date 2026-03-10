@@ -17,6 +17,7 @@ description: "Engineering team process patterns: OKR definition and scoring, spr
 - Defining engineering team metrics
 - Structuring a feature into user stories and acceptance criteria
 - Setting up team working agreements
+- Reviewing an existing process for bottlenecks or missing feedback loops
 
 ---
 

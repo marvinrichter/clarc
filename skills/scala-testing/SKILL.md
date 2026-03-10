@@ -11,6 +11,9 @@ description: "Scala testing with ScalaTest, MUnit, and ScalaCheck: FunSpec/FlatS
 - Choosing a Scala test framework
 - Testing Cats Effect or ZIO code
 - Setting up integration tests with real databases
+- Adding property-based tests with ScalaCheck to cover edge cases automatically
+- Configuring Testcontainers for a PostgreSQL or other database in CI
+- Reviewing test coverage and deciding between unit fakes and Mockito mocks
 
 ---
 

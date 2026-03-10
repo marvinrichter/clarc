@@ -11,6 +11,10 @@ description: "R patterns: tidyverse data pipelines with dplyr/tidyr/purrr, nativ
 - Designing data transformation pipelines with tidyverse
 - Building R packages with roxygen2 documentation
 - Reviewing R code for idiomatic style
+- Using tidy evaluation (`{{ }}`) to write reusable functions that accept column names as arguments
+- Managing project dependencies reproducibly with `renv` and a committed lockfile
+- Choosing between `purrr::map` variants and for loops for iteration over data structures
+- Creating publication-ready visualizations with ggplot2 and the scales package
 
 ---
 

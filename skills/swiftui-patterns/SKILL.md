@@ -14,6 +14,7 @@ Modern SwiftUI patterns for building declarative, performant user interfaces on 
 - Structuring view models and data flow
 - Optimizing rendering performance for lists and complex layouts
 - Working with environment values and dependency injection in SwiftUI
+- Debugging SwiftUI preview failures or unexpected re-render cycles
 
 ## State Management
 

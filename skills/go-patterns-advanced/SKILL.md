@@ -14,6 +14,9 @@ description: Advanced Go patterns — hexagonal architecture with full working e
 - Configuring Go tooling (golangci-lint, etc.)
 - Using Go 1.21+ slices/maps stdlib
 - Reviewing struct design or avoiding anti-patterns
+- Structuring a new Go service with clear domain, application, and adapter layers following ports-and-adapters
+- Applying functional options or embedding to avoid constructor explosion and over-specified structs
+- Replacing hand-rolled slice or map utilities with the Go 1.21+ `slices` and `maps` standard library packages
 
 ## Hexagonal in Go (Ports & Adapters)
 

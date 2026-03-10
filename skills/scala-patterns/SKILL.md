@@ -11,6 +11,9 @@ description: "Idiomatic Scala patterns: ADTs with sealed traits and case classes
 - Designing domain models or error handling strategies
 - Choosing between Future, Cats Effect IO, and ZIO
 - Migrating Scala 2 code to Scala 3
+- Reviewing Scala code for idiomatic patterns, typeclass usage, or ADT completeness
+- Adding concurrency to a service using Cats Effect `Ref`, `Fiber`, or `Resource`
+- Encountering compile errors related to implicit resolution, `given`/`using`, or type inference
 
 ---
 

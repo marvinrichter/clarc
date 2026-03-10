@@ -14,6 +14,9 @@ description: Advanced Go testing — interface-based mocking, benchmarks (basic,
 - Using Go 1.18+ fuzzing for input validation
 - Testing HTTP handlers with `net/http/httptest`
 - Setting up CI/CD test pipelines
+- Comparing benchmark results across commits using `benchstat` to detect performance regressions
+- Adding a fuzz corpus and property-based assertions to a parser or input validation function
+- Configuring a GitHub Actions workflow that enforces Go test coverage thresholds on every pull request
 
 ## Interface-Based Mocking
 

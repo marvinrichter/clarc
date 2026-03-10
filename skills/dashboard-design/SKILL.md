@@ -12,6 +12,8 @@ description: "Dashboard architecture and UX: KPI hierarchy, information density 
 - Adding filters, date pickers, or drill-down navigation
 - Implementing real-time data updates
 - Designing empty, loading, and error states for dashboard widgets
+- Adapting a single dashboard layout to serve both executive and analyst audiences
+- Serializing filter state to URL parameters so dashboards can be bookmarked and shared
 
 ---
 

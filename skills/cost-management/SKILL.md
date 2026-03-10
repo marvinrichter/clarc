@@ -12,6 +12,9 @@ tags: [cost, tokens, performance, claude-api]
 - Session shows unexpectedly high tool call volume
 - Setting up a new project where cost matters
 - Planning long autonomous sessions or overnight pipelines
+- Choosing between Haiku, Sonnet, and Opus for a specific task or agent role
+- Debugging why a particular workflow consumed more tokens than expected
+- Designing a multi-agent pipeline where per-call cost adds up quickly
 
 ## Why This Matters
 

@@ -14,6 +14,8 @@ Async service-to-service communication. Not the same as WebSockets (client push)
 - Handling traffic spikes with backpressure (queue absorbs bursts)
 - Coordinating cross-service workflows without direct coupling
 - Choosing between SQS, Kafka, RabbitMQ, or BullMQ
+- Implementing idempotent consumers to handle at-least-once delivery without corrupting state on duplicate messages
+- Designing dead-letter queues and replay strategies to recover from poison-pill messages without blocking the main queue
 
 ---
 

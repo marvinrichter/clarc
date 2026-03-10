@@ -14,6 +14,8 @@ description: "Local development environment patterns: runtime version pinning wi
 - Debugging "it works on CI but not locally" problems
 - Standardizing the team's Node/Python/Go version
 - Setting up pre-commit hooks for automatic quality checks
+- Configuring a Dev Container so the project opens identically in VS Code and GitHub Codespaces
+- Running local email testing with Mailpit so email flows can be verified without a real SMTP server
 
 ---
 

@@ -14,6 +14,9 @@ Comprehensive testing strategies for Rust applications following TDD methodology
 - Testing axum HTTP handlers
 - Setting up benchmarks with criterion
 - Configuring cargo-nextest in CI/CD
+- Using `mockall::automock` to generate mock implementations from trait definitions
+- Writing property-based tests with `proptest` to verify invariants across randomly generated inputs
+- Isolating integration tests using `#[sqlx::test]` for automatic per-test transaction rollback
 
 ## TDD in Rust
 
@@ -593,7 +596,4 @@ async fn find_by_id_returns_none(pool: PgPool) {
 | DB integration | `#[sqlx::test]` (isolated transaction) |
 | HTTP handler | `axum` + `tower::ServiceExt::oneshot` |
 | Property test | `proptest!` macro |
-| Benchmark | `criterion` with `criterion_group!` |
-| Test output | `cargo test -- --nocapture` |
-| Faster CI | `cargo nextest run` |
 | Coverage | `cargo llvm-cov` |
