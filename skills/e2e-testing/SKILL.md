@@ -285,27 +285,7 @@ jobs:
 - Traces: artifacts/*.zip
 ```
 
-## Wallet / Web3 Testing
-
-```typescript
-test('wallet connection', async ({ page, context }) => {
-  // Mock wallet provider
-  await context.addInitScript(() => {
-    window.ethereum = {
-      isMetaMask: true,
-      request: async ({ method }) => {
-        if (method === 'eth_requestAccounts')
-          return ['0x1234567890123456789012345678901234567890']
-        if (method === 'eth_chainId') return '0x1'
-      }
-    }
-  })
-
-  await page.goto('/')
-  await page.locator('[data-testid="connect-wallet"]').click()
-  await expect(page.locator('[data-testid="wallet-address"]')).toContainText('0x1234')
-})
-```
+> For wallet connection testing and blockchain E2E patterns (MetaMask mocking, async confirmations) — see skill `e2e-testing-web3`.
 
 ## Financial / Critical Flow Testing
 

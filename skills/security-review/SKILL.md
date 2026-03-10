@@ -9,13 +9,14 @@ This skill ensures all code follows security best practices and identifies poten
 
 ## When to Activate
 
-- Implementing authentication or authorization
-- Handling user input or file uploads
-- Creating new API endpoints
-- Working with secrets or credentials
-- Implementing payment features
-- Storing or transmitting sensitive data
-- Integrating third-party APIs
+- Implementing authentication or authorization (JWT, OAuth, session management)
+- Handling user input — form fields, file uploads, query parameters, JSON payloads
+- Creating new API endpoints that accept external data
+- Working with secrets, credentials, or API keys in code or configuration
+- Implementing payment processing or financial transaction logic
+- Storing or transmitting PII, health data, or other sensitive user data
+- Integrating third-party APIs that receive or return sensitive data
+- Writing SQL queries or ORM calls that include user-provided values
 
 ## Security Checklist
 
@@ -334,60 +335,9 @@ catch (error) {
 - [ ] Detailed errors only in server logs
 - [ ] No stack traces exposed to users
 
-### 9. Blockchain Security (Solana)
+> For blockchain/Web3 security (wallet signature verification, transaction validation, Solana patterns) — see skill `security-review-web3`.
 
-#### Wallet Verification
-```typescript
-import { verify } from '@solana/web3.js'
-
-async function verifyWalletOwnership(
-  publicKey: string,
-  signature: string,
-  message: string
-) {
-  try {
-    const isValid = verify(
-      Buffer.from(message),
-      Buffer.from(signature, 'base64'),
-      Buffer.from(publicKey, 'base64')
-    )
-    return isValid
-  } catch (error) {
-    return false
-  }
-}
-```
-
-#### Transaction Verification
-```typescript
-async function verifyTransaction(transaction: Transaction) {
-  // Verify recipient
-  if (transaction.to !== expectedRecipient) {
-    throw new Error('Invalid recipient')
-  }
-
-  // Verify amount
-  if (transaction.amount > maxAmount) {
-    throw new Error('Amount exceeds limit')
-  }
-
-  // Verify user has sufficient balance
-  const balance = await getBalance(transaction.from)
-  if (balance < transaction.amount) {
-    throw new Error('Insufficient balance')
-  }
-
-  return true
-}
-```
-
-#### Verification Steps
-- [ ] Wallet signatures verified
-- [ ] Transaction details validated
-- [ ] Balance checks before transactions
-- [ ] No blind transaction signing
-
-### 10. Dependency Security
+### 9. Dependency Security
 
 #### Regular Updates
 ```bash
@@ -480,7 +430,9 @@ Before ANY production deployment:
 - [ ] **Row Level Security**: Enabled in Supabase
 - [ ] **CORS**: Properly configured
 - [ ] **File Uploads**: Validated (size, type)
-- [ ] **Wallet Signatures**: Verified (if blockchain)
+- [ ] **Wallet Signatures**: Verified (see `security-review-web3`)
+
+> For authentication and authorization patterns (JWT, OAuth 2.0, RBAC, session management) — see skill `auth-patterns`.
 
 ## Resources
 

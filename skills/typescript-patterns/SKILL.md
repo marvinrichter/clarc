@@ -366,3 +366,4 @@ export { createUser, validateEmail } from './user';
 | `Omit<T, K>` | Strip sensitive fields from output types |
 
 > For advanced patterns — mapped types, template literal types, conditional types, infer, type guards & narrowing, decorator patterns, async patterns, testing with vitest/jest, and performance optimization — see skill: `typescript-patterns-advanced`.
+> For testing patterns — unit tests with vitest, mocking with vi.mock, integration tests, and coverage setup — see skill: `typescript-testing`.

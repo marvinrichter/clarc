@@ -9,10 +9,12 @@ Idiomatic Python patterns and best practices for building robust, efficient, and
 
 ## When to Activate
 
-- Writing new Python code
-- Reviewing Python code
-- Refactoring existing Python code
-- Designing Python packages/modules
+- Designing Python package structure and module boundaries
+- Choosing between dataclasses, Pydantic models, and TypedDicts for a data structure
+- Applying idiomatic Python (list comprehensions, generators, context managers, decorators)
+- Setting up type hints and mypy for a new module or existing codebase
+- Structuring a Python service with dependency injection or hexagonal architecture
+- Deciding when to use ABCs vs protocols for interface design
 
 ## Core Principles
 
