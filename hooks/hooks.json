@@ -109,7 +109,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-dispatch.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-format-dispatch.js\"",
+            "async": true,
+            "timeout": 10
           }
         ],
         "description": "Auto-format + console.log check after edits/writes: JS/TS (Biome/Prettier), Python (ruff), Go (goimports/gofmt), Java (google-java-format/spotless), Swift (swift-format/swiftformat), Rust (rustfmt)"
@@ -171,7 +173,7 @@
         "description": "Rust cargo check after editing .rs files"
       },
       {
-        "matcher": "*",
+        "matcher": "Edit|Write|Bash",
         "hooks": [
           {
             "type": "command",

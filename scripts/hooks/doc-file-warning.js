@@ -15,7 +15,7 @@ process.stdin.on('end', () => {
       /\.(md|txt)$/.test(filePath) &&
       !/(README|CLAUDE|AGENTS|CONTRIBUTING|CHANGELOG|LICENSE|SKILL)\.md$/i.test(filePath) &&
       !/\.claude[/\\]plans[/\\]/.test(filePath) &&
-      !/(^|[/\\])(docs|skills|\.history)[/\\]/.test(filePath)
+      !/(^|[/\\])(docs|skills|\.history|\.clarc)[/\\]/.test(filePath)
     ) {
       console.error('[Hook] WARNING: Non-standard documentation file detected');
       console.error('[Hook] File: ' + filePath);
@@ -24,5 +24,5 @@ process.stdin.on('end', () => {
   } catch {
     /* ignore parse errors */
   }
-  console.log(data);
+  process.stdout.write(data);
 });
