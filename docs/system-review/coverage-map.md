@@ -66,7 +66,7 @@
 
 | Scenario | Status | Command | Agent | Skill | Missing |
 |----------|--------|---------|-------|-------|---------|
-| Agent quality review | ✅ | /agent-review | agent-quality-reviewer | — | — |
+| Agent quality review | ✅ | /agent-audit | agent-quality-reviewer | — | — |
 | Skill depth analysis | ✅ | /skill-depth | skill-depth-analyzer | — | — |
 | Command audit | ✅ | /command-audit | command-auditor | — | — |
 | Hook audit | ✅ | /hook-audit | hook-auditor | — | — |

@@ -2,6 +2,10 @@
 description: Show which agents depend on a skill and what would be affected by changing it
 ---
 
+# Skill Impact
+
+Show which agents declare a dependency on a skill and what would break if you changed it. Run this before editing any skill that other agents reference.
+
 Show the impact of changing skill `$ARGUMENTS`.
 
 1. **Parse the skill name** from `$ARGUMENTS`. If empty, ask the user for a skill name.

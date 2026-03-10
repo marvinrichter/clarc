@@ -239,3 +239,5 @@ Commit: git add package.json pnpm-lock.yaml && git commit -m "chore: update depe
 - `upgrade` → apply patch + minor upgrades interactively
 - `upgrade react` → upgrade only `react` and verify
 - `outdated` → list what's outdated without changing anything
+
+> Not covered here: license compliance, supply chain risk, and SBOM generation — use `/dep-audit` for those.

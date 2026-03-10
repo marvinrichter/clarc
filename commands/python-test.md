@@ -8,10 +8,16 @@ Run the full Python test suite with coverage reporting.
 
 ## What This Command Does
 
-1. **Run Tests**: Execute `pytest` with fail-fast mode
-2. **Coverage**: Measure and report line coverage
-3. **Type Check**: Run `mypy` if available
-4. **Lint**: Run `ruff check` if available
+Enforces TDD methodology (Red → Green → Refactor) for Python:
+
+1. **Write test first** (RED) — new test must fail before implementation
+2. **Implement to pass** (GREEN) — minimal code to make test pass
+3. **Run full suite** — verify nothing regressed
+4. **Coverage** — measure and report line coverage (min 80%)
+5. **Type Check** — run `mypy` if available
+6. **Lint** — run `ruff check` if available
+
+> Not a TDD workflow? Use this command to verify tests pass and coverage is met after the fact. For write-tests-first enforcement, the **tdd-guide** agent provides step-by-step guidance.
 
 ## Diagnostic Commands
 

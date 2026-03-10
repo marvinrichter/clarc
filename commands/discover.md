@@ -1,5 +1,5 @@
 ---
-description: Discover product opportunities through market research. Searches for competitor features, user pain points on Reddit/HN, tech trends, and market gaps in a given domain. Generates idea seeds from what it finds.
+description: From external market data — discover product opportunities by searching competitor features, user pain points on Reddit/HN, tech trends, and market gaps in a given domain. For structured ideation frameworks (JTBD, HMW, analogy thinking) without external research, use /brainstorm instead.
 ---
 
 # Discover
