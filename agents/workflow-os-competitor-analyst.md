@@ -150,7 +150,7 @@ Save to: `docs/system-review/competitive-analysis-YYYY-MM-DD.md`
 
 clarc strengths vs. the field:
 - Only tool with a continuous learning flywheel (instincts extracted from sessions, evolved via /evolve)
-- Only tool with a self-review system (/system-review) that audits its own agents/skills/hooks for quality
+- Only tool with a self-review system (/system-review) that audits its own agents, skills, and hooks for quality
 - Only tool with product lifecycle support (idea → eval → explore → PRD → plan → implement)
 
 Top 3 competitive gaps:
