@@ -1,6 +1,6 @@
 # Pre-Launch Hardening
 
-**Status:** 🔄 In Progress
+**Status:** ✅ Done
 **Date:** 2026-03-10
 **Goal:** Close all remaining P0/P1 issues from the March-10 system reviews before v1.0 — hooks security, stale config paths, agent examples, command naming, and skill cleanup.
 
@@ -59,4 +59,4 @@ After completing the skill-content-depth roadmap (PRs #24–#26), the following 
 | H3-P1-H | tdd-workflow GH Actions v3 → v4 | ✅ |
 | H4-P1-D | agent-review → agent-audit rename | ✅ |
 | H4-P1-E | deps/dep-audit + discover/brainstorm cross-refs | ✅ already in descriptions |
-| H5-P1-C | ## Examples: 54 agents | 🔄 |
+| H5-P1-C | ## Examples: 54 agents | ✅ |
