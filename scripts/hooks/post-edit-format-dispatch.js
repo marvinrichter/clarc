@@ -166,5 +166,5 @@ process.stdin.on('end', () => {
 
   logHook('post-edit-format-dispatch', 'Edit', filePath, exitCode, Date.now() - start);
   process.stdout.write(data);
-  process.exit(0);
+  process.exit(exitCode);
 });

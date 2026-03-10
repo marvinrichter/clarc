@@ -384,7 +384,7 @@ npm test && npm run lint
 - name: Run Tests
   run: npm test -- --coverage
 - name: Upload Coverage
-  uses: codecov/codecov-action@v3
+  uses: codecov/codecov-action@v4
 ```
 
 ## Best Practices

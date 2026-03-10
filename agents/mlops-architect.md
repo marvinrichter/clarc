@@ -239,3 +239,13 @@ ls k8s/ kubernetes/ helm/ terraform/ 2>/dev/null
 - **Cost estimate:** 2× A100 at $3.50/hr = ~$5,040/month serving; ~$800/month storage + monitoring overhead
 
 **Recommendation:** vLLM with INT8 quantization reduces GPU memory by 50%, enabling 2× A100 instead of 4×. A/B test: shadow mode → canary → full rollout over 14 days with automated rollback on >5% error rate increase.
+
+**Input:** User asks to design MLOps infrastructure for a fraud detection model (scikit-learn gradient boosting, tabular features) that must score transactions in under 50ms and retrain daily as fraud patterns shift.
+
+**Output:** Structured MLOps architecture document for a latency-sensitive classical ML use case. Example:
+- **Serving stack:** BentoML on 4× L4 GPU-optional CPU pods (gradient boosting is CPU-bound) — p95 < 30ms at 2,000 req/s; Pros: lightweight, easy joblib packaging; Cons: no GPU acceleration for this model type
+- **Monitoring:** Prometheus + Grafana for request latency (alert p95 > 40ms); WhyLogs streaming for feature drift (PSI > 0.15 on top-10 features triggers daily retrain early)
+- **Retraining trigger:** Time-based daily cron + drift override → Airflow DAG → MLflow model registry → evaluation gate (AUC-ROC ≥ current prod - 0.5pp on 7-day held-out window) → auto-promote to Staging → human approval for Production
+- **Cost estimate:** 4× L4 at $0.80/hr = ~$2,300/month serving; ~$400/month Airflow + MLflow + storage
+
+**Recommendation:** Keep model on CPU pods — gradient boosting gains nothing from GPU. Use ONNX export via `sklearn-onnx` for 2–3× inference speedup with zero architecture change. Daily retraining keeps fraud signal current; hold-out window must roll forward with data to avoid stale evaluation.

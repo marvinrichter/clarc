@@ -144,3 +144,35 @@ If `build-error-resolver` or the user is requesting an immediate fix without tes
 ```
 
 This signal is consumed by the `orchestrator` agent during synthesis.
+
+## Examples
+
+**Input:** User asks to implement a `discountPrice(price, coupon)` function in TypeScript — no existing tests.
+
+**Output:**
+```
+About to write: src/lib/discount.test.ts
+Contents:
+  - describe('discountPrice')
+    - it('applies percentage coupon correctly')
+    - it('applies fixed-amount coupon correctly')
+    - it('returns original price when coupon is invalid')
+    - it('never returns a negative price')
+    - it('throws on non-numeric price input')
+
+Write this file? [yes/no]
+```
+After confirmation, writes the test file, runs `npm test` → RED (function not yet implemented), then writes minimal implementation, runs `npm test` → GREEN, then checks coverage. Reports: "5 tests passing, coverage 94% — ready to merge."
+
+**Input:** User asks to add a `retry(fn, maxAttempts)` utility in Python — bug fix scenario with production down.
+
+**Output:**
+```
+## Conflicts With
+
+If build-error-resolver or the user is requesting an immediate fix without tests:
+- Conflict class: methodology-vs-urgency
+- Context check: Production is down → Fix first, add tests after.
+- Action: Implementing fix immediately; will add full test suite (happy path, exhausted retries, non-retryable errors) once service is stable.
+```
+Writes fix, then returns to TDD cycle: writes `test_retry.py` covering all edge cases, runs `pytest --cov`, confirms 87% coverage.

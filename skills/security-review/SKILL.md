@@ -335,7 +335,6 @@ catch (error) {
 - [ ] Detailed errors only in server logs
 - [ ] No stack traces exposed to users
 
-> For blockchain/Web3 security (wallet signature verification, transaction validation, Solana patterns) — see skill `security-review-web3`.
 
 ### 9. Dependency Security
 
@@ -430,7 +429,6 @@ Before ANY production deployment:
 - [ ] **Row Level Security**: Enabled in Supabase
 - [ ] **CORS**: Properly configured
 - [ ] **File Uploads**: Validated (size, type)
-- [ ] **Wallet Signatures**: Verified (see `security-review-web3`)
 
 > For authentication and authorization patterns (JWT, OAuth 2.0, RBAC, session management) — see skill `auth-patterns`.
 

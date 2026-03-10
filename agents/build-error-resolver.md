@@ -133,3 +133,18 @@ Fix: Added `async` keyword to `getOrder` function signature
 
 Build Status: SUCCESS | Errors Fixed: 3 | Files Modified: src/routes/orders.ts, src/types/order.ts, src/services/orderService.ts
 ```
+
+**Input:** `npm run build` (Next.js) fails with a module resolution error and a missing peer dependency after upgrading `next` from 14 to 15.
+
+**Output:**
+```
+[FIXED] next.config.js
+Error: Invalid next.config.js — `experimental.appDir` is no longer a valid option in Next.js 15 (App Router is stable)
+Fix: Removed `experimental: { appDir: true }` block — option deprecated and causes hard error in v15
+
+[FIXED] package.json
+Error: Peer dependency conflict — `next@15` requires `react@^19` but `react@18.3.1` is installed
+Fix: Ran `npm install react@19 react-dom@19` to satisfy peer requirement; package-lock.json updated
+
+Build Status: SUCCESS | Errors Fixed: 2 | Files Modified: next.config.js, package.json, package-lock.json
+```

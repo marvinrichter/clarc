@@ -100,3 +100,28 @@ When invoked:
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified R files after adding a reproducible survival analysis pipeline using `survival` and `ggsurvfit` packages.
+
+**Output:**
+```
+## R Review
+
+### CRITICAL
+- [R/model.R:38] Hardcoded secret: `api_key <- "sk-prod-..."` passed to external validation API — Fix: use `Sys.getenv("VALIDATION_API_KEY")` and assert non-empty at startup
+
+### HIGH
+- [R/pipeline.R:14] `T` used as logical literal: `na.rm = T` — Fix: `na.rm = TRUE`
+- [R/pipeline.R:27] `1:nrow(patient_data)` in for loop — Fix: `seq_len(nrow(patient_data))` to handle empty cohorts safely
+- [renv.lock] Missing update — `ggsurvfit` added to DESCRIPTION without `renv::snapshot()`
+
+### MEDIUM
+- [R/model.R:52] `survfit(Surv(time, status) ~ group, data = df)` — `status` column may contain NA; add `na.rm = TRUE` or filter NAs explicitly before fitting
+- [R/pipeline.R:61] `<<-` used for intermediate results: `results <<- bind_rows(results, row)` — Fix: accumulate with `purrr::map` and return the value; avoid global assignment
+
+### LOW
+- [R/model.R:4] `library(survival)` inside function body — move to top of file or declare in DESCRIPTION Imports
+
+### Summary
+1 critical, 3 high, 2 medium, 1 low. Block merge until CRITICAL and HIGH are resolved.
+```

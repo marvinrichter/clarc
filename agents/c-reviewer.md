@@ -97,3 +97,23 @@ When invoked:
 ### Summary
 2 critical, 1 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 1 modified `.c` file — a new HTTP request parser that reads client-supplied headers into a fixed buffer.
+
+**Output:**
+```
+## C Review
+
+### CRITICAL
+- [http_parser.c:52] Format string attack: `fprintf(stderr, header_value)` passes user-controlled `header_value` as format string — Fix: replace with `fprintf(stderr, "%s", header_value)`
+- [http_parser.c:71] Buffer overflow: `strcpy(req->host, header_value)` with no size bound — Fix: replace with `strncpy(req->host, header_value, sizeof(req->host) - 1); req->host[sizeof(req->host) - 1] = '\0';`
+
+### HIGH
+- [http_parser.c:88] `malloc` return assigned to `req->headers` without NULL check — Fix: add `if (!req->headers) { return HTTP_ERR_NOMEM; }` immediately after allocation
+
+### LOW
+- [http_parser.c:10] Internal function `parse_field` not declared `static` — Fix: add `static` to prevent symbol leaking into linkage
+
+### Summary
+2 critical, 1 high, 1 low. Block merge until CRITICAL and HIGH are resolved.
+```

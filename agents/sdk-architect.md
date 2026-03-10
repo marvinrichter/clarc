@@ -313,3 +313,15 @@ jobs:
 - **Docs:** Mintlify (external developers, B2B audience warrants investment)
 
 **Phase 1 (Week 1):** OpenAPI spec lint + Speakeasy config + error hierarchy reviewed by team.
+
+**Input:** User asks to design an SDK for an internal IoT telemetry API (gRPC, 12 RPCs) consumed only by internal Python data-pipeline teams.
+
+**Output:** Structured SDK architecture document. Example:
+- **Generation strategy:** Manual — 1 target language (Python), 12 RPCs, internal audience; full ergonomic control outweighs generation overhead
+- **Error hierarchy:** `SdkBaseError → TelemetryAPIError → { UnauthenticatedError(UNAUTHENTICATED), PermissionDeniedError(PERMISSION_DENIED), NotFoundError(NOT_FOUND), RateLimitError(RESOURCE_EXHAUSTED + retry_after) } → NetworkError → { TimeoutError }`
+- **Authentication:** Service account key read from `TELEMETRY_SERVICE_ACCOUNT_JSON` env var; SDK handles token refresh via `google-auth` under the hood; credentials never appear in logs or repr()
+- **Compatibility policy:** SemVer with 6-month deprecation window (internal; shorter than public policy); proto field removals require a MINOR bump + migration guide
+- **CI pipeline:** Tag-triggered; `pytest` + `grpc_tools` compile check → `twine upload` to internal PyPI (Artifact Registry); no multi-language matrix needed
+- **Docs:** Docusaurus (internal dev portal, free, already used by the platform team)
+
+**Phase 1 (Week 1):** Proto lint (`buf lint`) + manual SDK skeleton + error hierarchy agreed with data-pipeline team.

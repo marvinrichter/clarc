@@ -113,3 +113,23 @@ For detailed index patterns, schema design examples, connection management, conc
 ### Summary
 2 critical, 2 high. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** A new Prisma schema migration adding a `notifications` table with a soft-delete pattern and a query fetching unread notifications for a user.
+
+**Output:**
+```
+## Database Review
+
+### CRITICAL
+- [migrations/012_notifications.sql:22] Missing RLS: `notifications` table has no Row Level Security policy — users can read other users' notifications — Fix: `ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;` + policy `USING ((SELECT auth.uid()) = user_id)`
+
+### HIGH
+- [migrations/012_notifications.sql:9] Foreign key `user_id` on `notifications` has no index — Fix: `CREATE INDEX notifications_user_id_idx ON notifications(user_id);`
+- [NotificationRepository.ts:38] Soft-delete filter `WHERE deleted_at IS NULL` on a growing table — Fix: add partial index `CREATE INDEX notifications_active_idx ON notifications(user_id) WHERE deleted_at IS NULL;`
+
+### MEDIUM
+- [NotificationRepository.ts:51] OFFSET pagination: `OFFSET ${page * limit}` on notifications — Fix: switch to cursor pagination `WHERE id > $lastId ORDER BY id LIMIT $limit`
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

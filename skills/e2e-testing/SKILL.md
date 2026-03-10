@@ -388,30 +388,28 @@ test('dashboard loads', async ({ page }) => {
 
 **Why:** Tolerated flakiness erodes trust in the entire test suite — teams stop treating failures as signals; quarantine makes flakiness visible and actionable.
 
-> For wallet connection testing and blockchain E2E patterns (MetaMask mocking, async confirmations) — see skill `e2e-testing-web3`.
-
 ## Financial / Critical Flow Testing
 
 ```typescript
-test('trade execution', async ({ page }) => {
+test('checkout flow', async ({ page }) => {
   // Skip on production — real money
   test.skip(process.env.NODE_ENV === 'production', 'Skip on production')
 
-  await page.goto('/markets/test-market')
-  await page.locator('[data-testid="position-yes"]').click()
-  await page.locator('[data-testid="trade-amount"]').fill('1.0')
+  await page.goto('/checkout')
+  await page.locator('[data-testid="product-item"]').first().click()
+  await page.locator('[data-testid="quantity"]').fill('1')
 
-  // Verify preview
-  const preview = page.locator('[data-testid="trade-preview"]')
-  await expect(preview).toContainText('1.0')
+  // Verify order summary
+  const summary = page.locator('[data-testid="order-summary"]')
+  await expect(summary).toContainText('Total')
 
-  // Confirm and wait for blockchain
-  await page.locator('[data-testid="confirm-trade"]').click()
+  // Confirm and wait for order API
+  await page.locator('[data-testid="confirm-order"]').click()
   await page.waitForResponse(
-    resp => resp.url().includes('/api/trade') && resp.status() === 200,
+    resp => resp.url().includes('/api/orders') && resp.status() === 200,
     { timeout: 30000 }
   )
 
-  await expect(page.locator('[data-testid="trade-success"]')).toBeVisible()
+  await expect(page.locator('[data-testid="order-success"]')).toBeVisible()
 })
 ```

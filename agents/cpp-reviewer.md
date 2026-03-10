@@ -121,3 +121,24 @@ For C++ patterns, RAII, and code examples, see skills: `cpp-patterns`, `cpp-patt
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.cpp`/`.hpp` files after adding a concurrent worker pool using `std::thread`.
+
+**Output:**
+```
+## Review: src/WorkerPool.cpp
+
+### CRITICAL
+- [WorkerPool.cpp:31] Data race: `_taskQueue` accessed from worker threads and caller thread without mutex — Fix: guard all accesses with `std::lock_guard<std::mutex>`
+- [WorkerPool.hpp:18] Unsafe string function: `strcpy(buf, task.name.c_str())` into fixed-size buffer — Fix: use `std::string` directly or `snprintf(buf, sizeof(buf), "%s", task.name.c_str())`
+
+### HIGH
+- [WorkerPool.cpp:55] Deadlock risk: `_queueMutex` acquired then `_resultMutex` acquired inside — caller thread acquires in reverse order at line 89 — Fix: establish consistent lock-acquisition order across all call sites
+- [WorkerPool.hpp:12] Rule of Five violation: destructor joins threads but no copy/move constructor defined — Fix: `= delete` copy and move, or implement all five
+
+### MEDIUM
+- [WorkerPool.cpp:70] `push_back(Task(...))` creates a temporary — Fix: use `emplace_back(...)` to construct in-place
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

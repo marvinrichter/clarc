@@ -130,3 +130,31 @@ Fix: Use markets.first ?? Market.placeholder or add guard
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.swift` files after adding a real-time chat feature using async/await and a WebSocket repository.
+
+**Output:**
+```
+[CRITICAL] Missing Sendable conformance on type crossing actor boundary
+File: Sources/Features/Chat/ChatMessage.swift:12
+Issue: ChatMessage struct passed to @MainActor-isolated ViewModel without Sendable conformance — data race under Swift 6 strict concurrency
+Fix: Add Sendable conformance (struct is value type, all stored properties are value types — add explicit conformance)
+
+[HIGH] Business logic in View body
+File: Sources/Features/Chat/ChatView.swift:58
+Issue: if message.text.count > 500 { showTruncationBadge = true } in body computed property — domain rule belongs in domain function
+Fix: Add isTruncated: Bool computed property to ChatMessage domain struct
+
+[HIGH] Unstructured concurrency where structured would work
+File: Sources/Features/Chat/ChatViewModel.swift:34
+Issue: Task { await self.loadHistory() } in init — not cancellable, not tied to view lifecycle
+Fix: Remove from init; trigger via .task {} modifier in ChatView, which cancels automatically on disappear
+
+[MEDIUM] print() in production code
+File: Sources/Features/Chat/WebSocketRepository.swift:71
+Issue: print("WebSocket error: \(error)") — not observable in production logging
+Fix: Use Logger(subsystem: "com.app.chat", category: "websocket").error("\(error)")
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

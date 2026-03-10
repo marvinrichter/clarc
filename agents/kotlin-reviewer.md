@@ -106,3 +106,28 @@ Then:
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.kt` files after adding a Ktor-based user profile endpoint with Flow-based streaming.
+
+**Output:**
+```
+## Review: UserProfileRoute.kt, UserProfileService.kt
+
+### Null Safety
+UserProfileRoute.kt uses `!!` on `call.principal<UserPrincipal>()` at line 18 without a prior null check. If the auth plugin is misconfigured or the principal is absent, this crashes the server. Fix: use `?: return call.respond(HttpStatusCode.Unauthorized)` instead.
+
+### Immutability
+UserProfileService.kt declares `var cachedProfile: UserProfile?` as a class property at line 9. This is mutable shared state with no synchronization. Fix: declare `val` and use `StateFlow` or pass the profile through the suspend call chain.
+
+### Coroutine Correctness
+UserProfileService.kt catches `Exception` in the Flow collector at line 44 without re-throwing `CancellationException`. This breaks structured concurrency when the Ktor job is cancelled during a request. Fix: add `if (e is CancellationException) throw e` before logging.
+
+### Idiomatic Kotlin
+UserProfileRoute.kt uses a plain `if/else` chain to map HTTP status codes instead of a `when` expression. Fix: replace with `when (result) { is Success -> ... is NotFound -> ... }` using a sealed class.
+
+## Top Issues (by severity)
+
+1. `!!` on principal without null guard [UserProfileRoute.kt:18] — CRITICAL — Fix: use `?: return call.respond(Unauthorized)`
+2. `CancellationException` swallowed in Flow collector [UserProfileService.kt:44] — CRITICAL — Fix: re-throw before logging
+3. Mutable class property `var cachedProfile` [UserProfileService.kt:9] — HIGH — Fix: replace with `StateFlow`
+```

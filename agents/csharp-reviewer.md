@@ -98,3 +98,24 @@ When invoked:
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.cs` files after migrating an order processing background service from `Task.Run` to a hosted `IHostedService`.
+
+**Output:**
+```
+## C# Review
+
+### CRITICAL
+- [src/Workers/OrderProcessor.cs:19] async void on non-event method `ProcessBatchAsync` — Fix: change to `async Task` and await in the call site
+- [src/Workers/OrderProcessor.cs:44] `.Result` on async call inside `ExecuteAsync`: `_repository.GetPendingAsync().Result` — deadlock risk in hosted service — Fix: use `await _repository.GetPendingAsync(ct)`
+
+### HIGH
+- [src/Workers/OrderProcessor.cs:31] CancellationToken accepted but not forwarded to `_paymentClient.ChargeAsync(order)` — Fix: pass `ct` to all downstream async calls
+- [src/Domain/Order.cs:14] Public setter on `Status` — business state machine is unenforceable externally — Fix: private setter + `Order.Transition(OrderStatus next)` method with guard logic
+
+### MEDIUM
+- [src/Workers/OrderProcessor.cs:58] Missing structured logging: `_logger.LogInformation($"Processing order {orderId}")` — Fix: use `_logger.LogInformation("Processing order {OrderId}", orderId)`
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

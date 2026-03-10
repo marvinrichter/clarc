@@ -157,3 +157,26 @@ For testing that patterns work under fault injection, see skill: `chaos-engineer
 - Stripe webhook handler has idempotency key check (payment.webhook.ts:22)
 - Health check endpoint is lightweight, does not call Stripe (health.controller.ts:8)
 ```
+
+**Input:** 2 modified Go files after integrating an inventory microservice call into the order service's hot request path.
+
+**Output:**
+```
+## Resilience Review Report
+
+### CRITICAL Issues
+1. **[order_handler.go:38]** http.Get() uses default http.Client with no timeout
+   - Risk: If inventory service hangs, all order goroutines block indefinitely — server runs out of file descriptors
+   - Fix: Use `&http.Client{Timeout: 3 * time.Second}` and inject as dependency
+
+### HIGH Issues
+1. **[inventory_client.go:22]** Retry on all errors including 404 and 400
+   - Risk: Permanent client errors (item not found) trigger full retry loop, amplifying load
+   - Fix: Retry only on 429 and 5xx; return immediately on 4xx with typed error
+2. **[order_handler.go:61]** No circuit breaker on inventory service (~500 req/s expected)
+   - Fix: Wrap with `gobreaker.CircuitBreaker` — open after 10 consecutive failures
+
+### Positive Patterns Observed
+- Connection pool size explicitly set on DB client (db.go:14)
+- Readiness probe skips inventory call, checks only local DB (health.go:9)
+```

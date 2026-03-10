@@ -128,3 +128,23 @@ Review with the mindset: "Would this pass code review at a top Elixir/Phoenix sh
 ### Summary
 2 critical, 1 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.ex` files after adding a LiveView dashboard with a real-time metrics stream.
+
+**Output:**
+```
+## Review: lib/my_app_web/live/metrics_live.ex
+
+### CRITICAL
+- [metrics_live.ex:19] Atom exhaustion: `String.to_atom(params["metric_type"])` — Fix: use `String.to_existing_atom/1` with rescue, or a whitelist map
+
+### HIGH
+- [metrics_live.ex:44] LiveView assign explosion: assigning full `metrics` list on every tick — Fix: use `stream(socket, :metrics, new_entries)` for large, updatable lists
+- [metrics_live.ex:61] Blocking handle_info: heavy aggregation in `handle_info(:tick, socket)` blocks the LiveView process — Fix: offload with `send(self(), :compute)` and return immediately
+
+### MEDIUM
+- [metrics_live.ex:8] Missing @doc on public `mount/3` — add documentation describing required assigns
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

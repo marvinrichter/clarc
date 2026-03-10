@@ -202,6 +202,30 @@ Save full results to `docs/system-review/prompt-quality-<date>.json`.
 }
 ```
 
+**Input:** `/prompt-quality --all` — evaluate all agents and commands, produce a ranked system report.
+
+**Output:**
+```
+## Prompt Quality Ranking (all agents + commands)
+
+| Rank | File | Score | Critical Issues |
+|------|------|-------|----------------|
+| 1 | commands/idea.md | 4.8 | HIGH: no output format defined, HIGH: 0 examples |
+| 2 | agents/feedback-analyst.md | 5.5 | HIGH: completeness gaps (empty input unhandled), MEDIUM: ambiguity (7/100 lines) |
+| 3 | commands/explore.md | 6.1 | MEDIUM: output definition loosely described, LOW: 1 example only |
+| ... | ... | ... | ... |
+| 47 | agents/security-reviewer.md | 9.1 | LOW: minor phrasing passiveness |
+
+**System Average:** 7.4 / 10
+**Files below 7.0:** 8
+
+Full JSON saved to docs/system-review/prompt-quality-2026-03-10.json
+Top 3 highest-priority improvements:
+1. commands/idea.md — add output format + at least 1 example (score +2.1 projected)
+2. agents/feedback-analyst.md — add empty-input fallback + reduce ambiguous adjectives
+3. commands/explore.md — tighten output schema with field names and example
+```
+
 ## Not this agent — use `prompt-reviewer` instead
 
 If you have a **specific system prompt or template** and want in-depth review of its clarity, injection risks, and output consistency — use `prompt-reviewer`. This agent performs a **system-wide audit** across all agents and commands and produces a ranked score report.

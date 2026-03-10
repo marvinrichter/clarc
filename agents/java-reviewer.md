@@ -134,3 +134,24 @@ For detailed Java patterns and code examples, see skills: `ddd-java`, `hexagonal
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 4 modified `.java` files after adding a product search feature using Spring Data JPA in a DDD hexagonal project.
+
+**Output:**
+```
+## Review: ProductSearchController.java, ProductSearchUseCase.java, ProductJpaRepository.java, ProductEntity.java
+
+### CRITICAL
+- [ProductSearchController.java:22] Missing @Valid: @RequestBody ProductSearchRequest is not validated — Fix: add @Valid and annotate ProductSearchRequest fields with @NotBlank, @Size, etc.
+
+### HIGH
+- [ProductJpaRepository.java:34] N+1 queries: findByCategory() fetches products then accesses product.getTags() in a loop — Fix: add @EntityGraph(attributePaths = "tags") on the repository method
+- [ProductSearchUseCase.java:19] Use case leaks JPA entity: returns ProductEntity directly — Fix: map to ProductDto before returning from the use case
+- [ProductSearchController.java:41] Non-RFC 7807 error: returns {"error":"not found"} — Fix: return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, message)
+
+### MEDIUM
+- [ProductSearchUseCase.java:52] Missing pagination: findByCategory returns unbounded List<ProductEntity> — Fix: accept a Pageable parameter and return Page<ProductDto>
+
+### Summary
+1 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

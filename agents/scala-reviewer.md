@@ -108,3 +108,31 @@ Fix: Refactor to for { order <- ...; _ <- ...; result <- ... } yield result
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.scala` files after adding a user notification feature using ZIO and Quill for database access.
+
+**Output:**
+```
+[CRITICAL] SQL string interpolation
+File: src/main/scala/repo/NotificationRepo.scala:31
+Issue: s"INSERT INTO notifications (user_id, message) VALUES ('${userId}', '${msg}')" — SQL injection risk
+Fix: Use Quill quoted query: ctx.run(query[Notification].insert(...))
+
+[HIGH] runBlocking in service layer
+File: src/main/scala/service/NotificationService.scala:55
+Issue: Runtime.default.unsafeRun(sendNotification(user)) inside a ZIO service method — blocks a thread and breaks ZIO fiber scheduling
+Fix: Return ZIO[Any, NotificationError, Unit] and let the entry point call unsafeRun once
+
+[HIGH] var in companion object
+File: src/main/scala/service/NotificationService.scala:12
+Issue: var retryCount: Int = 0 in object NotificationService — shared mutable state, not thread-safe under ZIO concurrency
+Fix: Use Ref[Int] for ZIO-safe mutable state: ZIO.serviceWithZIO[Ref[Int]](_.update(_ + 1))
+
+[MEDIUM] throw for business error
+File: src/main/scala/service/NotificationService.scala:38
+Issue: throw new NotificationException("user not found") — disrupts ZIO effect chain
+Fix: ZIO.fail(NotificationError.UserNotFound(userId))
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

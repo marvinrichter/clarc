@@ -137,3 +137,25 @@ Review with the mindset: "Would this code pass review at a top Python shop or op
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.py` files after adding a background Celery task that processes uploaded CSV files in a Django project.
+
+**Output:**
+```
+## Review: tasks/csv_processor.py, views/upload.py
+
+### CRITICAL
+- [tasks/csv_processor.py:19] Command injection: `os.system(f"csvlint {filepath}")` with user-supplied filename — Fix: use `subprocess.run(["csvlint", filepath], check=True)` with list args; reject paths containing `..` or shell metacharacters
+- [tasks/csv_processor.py:41] YAML unsafe load: `yaml.load(header_row)` — Fix: `yaml.safe_load(header_row)`
+
+### HIGH
+- [views/upload.py:28] Missing type hint on public function `process_upload(request)` — Fix: `def process_upload(request: HttpRequest) -> JsonResponse:`
+- [tasks/csv_processor.py:67] Mutable default argument: `def parse_rows(rows, errors=[])` — Fix: `def parse_rows(rows: list, errors: list[str] | None = None) -> list:`
+- [tasks/csv_processor.py:55] N+1 queries: `Product.objects.get(sku=row["sku"])` inside loop over 10k rows — Fix: batch with `Product.objects.filter(sku__in=skus)` before loop
+
+### MEDIUM
+- [tasks/csv_processor.py:12] `print(f"Processing {filepath}")` — Fix: replace with `logger.info("Processing file", extra={"path": filepath})`
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

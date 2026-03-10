@@ -122,6 +122,36 @@ Fix: Choose one and remove the other. If context-dependent, add a rule: "Be brie
 Verdict: BLOCK — fix CRITICAL prompt injection before deploying.
 ```
 
+**Input:** A RAG pipeline system prompt that instructs the model to answer only from retrieved context, but includes no fallback for when retrieval returns empty results.
+
+**Output:**
+```
+[HIGH] Missing edge case handling — empty retrieval
+Prompt location: constraint section, line 19
+Issue: "Answer only using the provided context" — but there is no instruction for what to output when context is empty or irrelevant. The model will hallucinate or produce an empty response inconsistently.
+Fix: Add: "If no relevant context is retrieved, respond with exactly: 'I don't have enough information to answer this question. Please rephrase or contact support.' Do not invent an answer."
+
+[MEDIUM] Unbounded output
+Prompt location: line 7
+Issue: No length constraint on answers — a complex query could produce a 2,000-token response when a 3-sentence answer is expected.
+Fix: Add: "Keep answers under 150 words unless the user explicitly asks for a detailed explanation."
+
+[LOW] Redundant preamble
+Prompt location: lines 1–3
+Issue: "You are a helpful AI assistant that assists users by answering their questions using..." — 20 words before the role is defined. Cuts context budget.
+Fix: Replace with: "You answer user questions strictly from the retrieved context below."
+
+## Review Summary
+| Severity | Count | Status |
+|----------|-------|--------|
+| CRITICAL | 0     | pass   |
+| HIGH     | 1     | warn   |
+| MEDIUM   | 1     | info   |
+| LOW      | 1     | note   |
+
+Verdict: WARNING — resolve the HIGH empty-retrieval gap before deploying to production.
+```
+
 ## Not this agent — use `prompt-quality-scorer` instead
 
 If you want to **audit all clarc agents and commands** for prompt-engineering quality with scores and a ranked report — use `prompt-quality-scorer`. This agent reviews a **single prompt or template** in depth; the other scores the entire system.

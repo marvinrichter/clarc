@@ -157,3 +157,15 @@ Produce:
 Failure modes: `security-reviewer` timeout → fail fast (block merge); `typescript-reviewer` timeout → retry once → partial results; `go-reviewer` fails → report error, do not block.
 
 **Cost estimate:** ~15K tokens/run at Sonnet pricing ≈ $0.045/PR review.
+
+**Input:** User wants to automate weekly competitive intelligence: scrape competitor changelogs and release notes, summarize changes, compare against their own roadmap, and post a Slack digest.
+
+**Output:** Multi-agent architecture document for a scheduled research pipeline. Example:
+- **Pattern:** Sequential Pipeline (scrape → summarize → compare → notify); each phase feeds the next
+- **Agents:** `web-scraper` (Haiku, WebSearch, 30s, idempotent), `summarizer` (Haiku, 20s, idempotent), `competitive-analyst` (Sonnet, Read/WebSearch, 120s), `slack-notifier` (Haiku, 15s, idempotent)
+- **Orchestrator pseudocode:** Load competitor URLs → fan-out scrape (parallel per URL) → merge raw notes → summarize per competitor → comparative analysis vs. roadmap → format digest → post to Slack #competitive channel
+- **State management:** Redis with 7-day TTL keyed by `competitor:date` — prevents duplicate Slack posts on retry; scrape results cached to avoid re-fetching on summarizer failure
+
+Failure modes: `web-scraper` 404 → log and skip that competitor (partial digest); `competitive-analyst` timeout → retry once with condensed context; `slack-notifier` fails → write digest to fallback file, alert on-call.
+
+**Cost estimate:** ~8K tokens/run at Haiku + Sonnet pricing ≈ $0.012/weekly run across 5 competitors.

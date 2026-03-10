@@ -126,14 +126,18 @@ process.stdin.on('end', () => {
     const isWrite = toolName === 'Write';
     const isComponent = COMPONENT_DIRS.some(d => filePath.startsWith(d));
 
-    // 1. Security scan nudge (with cooldown, same mechanism as code-review-nudge)
-    if (!isDisabled(cfg, 'security-scan-nudge') && isSource && SECURITY_KEYWORDS.test(filePath)) {
-      const cooldownMinutes = cfg.code_review_cooldown_minutes ?? 5;
-      if (!isCoolingDown('security-scan-nudge', cooldownMinutes)) {
-        console.error('[SECURITY] File touches security-sensitive area.');
-        console.error('[SECURITY] → Consider running the security-reviewer agent.');
-        console.error('[SECURITY]   Say: "review this for security issues" or use the Agent tool with security-reviewer.');
-        setCooldown('security-scan-nudge');
+    // 1. Security scan nudge — trigger on *content*, not filename, to avoid false positives
+    //    Checks the actual text being written (new_string for Edit, content for Write).
+    if (!isDisabled(cfg, 'security-scan-nudge') && isSource) {
+      const writtenContent = input.tool_input?.new_string || input.tool_input?.content || '';
+      if (SECURITY_KEYWORDS.test(writtenContent)) {
+        const cooldownMinutes = cfg.security_scan_cooldown_minutes ?? cfg.code_review_cooldown_minutes ?? 30;
+        if (!isCoolingDown('security-scan-nudge', cooldownMinutes)) {
+          console.error('[SECURITY] Security-sensitive code detected in edit.');
+          console.error('[SECURITY] → Consider running the security-reviewer agent.');
+          console.error('[SECURITY]   Say: "review this for security issues" or use the Agent tool with security-reviewer.');
+          setCooldown('security-scan-nudge');
+        }
       }
     }
 

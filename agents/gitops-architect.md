@@ -392,3 +392,13 @@ Produce a GitOps Architecture Document with:
 - **Recommendation:** Option A (ArgoCD) because multi-cluster visibility and team-friendly UI outweigh overhead cost.
 
 Repository structure: separate config-repo with `clusters/dev/`, `clusters/staging/`, `clusters/prod-eu/`, `clusters/prod-us/` overlays. Secrets via ESO + AWS Secrets Manager. Progressive delivery via Argo Rollouts canary (20% → 50% → 100%) with Prometheus success-rate analysis. Migration: Week 1 (ArgoCD install + config-repo bootstrap) → Week 2 (first non-critical app) → Week 3 (Rollouts) → Week 4 (remove direct `kubectl` access from CI).
+
+**Input:** Single-developer side project on GKE with one cluster, two namespaces (dev, prod), and secrets currently hardcoded in Kubernetes manifests.
+
+**Output:**
+- **Repo structure:** Mono-repo (1 service, 1 developer — separate config-repo adds overhead with no benefit)
+- **Tool selection:** Flux (no UI needed, pure Kubernetes-native, lower resource overhead for small cluster)
+- **Secrets:** Sealed Secrets via `kubeseal` — simplest setup, zero external dependencies, secrets committed safely to Git
+- **Environment strategy:** Kustomize overlays (`k8s/overlays/dev/`, `k8s/overlays/prod/`) with image tag updated by CI
+- **Progressive delivery:** Skip Argo Rollouts for now — use `RollingUpdate` with `maxUnavailable: 0`; revisit when traffic exceeds 50 req/s
+- Migration: Day 1 (Flux bootstrap + move manifests to repo) → Day 2 (replace hardcoded secrets with SealedSecrets) → Day 3 (validate auto-sync in dev, then prod)

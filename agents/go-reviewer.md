@@ -112,3 +112,23 @@ For detailed Go code examples and anti-patterns, see `skill: go-patterns`.
 ### Summary
 2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.go` files after adding a gRPC streaming endpoint for order events.
+
+**Output:**
+```
+## Review: internal/handler/order_stream_handler.go, internal/service/order_service.go
+
+### CRITICAL
+- [order_stream_handler.go:19] Missing error wrapping: `return err` at line 19 loses context — Fix: `return fmt.Errorf("stream order events: %w", err)`
+
+### HIGH
+- [order_stream_handler.go:41] Goroutine leak: `go watchEvents(ctx)` launched without waiting for ctx cancellation — Fix: select on ctx.Done() inside watchEvents and return when cancelled
+- [order_stream_handler.go:55] Plain-text HTTP error on gRPC abort: uses `status.Error(codes.Internal, "error")` without structured detail — Fix: attach `status.WithDetails` with a `ProblemDetail` proto message for RFC 7807 parity
+
+### MEDIUM
+- [order_service.go:72] Non-table-driven test `TestBuildOrderFilter` uses 5 separate `if` assertions — Fix: convert to `[]struct{ input, want }` table test
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

@@ -119,3 +119,24 @@ For Rust patterns, async architecture, and code examples, see skills: `rust-patt
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.rs` files after implementing a background job queue using Tokio and a PostgreSQL-backed worker.
+
+**Output:**
+```
+## Review: src/worker/job_processor.rs, src/repo/job_repo.rs
+
+### CRITICAL
+- [job_processor.rs:51] unwrap() in library code: conn.query_one(&stmt, &[&job_id]).unwrap() — Fix: propagate with `?` and map to JobRepoError
+- [job_processor.rs:29] Blocking in async: std::fs::read_to_string inside async fn — Fix: use tokio::fs::read_to_string(...).await
+
+### HIGH
+- [job_processor.rs:44] Spawning without handle: tokio::spawn(process_job(job)) with result discarded — Fix: collect JoinHandle and propagate panics via handle.await
+- [job_repo.rs:67] String as error type: Box<dyn std::error::Error> returned from public repo trait — Fix: define JobRepoError with #[derive(thiserror::Error)]
+
+### MEDIUM
+- [job_repo.rs:88] Vec::new() + push in loop: collecting job IDs without capacity hint — Fix: Vec::with_capacity(batch_size) before the loop
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

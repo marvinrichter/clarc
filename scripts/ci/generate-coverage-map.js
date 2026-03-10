@@ -66,7 +66,7 @@ const SCENARIOS = [
   { category: 'AI/LLM', name: 'LLM cost optimization', commands: [], agents: [], skills: ['cost-aware-llm-pipeline'] },
 
   // clarc System Review
-  { category: 'Self-Review', name: 'Agent quality review', commands: ['agent-review'], agents: ['agent-quality-reviewer'], skills: [] },
+  { category: 'Self-Review', name: 'Agent quality review', commands: ['agent-audit'], agents: ['agent-quality-reviewer'], skills: [] },
   { category: 'Self-Review', name: 'Skill depth analysis', commands: ['skill-depth'], agents: ['skill-depth-analyzer'], skills: [] },
   { category: 'Self-Review', name: 'Command audit', commands: ['command-audit'], agents: ['command-auditor'], skills: [] },
   { category: 'Self-Review', name: 'Hook audit', commands: ['hook-audit'], agents: ['hook-auditor'], skills: [] },
