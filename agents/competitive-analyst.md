@@ -1,7 +1,7 @@
 ---
 name: competitive-analyst
 description: Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape.
-tools: ["WebSearch", "Read", "Write"]
+tools: ["WebSearch", "Read", "Write", "Glob"]
 model: opus
 ---
 

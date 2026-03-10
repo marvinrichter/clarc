@@ -1,111 +1,152 @@
-# clarc Agent Quality Review — 2026-03-10
+# clarc Agent Quality Review — 2026-03-10 (Round 2)
 
-**Overall Health Score: 7.72 / 10**
-Risk distribution: **0 HIGH · 4 MEDIUM · 57 GOOD**
+**Overall Health Score: 8.4 / 10**
+Risk distribution: **0 HIGH · 1 MEDIUM · 60 GOOD**
 Agents reviewed: 61
 
-## Summary Table (ascending by score)
+> Note: Round 1 (7.72/10, 4 MEDIUM) used description-only scoring. Round 2 read full instruction bodies — this is the authoritative report.
 
-| Agent | Score | Risk | Top Issue |
-|-------|-------|------|-----------|
-| planner | 6.50 | MEDIUM | Trigger collision with architect; no exit format |
-| architect | 6.55 | MEDIUM | Trigger collision with planner; no output format spec |
-| doc-updater | 6.60 | MEDIUM | `model: haiku` used for Sonnet-level write/edit tasks |
-| security-reviewer | 6.65 | MEDIUM | Write/Edit tools with no confirmation guardrail |
-| r-reviewer | 7.05 | GOOD | No examples; limited skill references |
-| tdd-guide | 7.20 | GOOD | No examples; exit criteria vague |
-| refactor-cleaner | 7.25 | GOOD | Safety gap on file deletion; no examples |
-| competitive-analyst | 7.30 | GOOD | Overlaps workflow-os-competitor-analyst |
-| workflow-os-competitor-analyst | 7.35 | GOOD | Overlaps competitive-analyst |
-| build-error-resolver | 7.45 | GOOD | No examples; safety gap on Bash execution |
-| go-build-resolver | 7.50 | GOOD | No examples; overlaps build-error-resolver for Go |
-| data-architect | 7.55 | GOOD | No examples; exit format partial |
-| modernization-planner | 7.60 | GOOD | No examples |
-| e2e-runner | 7.65 | GOOD | No examples |
-| database-reviewer | 7.65 | GOOD | Write/Edit with no confirmation; no examples |
-| resilience-reviewer | 7.70 | GOOD | No examples |
-| supply-chain-auditor | 7.70 | GOOD | No examples |
-| finops-advisor | 7.70 | GOOD | No examples |
-| platform-architect | 7.75 | GOOD | No examples |
-| mlops-architect | 7.75 | GOOD | No examples |
-| gitops-architect | 7.75 | GOOD | No examples |
-| frontend-architect | 7.75 | GOOD | No examples |
-| sdk-architect | 7.80 | GOOD | No examples |
-| docs-architect | 7.80 | GOOD | No examples |
-| orchestrator-designer | 7.85 | GOOD | No examples |
-| feedback-analyst | 7.90 | GOOD | No examples |
-| contract-reviewer | 7.90 | GOOD | No examples |
-| devsecops-reviewer | 7.90 | GOOD | Overlaps security-reviewer on OWASP |
-| flutter-reviewer | 7.95 | GOOD | No examples |
-| android-reviewer | 7.95 | GOOD | No examples |
-| design-critic | 7.95 | GOOD | No examples |
-| talk-coach | 7.95 | GOOD | No examples |
-| presentation-designer | 8.00 | GOOD | No examples |
-| prompt-reviewer | 8.00 | GOOD | No examples |
-| bash-reviewer | 8.00 | GOOD | No examples |
-| c-reviewer | 8.05 | GOOD | No examples |
-| csharp-reviewer | 8.05 | GOOD | No examples |
-| php-reviewer | 8.05 | GOOD | No examples |
-| scala-reviewer | 8.05 | GOOD | No examples |
-| kotlin-reviewer | 8.05 | GOOD | No examples |
-| swift-reviewer | 8.10 | GOOD | No examples |
-| rust-reviewer | 8.10 | GOOD | No examples |
-| go-reviewer | 8.10 | GOOD | No examples |
-| ruby-reviewer | 8.10 | GOOD | No examples |
-| python-reviewer | 8.10 | GOOD | No examples |
-| elixir-reviewer | 8.15 | GOOD | No examples |
-| cpp-reviewer | 8.15 | GOOD | No examples |
-| design-system-reviewer | 8.15 | GOOD | No examples |
-| solution-designer | 8.20 | GOOD | No inline examples |
-| performance-analyst | 8.20 | GOOD | Strong examples; no issues |
-| skill-depth-analyzer | 8.25 | GOOD | No complete example |
-| command-auditor | 8.25 | GOOD | No complete example |
-| hook-auditor | 8.25 | GOOD | No complete example |
-| prompt-quality-scorer | 8.25 | GOOD | No complete example |
-| agent-system-reviewer | 8.30 | GOOD | No examples |
-| orchestrator | 8.35 | GOOD | No worked example |
-| product-evaluator | 8.35 | GOOD | No complete evaluation example |
-| agent-quality-reviewer | 8.40 | GOOD | System benchmark |
-| java-reviewer | 8.40 | GOOD | System benchmark |
-| typescript-reviewer | 8.45 | GOOD | System benchmark |
-| code-reviewer | 8.45 | GOOD | System benchmark |
+---
 
-## Top 5 Weakest — Improvement Suggestions
+## Score Table (all 61 agents, alphabetical)
 
-**1. planner (6.50):** Differentiate from architect — description should read "Generates PRDs, task lists, and implementation timelines. Use when you need WHAT tasks to execute, not HOW to architect the system." Add exit format schema.
+Columns: Cl=Clarity, Mo=Model, To=Tools, Tr=Trigger, Ex=Exit, Xm=Examples, Ov=Overlap, Sf=Safety
 
-**2. architect (6.55):** Description should read "System design, component boundaries, ADRs, C4/arc42. Use when you need to decide HOW to structure the system." Add exit criteria: arc42 section + ADR output path.
+| Agent | Cl | Mo | To | Tr | Ex | Xm | Ov | Sf | Score | Status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| agent-quality-reviewer | 9 | 8 | 9 | 9 | 9 | 9 | 9 | 10 | **8.90** | GOOD |
+| agent-system-reviewer | 9 | 10 | 8 | 9 | 8 | 6 | 9 | 10 | **8.65** | GOOD |
+| android-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 8 | 10 | **8.20** | GOOD |
+| architect | 8 | 10 | 9 | 9 | 8 | 6 | 9 | 10 | **8.55** | GOOD |
+| bash-reviewer | 8 | 8 | 8 | 9 | 8 | 6 | 9 | 10 | **8.10** | GOOD |
+| build-error-resolver | 8 | 8 | 9 | 8 | 8 | 6 | 8 | 7 | **7.90** | GOOD |
+| c-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| code-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 8 | 10 | **8.20** | GOOD |
+| command-auditor | 8 | 8 | 9 | 8 | 9 | 7 | 9 | 10 | **8.30** | GOOD |
+| competitive-analyst | 8 | 10 | 7 | 8 | 8 | 7 | 8 | 9 | **8.10** | GOOD |
+| contract-reviewer | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 9 | **8.65** | GOOD |
+| cpp-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| csharp-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| data-architect | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| database-reviewer | 8 | 8 | 9 | 8 | 8 | 6 | 9 | 7 | **7.95** | GOOD |
+| design-critic | 9 | 8 | 8 | 8 | 9 | 4 | 9 | 10 | **8.10** | GOOD |
+| design-system-reviewer | 9 | 8 | 9 | 8 | 9 | 6 | 9 | 10 | **8.45** | GOOD |
+| devsecops-reviewer | 9 | 8 | 9 | 7 | 9 | 8 | 7 | 9 | **8.35** | GOOD |
+| doc-updater | 8 | 8 | 9 | 7 | 8 | 5 | 9 | 8 | **7.75** | GOOD |
+| docs-architect | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| e2e-runner | 8 | 8 | 9 | 8 | 8 | 6 | 9 | 8 | **8.00** | GOOD |
+| elixir-reviewer | 8 | 8 | 9 | 8 | 8 | 6 | 9 | 10 | **8.10** | GOOD |
+| feedback-analyst | 8 | 9 | 8 | 9 | 8 | 7 | 9 | 9 | **8.30** | GOOD |
+| finops-advisor | 9 | 8 | 9 | 8 | 9 | 7 | 9 | 10 | **8.55** | GOOD |
+| flutter-reviewer | 8 | 8 | 8 | 8 | 8 | 6 | 9 | 10 | **7.95** | GOOD |
+| frontend-architect | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 9 | **8.65** | GOOD |
+| gitops-architect | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| go-build-resolver | 8 | 8 | 9 | 9 | 8 | 6 | 8 | 7 | **8.05** | GOOD |
+| go-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 8 | 10 | **8.20** | GOOD |
+| hook-auditor | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| java-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| kotlin-reviewer | 8 | 8 | 7 | 9 | 8 | 6 | 7 | 10 | **7.85** | GOOD |
+| mlops-architect | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| modernization-planner | 9 | 10 | 9 | 9 | 9 | 8 | 9 | 9 | **9.05** | GOOD |
+| orchestrator | 9 | 10 | 9 | 9 | 9 | 7 | 9 | 10 | **9.00** | GOOD |
+| orchestrator-designer | 9 | 10 | 8 | 9 | 9 | 7 | 8 | 10 | **8.80** | GOOD |
+| performance-analyst | 9 | 8 | 9 | 9 | 10 | 9 | 9 | 10 | **9.00** | GOOD |
+| php-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| platform-architect | 9 | 10 | 9 | 9 | 9 | 8 | 9 | 10 | **9.10** | GOOD |
+| planner | 9 | 10 | 9 | 9 | 9 | 9 | 9 | 10 | **9.20** | GOOD |
+| presentation-designer | 9 | 8 | 8 | 8 | 9 | 7 | 7 | 9 | **8.25** | GOOD |
+| product-evaluator | 9 | 10 | 8 | 9 | 9 | 7 | 9 | 10 | **8.85** | GOOD |
+| prompt-quality-scorer | 8 | 8 | 9 | 8 | 9 | 6 | 7 | 10 | **8.10** | GOOD |
+| prompt-reviewer | 8 | 8 | 8 | 8 | 8 | 6 | 7 | 10 | **7.85** | GOOD |
+| python-reviewer | 8 | 8 | 9 | 8 | 8 | 6 | 9 | 10 | **8.10** | GOOD |
+| r-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| refactor-cleaner | 8 | 8 | 9 | 8 | 8 | 5 | 9 | 7 | **7.85** | GOOD |
+| resilience-reviewer | 9 | 8 | 9 | 8 | 9 | 7 | 9 | 10 | **8.55** | GOOD |
+| ruby-reviewer | 8 | 8 | 9 | 8 | 8 | 6 | 9 | 10 | **8.10** | GOOD |
+| rust-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| scala-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| sdk-architect | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| security-reviewer | 9 | 8 | 9 | 8 | 9 | 6 | 8 | 7 | **8.25** | GOOD |
+| skill-depth-analyzer | 9 | 8 | 9 | 9 | 9 | 7 | 9 | 10 | **8.70** | GOOD |
+| solution-designer | 9 | 10 | 9 | 9 | 9 | 8 | 9 | 10 | **9.10** | GOOD |
+| supply-chain-auditor | 9 | 8 | 9 | 9 | 9 | 7 | 8 | 10 | **8.65** | GOOD |
+| swift-reviewer | 8 | 8 | 9 | 9 | 8 | 6 | 9 | 10 | **8.25** | GOOD |
+| talk-coach | 8 | 8 | 8 | 7 | 9 | 5 | 6 | 10 | **7.65** | GOOD |
+| tdd-guide | 8 | 8 | 9 | 8 | 9 | 5 | 9 | 7 | **7.95** | GOOD |
+| typescript-reviewer | 8 | 8 | 9 | 8 | 8 | 7 | 8 | 10 | **8.15** | GOOD |
+| workflow-os-competitor-analyst | 8 | 8 | 7 | 7 | 8 | 6 | 6 | 9 | **7.45** | MEDIUM |
 
-**3. doc-updater (6.60):** One-line fix — change `model: haiku` → `model: sonnet`. Add write confirmation guardrail.
+---
 
-**4. security-reviewer (6.65):** Add guardrail: "Never auto-apply remediations — show diff first, confirm with user." Delineate scope from devsecops-reviewer.
+## System-Wide Dimension Averages
 
-**5. r-reviewer (7.05):** Add vectorization before/after example. Standardize output format to match typescript-reviewer.
+| Dimension | Avg Score | Notes |
+|-----------|-----------|-------|
+| Instruction Clarity | ~8.5 | Strong across all agents |
+| Model Appropriateness | ~8.7 | Accurate tier selection; Opus justified for 10 strategic agents |
+| Tool Coverage | ~8.8 | Well-calibrated; 2 exceptions (kotlin-reviewer missing Bash, competitive-analyst missing Glob) |
+| Trigger Precision | ~8.5 | Clear descriptions with 3 overlap exception pairs |
+| Exit Criteria | ~8.6 | Most agents have output format |
+| **Example Density** | **~6.5** | **System-wide weak point — 45/61 agents score ≤6** |
+| Overlap Detection | ~8.7 | Well-differentiated overall |
+| Safety Guardrails | ~9.1 | Read-only agents score 10; write-capable agents average 7.5 |
 
-## Top 5 Strongest — System Benchmarks
+---
 
-**1. code-reviewer (8.45):** 18-language routing table is unambiguous. Universal fallback checks. Agent tool delegation explicit.
+## Top 5 Weakest
 
-**2. typescript-reviewer (8.45):** Hexagonal violations named with exact import path conditions. RFC 7807 with `Content-Type: application/problem+json`. `uses_skills` declared.
+| Rank | Agent | Score | Key Issues |
+|------|-------|-------|------------|
+| 1 | workflow-os-competitor-analyst | 7.45 | Bash tool never used in instructions; trigger overlaps competitive-analyst; both produce feature matrices |
+| 2 | talk-coach | 7.65 | No worked example (outline → annotated feedback); trigger overlaps presentation-designer for "slide deck review" |
+| 3 | doc-updater | 7.75 | Broad trigger; no concrete codemap before/after example |
+| 4 | kotlin-reviewer | 7.85 | Missing Bash tool (cannot run `./gradlew ktlintCheck`); overlap ambiguity with android-reviewer for .kt files |
+| 5 | refactor-cleaner | 7.85 | No worked example (knip output → removed files); no explicit dry-run confirmation before deletions |
 
-**3. java-reviewer (8.40):** Spring Boot 4 `ProblemDetail` by class name. DDD violations enumerated with specific anti-patterns. JPA N+1 with `@EntityGraph` fix.
+---
 
-**4. agent-quality-reviewer (8.40):** JSON output schema with filled example values. 8-dimension rubric with score bands. Self-referentially well-designed.
+## Top 5 Strongest
 
-**5. orchestrator (8.35):** Pattern selection table deterministic. Conflict resolution references priority hierarchy. `### Conflicts Resolved` section in output format.
+| Rank | Agent | Score | Key Strengths |
+|------|-------|-------|---------------|
+| 1 | planner | 9.20 | Full Stripe subscription worked example with 5 phases; clarc component mapping step; Opus justified; exact plan format |
+| 2 | solution-designer | 9.10 | Complete ADR template with trade-off matrix; 2-4 option generation process; Opus justified |
+| 3 | platform-architect | 9.10 | Diagnose-first with org-size decision trees; make-vs-buy framework; 90-day roadmap output |
+| 4 | modernization-planner | 9.05 | Concrete git churn bash commands; Churn×Complexity hotspot methodology; phased migration patterns |
+| 5 | orchestrator / performance-analyst | 9.00 | 5-pattern selection table; Conflicts Resolved section; or: strong examples, tool-specific profiler instructions |
 
-## Systemic Findings
+---
 
-**P0 — Planner/Architect Routing Collision:** Both descriptions share "complex features" and "refactoring" keywords. Routing bug — both activate on identical trigger. Fix: differentiate descriptions (planner=task decomposition, architect=system design).
+## Action Items
 
-**P0 — Model Tier Error in doc-updater:** `model: haiku` for Sonnet-level write/edit tasks. One-line fix: change to `model: sonnet`.
+### HIGH (fix immediately)
+1. **kotlin-reviewer**: Add `Bash` to tools list — needed for `./gradlew ktlintCheck`
+2. **design-critic**: Add ≥2 worked examples — currently has zero despite clear output format
+3. **workflow-os-competitor-analyst**: Remove `Bash` from tools — never used; only WebSearch + Read referenced
+4. **competitive-analyst**: Add `Glob` to tools — instructions reference `agents/`, `commands/`, `skills/` directories but lacks Glob to traverse them
 
-**P1 — Safety Guardrail Gap (6 agents):** security-reviewer, doc-updater, database-reviewer, build-error-resolver, go-build-resolver, refactor-cleaner have Write/Edit/Bash tools with no confirmation guardrail. Add standard clause: "Show diff and confirm before applying destructive changes."
+### MEDIUM (next sprint)
+5. Add worked example to `talk-coach` — e.g., "Given this outline → annotated feedback per dimension"
+6. Add worked example to `doc-updater` — e.g., "Given this function signature → codemap entry generated"
+7. Add worked example to `refactor-cleaner` — e.g., "knip found 15 unused exports → removed 3 safely"
+8. Add explicit dry-run step to `refactor-cleaner` — show list before deleting, wait for confirmation
+9. Add "show diff before applying" guardrail to `security-reviewer`
+10. Tighten `talk-coach` trigger to distinguish from `presentation-designer`
+11. Tighten `devsecops-reviewer` trigger to emphasize "git diff of changed files" vs `security-reviewer`'s broader scope
+12. Tighten `workflow-os-competitor-analyst` trigger to "clarc vs AI coding tools" (not general product competitive research)
 
-**P1 — Universal Example Deficit (45/61 agents):** No `## Examples` section. Add to `docs/contributing/agent-format.md` as mandatory. Would raise health score from 7.72 → ~8.05.
+### LOW (backlog)
+13. Add overlap disambiguation note between `prompt-reviewer` and `prompt-quality-scorer`
+14. Mandate `## Examples` section in `agent-format.md` ✅ (done this session) — would raise system health 8.4 → ~8.7
 
-**P2 — Competitive Analysis Overlap:** competitive-analyst and workflow-os-competitor-analyst share methodology. Add explicit routing disambiguation or merge.
+---
 
-## Health Score
+## Systemic Observations
 
-Mean: **7.72 / 10** | HIGH: 0 | MEDIUM: 4 | GOOD: 57
+**Example Density Gap (45/61 agents score ≤6):** Adding a required `## Examples` section is the single highest-leverage improvement. The 16 agents with examples are the strongest performers.
+
+**Safety Guardrail Gap (6 agents):** Agents with Write/Edit/Bash lacking confirmation steps: security-reviewer, database-reviewer, build-error-resolver, go-build-resolver, refactor-cleaner, tdd-guide. Add "show diff / list changes before applying" clause.
+
+**Model Calibration is Accurate:** Opus used for 10 agents where strategic multi-step reasoning is essential (planner, architect, orchestrator, product-evaluator, solution-designer, competitive-analyst, feedback-analyst, modernization-planner, platform-architect, orchestrator-designer). No misallocations.
+
+**Overlap is Well-Managed:** 3 exception pairs need trigger precision improvements (not merges): competitive-analyst / workflow-os-competitor-analyst, talk-coach / presentation-designer, devsecops-reviewer / security-reviewer.
