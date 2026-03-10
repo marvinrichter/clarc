@@ -2,9 +2,7 @@
 
 ## Active
 
-| Roadmap | Goal |
-|---------|------|
-| [pre-launch-hardening](pre-launch-hardening.md) | Close all remaining P0/P1 issues: hook security, stale paths, agent examples, command naming, skill cleanup |
+_No active roadmaps — all P0/P1 issues resolved. v1.0 ready._
 
 ---
 
@@ -29,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (15)
+## Done (16)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [pre-launch-hardening](done/pre-launch-hardening.md) | Hook security, stale config paths, skill cleanup, agent examples (54×2nd example), command naming | #27 |
 | [skill-content-depth](done/skill-content-depth.md) | Anti-Patterns (27 skills), When-to expansion (127 skills), agent disambiguation (4 pairs) | #24–#26 |
 | [pre-launch-quality-sprints](done/pre-launch-quality-sprints.md) | 5 quality sprints (H1-H3, A1-A7, S1-S9, C1-C7, G1+G3) — system health 8.4→9.0 | #17–#23 |
 | [agent-skill-dependency-graph](done/agent-skill-dependency-graph.md) | `uses_skills` frontmatter, CI validator, reverse index `SKILL_AGENTS.md` | #5 |
