@@ -171,3 +171,7 @@ Top 3 competitive gaps:
 | Background agents | Devin | MEDIUM | HIGH | P2 |
 | File-pattern rule auto-activation | Cursor | MEDIUM | LOW | P0 |
 ```
+
+## Not this agent — use `competitive-analyst` instead
+
+If you need to research **competitors outside the AI engineering tool space** (e.g., SaaS products, marketplaces, developer tools in general) — use `competitive-analyst`. This agent is scoped to clarc vs. Cursor, Copilot, Windsurf, Aider, Devin, and Continue.dev only.

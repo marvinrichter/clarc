@@ -201,3 +201,7 @@ Save full results to `docs/system-review/prompt-quality-<date>.json`.
   "verdict": "GOOD — 2 issues to address"
 }
 ```
+
+## Not this agent — use `prompt-reviewer` instead
+
+If you have a **specific system prompt or template** and want in-depth review of its clarity, injection risks, and output consistency — use `prompt-reviewer`. This agent performs a **system-wide audit** across all agents and commands and produces a ranked score report.
