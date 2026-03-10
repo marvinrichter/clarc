@@ -43,7 +43,7 @@ clarc doctor — checking your installation
 ✅ ~/.claude/ exists
 ✅ Agents: 61 installed
 ✅ Skills: 228 installed
-✅ Commands: 152 installed
+✅ Commands: 160 installed
 ✅ Hooks: active (12 hooks)
 ✅ Symlinks: 59 healthy
 ⚠️  MEMORY.md: 193 lines (approaching 200-line limit — clean up soon)

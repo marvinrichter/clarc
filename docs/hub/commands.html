@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>152 Commands — clarc hub</title>
+  <title>160 Commands — clarc hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 <main>
   <div class="container">
     <div class="hero" style="padding-bottom:1rem">
-      <h1>152 Commands</h1>
+      <h1>160 Commands</h1>
       <p>Slash commands that activate skills and agents directly in Claude Code.</p>
       <div class="search-bar">
         <input id="search" type="search" placeholder="Search commands..." aria-label="Search commands">
@@ -33,7 +33,7 @@
     <div class="filter-tabs">
   <button class="filter-btn active" data-filter="all">All</button>
   <button class="filter-btn" data-filter="General">General <small>(68)</small></button>
-  <button class="filter-btn" data-filter="Code Review">Code Review <small>(31)</small></button>
+  <button class="filter-btn" data-filter="Code Review">Code Review <small>(39)</small></button>
   <button class="filter-btn" data-filter="clarc System">clarc System <small>(13)</small></button>
   <button class="filter-btn" data-filter="Testing">Testing <small>(7)</small></button>
   <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(6)</small></button>
@@ -172,6 +172,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/backstage-setup.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="bash-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/bash-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Bash/shell script review for safety, correctness, shellcheck compliance, and idiomatic style. Invokes the bash-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying shell scripts - Before committing CI/CD scripts or setup scripts - Reviewing scripts that run in production or CI environments</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/bash-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="brainstorm" data-category="General">
   <div class="card-header">
     <h3 class="card-name"><code>/brainstorm</code></h3>
@@ -214,6 +225,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/build-fix.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="c-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/c-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">C code review for memory safety, C11/C17 idioms, opaque pointer patterns, and error handling. Invokes the c-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying C code - Before committing C changes - Reviewing systems or embedded code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/c-review.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="cfp" data-category="General">
@@ -368,6 +390,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cpp-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="csharp-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/csharp-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">C# 12 / .NET 8 code review for nullable reference types, async/await, CQRS patterns, and security. Invokes the csharp-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying C# code - Before committing .NET changes - Reviewing pull requests with C# code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/csharp-review.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="cursor-setup" data-category="General">
@@ -656,6 +689,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/finops-audit.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="flutter-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/flutter-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Flutter/Dart code review for widget architecture, performance, null safety, and accessibility. Invokes the flutter-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying Flutter/Dart code - Before committing widget or state management changes - Reviewing pull requests with Flutter code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/flutter-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="frontend-arch-review" data-category="Code Review">
   <div class="card-header">
     <h3 class="card-name"><code>/frontend-arch-review</code></h3>
@@ -920,6 +964,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/java-review.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="kotlin-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/kotlin-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Kotlin code review for coroutines, null safety, sealed classes, and architecture patterns. Invokes the kotlin-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying Kotlin code - Before committing Kotlin changes (Android or backend) - Reviewing pull requests with Kotlin code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/kotlin-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="learn-eval" data-category="General">
   <div class="card-header">
     <h3 class="card-name"><code>/learn-eval</code></h3>
@@ -1085,6 +1140,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/overnight.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="php-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/php-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">PHP 8.4+ code review for strict types, security, Laravel/Symfony patterns, and PHPStan compliance. Invokes the php-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying PHP code - Before committing PHP changes - Reviewing pull requests with PHP code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/php-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="plan" data-category="Architecture">
   <div class="card-header">
     <h3 class="card-name"><code>/plan</code></h3>
@@ -1206,6 +1272,17 @@
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/quickstart.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
+<div class="card" data-name="r-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/r-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">R code review for tidyverse idioms, tidy evaluation, Shiny security, and renv lockfile management. Invokes the r-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying R code - Before committing data analysis scripts or Shiny apps - Reviewing R packages for CRAN submission</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/r-review.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
 <div class="card" data-name="refactor" data-category="General">
   <div class="card-header">
     <h3 class="card-name"><code>/refactor</code></h3>
@@ -1303,6 +1380,17 @@
   
   <div class="card-footer">
     <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sbom.md" target="_blank" class="btn-ghost">Source</a>
+  </div>
+</div>
+<div class="card" data-name="scala-review" data-category="Code Review">
+  <div class="card-header">
+    <h3 class="card-name"><code>/scala-review</code></h3>
+    <span class="badge">Code Review</span>
+  </div>
+  <p class="card-desc">Scala code review for functional idioms, Cats Effect/ZIO patterns, ADT correctness, and null safety. Invokes the scala-reviewer agent.</p>
+  <p class="card-when"><strong>When:</strong> - After writing or modifying Scala code - Before committing functional Scala changes - Reviewing Cats Effect or ZIO-based code</p>
+  <div class="card-footer">
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/scala-review.md" target="_blank" class="btn-ghost">Source</a>
   </div>
 </div>
 <div class="card" data-name="sdk-review" data-category="Code Review">

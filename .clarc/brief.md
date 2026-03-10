@@ -15,7 +15,7 @@ Published as `npx github:marvinrichter/clarc` and symlinked into `~/.claude/` on
 ## Key numbers (keep in sync with README.md)
 - Agents: 61
 - Skills: 228
-- Commands: 152
+- Commands: 160
 - Rule sets: 20+ (common + language-specific)
 
 ## Repository layout

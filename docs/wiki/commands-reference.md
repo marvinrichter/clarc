@@ -112,4 +112,4 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 ## Full List
 
 Run `/find-skill` in Claude Code to search all commands by topic.
-View all 152 commands in the `commands/` directory of the clarc repository.
+View all 160 commands in the `commands/` directory of the clarc repository.

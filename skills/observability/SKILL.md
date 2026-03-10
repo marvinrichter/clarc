@@ -1,6 +1,6 @@
 ---
 name: observability
-description: "Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, Go, and Java with code examples."
+description: "Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, and Go with code examples."
 ---
 
 # Observability Skill

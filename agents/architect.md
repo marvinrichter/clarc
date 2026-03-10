@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
+description: System design and architecture specialist. Use PROACTIVELY when users need HOW to structure the system — component boundaries, ADRs, C4/arc42 diagrams, scalability decisions. For task lists and implementation timelines (WHAT to build), use the planner agent instead.
 tools: ["Read", "Grep", "Glob"]
 model: opus
 uses_skills:
