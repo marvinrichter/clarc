@@ -577,4 +577,3 @@ const classification = await claude.messages.create({
 **Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
 
 ---
-

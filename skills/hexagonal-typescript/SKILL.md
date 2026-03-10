@@ -569,4 +569,3 @@ export function createMarket(name: string): Market {
 **Why:** Schema validation libraries belong in the inbound adapter layer; the domain owns business invariants through pure guard clauses, not library-specific schemas.
 
 ---
-
