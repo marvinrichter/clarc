@@ -521,58 +521,6 @@ Content-Type: application/problem+json
 
 ---
 
-### Generating the OpenAPI Spec from Code Annotations
-
-**Wrong:**
-```typescript
-// Spec is auto-generated from decorators at runtime — drifts silently
-@ApiOperation({ summary: 'Create user' })
-@Post('/users')
-async createUser(@Body() dto: CreateUserDto) { ... }
-```
-
-**Correct:**
-```yaml
-# api/v1/openapi.yaml — written first, before any implementation
-paths:
-  /users:
-    post:
-      summary: Create a user
-      operationId: createUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserRequest'
-      responses:
-        '201':
-          description: User created successfully.
-```
-
-**Why:** Annotation-driven spec generation inverts the contract-first principle — the spec becomes a trailing artifact that drifts from what clients actually depend on.
-
----
-
-### Putting Verbs in URLs
-
-**Wrong:**
-```
-POST /api/v1/cancelOrder/42
-GET  /api/v1/getUsers
-PUT  /api/v1/updateUser/7
-```
-
-**Correct:**
-```
-POST   /api/v1/orders/42/cancel
-GET    /api/v1/users
-PUT    /api/v1/users/7
-```
-
-**Why:** URLs identify resources (nouns); HTTP methods express actions (verbs) — mixing both makes APIs unpredictable and breaks REST semantics for caching and idempotency.
-
----
-
 ### Returning 500 for Validation Errors
 
 **Wrong:**
@@ -628,7 +576,6 @@ Sunset: Sat, 01 Jan 2027 00:00:00 GMT
 ## API Design Checklist
 
 Before shipping a new endpoint:
-
 - [ ] Resource URL follows naming conventions (plural, kebab-case, no verbs)
 - [ ] Correct HTTP method used (GET for reads, POST for creates, etc.)
 - [ ] Appropriate status codes returned (not 200 for everything)

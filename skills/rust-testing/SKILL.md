@@ -584,9 +584,7 @@ async fn find_by_id_returns_none(pool: PgPool) {
 ```
 
 **Why:** `#[sqlx::test]` wraps each test in its own transaction that is rolled back after the test, guaranteeing isolation without manual cleanup.
-
 ## Quick Reference
-
 | Scenario | Tool/Pattern |
 |----------|-------------|
 | Unit test | `#[test]` in `#[cfg(test)]` module |
