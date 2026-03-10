@@ -18,6 +18,7 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { scanForSecrets } from '../lib/secret-scanner.js';
 
 const CHECKPOINT_INTERVAL_MS = 60_000; // 1 checkpoint per 60s max
 const MAX_LOG_ENTRIES = 50;
@@ -144,6 +145,25 @@ async function main() {
     // Strategy: fixup commit
     const commitMsg = `chore: clarc-checkpoint [skip ci]`;
     git(['add', '-A'], cwd);
+
+    // Secret guard: scan staged diff before committing.
+    // auto-checkpoint uses --no-verify (bypasses pre-commit hooks), so we
+    // must scan here directly. We abort the checkpoint (not the Edit) on
+    // detection — the file is already saved, only the git history entry is skipped.
+    const diffResult = git(['diff', '--staged', '--unified=0'], cwd);
+    if (diffResult.status === 0 && diffResult.stdout) {
+      const secrets = scanForSecrets(diffResult.stdout);
+      if (secrets.length > 0) {
+        log('SECRET GUARD — Potential secret detected in staged changes. Checkpoint skipped to prevent secret entering git history.');
+        for (const { type, snippet } of secrets) {
+          log(`  ${type}: ${snippet}`);
+        }
+        log('Remove the secret and use an environment variable instead.');
+        git(['reset', 'HEAD'], cwd); // unstage
+        process.exit(0);
+      }
+    }
+
     const r = git(['commit', '--no-verify', '-m', commitMsg], cwd);
     if (r.status !== 0) {
       log(`Commit failed: ${r.stderr}`);

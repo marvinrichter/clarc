@@ -16,6 +16,7 @@
 
 import { logHook } from './hook-logger.js';
 import { execFileSync } from 'child_process';
+import { scanForSecrets } from '../lib/secret-scanner.js';
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';
@@ -29,30 +30,6 @@ process.stdin.on('data', chunk => {
 
 const DEV_SERVER = /(npm run dev\b|pnpm( run)? dev\b|yarn dev\b|bun run dev\b)/;
 const LONG_RUNNING = /(npm (install|test)|pnpm (install|test)|yarn (install|test)?|bun (install|test)|cargo build|make\b|docker\b|pytest|vitest|playwright)/;
-
-// ─── Secret guard patterns (high-confidence only, minimal false positives) ──
-
-const SECRET_PATTERNS = [
-  { type: 'AWS Access Key',   re: /\bAKIA[0-9A-Z]{16}\b/ },
-  { type: 'AWS Secret Key',   re: /\baws_secret_access_key\s*[=:]\s*[A-Za-z0-9+/]{40}\b/i },
-  { type: 'GitHub Token',     re: /\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}\b/ },
-  { type: 'PEM Private Key',  re: /-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
-  { type: 'Slack Token',      re: /\bxox[baprs]-[0-9A-Za-z-]{10,}\b/ },
-  { type: 'Generic API Key',  re: /(?:^|\b)(?:api_key|api_secret|access_token|auth_token)\s*[=:]\s*["']?[A-Za-z0-9_-]{32,}["']?/im },
-];
-
-function scanForSecrets(text) {
-  const found = [];
-  for (const { type, re } of SECRET_PATTERNS) {
-    const m = text.match(re);
-    if (m) {
-      // Redact: show only first 8 chars of the match
-      const snippet = m[0].slice(0, 8) + '…';
-      found.push({ type, snippet });
-    }
-  }
-  return found;
-}
 
 process.stdin.on('end', () => {
   const start = Date.now();
