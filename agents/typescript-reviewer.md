@@ -112,3 +112,27 @@ Fix: What to change
 - **Domain** (`domain/`): No imports from `node_modules` except type-only imports from `zod` for schemas is a violation — domain stays pure
 
 For detailed TypeScript patterns and code examples, see skills: `ddd-typescript`, `hexagonal-typescript`, `nodejs-backend-patterns`.
+
+## Examples
+
+**Input:** 3 modified `.ts` files after implementing a market publishing feature in a Node.js hexagonal architecture project.
+
+**Output:**
+```
+## Review: src/adapter/in/http/market-handler.ts, src/application/usecase/publish-market.ts, src/domain/market.ts
+
+### CRITICAL
+- [market-handler.ts:34] SQL injection: `db.query(\`SELECT * FROM markets WHERE slug = '${slug}'\`)` — Fix: use parameterized query `db.query('SELECT * FROM markets WHERE slug = $1', [slug])`
+- [publish-market.ts:18] Unhandled promise rejection: `async execute()` with no try/catch and no .catch() in caller — Fix: wrap body in try/catch, throw typed domain errors
+
+### HIGH
+- [market-handler.ts:58] Domain type exposed in response: returns raw `Market` domain entity directly — Fix: map to `MarketResponseDTO` in handler
+- [publish-market.ts:44] Use case contains domain rules: `if (market.status !== 'DRAFT')` — Fix: move invariant to `market.publish()` domain function
+- [market.ts:12] Non-RFC 7807 error format: error middleware returns `{ error: 'message' }` — Fix: return ProblemDetails with `Content-Type: application/problem+json`
+
+### MEDIUM
+- [market-handler.ts:71] Sequential await where Promise.all works: `await validateMarket(); await fetchOwner()` are independent — Fix: `await Promise.all([validateMarket(), fetchOwner()])`
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

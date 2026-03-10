@@ -90,6 +90,41 @@ End with a **Priority List** — the three most impactful changes ranked by impo
 3. [Third change]
 ```
 
+## Scope Note
+
+This agent reviews **existing** talk outlines, scripts, and slide decks. For creating a new slide deck from scratch, use the **presentation-designer** agent instead.
+
+## Examples
+
+### Talk Outline Review — 30-min Conference Talk
+
+**Input:** Outline for a 30-minute talk on "Zero-Downtime Deployments", target audience: senior engineers, KubeCon.
+
+```
+1. Introduction (2 min)
+2. Why deployments fail (5 min)
+3. Blue/Green deployments (8 min)
+4. Canary deployments (8 min)
+5. Health checks and rollback (5 min)
+6. Q&A (2 min)
+```
+
+**Output:**
+
+**Narrative Structure:** The outline reads as a feature catalogue, not a talk with a thesis. Sections 3 and 4 are two parallel techniques presented with equal weight — there is no guidance on which to use and when, which leaves the audience unable to act. A single thesis ("Canary beats Blue/Green for stateful services — here's why and how to prove it") would give the talk a spine.
+
+**Timing Plausibility:** At 30 minutes with 6 sections, each section averages 5 minutes. The Blue/Green and Canary sections (8 min each) are under-allocated for live demos — demos reliably run 2× longer than planned. Either cut the demo to a pre-recorded clip, or drop one technique and go deeper on the other.
+
+**Opening Strength:** "Introduction (2 min)" is not an opening hook. KubeCon engineers need a concrete incident or failure number in the first 60 seconds. Open with: "In 2023, 34% of Kubernetes outages were caused by deployment errors — and most were preventable."
+
+```
+## Top 3 Changes (by impact)
+
+1. Add a single thesis — "Canary is superior for stateful services" gives the talk a position to defend
+2. Cut or pre-record demo content — 8 min is not enough for a live Blue/Green demo
+3. Replace "Introduction" with a concrete opening hook — incident stat or failure story, 60 seconds max
+```
+
 ## Reference Skills
 
 `presentation-design` — narrative arcs, slide density, slide type catalogue, opening hooks, closing patterns

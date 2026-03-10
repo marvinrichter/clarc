@@ -227,3 +227,15 @@ ls k8s/ kubernetes/ helm/ terraform/ 2>/dev/null
 4. **Decouple data and model versioning** — DVC for data, MLflow for models
 5. **Cost-aware design** — quantize models, use spot instances for batch, right-size GPU count
 6. **Reproducibility over convenience** — every training run must be reproducible from config alone
+
+## Examples
+
+**Input:** User asks to design MLOps infrastructure for a product recommendation LLM (7B parameter model) serving 500 req/s peak on AWS.
+
+**Output:** Structured MLOps architecture document with serving stack, monitoring, and retraining plan. Example:
+- **Serving stack:** vLLM on 2× A100 80GB — Pros: PagedAttention for efficient KV cache, continuous batching handles 500 req/s target; Cons: higher GPU cost vs. smaller models
+- **Monitoring:** DCGM Exporter for GPU utilization (target 75%), Evidently AI for daily feature drift reports (PSI > 0.2 triggers retraining alert)
+- **Retraining trigger:** drift-based (Evidently webhook) → Kubeflow pipeline → 15% held-out eval gate (must beat prod by ≥ 1% NDCG) → shadow mode 48h → canary 10% for 7 days
+- **Cost estimate:** 2× A100 at $3.50/hr = ~$5,040/month serving; ~$800/month storage + monitoring overhead
+
+**Recommendation:** vLLM with INT8 quantization reduces GPU memory by 50%, enabling 2× A100 instead of 4×. A/B test: shadow mode → canary → full rollout over 14 days with automated rollback on >5% error rate increase.

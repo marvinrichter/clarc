@@ -117,3 +117,27 @@ For Ruby patterns and testing examples, see skills: `ruby-patterns`, `ruby-testi
 ---
 
 Review with the mindset: "Would this pass code review at a top Rails shop?"
+
+## Examples
+
+**Input:** 3 modified `.rb` files after implementing an order fulfillment feature in a Rails API application.
+
+**Output:**
+```
+## Review: app/controllers/orders_controller.rb, app/models/order.rb, app/services/fulfillment_service.rb
+
+### CRITICAL
+- [orders_controller.rb:28] SQL injection: Order.where("status = '#{params[:status]}'") — Fix: Order.where(status: params[:status])
+- [orders_controller.rb:41] Missing authorization: Order.find(params[:id]) without scoping to current_user — Fix: current_user.orders.find(params[:id])
+
+### HIGH
+- [orders_controller.rb:55] N+1 queries: order.line_items.each in loop without eager loading — Fix: Order.includes(:line_items).where(...)
+- [order.rb:33] Business logic in callback: after_update :send_notification with external HTTP call — Fix: move to FulfillmentService, call from controller
+- [fulfillment_service.rb:18] Missing transaction: multi-step ActiveRecord operations without transaction do — Fix: wrap in ActiveRecord::Base.transaction do
+
+### MEDIUM
+- [fulfillment_service.rb:44] Instance variable in method: @order.status = 'fulfilled' bypasses model method — Fix: use order.fulfill!
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

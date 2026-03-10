@@ -96,6 +96,48 @@ If you find a CRITICAL vulnerability:
 
 **IMMEDIATELY:** Production incidents, dependency CVEs, user security reports, before major releases.
 
+## Guardrail: Never Auto-Apply Remediations
+
+**Never apply code changes directly.** Always show the full diff of the proposed fix first and wait for explicit user confirmation before editing any file.
+
+When you find a vulnerability:
+1. Show the vulnerable code (with file:line reference)
+2. Explain the risk and attack scenario
+3. Show the proposed fix as a diff
+4. Ask: "Apply this fix? [yes/no]" — wait for confirmation
+5. Only then call Edit/Write
+
+## Examples
+
+### SQL Injection — Finding to Fix
+
+**Input:** Reviewing `src/api/users.ts` after a new search endpoint was added.
+
+**Finding (CRITICAL):**
+```typescript
+// src/api/users.ts:42
+const result = await db.query(`SELECT * FROM users WHERE name = '${req.body.name}'`);
+```
+
+**Output:**
+```
+## Security Report
+
+### CRITICAL: SQL Injection — src/api/users.ts:42
+
+The `name` parameter is concatenated directly into the SQL string.
+Attack: POST body {"name": "' OR '1'='1"} returns all users.
+Attack: POST body {"name": "'; DROP TABLE users; --"} destroys data.
+
+Proposed fix:
+- const result = await db.query(`SELECT * FROM users WHERE name = '${req.body.name}'`);
++ const result = await db.query('SELECT * FROM users WHERE name = $1', [req.body.name]);
+
+Apply this fix? [yes/no]
+```
+
+After user confirms, calls Edit with the parameterized query fix.
+
 ## Success Metrics
 
 - No CRITICAL issues found

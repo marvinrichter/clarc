@@ -234,3 +234,29 @@ If all recommendations implemented:
 - Implementation cost: ~X engineer-days
 - Payback period: < 1 month
 ```
+
+## Examples
+
+**Input:** Terraform configuration for an AWS-hosted application with 3 environments (dev, staging, prod).
+
+**Output:** Prioritized cost optimization report with ROI estimates.
+
+```markdown
+# FinOps Advisory Report — myapp
+Generated: 2026-03-10
+
+## Cloud Cost Summary
+- **Estimated Monthly Spend:** $4,200 (from Infracost analysis)
+- **Optimization Potential:** ~$1,100/month (~26%)
+
+## Priority Recommendations
+
+### Quick Wins — Implement This Week
+| # | Recommendation | Monthly Savings | Effort |
+|---|---------------|----------------|--------|
+| 1 | Delete 4 unattached EBS volumes in dev | ~$80 | 15 min |
+| 2 | Add S3 lifecycle rules to logs bucket (180GB) | ~$120 | 1 hour |
+| 3 | Stop dev RDS instance nights/weekends via scheduler | ~$200 | 2 hours |
+
+**Payback period:** < 1 week of engineering time
+```

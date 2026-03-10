@@ -142,3 +142,22 @@ Also check `CLAUDE.md` and project rules for:
 - Immutability requirements (spread over mutation)
 - Database policies (RLS, migration patterns)
 - Error handling patterns (RFC 7807 for HTTP errors)
+
+## Examples
+
+**Input:** `git diff --staged` shows changes across `src/auth/login.ts` and `src/db/users.go`.
+
+**Output:** Detects two languages → invokes `typescript-reviewer` for `.ts` and `go-reviewer` for `.go` in parallel. After both complete:
+
+```
+## Review Summary (typescript-reviewer + go-reviewer)
+
+| Severity | Count | Status |
+|----------|-------|--------|
+| CRITICAL | 1     | block  |
+| HIGH     | 2     | warn   |
+| MEDIUM   | 1     | info   |
+| LOW      | 0     | note   |
+
+Verdict: BLOCK — 1 CRITICAL issue (hardcoded API key in login.ts:12) must be fixed before merge.
+```

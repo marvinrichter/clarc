@@ -110,3 +110,27 @@ Fix: What to change
 - **Config** (`config/`): Bean wiring only here — no business logic in `@Configuration` classes
 
 For detailed Java patterns and code examples, see skills: `ddd-java`, `hexagonal-java`, `java-patterns`, `springboot-patterns`, `jpa-patterns`, `springboot-security`.
+
+## Examples
+
+**Input:** 3 modified `.java` files after implementing an order placement feature in a Spring Boot / hexagonal architecture project.
+
+**Output:**
+```
+## Review: OrderController.java, OrderService.java, OrderRepository.java
+
+### CRITICAL
+- [OrderController.java:31] Mass assignment: @RequestBody Order order binds directly to JPA entity — Fix: introduce OrderRequest DTO, map to domain in use case
+- [OrderService.java:54] Silent catch: catch (Exception e) {} swallows persistence errors — Fix: log and rethrow as OrderException
+
+### HIGH
+- [OrderController.java:47] Controller bypasses input port: calls OrderService directly instead of IPlaceOrderUseCase — Fix: depend on interface, wire via constructor injection
+- [OrderService.java:28] Field injection: @Autowired private OrderRepository repo — Fix: use constructor injection and declare field final
+- [OrderService.java:63] Non-RFC 7807 error: returns { "error": "not found" } — Fix: return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, message)
+
+### MEDIUM
+- [OrderRepository.java:19] N+1 queries: accessing order.getItems() inside Enum.map loop — Fix: add @EntityGraph(attributePaths = "items") to findById
+
+### Summary
+2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

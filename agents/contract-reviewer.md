@@ -151,3 +151,30 @@ For each HIGH/MEDIUM breaking change, provide:
 - Renamed fields in response are BREAKING even if "semantically the same"
 - Protobuf: reusing a field number is critically breaking — causes wire corruption
 - GraphQL: removing fields, making nullable fields required → BREAKING
+
+## Examples
+
+**Input:** `git diff HEAD~1` shows changes to `api/v1/openapi.yaml` — a field renamed and a new optional query param added.
+
+**Output:** Structured findings report with severity ratings, specific breaking changes, and concrete migration plans.
+
+```markdown
+## API Contract Review
+
+**Files changed:** api/v1/openapi.yaml
+**Pact files found:** 2 consumer pacts
+
+| Change | Type | Severity | Affected Consumers |
+|--------|------|----------|--------------------|
+| response.userId → user_id | BREAKING | HIGH | mobile-app (pact match) |
+| GET /orders: new ?cursor param | ADDITIVE | — | — |
+
+### BREAKING Changes — Action Required
+
+#### response.userId renamed to user_id
+**Severity:** HIGH — mobile-app pact references `userId`
+**Migration:** Return both fields for one release cycle, then remove `userId`
+
+### Recommended Action
+BLOCK — coordinate with mobile-app team before merging.
+```

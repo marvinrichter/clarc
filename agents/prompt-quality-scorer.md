@@ -175,3 +175,29 @@ Produces a ranking table sorted by overall_score ascending, then full JSON for f
 ```
 
 Save full results to `docs/system-review/prompt-quality-<date>.json`.
+
+## Examples
+
+**Input:** `/prompt-quality code-reviewer` — evaluate `agents/code-reviewer.md`.
+
+**Output:**
+```json
+{
+  "file": "agents/code-reviewer.md",
+  "instruction_lines": 85,
+  "overall_score": 7.4,
+  "dimensions": {
+    "specificity":       { "score": 8, "note": "Most severity levels use named patterns and thresholds" },
+    "completeness":      { "score": 7, "note": "Happy path covered; no handling for empty diff (no changes)" },
+    "output_definition": { "score": 9, "note": "Exact text format with SEVERITY/File/Issue/Fix labels defined" },
+    "ambiguity":         { "score": 6, "issue": "7 vague phrases per 100 lines: 'good', 'proper', 'quality'" },
+    "safety_coverage":   { "score": 10, "note": "Read-only agent — no destructive operations" },
+    "example_density":   { "score": 5, "issue": "Only 1 example for 85 instruction lines (target: ≥2)" }
+  },
+  "issues": [
+    { "severity": "MEDIUM", "dimension": "ambiguity", "finding": "Uses 'quality issues' without defining a threshold", "suggestion": "Replace with 'issues scoring MEDIUM or above on the rubric'" },
+    { "severity": "LOW", "dimension": "example_density", "finding": "Single example for an agent with 7 review dimensions", "suggestion": "Add a second example covering a different language or severity pattern" }
+  ],
+  "verdict": "GOOD — 2 issues to address"
+}
+```

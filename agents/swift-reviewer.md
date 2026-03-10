@@ -95,3 +95,38 @@ Fix: What to change
 ```
 
 For detailed Swift patterns and DI examples, see skills: `swift-patterns`, `swift-patterns-advanced`, `swift-concurrency-6-2`, `swift-protocol-di-testing`, `swift-actor-persistence`, `swiftui-patterns`, `foundation-models-on-device`.
+
+## Examples
+
+**Input:** 3 modified `.swift` files after implementing a market publishing feature in a SwiftUI/hexagonal architecture app.
+
+**Output:**
+```
+[CRITICAL] Data race on shared mutable state
+File: Sources/Features/Market/MarketViewModel.swift:28
+Issue: var markets: [Market] = [] accessed from multiple tasks without actor isolation
+Fix: Annotate class with @MainActor or move to an actor; use @Observable with MainActor isolation
+
+[CRITICAL] Keychain misuse
+File: Sources/Features/Auth/AuthService.swift:54
+Issue: UserDefaults.standard.set(token, forKey: "auth_token") — auth token in UserDefaults is accessible without device unlock
+Fix: Store in Keychain using Security.framework or KeychainAccess package
+
+[HIGH] Business logic in View body
+File: Sources/Features/Market/MarketDetailView.swift:41
+Issue: if market.status == "draft" { ... } in body — domain rule belongs in domain function publishMarket(_:)
+Fix: Extract to use case; View calls viewModel.publish(), ViewModel delegates to use case
+
+[HIGH] ViewModel calls repository directly
+File: Sources/Features/Market/MarketViewModel.swift:67
+Issue: URLSession.shared.data(from: marketURL) in @Observable class — should call MarketRepositoryProtocol
+Fix: Inject MarketRepositoryProtocol, test with mock conformance
+
+[MEDIUM] Force unwrap without justification
+File: Sources/Features/Market/MarketListView.swift:33
+Issue: markets.first! — will crash on empty list
+Fix: Use markets.first ?? Market.placeholder or add guard
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

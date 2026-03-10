@@ -180,3 +180,39 @@ Questions to answer before or during implementation (if Go/Modify):
 3. **Alternatives first.** Always research before recommending to build.
 4. **Opportunity cost matters.** Every yes is a no to something else.
 5. **Gaps are not blockers.** Note what's unknown, but don't demand perfect clarity before recommending Go.
+
+## Examples
+
+**Input:** Idea document for "AI-powered changelog generator — automatically writes release notes from git commits."
+
+**Output:**
+```
+## Evaluation: ai-changelog-generator
+
+## Summary
+Automate release note generation from git commits using an LLM. Strong problem clarity, but multiple
+existing tools compete directly. Evaluation recommends Modify to narrow scope.
+
+## Scoring
+| Dimension         | Score | Reason |
+|-------------------|-------|--------|
+| Problem Clarity   | 4/5   | Real pain, but "all teams" is too broad a target |
+| User Fit          | 3/5   | Release managers at 10+ engineer orgs — not yet specific enough |
+| Solution Fit      | 4/5   | LLM summarization is a strong fit for this task |
+| Feasibility       | 5/5   | Low — git log + prompt + output; no new deps |
+| Differentiation   | 2/5   | Release-it, semantic-release, GitHub auto-notes, Changesets already exist |
+| Opportunity Cost  | 3/5   | Medium — displaces the /idea eval improvement backlog item |
+| **Total**         | **21/30** | |
+
+## Recommendation
+
+### ~ MODIFY
+
+**Reason:** Good feasibility but differentiation is weak vs. existing tools. Build only the clarc-specific
+variant: generate changelogs from clarc git history in clarc's exact markdown format, integrated with
+the `/release` command. Do not try to be a general-purpose changelog tool.
+
+**Next steps:**
+1. Scope to clarc-internal use only (not a standalone product)
+2. Run `/explore clarc-changelog-generator` to design options
+```

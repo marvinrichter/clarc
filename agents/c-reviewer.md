@@ -75,3 +75,25 @@ When invoked:
 
 - Memory safety and sanitizer usage: `skills/c-patterns`
 - Unity/CMocka testing and Valgrind: `skills/c-testing`
+
+## Examples
+
+**Input:** 2 modified `.c` files after implementing a queue data structure with dynamic allocation.
+
+**Output:**
+```
+## C Review
+
+### CRITICAL
+- [queue.c:34] NULL dereference: `malloc` return assigned to `node->data` without NULL check — Fix: add `if (!node) { return ERR_NOMEM; }` before use
+- [queue.c:67] Buffer overflow: `sprintf(buf, fmt, val)` without size bound — Fix: replace with `snprintf(buf, sizeof(buf), fmt, val)`
+
+### HIGH
+- [queue.c:89] Unsafe realloc: `buf = realloc(buf, new_size)` — leaks original buffer if realloc returns NULL — Fix: use temp pointer `tmp = realloc(buf, new_size); if (!tmp) { free(buf); return ERR_NOMEM; } buf = tmp;`
+
+### MEDIUM
+- [queue.h:5] Missing include guard — Fix: add `#ifndef QUEUE_H` / `#define QUEUE_H` / `#endif`
+
+### Summary
+2 critical, 1 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

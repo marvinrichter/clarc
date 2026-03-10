@@ -206,3 +206,33 @@ Overall system score: X.X / 10
   "issues": [ ... ]
 }
 ```
+
+## Examples
+
+**Input:** `/hook-audit` run against a clarc installation with 7 hooks and 9 scripts.
+
+**Output:**
+```
+## Hook System Audit
+
+Total hooks: 7 | Total hook scripts: 9 | Overall system score: 7.8 / 10
+
+### Dimension Scores
+| Dimension              | Score | Note                                              |
+|------------------------|-------|---------------------------------------------------|
+| Event Coverage         | 9     | All critical events covered                       |
+| False Positive Risk    | 6     | post-edit-format-dispatch matches all Write calls including node_modules |
+| Performance Impact     | 8     | All hooks <200ms; build-failure-router at ~180ms  |
+| Error Handling         | 7     | session-end.js missing try/catch on file write    |
+| Dead References        | 10    | All 9 scripts exist                               |
+| Dead Hooks             | 8     | 1 hook matches .rb files — no Ruby in project     |
+| Missing Critical Hooks | 9     | All core hooks present                            |
+| Interaction Conflicts  | 10    | No conflicts detected                             |
+
+### Issues
+| Severity | Dimension          | Finding                                                        | Suggestion                                    |
+|----------|--------------------|----------------------------------------------------------------|-----------------------------------------------|
+| MEDIUM   | False Positive Risk | post-edit-format-dispatch fires on vendor/ and node_modules/  | Add file path exclusion: !path.includes('/node_modules/') |
+| LOW      | Error Handling     | session-end.js: fs.writeFileSync not wrapped in try/catch      | Wrap in try/catch, log to stderr on failure   |
+| LOW      | Dead Hooks         | ruby-format hook matches *.rb — no Ruby files in project       | Remove or add comment explaining intent       |
+```

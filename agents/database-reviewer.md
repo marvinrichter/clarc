@@ -93,3 +93,23 @@ For detailed index patterns, schema design examples, connection management, conc
 **Remember**: Database issues are often the root cause of application performance problems. Optimize queries and schema design early. Use EXPLAIN ANALYZE to verify assumptions. Always index foreign keys and RLS policy columns.
 
 *Patterns adapted from Supabase Agent Skills (credit: Supabase team) under MIT license.*
+
+## Examples
+
+**Input:** A new migration file and a repository class with 3 SQL queries to review.
+
+**Output:**
+```
+## Database Review
+
+### CRITICAL
+- [migrations/005_orders.sql:14] Missing RLS: `orders` table created without enabling Row Level Security — Fix: add `ALTER TABLE orders ENABLE ROW LEVEL SECURITY;` and `CREATE POLICY ...`
+- [OrderRepository.ts:42] Unparameterized query: `SELECT * FROM orders WHERE id = '${orderId}'` — SQL injection risk — Fix: use parameterized `SELECT * FROM orders WHERE id = $1`
+
+### HIGH
+- [migrations/005_orders.sql:8] Foreign key `user_id` on `orders` has no index — Fix: add `CREATE INDEX orders_user_id_idx ON orders(user_id);`
+- [OrderRepository.ts:67] `SELECT *` without LIMIT on user-facing endpoint — Fix: add `LIMIT 50` or cursor pagination
+
+### Summary
+2 critical, 2 high. Block merge until CRITICAL and HIGH are resolved.
+```

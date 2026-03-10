@@ -163,3 +163,31 @@ Summary table format:
 | debugging-workflow | 5.9 | 28 | 18% | HIGH: too thin |
 | typescript-patterns | 8.4 | 220 | 52% | — |
 ```
+
+## Examples
+
+**Input:** `/skill-depth typescript-patterns` — analyze `skills/typescript-patterns/SKILL.md`.
+
+**Output:**
+```json
+{
+  "skill": "typescript-patterns",
+  "file": "skills/typescript-patterns/SKILL.md",
+  "total_lines": 220,
+  "code_lines": 114,
+  "actionability_pct": 52,
+  "example_count": 5,
+  "overall_score": 8.2,
+  "dimensions": {
+    "actionability_ratio":      { "score": 9, "note": "52% code content — 5 complete, runnable examples" },
+    "trigger_precision":        { "score": 7, "note": "Trigger is fairly specific to TypeScript class/generic patterns" },
+    "example_completeness":     { "score": 9, "note": "All 5 examples show problem + solution + expected type output" },
+    "internal_consistency":     { "score": 9, "note": "No contradictions; terminology consistent throughout" },
+    "length_calibration":       { "score": 9, "note": "220 lines — within ideal 100–300 range" },
+    "cross_reference_validity": { "score": 10, "note": "2 skill references verified; 1 agent reference verified" },
+    "freshness":                { "score": 7, "note": "TypeScript 5.x patterns — current; one reference to TS 4.1 template literal types still valid" }
+  },
+  "issues": [],
+  "verdict": "EXCELLENT — no issues to address"
+}
+```

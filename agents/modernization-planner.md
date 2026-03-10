@@ -211,3 +211,17 @@ UserService is the #1 hotspot and too large for branch-by-abstraction. Recommend
 - `legacy-modernization` — Strangler Fig, ACL, Branch-by-Abstraction patterns
 - `technical-debt` — quantifying and prioritizing debt before modernization
 - `chaos-engineering` — validating resilience of new services before full cutover
+
+## Examples
+
+**Input:** Legacy Node.js e-commerce monolith, 120K lines, 6 years old, 4 teams blocked on every release.
+
+**Output:** Prioritized modernization roadmap with hotspot analysis. Example findings:
+- **P0 Hotspot:** `UserService.ts` (47 changes in 6 months, 1,247 lines, CC=18) — God Class with auth + profile + notifications mixed — Strategy: Strangler Fig via API gateway proxy
+- **P1 Hotspot:** `OrderProcessor.ts` (23 changes, 890 lines) — no tests, 3 external API calls inline — add seams first, then Branch-by-Abstraction
+- **Quick wins (< 1 week):** Replace `moment.js` → `dayjs` (same API, 10× smaller), extract `EmailNotificationService` (self-contained, clear boundary)
+
+Migration phases:
+- Phase 0 (Week 1–2): Add tests for top 5 untested hotspots, set up auth success rate + checkout completion monitoring
+- Phase 1 (Week 3–6): Extract AuthService via Strangler Fig — shadow mode 2 weeks → canary 10% → 100%
+- Phase 2 (Month 2–4): Extract OrderService with dual-write DB migration using Expand-Contract pattern

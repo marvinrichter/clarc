@@ -299,3 +299,17 @@ jobs:
 5. **Smoke test the artifact** — test `npm pack && fresh install`, not just the source
 6. **Deprecation is a feature** — a clear deprecation path is what enables breaking changes responsibly
 7. **Documentation is part of the SDK** — ship docs at the same time as the code
+
+## Examples
+
+**Input:** User asks to design an SDK for a B2B payment API (REST, 45 endpoints) targeting TypeScript, Python, and Go consumers.
+
+**Output:** Structured SDK architecture document. Example:
+- **Generation strategy:** Speakeasy — 3 target languages + 45 endpoints crosses the manual maintenance threshold; Speakeasy generates retry/pagination/OAuth automatically
+- **Error hierarchy:** `SdkBaseError → APIError → { AuthenticationError(401), RateLimitError(429 + retry_after), ValidationError(422 + field errors[]) } → NetworkError → { TimeoutError(timeout_ms) }`
+- **Authentication:** API Key from `ACME_API_KEY` env var by default; factory method `AcmeSDK.with_oauth(client_id, client_secret)` for M2M; credentials never logged
+- **Compatibility policy:** SemVer strict; 1 MAJOR version deprecation window; `RateLimitError` and `ValidationError` properties are never-break fields
+- **CI pipeline:** Tag-triggered; validate → publish-typescript + publish-python + publish-go (parallel) → GitHub release from CHANGELOG.md
+- **Docs:** Mintlify (external developers, B2B audience warrants investment)
+
+**Phase 1 (Week 1):** OpenAPI spec lint + Speakeasy config + error hierarchy reviewed by team.

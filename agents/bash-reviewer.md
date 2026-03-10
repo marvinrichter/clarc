@@ -79,3 +79,25 @@ Then:
 
 `bash-patterns` — script structure, argument parsing, error handling
 `bash-testing` — BATS setup, mocking, CI integration
+
+## Examples
+
+**Input:** 2 modified `.sh` files after adding a deployment script and a cleanup helper.
+
+**Output:**
+```
+## Review: scripts/deploy.sh
+
+### CRITICAL
+- [deploy.sh:3] — Missing `set -euo pipefail`; script continues on errors — Fix: add `set -euo pipefail` on line 2
+
+### HIGH
+- [deploy.sh:18] — Unquoted variable `$TARGET_DIR` in rm command — Fix: quote as `"$TARGET_DIR"` to prevent word splitting
+- [deploy.sh:31] — Temp file uses `/tmp/deploy.tmp` (fixed name) — Fix: use `mktemp` and clean up with `trap cleanup EXIT`
+
+### MEDIUM
+- [cleanup.sh:8] — External command `rsync` used without checking existence — Fix: add `command -v rsync || { echo "rsync not found" >&2; exit 1; }`
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

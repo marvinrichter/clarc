@@ -128,3 +128,32 @@ grep -rn "\.query\|\.execute\|\.find\|\.findOne" --include="*.ts"
 
 For implementation examples of the patterns discussed, see skill: `resilience-patterns`.
 For testing that patterns work under fault injection, see skill: `chaos-engineering`.
+
+## Examples
+
+**Input:** 2 modified TypeScript files after adding a third-party payment processing integration to the checkout service.
+
+**Output:**
+```
+## Resilience Review Report
+
+### CRITICAL Issues
+1. **[checkout.service.ts:42]** Missing timeout on payment gateway HTTP call
+   - Risk: If Stripe is slow, all checkout threads hang indefinitely — cascading failure to entire service
+   - Fix: `fetch(url, { signal: AbortSignal.timeout(5000) })` — 5s read timeout
+   - Pattern: resilience-patterns skill → Timeout Hierarchies
+
+2. **[payment.client.ts:18]** Infinite retry loop — no max attempt limit
+   - Risk: A permanent error (400 invalid card) retries forever, consuming threads
+   - Fix: Add `maxAttempts: 3` and retry only on 429/5xx, not 4xx errors
+
+### HIGH Issues
+1. **[checkout.service.ts:67]** No circuit breaker on Stripe (~200 req/s at peak)
+   - Fix: Wrap with `opossum` circuit breaker — open after 50% failure rate in 10s window
+2. **[payment.client.ts:34]** Retry without jitter — thundering herd on outage recovery
+   - Fix: Add jitter: `delay = baseDelay * 2^attempt + Math.random() * 1000`
+
+### Positive Patterns Observed
+- Stripe webhook handler has idempotency key check (payment.webhook.ts:22)
+- Health check endpoint is lightweight, does not call Stripe (health.controller.ts:8)
+```

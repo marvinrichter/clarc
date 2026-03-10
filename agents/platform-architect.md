@@ -179,3 +179,16 @@ Most platform initiatives fail not because of technical choices but because:
 - Platform team lost touch with what stream-aligned teams actually need
 - Too much built at once (build less, make it excellent)
 ```
+
+## Examples
+
+**Input:** User asks to design an IDP for a 150-engineer organization with 80+ microservices on Kubernetes (AWS). Pain points: "We don't know who owns what" and "new service setup takes 3 weeks."
+
+**Output:** Structured IDP architecture document. Example:
+- **Diagnosis:** Two gaps — Service Catalog (ownership unknown) and Golden Path (new service setup time)
+- **Component priority:** 1. Service Catalog (Backstage) → 2. Scaffolder/Golden Path (Node.js REST API template) → 3. TechDocs
+- **Make vs. Buy:** 150 engineers, 4 FTE platform team → self-hosted Backstage. 1-year TCO: ~$140k vs. Roadie at ~$45k. Recommendation: Roadie first (1–2 week setup vs. 3–6 months), migrate to self-hosted at 300+ engineers if customization needs increase.
+- **Pilot:** Choose the checkout team (visible pain, respected, active champion)
+- **90-day roadmap:** Month 1 (catalog live, all services have catalog-info.yaml) → Month 2 (Node.js Golden Path, new service in <10 min) → Month 3 (DB self-service template, DORA baseline measured)
+
+**Biggest risk:** Platform team mandates catalog adoption before it proves value — run as opt-in until all engineers self-select in.

@@ -99,3 +99,25 @@ Fix: Concrete code change to apply
 ```
 
 For Android architecture patterns, Compose examples, and Hilt scoping details, see skills: `android-patterns`, `android-testing`, `kotlin-patterns`, `kotlin-testing`.
+
+## Examples
+
+**Input:** 3 modified `.kt` files after implementing a new feature screen with ViewModel and Room DAO.
+
+**Output:**
+```
+## Review: src/feature/market/MarketViewModel.kt
+
+### CRITICAL
+- [MarketViewModel.kt:12] — Android import in ViewModel: imports `android.content.Context` directly — Fix: remove Context import; use Application-scoped dependency via Hilt if needed
+
+### HIGH
+- [MarketViewModel.kt:34] — `collectAsState()` used in Compose collector — Fix: replace with `collectAsStateWithLifecycle()` to stop collecting in background
+- [MarketDao.kt:18] — Room version incremented from 2 to 3 without Migration(2, 3) — Fix: add migration or use fallbackToDestructiveMigration only in debug builds
+
+### MEDIUM
+- [MarketListScreen.kt:67] — LazyColumn items missing stable `key` lambda — Fix: add `key = { item.id }` to enable optimized recomposition
+
+### Summary
+1 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

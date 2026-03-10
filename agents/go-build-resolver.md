@@ -92,3 +92,24 @@ Remaining errors: 3
 Final: `Build Status: SUCCESS/FAILED | Errors Fixed: N | Files Modified: list`
 
 For detailed Go error patterns and code examples, see `skill: go-patterns`.
+
+## Examples
+
+**Input:** `go build ./...` fails with 3 errors across 2 files after adding a new service layer.
+
+**Output:**
+```
+[FIXED] internal/service/order.go:18
+Error: undefined: repository.OrderRepository
+Fix: Added import "myapp/internal/repository" — interface was in separate package
+
+[FIXED] internal/handler/order_handler.go:42
+Error: cannot use *service.OrderService as type app.OrderUseCase (missing PlaceOrder method)
+Fix: Added PlaceOrder(ctx context.Context, req PlaceOrderRequest) (*Order, error) method to OrderService
+
+[FIXED] internal/domain/order.go:67
+Error: declared and not used: validStatuses
+Fix: Removed unused variable — logic moved to order.Validate()
+
+Build Status: SUCCESS | Errors Fixed: 3 | Files Modified: internal/service/order.go, internal/handler/order_handler.go, internal/domain/order.go
+```

@@ -102,6 +102,31 @@ Links to other codemaps
 
 **OPTIONAL:** Minor bug fixes, cosmetic changes, internal refactoring.
 
+**NOT this agent:** Writing new guides, tutorials, or prose documentation from scratch — use the `presentation-designer` or `docs-architect` agent for that. This agent updates existing documentation to match code changes.
+
+## Examples
+
+### Function Signature Change → Codemap Update
+
+**Input:** `src/lib/auth.ts` — `authenticateUser` signature changed from `(email, password)` to `(credentials: Credentials, options?: AuthOptions)`.
+
+**Before (docs/CODEMAPS/backend.md):**
+```markdown
+| authenticateUser | Validate email+password | (email: string, password: string) → Promise<User> |
+```
+
+**After (generated from code):**
+```markdown
+| authenticateUser | Validate user credentials with optional MFA | (credentials: Credentials, options?: AuthOptions) → Promise<User> |
+```
+
+Steps taken:
+1. Read `src/lib/auth.ts` to extract current signature via Grep
+2. Find all occurrences of `authenticateUser` in `docs/CODEMAPS/`
+3. Update the table row with new signature and description
+4. Update `**Last Updated:** 2026-03-10` timestamp
+5. Verify no other docs reference the old `(email, password)` signature
+
 ---
 
 **Remember**: Documentation that doesn't match reality is worse than no documentation. Always generate from the source of truth.

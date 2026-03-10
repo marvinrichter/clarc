@@ -83,3 +83,26 @@ Then:
 
 `kotlin-patterns` — sealed classes, coroutines, Flow, DSL, extension functions
 `kotlin-testing` — JUnit 5, Kotest, MockK, coroutine test utilities
+
+## Examples
+
+**Input:** 3 modified `.kt` files after implementing a payment processing feature with coroutines and a repository layer.
+
+**Output:**
+```
+## Review: PaymentService.kt, PaymentRepository.kt, PaymentViewModel.kt
+
+### CRITICAL
+- [PaymentService.kt:44] CancellationException swallowed: `catch (e: Exception) { log.error(e) }` catches CancellationException, breaking structured concurrency — Fix: `catch (e: Exception) { if (e is CancellationException) throw e; log.error(e) }`
+- [PaymentRepository.kt:28] SQL injection: `db.rawQuery("SELECT * FROM payments WHERE id = '$paymentId'")` — Fix: use parameterized query `db.rawQuery("SELECT * FROM payments WHERE id = ?", arrayOf(paymentId))`
+
+### HIGH
+- [PaymentService.kt:61] GlobalScope used: `GlobalScope.launch { sendConfirmationEmail(payment) }` — Fix: inject a CoroutineScope or use `viewModelScope` / `lifecycleScope`
+- [PaymentViewModel.kt:19] `var` where `val` works: `var paymentState: StateFlow<PaymentState>` — Fix: `val paymentState: StateFlow<PaymentState>`
+
+### MEDIUM
+- [PaymentRepository.kt:55] Missing value class for typed ID: raw `Long paymentId` param — Fix: introduce `@JvmInline value class PaymentId(val value: Long)`
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

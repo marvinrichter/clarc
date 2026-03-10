@@ -153,3 +153,27 @@ Write the file as `slides.md`.
 `presentation-design` — narrative arcs, slide density rules, slide type catalogue
 `talk-preparation` — time boxing, speaker note format
 `html-slides` — Reveal.js technical patterns
+
+## Examples
+
+**Input:** "Create a 20-minute talk for engineers on migrating from REST to GraphQL. Audience: backend engineers. Format: reveal."
+
+**Output:**
+```
+## Outline (10 slides, 20 minutes)
+
+1. "The 7 endpoint problem" — hook: show a real over-fetching REST response (600 fields for a mobile card)
+2. What GraphQL actually is — single endpoint, client-driven queries
+3. Before/After: REST vs. GraphQL for a product card — concrete field count comparison
+4. Three migration paths — Strangler Fig / Schema-first / BFF wrapper
+5. Performance: N+1 problem and DataLoader — the mistake 80% of teams make first
+6. Auth & error handling in GraphQL — what changes, what stays the same
+7. Testing GraphQL: integration vs. contract tests
+8. Rollout strategy: shadow mode → canary → full cutover
+9. Lessons from our migration — 3 things we'd do differently
+10. 3 takeaways + next steps (Q&A)
+
+Ready to generate the full deck? (yes/no)
+```
+
+Generated `presentation.html` with Reveal.js, speaker notes with timing markers, and transition sentences on every slide. Closing slide: 3 takeaways ("Migrate incrementally", "DataLoader from day 1", "Type-first schema design") + CTA: "Try the GraphQL sandbox at /graphql today."

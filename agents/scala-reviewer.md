@@ -73,3 +73,38 @@ Fix: Use `handleErrorWith { case _: CancellationException => IO.canceled; case e
 ## Reference
 
 `see skills: scala-patterns, scala-testing`
+
+## Examples
+
+**Input:** 3 modified `.scala` files after adding order fulfillment to a Cats Effect service.
+
+**Output:**
+```
+[CRITICAL] null returned from repository method
+File: src/main/scala/repo/OrderRepo.scala:38
+Issue: findById returns null when order is not found instead of Option[Order]
+Fix: Change return type to IO[Option[Order]] and return IO.pure(None)
+
+[CRITICAL] SQL string interpolation
+File: src/main/scala/repo/OrderRepo.scala:52
+Issue: s"SELECT * FROM orders WHERE status = '${status}'" — vulnerable to SQL injection
+Fix: Use Doobie interpolator: sql"SELECT * FROM orders WHERE status = $status".query[Order]
+
+[HIGH] CancellationException swallowed
+File: src/main/scala/service/FulfillmentService.scala:71
+Issue: handleError(_ => IO.pure(fallback)) catches CancellationException, breaking CE cancellation
+Fix: handleErrorWith { case _: CancellationException => IO.canceled; case e => IO.pure(fallback) }
+
+[HIGH] var in case class
+File: src/main/scala/domain/Order.scala:14
+Issue: var status: OrderStatus — mutable field in domain model
+Fix: Make case class fields immutable; use copy() for state transitions
+
+[MEDIUM] Nested flatMap instead of for-comprehension
+File: src/main/scala/service/FulfillmentService.scala:44
+Issue: 3-level nested flatMap — hard to read
+Fix: Refactor to for { order <- ...; _ <- ...; result <- ... } yield result
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

@@ -381,3 +381,14 @@ Produce a GitOps Architecture Document with:
 ## Risks & Mitigations
 [Identified risks during migration]
 ```
+
+## Examples
+
+**Input:** User asks to design a GitOps setup for a 3-team SaaS platform on AWS with 2 production clusters (EU, US) and a shared dev cluster.
+
+**Output:** Structured GitOps architecture document with tool selection, repo structure, and migration plan. Example:
+- Option A: ArgoCD with App of Apps — Pros: visual UI for 3 teams, centralized hub-spoke for multi-cluster, ApplicationSet for env promotion; Cons: requires dedicated hub cluster, slightly higher resource overhead
+- Option B: Flux per-cluster — Pros: Kubernetes-native, no central hub needed; Cons: no unified UI, harder cross-cluster visibility for platform team
+- **Recommendation:** Option A (ArgoCD) because multi-cluster visibility and team-friendly UI outweigh overhead cost.
+
+Repository structure: separate config-repo with `clusters/dev/`, `clusters/staging/`, `clusters/prod-eu/`, `clusters/prod-us/` overlays. Secrets via ESO + AWS Secrets Manager. Progressive delivery via Argo Rollouts canary (20% → 50% → 100%) with Prometheus success-rate analysis. Migration: Week 1 (ArgoCD install + config-repo bootstrap) → Week 2 (first non-critical app) → Week 3 (Rollouts) → Week 4 (remove direct `kubectl` access from CI).

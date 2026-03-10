@@ -162,3 +162,25 @@ docs/ideas/discovered/<date>-competitive-<name>.md
 4. **Pricing reveals strategy.** Free tier = land-and-expand. Usage-based = enterprise. Flat = SMB.
 5. **Recent is more relevant.** A changelog entry from last month beats a feature from 2022.
 6. **Gaps beat head-to-head competition.** Find what nobody does well, not just what you do better.
+
+## Examples
+
+**Input:** `/discover project-management-saas` — analyze competitors in the project management space.
+
+**Output:** Structured findings report with competitor positioning, feature matrix, strategic signals, and prioritized market gaps. Example excerpt:
+
+```
+MARKET GAPS (opportunities)
+────────────────────────────
+
+#1 — No-code automation for non-engineers
+     Evidence: 47 G2 reviews mention "too technical for PMs"
+     Who suffers: Non-technical project managers at SMBs
+     Opportunity size: ~30% of target market underserved
+     → Draft idea: /idea pm-automation-builder
+
+USER SENTIMENT HIGHLIGHTS
+──────────────────────────
+What users hate (our opportunity):
+- "Setting up automations requires a developer" — Reddit r/projectmanagement
+```

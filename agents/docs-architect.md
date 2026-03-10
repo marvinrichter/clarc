@@ -373,3 +373,15 @@ METRICS TO TRACK
 - `api-design` — API contract design that affects documentation quality from the start
 - `api-contract` — spec linting, code generation, breaking-change detection
 - `adr-writing` — Architecture Decision Records for documenting why platform decisions were made
+
+## Examples
+
+**Input:** User asks to design the documentation strategy for a B2B SaaS REST API with 60 endpoints and 3 target SDK languages.
+
+**Output:** Structured strategy document with platform recommendation, Divio structure, and CI pipeline. Example:
+- Option A: Mintlify — Pros: zero infra, PR previews, native OpenAPI; Cons: paid ($150+/mo)
+- Option B: Docusaurus — Pros: free, full control, strong community; Cons: 2-day setup effort
+- **Recommendation:** Mintlify because the team is small (2 engineers), wants zero-infra, and the budget is available.
+
+Divio structure: 2 tutorials, 5 how-to guides, 60 auto-generated reference pages, 3 explanation docs.
+Next steps: `spectral lint api/v1/openapi.yaml` to assess current spec quality.

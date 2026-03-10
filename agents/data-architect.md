@@ -324,3 +324,14 @@ Produce a Data Mesh Architecture Decision Record:
 - Reference `skills/data-mesh-patterns/` for detailed implementation patterns and tool examples
 - Reference `skills/data-engineering/` for ETL/ELT pipeline fundamentals (dbt, Spark)
 - Reference `skills/gdpr-privacy/` for GDPR-compliant PII handling in data pipelines
+
+## Examples
+
+**Input:** User asks to design a Data Mesh for a 5-domain e-commerce platform currently on a centralized Redshift warehouse.
+
+**Output:** Structured plan with domain map, technology selection, and phased migration. Example:
+- Option A: Full Delta Lake + Databricks — Pros: managed, Unity Catalog built-in; Cons: vendor lock-in, cost
+- Option B: Apache Iceberg + self-managed Spark — Pros: multi-engine, no vendor lock; Cons: higher ops burden
+- **Recommendation:** Option A (Delta Lake + Databricks) because the team is small (3 data engineers) and the managed catalog removes significant operational overhead.
+
+Next steps: Phase 0 (platform setup, 4 weeks) → Phase 1 (Orders domain extraction, 6 weeks) → Phase 2 (Customers domain).

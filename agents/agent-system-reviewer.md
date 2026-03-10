@@ -224,3 +224,33 @@ Also update `docs/system-review/coverage-map.md` by running:
 ```
 node scripts/ci/generate-coverage-map.js
 ```
+
+## Examples
+
+**Input:** `/system-review full` — full clarc system review.
+
+**Output:** Structured Markdown report saved to `docs/system-review/YYYY-MM-DD-full-report.md`. Example excerpt:
+
+```markdown
+# clarc System Review — 2026-03-10 — Full Mode
+
+## Executive Summary
+**Overall Health Score:** 8.3 / 10
+**Critical Issues (P0):** 1
+**High Priority (P1):** 4
+**Medium Priority (P2):** 9
+**Coverage:** 28/33 scenarios fully covered (85%)
+**Broken References:** 2
+
+## Priority Matrix
+
+### P0 — Critical (fix before next release)
+| Issue | Affected Component | Impact | Fix |
+|-------|-------------------|--------|-----|
+| Broken skill ref in go-reviewer | agents/go-reviewer.md | Routing failure | Fix skill name |
+
+### P1 — High (next roadmap)
+| Issue | Affected Component | Impact | Estimated Effort |
+|-------|-------------------|--------|-----------------|
+| No command for database-review | commands/ | Users can't invoke agent | Add commands/database-review.md |
+```

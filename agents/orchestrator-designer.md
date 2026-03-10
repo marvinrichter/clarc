@@ -144,3 +144,16 @@ Produce:
 - **Context window hygiene** — sub-agents receive only the context they need (summary handoff)
 - **Timeout hierarchy** — tool < agent < workflow (never invert this)
 - **Observe everything** — trace IDs propagate across all agent boundaries
+
+## Examples
+
+**Input:** User wants to automate PR review for a TypeScript + Go monorepo — security check, code quality review, and test coverage analysis for every pull request.
+
+**Output:** Multi-agent architecture document. Example:
+- **Pattern:** Fan-Out → Fan-In (3 parallel reviewers, independent targets: security, quality, coverage)
+- **Agents:** `security-reviewer` (Sonnet, tools: Read/Grep/Glob, timeout: 60s), `typescript-reviewer` (Sonnet, Read/Grep/Glob, 90s), `go-reviewer` (Sonnet, Read/Grep/Bash, 90s)
+- **Orchestrator pseudocode:** Fetch changed files → classify by extension → launch reviewers in parallel with filtered file lists → wait for all → merge findings by severity → post unified comment
+
+Failure modes: `security-reviewer` timeout → fail fast (block merge); `typescript-reviewer` timeout → retry once → partial results; `go-reviewer` fails → report error, do not block.
+
+**Cost estimate:** ~15K tokens/run at Sonnet pricing ≈ $0.045/PR review.

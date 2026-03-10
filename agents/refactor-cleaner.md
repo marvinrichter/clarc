@@ -37,6 +37,25 @@ For each item to remove:
 - Check if part of public API
 - Review git history for context
 
+### 2.5. Show Plan — Wait for Confirmation
+
+After analysis, output the complete removal plan before touching any file:
+
+```
+## Removal Plan (dry-run)
+
+### SAFE to remove (N items)
+- [ ] src/utils/legacy-format.ts — 0 references
+- [ ] Type export `LegacyUser` in src/types.ts:45 — 0 references
+
+### CAREFUL — confirm intent (N items)
+- [ ] src/lib/analytics.ts — 2 dynamic import references (runtime-only)
+
+Apply this plan? Confirm each batch or say "skip [item]" to exclude.
+```
+
+**Never proceed to file modifications without explicit "yes" from the user.**
+
 ### 3. Remove Safely
 - Start with SAFE items only
 - Remove one category at a time: deps -> exports -> files -> duplicates
@@ -76,6 +95,39 @@ After each batch:
 - Right before production deployment
 - Without proper test coverage
 - On code you don't understand
+
+## Examples
+
+### knip Output → Confirm → Remove
+
+**Input:** User asks to clean up dead code in a TypeScript monorepo.
+
+**Step 1 — run analysis:**
+```
+$ npx knip
+Unused files (2): src/utils/legacy-format.ts, src/components/OldButton.tsx
+Unused exports (1): LegacyUser (src/types.ts:45)
+Unused dependencies (1): lodash
+```
+
+**Step 2 — present plan (dry-run):**
+```
+## Removal Plan
+
+### SAFE (3 items)
+- [ ] src/utils/legacy-format.ts — 0 references (confirmed via grep)
+- [ ] src/components/OldButton.tsx — 0 references
+- [ ] export LegacyUser in src/types.ts:45 — 0 references
+
+### CAREFUL (1 item)
+- [ ] lodash in package.json — knip says unused, but found 1 dynamic
+      require('lodash') in scripts/build.js — skipping, needs manual check
+
+Apply this plan? [yes / skip <item>]
+```
+
+**Step 3 — after "yes":** removes the 3 SAFE items, runs tests, commits.
+Skips `lodash` and explains why.
 
 ## Success Metrics
 
