@@ -1,0 +1,15 @@
+{
+  "_description": "Slack MCP server — read channels, post messages, search conversations from Claude",
+  "_install": "Requires a Slack Bot Token (xoxb-...) with channels:read, chat:write, search:read scopes",
+  "_token_url": "https://api.slack.com/apps → OAuth & Permissions",
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "YOUR_SLACK_BOT_TOKEN_HERE",
+        "SLACK_TEAM_ID": "YOUR_SLACK_TEAM_ID_HERE"
+      }
+    }
+  }
+}

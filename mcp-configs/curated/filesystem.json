@@ -1,0 +1,15 @@
+{
+  "_description": "Filesystem MCP server — read and write local files outside the current project directory",
+  "_install": "No auth required. Set allowed_paths to directories Claude may access.",
+  "_warning": "Only grant access to directories you trust Claude to read and write.",
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/your/projects"
+      ]
+    }
+  }
+}

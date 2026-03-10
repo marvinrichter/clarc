@@ -1,0 +1,14 @@
+{
+  "_description": "Linear MCP server — create and update issues, list projects, manage team workflows from Claude",
+  "_install": "Requires a Linear API key (Personal API Keys in Linear settings)",
+  "_token_url": "https://linear.app/settings/api",
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "@linear/mcp-server"],
+      "env": {
+        "LINEAR_API_KEY": "YOUR_LINEAR_API_KEY_HERE"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_description": "GitHub MCP server — PRs, issues, repos, code search, file operations",
+  "_install": "Requires a GitHub Personal Access Token with repo scope",
+  "_token_url": "https://github.com/settings/tokens/new?scopes=repo,read:org",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
+    }
+  }
+}

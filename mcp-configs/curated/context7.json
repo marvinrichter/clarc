@@ -1,0 +1,11 @@
+{
+  "_description": "Context7 MCP server — live documentation lookup for any library (no auth required)",
+  "_install": "No API key needed. Fetches up-to-date docs from context7.com.",
+  "_docs": "https://context7.com",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    }
+  }
+}
