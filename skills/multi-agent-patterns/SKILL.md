@@ -497,8 +497,83 @@ describe('Orchestrator', () => {
 
 ---
 
-## Reference
+## Anti-Patterns
 
-- `agent-reliability` — retry strategies, circuit breakers, timeout hierarchies, cost control
-- `autonomous-loops` — long-running agent loop patterns
-- `observability` — OpenTelemetry setup for production tracing
+### Running Independent Sub-Agents Sequentially Instead of in Parallel
+
+**Wrong:**
+```typescript
+// Runs one at a time — wastes latency when tasks are independent
+const reviewResult = await codeReviewAgent.run(code)
+const securityResult = await securityAgent.run(code)
+const docsResult = await docAgent.run(code)
+```
+
+**Correct:**
+```typescript
+// Fan-out: all three run concurrently
+const [reviewResult, securityResult, docsResult] = await Promise.all([
+  codeReviewAgent.run(code),
+  securityAgent.run(code),
+  docAgent.run(code),
+])
+```
+
+**Why:** Sequential execution of independent agents multiplies latency unnecessarily — fan-out with `Promise.all` reduces wall-clock time to the slowest single agent.
+
+---
+
+### Passing the Full Conversation History to Every Sub-Agent
+
+**Wrong:**
+```typescript
+// Sub-agent receives 50 turns of unrelated orchestrator history
+async function handoff(fullConversation: Message[], nextSystem: string) {
+  return claude.messages.create({
+    system: nextSystem,
+    messages: fullConversation,  // bloats context, raises cost, degrades focus
+    max_tokens: 4096,
+  })
+}
+```
+
+**Correct:**
+```typescript
+// Compress to only what the next agent needs
+const summary = await summarizeForHandoff(context, 500)
+return claude.messages.create({
+  system: nextSystem,
+  messages: [{ role: 'user', content: summary }],
+  max_tokens: 4096,
+})
+```
+
+**Why:** Passing irrelevant history inflates token costs, risks hitting context limits, and distracts sub-agents with information they don't need.
+
+---
+
+### Using Opus for Lightweight Routing Decisions
+
+**Wrong:**
+```typescript
+const classification = await claude.messages.create({
+  model: 'claude-opus-latest',   // overkill for a one-word classification
+  system: 'Classify as: code-review | security-scan | documentation.',
+  messages: [{ role: 'user', content: task }],
+  max_tokens: 10,
+})
+```
+
+**Correct:**
+```typescript
+const classification = await claude.messages.create({
+  model: 'claude-haiku-latest',  // fast and cheap for routing
+  system: 'Classify as: code-review | security-scan | documentation. Reply with the category only.',
+  messages: [{ role: 'user', content: task }],
+  max_tokens: 10,
+})
+```
+
+**Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
+
+---

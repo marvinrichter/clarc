@@ -335,6 +335,122 @@ app.delete('/api/v1/orders/:id',
 
 ---
 
+## Anti-Patterns
+
+### Hashing Passwords with SHA-256 or MD5
+
+**Wrong:**
+```typescript
+import { createHash } from 'crypto';
+// SHA-256 is fast — attackers can brute-force billions of guesses per second
+const passwordHash = createHash('sha256').update(password).digest('hex');
+```
+
+**Correct:**
+```typescript
+import bcrypt from 'bcrypt';
+// bcrypt is deliberately slow — cost factor 12 = ~250ms per hash
+const passwordHash = await bcrypt.hash(password, 12);
+const valid = await bcrypt.compare(password, passwordHash);
+```
+
+**Why:** Fast hash functions (SHA, MD5) allow offline brute-force attacks to crack passwords in seconds; bcrypt/argon2id are designed to be computationally expensive.
+
+---
+
+### Skipping Session Regeneration After Login
+
+**Wrong:**
+```typescript
+app.post('/api/v1/auth/login', async (req, res) => {
+  const user = await validateCredentials(req.body);
+  req.session.userId = user.id;  // Reuses the pre-login session ID
+  res.json({ data: user });
+});
+```
+
+**Correct:**
+```typescript
+app.post('/api/v1/auth/login', async (req, res) => {
+  const user = await validateCredentials(req.body);
+  req.session.regenerate((err) => {  // Issues a new session ID on login
+    req.session.userId = user.id;
+    res.json({ data: { id: user.id, email: user.email } });
+  });
+});
+```
+
+**Why:** Reusing the pre-login session ID enables session fixation attacks, where an attacker plants a known session ID and hijacks the session after the victim logs in.
+
+---
+
+### Matching OAuth Users by Email Instead of Provider ID
+
+**Wrong:**
+```typescript
+// If an attacker registers a GitHub account with the same email, they take over the account
+let user = await User.findByEmail(profile.email);
+if (!user) user = await User.create({ email: profile.email });
+```
+
+**Correct:**
+```typescript
+// Match by the immutable provider-specific ID — email can be changed or shared
+let user = await User.findByGithubId(profile.id);
+if (!user) user = await User.create({ githubId: profile.id, name: profile.name });
+```
+
+**Why:** Emails are not unique across providers and can be changed; provider IDs are immutable and scoped to a single identity.
+
+---
+
+### Storing Raw API Keys in the Database
+
+**Wrong:**
+```typescript
+// If the DB is compromised, all API keys are immediately usable
+await db.insert(apiKeys).values({ userId, key: rawKey });
+```
+
+**Correct:**
+```typescript
+import { createHash } from 'crypto';
+// Store only the SHA-256 hash; return the raw key once to the user
+const keyHash = createHash('sha256').update(rawKey).digest('hex');
+const prefix = rawKey.substring(0, 12);  // For display only
+await db.insert(apiKeys).values({ userId, keyHash, prefix });
+return rawKey;  // Show once — never store
+```
+
+**Why:** A database breach exposing raw keys gives attackers immediate full access; hashed keys require brute-force that is infeasible for long random keys.
+
+---
+
+### Performing RBAC Checks Only on the Frontend
+
+**Wrong:**
+```typescript
+// React component hides the button, but the API has no authorization check
+function AdminPanel() {
+  if (user.role !== 'admin') return null;
+  return <button onClick={() => deleteUser(id)}>Delete User</button>;
+}
+```
+
+**Correct:**
+```typescript
+// Every state-changing endpoint enforces permissions server-side
+app.delete('/api/v1/users/:id',
+  requireAuth,
+  requirePermission('users:write'),
+  deleteUserHandler,
+);
+```
+
+**Why:** Frontend checks are bypassed by calling the API directly; authorization must be enforced on every server-side request.
+
+---
+
 ## Security Hardening Checklist
 
 - [ ] Passwords hashed with bcrypt (cost factor ≥ 12) or argon2id — never SHA/MD5

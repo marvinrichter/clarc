@@ -1,0 +1,94 @@
+{
+  "date": "2026-03-10",
+  "overall_score": 7.5,
+  "total_hooks": 17,
+  "total_scripts": 36,
+  "dimensions": {
+    "event_coverage":       { "score": 9, "weight": 0.20, "note": "All 7 event types covered; UserPromptSubmit intentionally absent" },
+    "false_positive_risk":  { "score": 6, "weight": 0.15, "note": "observe.sh * matcher + tdd-guard false-positives on Go/Rust/Python" },
+    "performance_impact":   { "score": 6, "weight": 0.15, "note": "3 synchronous blocking hooks: worst case 65s per Rust edit" },
+    "error_handling":       { "score": 8, "weight": 0.15, "note": "exitCode dead code in format-dispatch; console.log in doc-file-warning" },
+    "dead_references":      { "score": 10,"weight": 0.10, "note": "All 21 referenced scripts verified to exist" },
+    "dead_hooks":           { "score": 8, "weight": 0.10, "note": "No dead hooks; typecheck hooks conditionally no-op in non-matching projects" },
+    "missing_critical_hooks":{ "score": 9, "weight": 0.10, "note": "All critical hooks present" },
+    "interaction_conflicts": { "score": 7, "weight": 0.05, "note": "format-dispatch rewrites file before typecheck reads it" }
+  },
+  "event_coverage": {
+    "PreToolUse":  ["pre-bash-dispatch.js", "doc-file-warning.js", "suggest-compact.js"],
+    "PreCompact":  ["pre-compact.js"],
+    "SessionStart":["session-start.js", "context-banner.js"],
+    "PostToolUse": ["agent-tracker.js","auto-checkpoint.js","pr-url-logger.js","post-edit-format-dispatch.js","system-health-check.js","post-edit-workflow-nudge.js","build-failure-router.js","post-edit-typecheck.js","post-edit-typecheck-rust.js","observe.sh"],
+    "Stop":        ["check-console-log.js"],
+    "Notification":["notification-handler.js"],
+    "SessionEnd":  ["session-end.js","evaluate-session.js","instinct-decay.js"]
+  },
+  "issues": [
+    {
+      "severity": "HIGH",
+      "hook": "PostToolUse Edit|Write → post-edit-format-dispatch.js",
+      "finding": "execFileSync (synchronous) with 5s timeout blocks Claude Code on every file edit",
+      "suggestion": "Add \"async\": true to this hook entry in hooks/hooks.json"
+    },
+    {
+      "severity": "HIGH",
+      "hook": "PostToolUse Edit → post-edit-typecheck-rust.js",
+      "finding": "execFileSync('cargo check') with 60s timeout, no async:true — blocks up to 60s per .rs edit",
+      "suggestion": "Add \"async\": true and \"timeout\": 30 to hooks/hooks.json. Add rate-limiting (max once per 60s)"
+    },
+    {
+      "severity": "HIGH",
+      "hook": "PostToolUse Edit → post-edit-typecheck.js",
+      "finding": "execFileSync('npx tsc --noEmit') with 30s timeout, no async:true — blocks 10-30s per .ts/.tsx edit",
+      "suggestion": "Add \"async\": true to the hook entry in hooks/hooks.json"
+    },
+    {
+      "severity": "HIGH",
+      "hook": "PostToolUse Edit|Write → post-edit-format-dispatch.js",
+      "finding": "exitCode set to 1 on formatter failure (line 158) but process.exit(0) always called (line 169). exitCode is dead code.",
+      "suggestion": "Change final process.exit(0) to process.exit(exitCode)"
+    },
+    {
+      "severity": "MEDIUM",
+      "hook": "PreToolUse Write → doc-file-warning.js",
+      "finding": "console.log(data) appends trailing newline to JSON stdout — can corrupt downstream JSON parsing",
+      "suggestion": "Replace with process.stdout.write(data)"
+    },
+    {
+      "severity": "MEDIUM",
+      "hook": "PostToolUse * → observe.sh",
+      "finding": "* matcher fires on every tool call (100+ times/session = 100+ background bash processes)",
+      "suggestion": "Narrow matcher to \"Edit|Write|Bash\" or add early-exit in observe.sh for non-learning-relevant tools"
+    },
+    {
+      "severity": "MEDIUM",
+      "hook": "PostToolUse Edit|Write → post-edit-workflow-nudge.js (tdd-sequence-guard)",
+      "finding": "Only 6 hardcoded test path candidates. Go, Python, Rust projects always get false-positive 'no test found' warnings",
+      "suggestion": "Extend candidates list; suppress nudge for .rs files (inline tests produce no separate file)"
+    },
+    {
+      "severity": "MEDIUM",
+      "hook": "format-dispatch + typecheck interaction",
+      "finding": "format-dispatch rewrites file; typecheck runs tsc against disk — type errors may reference pre-formatted line numbers",
+      "suggestion": "Make typecheck async:true so it always reads final disk state"
+    },
+    {
+      "severity": "LOW",
+      "hook": "PreToolUse Bash → pre-bash-dispatch.js (LONG_RUNNING)",
+      "finding": "bare make and docker patterns match fast subcommands (make help, docker ps) — spurious tmux reminders",
+      "suggestion": "Tighten to make (build|test|all|install) and docker (build|run|compose up)"
+    },
+    {
+      "severity": "LOW",
+      "hook": "PreToolUse Write → doc-file-warning.js",
+      "finding": ".clarc/context.md, docs/decisions/ADR-001.md, TODO.md trigger the non-standard doc warning incorrectly",
+      "suggestion": "Add docs/decisions/ and .clarc/ to the exclusion patterns"
+    }
+  ],
+  "performance_risk": {
+    ".rs":      "65s worst-case (format 5s sync + cargo check 60s sync)",
+    ".ts/.tsx": "35s worst-case (format 5s sync + tsc 30s sync)",
+    ".go/.py/.java": "5s (format-dispatch sync only)",
+    ".js/.jsx": "5s (format-dispatch sync only)"
+  },
+  "root_fix": "Add async:true to post-edit-format-dispatch, post-edit-typecheck, and post-edit-typecheck-rust in hooks/hooks.json"
+}

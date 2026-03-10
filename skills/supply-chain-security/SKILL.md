@@ -320,6 +320,120 @@ The NIST Secure Software Development Framework (SSDF) SP 800-218 maps to common 
 
 ---
 
+## Anti-Patterns
+
+### Pinning Docker Images by Tag Instead of Digest
+
+**Wrong:**
+```dockerfile
+# Tag can be silently overwritten by the publisher — you get a different image next build
+FROM node:20-alpine
+FROM ubuntu:22.04
+```
+
+**Correct:**
+```dockerfile
+# Digest is immutable — points to exactly one content-addressed layer
+FROM node@sha256:a9c7d3eb7b20b59c6c89aaa93e05e0d8c7a3f5b6e2d1f4a8c9b0e7d6f5a4b3c2
+```
+
+**Why:** Tags are mutable references; a compromised registry or malicious publisher can replace the image a tag points to without your knowledge.
+
+---
+
+### Using Floating Version Ranges for Dependencies
+
+**Wrong:**
+```json
+{
+  "dependencies": {
+    "express": "^4.0.0",
+    "axios": "*",
+    "lodash": ">=4"
+  }
+}
+```
+
+**Correct:**
+```bash
+# Commit the lock file and use `npm ci` in CI to install exact pinned versions
+npm ci
+```
+
+```json
+{
+  "dependencies": {
+    "express": "4.18.2",
+    "axios": "1.6.0",
+    "lodash": "4.17.21"
+  }
+}
+```
+
+**Why:** Floating ranges allow a compromised or updated package to be silently pulled in on the next install without any code review.
+
+---
+
+### Pinning GitHub Actions by Tag
+
+**Wrong:**
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: actions/setup-node@v3
+```
+
+**Correct:**
+```yaml
+steps:
+  # Pinned to immutable commit SHAs — tags can be force-pushed
+  - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+  - uses: actions/setup-node@1a4442cacd436585916779262731d1f68a7eb5f0  # v3.8.0
+```
+
+**Why:** Git tags are mutable — a compromised action maintainer can replace the tag to point to malicious code and affect every pipeline using that tag.
+
+---
+
+### Ignoring `npm audit` Findings in CI
+
+**Wrong:**
+```yaml
+# Vulnerabilities are found but the pipeline succeeds anyway
+- run: npm audit || true
+```
+
+**Correct:**
+```yaml
+# Fail the build on HIGH or CRITICAL vulnerabilities
+- run: npm audit --audit-level=high
+```
+
+**Why:** Allowing audit failures trains teams to ignore known vulnerabilities; CI must enforce a minimum security bar to prevent regressions.
+
+---
+
+### Distributing Artifacts Without Signatures or Provenance
+
+**Wrong:**
+```bash
+# Push the image — no signature, no attestation, no SBOM
+docker push ghcr.io/myorg/myimage:latest
+```
+
+**Correct:**
+```bash
+# Sign the image with keyless Sigstore after pushing
+docker push ghcr.io/myorg/myimage:latest
+cosign sign --yes ghcr.io/myorg/myimage:latest
+# Attach SBOM attestation so consumers can verify contents
+cosign attest --yes --predicate sbom.json --type cyclonedx ghcr.io/myorg/myimage:latest
+```
+
+**Why:** Unsigned artifacts give no guarantee that what a consumer pulls is what you built — a registry compromise or MITM attack can substitute a malicious image silently.
+
+---
+
 ## Reference Commands
 
 - `/sbom` — SBOM generation and attestation workflow

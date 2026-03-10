@@ -365,5 +365,116 @@ export { createUser, validateEmail } from './user';
 | `Partial<T>` | Update/patch DTOs |
 | `Omit<T, K>` | Strip sensitive fields from output types |
 
+## Anti-Patterns
+
+### Using `any` to Silence Type Errors
+
+**Wrong:**
+```typescript
+function processResponse(data: any) {
+  return data.user.name.toUpperCase() // no safety — crashes at runtime
+}
+```
+
+**Correct:**
+```typescript
+interface ApiResponse {
+  user: { name: string }
+}
+
+function processResponse(data: unknown): string {
+  if (typeof data !== 'object' || data === null || !('user' in data)) {
+    throw new Error('Invalid response shape')
+  }
+  return (data as ApiResponse).user.name.toUpperCase()
+}
+```
+
+**Why:** `any` disables the type checker entirely; `unknown` forces explicit narrowing and keeps runtime safety intact.
+
+### Using TypeScript `enum` Instead of Const Objects
+
+**Wrong:**
+```typescript
+enum OrderStatus {
+  Draft = 'DRAFT',
+  Pending = 'PENDING',
+  Shipped = 'SHIPPED',
+}
+// Generates runtime JS, numeric members are unsafe, not iterable easily
+```
+
+**Correct:**
+```typescript
+const OrderStatus = {
+  Draft:   'DRAFT',
+  Pending: 'PENDING',
+  Shipped: 'SHIPPED',
+} as const
+
+type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus]
+```
+
+**Why:** Const objects are plain JS values (zero runtime overhead), tree-shakeable, and produce better discriminated union types than enums.
+
+### Throwing Exceptions for Expected Error Cases
+
+**Wrong:**
+```typescript
+async function getUser(id: string): Promise<User> {
+  const user = await db.findById(id)
+  if (!user) throw new Error('User not found') // caller must know to catch
+  return user
+}
+```
+
+**Correct:**
+```typescript
+async function getUser(id: string): AsyncResult<User, NotFoundError> {
+  const user = await db.findById(id)
+  if (!user) return Err({ code: 'NOT_FOUND', message: `User ${id} not found` })
+  return Ok(user)
+}
+```
+
+**Why:** Exceptions for predictable cases (not-found, validation) make error handling invisible to callers; Result types make it explicit and type-checked.
+
+### Widening Types With Type Assertions (`as`) Instead of Narrowing
+
+**Wrong:**
+```typescript
+const config = JSON.parse(raw) as AppConfig // no validation — runtime bomb
+const userId = req.params.id as UserId       // bypasses brand check
+```
+
+**Correct:**
+```typescript
+const parsed = AppConfigSchema.parse(JSON.parse(raw)) // zod/valibot validate
+const userId = UserId(req.params.id)                  // branded constructor validates
+```
+
+**Why:** `as` casts are lies to the compiler — they shift type errors from compile-time to runtime; always validate at system boundaries instead.
+
+### Exporting Bare Types Without a Public API Surface
+
+**Wrong:**
+```typescript
+// Re-export everything — callers couple to internals
+export * from './user'
+export * from './order'
+export * from './internal-helpers' // leaks implementation details
+```
+
+**Correct:**
+```typescript
+// domain/index.ts — explicit, intentional public API
+export type { User, UserId } from './user'
+export type { Order, OrderStatus } from './order'
+export { createUser, validateEmail } from './user'
+// internal-helpers NOT exported
+```
+
+**Why:** Star re-exports make every internal symbol part of the public API, increasing coupling and preventing safe refactoring.
+
 > For advanced patterns — mapped types, template literal types, conditional types, infer, type guards & narrowing, decorator patterns, async patterns, testing with vitest/jest, and performance optimization — see skill: `typescript-patterns-advanced`.
 > For testing patterns — unit tests with vitest, mocking with vi.mock, integration tests, and coverage setup — see skill: `typescript-testing`.

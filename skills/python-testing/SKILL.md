@@ -462,4 +462,128 @@ def test_with_mock_config(mock_config):
     assert mock_config.api_key == "test-key"
 ```
 
+## Anti-Patterns
+
+### Patching the Wrong Namespace
+
+**Wrong:**
+```python
+# Patching where the function is defined, not where it is used
+@patch("mypackage.utils.requests.get")
+def test_fetch(mock_get):
+    mock_get.return_value.json.return_value = {"ok": True}
+    result = mypackage.service.fetch_data()  # imports requests.get directly
+    mock_get.assert_called_once()  # never called — wrong target
+```
+
+**Correct:**
+```python
+# Patch the name as it is imported in the module under test
+@patch("mypackage.service.requests.get")
+def test_fetch(mock_get):
+    mock_get.return_value.json.return_value = {"ok": True}
+    result = mypackage.service.fetch_data()
+    mock_get.assert_called_once()
+```
+
+**Why:** `@patch` replaces the name in the namespace where it is *looked up*, not where it is *defined*.
+
+---
+
+### Sharing Mutable State Between Tests via Module-Level Variables
+
+**Wrong:**
+```python
+SHARED_LIST = []  # module-level mutable state
+
+def test_append_item():
+    SHARED_LIST.append("a")
+    assert "a" in SHARED_LIST
+
+def test_list_is_empty():
+    assert SHARED_LIST == []  # fails if test_append_item ran first
+```
+
+**Correct:**
+```python
+@pytest.fixture
+def items():
+    return []
+
+def test_append_item(items):
+    items.append("a")
+    assert "a" in items
+
+def test_list_is_empty(items):
+    assert items == []  # always a fresh list
+```
+
+**Why:** Module-level mutable state leaks between tests, making order-dependent failures that are hard to diagnose.
+
+---
+
+### Asserting on Exceptions Without Checking the Message
+
+**Wrong:**
+```python
+def test_invalid_email_raises():
+    with pytest.raises(ValueError):
+        create_user(email="not-an-email")
+    # passes even if ValueError is raised for a completely different reason
+```
+
+**Correct:**
+```python
+def test_invalid_email_raises():
+    with pytest.raises(ValueError, match="invalid email"):
+        create_user(email="not-an-email")
+```
+
+**Why:** Without `match=`, any `ValueError` — including ones from unrelated bugs — makes the test pass silently.
+
+---
+
+### Using `assert` Inside a Loop Without Identifying the Failing Case
+
+**Wrong:**
+```python
+def test_all_users_active():
+    for user in get_users():
+        assert user.is_active  # failure output: "assert False" — no context
+```
+
+**Correct:**
+```python
+@pytest.mark.parametrize("user", get_users())
+def test_user_is_active(user):
+    assert user.is_active, f"Expected user {user.id!r} to be active"
+```
+
+**Why:** Parametrized tests identify exactly which input failed; a loop gives no context and stops at the first failure.
+
+---
+
+### Using `time.sleep` in Tests to Wait for Async Behaviour
+
+**Wrong:**
+```python
+def test_background_job_runs():
+    trigger_job()
+    time.sleep(2)  # hope it finishes in time — flaky on slow CI
+    assert job_completed()
+```
+
+**Correct:**
+```python
+def test_background_job_runs():
+    trigger_job()
+    # poll with a timeout, or use pytest-asyncio / mock the scheduler
+    deadline = time.monotonic() + 5
+    while not job_completed():
+        assert time.monotonic() < deadline, "Job did not complete within 5s"
+        time.sleep(0.1)
+```
+
+**Why:** Fixed sleeps cause flaky tests on slow machines and waste time on fast ones; polling with a deadline is both reliable and fast.
+
 > For advanced testing — async code (pytest-asyncio), exception attribute testing, file/side-effect testing, test organization (directory structure, test classes), best practices, API endpoint patterns, database testing, pytest configuration, and CLI reference — see skill: `python-testing-advanced`.

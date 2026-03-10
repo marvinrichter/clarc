@@ -327,4 +327,123 @@ func TestRender(t *testing.T) {
 }
 ```
 
+## Anti-Patterns
+
+### Not Using t.Helper in Helper Functions
+
+**Wrong:**
+```go
+func assertNoError(t *testing.T, err error) {
+    if err != nil {
+        t.Fatalf("unexpected error: %v", err)
+    }
+}
+```
+
+**Correct:**
+```go
+func assertNoError(t *testing.T, err error) {
+    t.Helper() // Reports failure at the call site, not inside the helper
+    if err != nil {
+        t.Fatalf("unexpected error: %v", err)
+    }
+}
+```
+
+**Why:** Without `t.Helper()`, failure output points to the helper's line rather than the test line that called it, making failures hard to trace.
+
+### Sharing State Across Parallel Subtests
+
+**Wrong:**
+```go
+for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+        t.Parallel()
+        result := Process(tt.input) // tt captured by reference — data race
+        _ = result
+    })
+}
+```
+
+**Correct:**
+```go
+for _, tt := range tests {
+    tt := tt // Capture loop variable by value
+    t.Run(tt.name, func(t *testing.T) {
+        t.Parallel()
+        result := Process(tt.input)
+        _ = result
+    })
+}
+```
+
+**Why:** Without capturing `tt`, all goroutines share the same loop variable and read the last iteration's value, causing non-deterministic failures.
+
+### Using os.MkdirTemp Instead of t.TempDir
+
+**Wrong:**
+```go
+func TestFileProcessing(t *testing.T) {
+    tmpDir, _ := os.MkdirTemp("", "test-*")
+    defer os.RemoveAll(tmpDir) // Easy to forget or miss on test failure
+    // ...
+}
+```
+
+**Correct:**
+```go
+func TestFileProcessing(t *testing.T) {
+    tmpDir := t.TempDir() // Automatically cleaned up after test
+    // ...
+}
+```
+
+**Why:** `t.TempDir()` is automatically cleaned up by the testing framework even when the test panics, eliminating manual cleanup and the risk of leaking temp files.
+
+### Checking Only wantErr Without Validating the Error
+
+**Wrong:**
+```go
+if tt.wantErr {
+    if err == nil {
+        t.Error("expected error, got nil")
+    }
+    return // Does not check error type or message
+}
+```
+
+**Correct:**
+```go
+if tt.wantErr {
+    if err == nil {
+        t.Error("expected error, got nil")
+        return
+    }
+    if tt.errContains != "" && !strings.Contains(err.Error(), tt.errContains) {
+        t.Errorf("error %q does not contain %q", err.Error(), tt.errContains)
+    }
+    return
+}
+```
+
+**Why:** Checking only for the presence of any error allows wrong error types and messages to pass silently, weakening the test contract.
+
+### Using t.Log Instead of t.Errorf for Failures
+
+**Wrong:**
+```go
+if got != want {
+    t.Log("got:", got, "want:", want) // Test still passes!
+}
+```
+
+**Correct:**
+```go
+if got != want {
+    t.Errorf("got %v; want %v", got, want) // Marks test as failed
+}
+```
+
+**Why:** `t.Log` only records output without failing the test; use `t.Errorf` (continues) or `t.Fatalf` (stops immediately) to actually mark a test as failed.
+
 > For advanced testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage tools, HTTP handler testing with httptest, CLI reference, best practices, and CI/CD integration — see skill: `golang-testing-advanced`.

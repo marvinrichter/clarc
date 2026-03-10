@@ -438,4 +438,117 @@ def process():
 # Each call to process() prints the call count
 ```
 
+## Anti-Patterns
+
+### Using a Mutable Default Argument
+
+**Wrong:**
+```python
+def append_item(item, collection=[]):  # list is created once at definition time
+    collection.append(item)
+    return collection
+
+append_item("a")  # ["a"]
+append_item("b")  # ["a", "b"]  — unexpected: shares the same list
+```
+
+**Correct:**
+```python
+def append_item(item, collection=None):
+    if collection is None:
+        collection = []
+    collection.append(item)
+    return collection
+```
+
+**Why:** Default argument values are evaluated once when the function is defined; mutable defaults accumulate state across calls.
+
+---
+
+### Catching `Exception` (or bare `except`) and Swallowing It
+
+**Wrong:**
+```python
+def load_user(user_id: str) -> User | None:
+    try:
+        return db.find(user_id)
+    except Exception:
+        return None  # hides programming errors, network failures, everything
+```
+
+**Correct:**
+```python
+def load_user(user_id: str) -> User | None:
+    try:
+        return db.find(user_id)
+    except UserNotFoundError:
+        return None
+    except DatabaseError as e:
+        raise ServiceUnavailableError("Database unreachable") from e
+```
+
+**Why:** Catching `Exception` silently swallows bugs and infrastructure failures, making them impossible to observe or recover from correctly.
+
+---
+
+### Building Strings with `+` in a Loop
+
+**Wrong:**
+```python
+def build_csv(rows: list[dict]) -> str:
+    result = ""
+    for row in rows:
+        result += ",".join(str(v) for v in row.values()) + "\n"
+    return result
+```
+
+**Correct:**
+```python
+def build_csv(rows: list[dict]) -> str:
+    lines = [",".join(str(v) for v in row.values()) for row in rows]
+    return "\n".join(lines) + "\n"
+```
+
+**Why:** String concatenation in a loop is O(n²) because each `+` creates a new string; `str.join` is O(n).
+
+---
+
+### Using `Optional[X]` Instead of `X | None` in Modern Python
+
+**Wrong:**
+```python
+from typing import Optional
+
+def find_user(user_id: str) -> Optional[User]:
+    ...
+```
+
+**Correct:**
+```python
+def find_user(user_id: str) -> User | None:
+    ...
+```
+
+**Why:** `X | None` (PEP 604, Python 3.10+) is the idiomatic modern syntax; `Optional` requires a `typing` import and is now considered legacy style.
+
+---
+
+### Using `type(x) == SomeClass` Instead of `isinstance`
+
+**Wrong:**
+```python
+def process(value):
+    if type(value) == int:
+        return value * 2
+```
+
+**Correct:**
+```python
+def process(value):
+    if isinstance(value, int):
+        return value * 2
+```
+
+**Why:** `type(x) == SomeClass` breaks for subclasses and does not respect the Python type hierarchy; `isinstance` handles inheritance correctly.
+
 > For advanced patterns — concurrency (threading, multiprocessing, async/await), hexagonal architecture with FastAPI (full working code, Protocol ports, DI wiring, RFC 7807 error handling, tests), memory optimization, tooling (`pyproject.toml`, ruff, mypy), and anti-patterns — see skill: `python-patterns-advanced`.

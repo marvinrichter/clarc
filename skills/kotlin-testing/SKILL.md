@@ -333,6 +333,137 @@ class FakeUserRepository : UserRepository {
 
 ---
 
+## Anti-Patterns
+
+### Using runBlocking Instead of runTest for Coroutine Tests
+
+**Wrong:**
+```kotlin
+@Test
+fun `emits values from flow`() = runBlocking { // Blocks thread, ignores virtual time
+    val values = mutableListOf<Int>()
+    counterFlow(1, 3).collect { values.add(it) }
+    assertEquals(listOf(1, 2, 3), values)
+}
+```
+
+**Correct:**
+```kotlin
+@Test
+fun `emits values from flow`() = runTest { // Controls virtual time, no real delays
+    val values = mutableListOf<Int>()
+    val job = backgroundScope.launch { counterFlow(1, 3).collect { values.add(it) } }
+    advanceUntilIdle()
+    assertEquals(listOf(1, 2, 3), values)
+}
+```
+
+**Why:** `runBlocking` executes delays in real time and does not integrate with `TestCoroutineScheduler`, making tests slow and unable to control timing.
+
+### Using every/verify for Suspend Functions Instead of coEvery/coVerify
+
+**Wrong:**
+```kotlin
+every { userRepo.findById(any()) } returns testUser  // Compile error or silent failure
+verify { userRepo.findById(testUser.id) }
+```
+
+**Correct:**
+```kotlin
+coEvery { userRepo.findById(any()) } returns testUser
+coVerify { userRepo.findById(testUser.id) }
+```
+
+**Why:** `every`/`verify` do not understand suspend functions; `coEvery`/`coVerify` are the MockK equivalents that correctly stub and assert on `suspend` calls.
+
+### Sharing Mutable State Between Tests via Class-Level Properties
+
+**Wrong:**
+```kotlin
+class OrderServiceTest {
+    private val repo = FakeOrderRepository() // Shared across all tests — state leaks
+    private val service = OrderService(repo)
+
+    @Test
+    fun `places order`() { service.place(validRequest) }
+
+    @Test
+    fun `rejects empty items`() { /* repo may contain orders from the previous test */ }
+}
+```
+
+**Correct:**
+```kotlin
+class OrderServiceTest {
+    private lateinit var repo: FakeOrderRepository
+    private lateinit var service: OrderService
+
+    @BeforeEach
+    fun setUp() {
+        repo = FakeOrderRepository()       // Fresh instance per test
+        service = OrderService(repo)
+    }
+}
+```
+
+**Why:** Class-level mutable state allows one test's side effects to pollute subsequent tests, causing order-dependent failures that are extremely difficult to diagnose.
+
+### Using H2 In-Memory Database for Integration Tests
+
+**Wrong:**
+```kotlin
+@SpringBootTest
+class UserRepoTest {
+    // application-test.properties: spring.datasource.url=jdbc:h2:mem:testdb
+    // H2 SQL dialect differs from PostgreSQL — migrations may silently fail
+}
+```
+
+**Correct:**
+```kotlin
+@Testcontainers
+@SpringBootTest
+class UserRepoTest {
+    companion object {
+        @Container @JvmStatic
+        val postgres = PostgreSQLContainer<Nothing>("postgres:16-alpine")
+
+        @DynamicPropertySource @JvmStatic
+        fun props(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url", postgres::getJdbcUrl)
+        }
+    }
+}
+```
+
+**Why:** H2's SQL dialect is not fully compatible with PostgreSQL, causing migrations and queries to behave differently in tests than in production.
+
+### Catching CancellationException in Tests
+
+**Wrong:**
+```kotlin
+@Test
+fun `handles timeout`() = runTest {
+    try {
+        withTimeout(100) { delay(Long.MAX_VALUE) }
+    } catch (e: Exception) { // Catches CancellationException — swallows coroutine cancellation
+        assertTrue(e is TimeoutCancellationException)
+    }
+}
+```
+
+**Correct:**
+```kotlin
+@Test
+fun `handles timeout`() = runTest {
+    assertFailsWith<TimeoutCancellationException> {
+        withTimeout(100) { delay(Long.MAX_VALUE) }
+    }
+}
+```
+
+**Why:** Catching the broad `Exception` type also catches `CancellationException`, which is the coroutine mechanism for structured concurrency; swallowing it corrupts the coroutine's cancellation state.
+
 ## Checklist
 
 - [ ] JUnit 5 configured with `useJUnitPlatform()`

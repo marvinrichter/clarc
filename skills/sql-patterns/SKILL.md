@@ -266,6 +266,108 @@ Look for:
 
 ---
 
+## Anti-Patterns
+
+### String Interpolation Instead of Parameterized Queries
+
+**Wrong:**
+```sql
+-- Application code building a raw query string
+query = "SELECT * FROM users WHERE email = '" + email + "'";
+-- email = "' OR '1'='1" → returns every row (SQL injection)
+```
+
+**Correct:**
+```sql
+-- PostgreSQL
+SELECT id, name FROM users WHERE email = $1;
+
+-- MySQL / SQLite
+SELECT id, name FROM users WHERE email = ?;
+```
+
+**Why:** String interpolation allows SQL injection; parameterized queries separate code from data and let the database engine handle escaping.
+
+---
+
+### `SELECT *` in Production Queries
+
+**Wrong:**
+```sql
+SELECT * FROM orders WHERE user_id = $1;
+-- transfers unused columns, breaks if column order or name changes
+```
+
+**Correct:**
+```sql
+SELECT id, status, total, created_at FROM orders WHERE user_id = $1;
+```
+
+**Why:** `SELECT *` transfers columns the application never uses, breaks application code when columns are added or renamed, and prevents the query planner from using index-only scans.
+
+---
+
+### OFFSET Pagination on Large Tables
+
+**Wrong:**
+```sql
+-- Page 500 of results: reads and discards 9 980 rows before returning 20
+SELECT id, name FROM products ORDER BY created_at DESC LIMIT 20 OFFSET 9980;
+```
+
+**Correct:**
+```sql
+-- Keyset pagination: jump straight to the cursor position
+SELECT id, name, created_at FROM products
+WHERE created_at < $1   -- cursor from last row of previous page
+ORDER BY created_at DESC
+LIMIT 20;
+```
+
+**Why:** `OFFSET N` forces the database to read and discard N rows on every page; keyset pagination navigates directly to the cursor position using an index, keeping cost O(log N).
+
+---
+
+### Implicit Comma Joins Instead of Explicit JOIN Syntax
+
+**Wrong:**
+```sql
+SELECT u.name, o.total
+FROM users u, orders o          -- implicit cross join
+WHERE u.id = o.user_id;         -- filter buried in WHERE
+```
+
+**Correct:**
+```sql
+SELECT u.name, o.total
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id;
+```
+
+**Why:** Implicit comma joins obscure intent, mix join conditions with filter conditions in `WHERE`, and are easy to accidentally omit — producing a full Cartesian product.
+
+---
+
+### Check-Then-Insert Race Condition Instead of UPSERT
+
+**Wrong:**
+```sql
+-- Application code: two round-trips, not atomic
+SELECT 1 FROM user_preferences WHERE user_id = $1 AND key = $2;
+-- race: another process inserts here → next statement fails with unique violation
+INSERT INTO user_preferences (user_id, key, value) VALUES ($1, $2, $3);
+```
+
+**Correct:**
+```sql
+INSERT INTO user_preferences (user_id, key, value, updated_at)
+VALUES ($1, $2, $3, NOW())
+ON CONFLICT (user_id, key)
+DO UPDATE SET value = EXCLUDED.value, updated_at = NOW();
+```
+
+**Why:** The check-then-insert pattern has a TOCTOU race condition and requires two network round-trips; `ON CONFLICT DO UPDATE` is atomic and idempotent.
+
 ## Checklist
 
 - [ ] No `SELECT *` in production queries

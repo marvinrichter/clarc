@@ -272,3 +272,133 @@ open target/site/jacoco/index.html
 - **Don't assert on `toString()`** — use `isEqualTo()` with proper `.equals()`/records
 - **Use `@Nested` for grouping** — keeps related test cases together without long method names
 - **`verify()` after `assertThat()`** — verify side effects after asserting the primary result
+
+## Anti-Patterns
+
+### Using JUnit `assertEquals` Instead of AssertJ
+
+**Wrong:**
+```java
+import static org.junit.jupiter.api.Assertions.*;
+
+assertEquals("expected", actual);           // swapped arg order is easy to get wrong
+assertTrue(users.contains(alice));          // unhelpful failure message
+assertNull(result);
+```
+
+**Correct:**
+```java
+import static org.assertj.core.api.Assertions.*;
+
+assertThat(actual).isEqualTo("expected");
+assertThat(users).contains(alice);
+assertThat(result).isNull();
+```
+
+**Why:** AssertJ produces human-readable failure messages and its fluent API prevents argument-order mistakes that silently reverse expected/actual.
+
+---
+
+### Mocking Without `@ExtendWith(MockitoExtension.class)`
+
+**Wrong:**
+```java
+class OrderServiceTest {
+    @Mock
+    private OrderRepository repository;  // never initialized — always null
+
+    @Test
+    void test() {
+        orderService.createOrder(...);  // NullPointerException
+    }
+}
+```
+
+**Correct:**
+```java
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+    @Mock
+    private OrderRepository repository;
+
+    @InjectMocks
+    private OrderService orderService;
+    // ...
+}
+```
+
+**Why:** Without the extension, `@Mock` fields are never injected by Mockito and remain `null`, causing NPEs instead of meaningful test failures.
+
+---
+
+### Verifying Interactions Before Asserting the Primary Result
+
+**Wrong:**
+```java
+@Test
+void createsOrder() {
+    var result = orderService.createOrder(request);
+    verify(emailService).sendConfirmation(any());  // side effect checked first
+    assertThat(result.id()).isNotNull();            // primary result buried after
+}
+```
+
+**Correct:**
+```java
+@Test
+void createsOrder() {
+    var result = orderService.createOrder(request);
+    assertThat(result.id()).isNotNull();            // primary result first
+    verify(emailService).sendConfirmation(any());  // side effects after
+}
+```
+
+**Why:** Asserting the primary result first makes test intent clear; if the main assertion fails, the verify is irrelevant and the failure message is more meaningful.
+
+---
+
+### Using `@BeforeAll` with Instance Fields
+
+**Wrong:**
+```java
+class ReportServiceTest {
+    private ReportService service;
+
+    @BeforeAll                              // static required, but field is not static
+    void setUpAll() {
+        service = new ReportService();      // compile error or NPE
+    }
+}
+```
+
+**Correct:**
+```java
+class ReportServiceTest {
+    private ReportService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new ReportService();      // fresh instance per test
+    }
+}
+```
+
+**Why:** `@BeforeAll` requires a `static` method (or `@TestInstance(Lifecycle.PER_CLASS)`); use `@BeforeEach` for instance setup to guarantee test isolation.
+
+---
+
+### Asserting on `toString()` Output
+
+**Wrong:**
+```java
+assertThat(user.toString()).contains("Alice");  // breaks on any toString() change
+```
+
+**Correct:**
+```java
+assertThat(user.name()).isEqualTo("Alice");     // assert the actual field
+// or, for records with proper equals:
+assertThat(user).isEqualTo(new User("alice-1", "Alice", "alice@example.com"));
+```
+
+**Why:** `toString()` is a debugging aid, not a contract; asserting on it couples tests to formatting details rather than behaviour.

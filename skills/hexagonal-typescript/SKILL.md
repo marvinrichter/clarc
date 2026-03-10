@@ -452,23 +452,120 @@ describe('PrismaMarketRepository', () => {
 })
 ```
 
-## Architecture Violation Checklist
+## Anti-Patterns
 
-- [ ] Domain model imports from `express`, `prisma`, `pg`, or any library → **violation**
-- [ ] Use case imports from `adapter/` packages → **violation**
-- [ ] HTTP handler calls repository directly (not via use case) → **violation**
-- [ ] `adapter/in/` imports from `adapter/out/` → **violation**
-- [ ] Domain types contain `any` or unbranded primitives for IDs → **smell**
-- [ ] Zod schema validation inside the domain model → **violation** (belongs in adapter/in)
+### Domain Model Importing Framework Dependencies
 
-## Relationship to DDD
+**Wrong:**
+```typescript
+// domain/model/market.ts
+import { Entity, Column } from 'typeorm'  // ORM leaks into domain
+import { Injectable } from '@nestjs/common'
 
-| Hexagonal | DDD |
-|---|---|
-| `domain/model/` | Entities, Value Objects, Aggregates |
-| `domain/port/out/` | Repository interface (per Aggregate Root) |
-| `domain/event/` | Domain Events |
-| `application/usecase/` | Application Services (orchestrate, dispatch events) |
-| `adapter/out/persistence/` | DB models + mappers (NOT domain types) |
+@Entity()
+@Injectable()
+export class Market {
+  @Column() name: string
+}
+```
 
-For DDD modeling patterns (Value Objects, Aggregates, Domain Events), see skill: `ddd-typescript`.
+**Correct:**
+```typescript
+// domain/model/market.ts
+// No framework imports — pure TypeScript only
+export interface Market {
+  readonly id: MarketId | null
+  readonly name: string
+  readonly status: MarketStatus
+}
+```
+
+**Why:** Framework annotations in the domain couple your business logic to infrastructure, making it impossible to test without starting the full framework.
+
+---
+
+### Use Case Depending on the Concrete Adapter
+
+**Wrong:**
+```typescript
+// application/usecase/CreateMarketService.ts
+import { PrismaMarketRepository } from '../../adapter/out/persistence/PrismaMarketRepository'
+
+export class CreateMarketService {
+  constructor(private readonly repo: PrismaMarketRepository) {}  // concrete class
+}
+```
+
+**Correct:**
+```typescript
+// application/usecase/CreateMarketService.ts
+import type { MarketRepository } from '../../domain/port/out/MarketRepository'
+
+export class CreateMarketService {
+  constructor(private readonly repo: MarketRepository) {}  // port interface
+}
+```
+
+**Why:** Depending on the concrete adapter prevents swapping implementations and forces integration tests even for pure business logic.
+
+---
+
+### HTTP Handler Calling the Repository Directly
+
+**Wrong:**
+```typescript
+// adapter/in/http/createMarketHandler.ts
+import { PrismaMarketRepository } from '../../out/persistence/PrismaMarketRepository'
+
+export function createMarketHandler(repo: PrismaMarketRepository) {
+  return async (req, res) => {
+    const market = await repo.save({ name: req.body.name })  // skips use case
+    res.status(201).json(market)
+  }
+}
+```
+
+**Correct:**
+```typescript
+// adapter/in/http/createMarketHandler.ts
+import type { CreateMarketUseCase } from '../../../domain/port/in/CreateMarketUseCase'
+
+export function createMarketHandler(createMarket: CreateMarketUseCase) {
+  return async (req, res, next) => {
+    const market = await createMarket.execute(req.body)
+    res.status(201).json(market)
+  }
+}
+```
+
+**Why:** Bypassing the use case skips business rule enforcement and breaks the inward dependency rule — adapters may only call ports, never each other.
+
+---
+
+### Zod Validation Inside the Domain Model
+
+**Wrong:**
+```typescript
+// domain/model/market.ts
+import { z } from 'zod'  // framework dependency inside domain
+
+export const marketSchema = z.object({ name: z.string().min(1) })
+export type Market = z.infer<typeof marketSchema>
+```
+
+**Correct:**
+```typescript
+// adapter/in/http/marketSchemas.ts  ← validation belongs in the inbound adapter
+import { z } from 'zod'
+export const createMarketSchema = z.object({ name: z.string().min(1).max(200) })
+
+// domain/model/market.ts  ← domain enforces invariants through pure logic
+export function createMarket(name: string): Market {
+  if (!name || name.trim() === '') throw new InvalidMarketError('name is required')
+  return { id: null, name: name.trim(), status: 'DRAFT' }
+}
+```
+
+**Why:** Schema validation libraries belong in the inbound adapter layer; the domain owns business invariants through pure guard clauses, not library-specific schemas.
+
+---
