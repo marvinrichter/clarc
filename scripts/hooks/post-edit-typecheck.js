@@ -49,6 +49,8 @@ process.stdin.on("end", async () => {
     const input = JSON.parse(data);
     const filePath = input.tool_input?.file_path;
 
+    if (!filePath || !filePath.match(/\.(ts|tsx)$/)) process.exit(0);
+
     if (filePath && /\.(ts|tsx)$/.test(filePath)) {
       const resolvedPath = path.resolve(filePath);
       if (!fs.existsSync(resolvedPath)) {

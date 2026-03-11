@@ -1,5 +1,5 @@
 ---
-description: Write a conference abstract (CFP submission) — generates abstract in 200/300/500-word versions, title variants, and speaker bio in 50/150-word versions.
+description: "cfp — write a conference talk proposal (Call For Papers abstract)"
 ---
 
 # CFP

@@ -27,6 +27,9 @@ process.stdin.on('end', () => {
     const content = input.tool_input?.content || '';
     const filePath = input.tool_input?.file_path || '';
 
+    const SAFE_EXTENSIONS = ['.png','.jpg','.jpeg','.svg','.wasm','.lock','.sum','.ico','.gif'];
+    if (SAFE_EXTENSIONS.some(ext => filePath.endsWith(ext))) process.exit(0);
+
     if (!content) process.exit(0);
 
     const secrets = scanForSecrets(content);

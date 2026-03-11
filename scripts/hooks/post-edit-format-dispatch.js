@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 /**
- * PostToolUse Hook: Dispatch formatting + console.log check in a single process.
+ * PostToolUse Hook: Dispatch formatting in a single process.
  *
- * Replaces 6 individual Edit hooks (5 formatters + console-warn) with one router:
- *  - Routes to the correct formatter by file extension (no-op for unknown types)
- *  - Inline console.log warning for JS/TS files (no child process needed)
+ * Routes to the correct formatter by file extension (no-op for unknown types).
+ * console.log detection is handled by the check-console-log.js Stop hook.
  *
  * Logs each invocation to ~/.claude/hooks.log for observability.
  */
 
 import { spawn } from 'child_process';
-import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { logHook } from './hook-logger.js';
@@ -64,26 +62,6 @@ const EXT_MAP = {
   '.dart': 'post-edit-format-dart.js'
 };
 
-const JS_TS_EXTS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
-
-/** Warn about console.log occurrences inline (no child process). */
-function warnConsoleLogs(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    const matches = [];
-    content.split('\n').forEach((line, idx) => {
-      if (/console\.log/.test(line)) matches.push(`${idx + 1}: ${line.trim()}`);
-    });
-    if (matches.length > 0) {
-      console.error(`[Hook] WARNING: console.log found in ${filePath}`);
-      matches.slice(0, 5).forEach(m => console.error(m));
-      console.error('[Hook] Remove console.log before committing');
-    }
-  } catch {
-    // File unreadable — pass through
-  }
-}
-
 /** Run a formatter script non-blocking via spawn and return a promise. */
 function runFormatter(scriptPath, input) {
   return new Promise((resolve, reject) => {
@@ -127,12 +105,7 @@ process.stdin.on('end', async () => {
 
       const ext = path.extname(filePath).toLowerCase();
 
-      // 1. Inline console.log check for JS/TS (no subprocess)
-      if (JS_TS_EXTS.has(ext)) {
-        warnConsoleLogs(filePath);
-      }
-
-      // 2. Dispatch to language-specific formatter (non-blocking spawn)
+      // 1. Dispatch to language-specific formatter (non-blocking spawn)
       const script = EXT_MAP[ext];
       if (script) {
         const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude');
