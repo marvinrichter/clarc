@@ -1,7 +1,7 @@
 ---
 name: product-evaluator
 description: Evaluates product ideas critically before any implementation begins. Assesses problem clarity, user fit, feasibility, competitive alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation. Use when a user wants to validate whether an idea is worth building.
-tools: ["Read", "Glob", "Grep", "WebSearch"]
+tools: ["Read", "Glob", "Grep", "WebSearch", "Write"]
 model: opus
 uses_skills:
   - product-lifecycle

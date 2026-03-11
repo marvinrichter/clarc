@@ -1,15 +1,14 @@
 ---
 name: continuous-learning-v2
-description: Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.1 adds project-scoped instincts to prevent cross-project contamination.
+description: Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.2 adds project-scoped instincts to prevent cross-project contamination.
 version: 2.2.0
 ---
 
-# Continuous Learning v2.1 - Instinct
--Based Architecture
+# Continuous Learning v2.2 — Instinct-Based Architecture
 
 An advanced learning system that turns your Claude Code sessions into reusable knowledge through atomic "instincts" - small learned behaviors with confidence scoring.
 
-**v2.1** adds **project-scoped instincts** — React patterns stay in your React project, Python conventions stay in your Python project, and universal patterns (like "always validate input") are shared globally.
+**v2.2** adds **project-scoped instincts** — React patterns stay in your React project, Python conventions stay in your Python project, and universal patterns (like "always validate input") are shared globally.
 
 ## When to Activate
 

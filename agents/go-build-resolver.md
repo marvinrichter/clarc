@@ -179,6 +179,10 @@ Applying now...
 
 Only modify files that contain build errors. Never change unrelated code, formatting, or style.
 
+## Before Writing Files
+
+Before modifying `go.mod` or `go.sum`, announce the planned changes (module additions, version pins, replacements, or removals) and confirm with the user before writing. These files affect the entire dependency graph and warrant explicit approval even when fixing a straightforward build error.
+
 ## Not This Agent
 
 - **Non-Go build errors** (TypeScript, Python, Java, Rust, etc.) → use `build-error-resolver`

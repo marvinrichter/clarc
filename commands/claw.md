@@ -1,5 +1,5 @@
 ---
-description: Start an interactive Claude REPL session (NanoClaw) — persistent conversation history, named sessions, and optional skill context loading via the claude CLI.
+description: "claw — connect to a NanoClaw interactive REPL session. Persistent conversation history, named sessions, and optional skill context loading via the claude CLI."
 ---
 
 # Claw Command
@@ -81,3 +81,5 @@ CLAW_SKILLS=tdd-workflow,security-review node scripts/claw.js
 ## After This
 
 - `/sessions` — manage and resume Claude Code sessions
+- `/verify` — run final type checks
+- `/checkpoint` — save session state

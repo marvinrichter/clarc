@@ -3,6 +3,7 @@ name: agent-quality-reviewer
 description: Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-audit or called by agent-system-reviewer during full system review.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
+model_note: Use opus when reviewing more than 20 agents (--all mode) for deeper reasoning quality; sonnet is sufficient for single-agent audits.
 uses_skills:
   - prompt-engineering
 ---

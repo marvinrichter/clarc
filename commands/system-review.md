@@ -52,34 +52,22 @@ Runs all components + systemic analysis. Recommended with `/overnight`:
 
 ### For Quick Mode
 
-1. Run `node scripts/ci/validate-wiring.js`
-2. Run `node scripts/ci/validate-naming.js`
-3. Report results inline — errors block, warnings note
-4. If errors: suggest specific fixes
+1. Run static validators
+2. Report results inline — errors block, warnings note
 
 ### For Components Mode
 
-1. **Create output directory**: `docs/system-review/components-YYYY-MM-DD/`
-2. **Launch in parallel** (agents run as subagents):
-   - Launch agent-quality-reviewer `--all` → save to `components-<date>/agents.json`
-   - Launch skill-depth-analyzer `--all` → save to `components-<date>/skills.json`
-   - Launch command-auditor `--all` → save to `components-<date>/commands.json`
-   - Launch hook-auditor → save to `components-<date>/hooks.json`
-3. **Generate summary**: Combine results into `docs/system-review/YYYY-MM-DD-components-report.md`
-4. **Show top issues**: List all HIGH severity issues across all components
+1. Create output directory
+2. Launch all 4 component analyzers in parallel
+3. Generate combined summary report
+4. Show top issues (HIGH severity and above)
 
 ### For Full Mode
 
 1. Run all Components Mode steps
-2. **Sequential additions** (these depend on components output):
-   - Launch prompt-quality-scorer `--all`
-   - Run `/learning-audit`
-   - Run `/workflow-check`
-   - Run `/competitive-review`
-
-3. **Synthesize**: Launch agent-system-reviewer to produce the Priority Matrix
-4. **Final report**: Save to `docs/system-review/YYYY-MM-DD-full-report.md`
-5. **Recommended actions**: End with top 5 P0/P1 actions for next roadmap
+2. Run sequential systemic analyzers
+3. Synthesize into Priority Matrix
+4. Save final report with top 5 P0/P1 recommended actions
 
 ## Output Structure
 
@@ -115,3 +103,44 @@ Every report includes:
 - Create a new roadmap from the P0/P1 findings in `docs/roadmaps/`
 - `/command-audit` — re-run command ergonomics check if command issues dominate
 - `/competitive-review` — deeper competitive analysis if market gaps are flagged
+
+## Implementation Details
+
+<details>
+<summary>Quick Mode — exact commands</summary>
+
+1. Run `node scripts/ci/validate-wiring.js`
+2. Run `node scripts/ci/validate-naming.js`
+3. Report results inline — errors block, warnings note
+4. If errors: suggest specific fixes
+
+</details>
+
+<details>
+<summary>Components Mode — launch sequences and file paths</summary>
+
+1. **Create output directory**: `docs/system-review/components-YYYY-MM-DD/`
+2. **Launch in parallel** (agents run as subagents):
+   - Launch agent-quality-reviewer `--all` → save to `components-<date>/agents.json`
+   - Launch skill-depth-analyzer `--all` → save to `components-<date>/skills.json`
+   - Launch command-auditor `--all` → save to `components-<date>/commands.json`
+   - Launch hook-auditor → save to `components-<date>/hooks.json`
+3. **Generate summary**: Combine results into `docs/system-review/YYYY-MM-DD-components-report.md`
+4. **Show top issues**: List all HIGH severity issues across all components
+
+</details>
+
+<details>
+<summary>Full Mode — sequential additions and synthesis</summary>
+
+1. Run all Components Mode steps
+2. **Sequential additions** (these depend on components output):
+   - Launch prompt-quality-scorer `--all`
+   - Run `/learning-audit`
+   - Run `/workflow-check`
+   - Run `/competitive-review`
+3. **Synthesize**: Launch agent-system-reviewer to produce the Priority Matrix
+4. **Final report**: Save to `docs/system-review/YYYY-MM-DD-full-report.md`
+5. **Recommended actions**: End with top 5 P0/P1 actions for next roadmap
+
+</details>

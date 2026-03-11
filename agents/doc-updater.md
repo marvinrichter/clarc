@@ -64,6 +64,10 @@ Applying now...
 
 If updating more than 3 files, list all of them before applying any.
 
+## Before Writing Files
+
+Before writing any file **outside** `docs/CODEMAPS/` (e.g., READMEs, guides, or any other documentation path), announce the full list of files you plan to create or update and wait for explicit user confirmation before proceeding. Files inside `docs/CODEMAPS/` may be written immediately after the dry-run preview above.
+
 ### 4. Codemap Format
 
 ```markdown

@@ -193,5 +193,5 @@ After the experiment completes:
 
 ## After This
 
-- `/resilience-audit` — audit resilience after experiment findings
+- `/resilience-review` — audit resilience after experiment findings
 - `/slo` — update SLOs based on experiment results

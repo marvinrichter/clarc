@@ -15,6 +15,14 @@ description: Generate SBOM (Software Bill of Materials), run vulnerability scan,
 
 Generate and integrate a Software Bill of Materials: $ARGUMENTS
 
+## Scope
+
+| In scope | Out of scope |
+|----------|-------------|
+| SBOM generation (SPDX/CycloneDX) | License compliance analysis (→ `/dep-audit`) |
+| CVE scanning via SBOM attestation | Code-level security issues (→ `/security-review`) |
+| Supply chain integrity verification | Dependency version updates (→ `/dep-update`) |
+
 ## Your Task
 
 Walk the user through the complete SBOM workflow: generate an SBOM, scan it for vulnerabilities, attach it to releases, and optionally sign with cosign attestation.

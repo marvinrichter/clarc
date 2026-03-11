@@ -304,6 +304,10 @@ Produce a Data Mesh Architecture Decision Record:
 [Phase 4: central warehouse traffic drops to 0]
 ```
 
+## Before Writing Files
+
+Before writing any architecture document (ADRs, data flow diagrams, Data Mesh specs, or migration plans), announce the document path and a 2–3 line summary of its intended content, then wait for user approval before proceeding. This ensures the scope and framing are correct before any file is created.
+
 ---
 
 ## Anti-Patterns to Catch Proactively

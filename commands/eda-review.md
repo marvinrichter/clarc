@@ -226,5 +226,5 @@ grep -rn "logger\.\|log\." src/ --include="*.ts" | grep -v "test\|spec" | head -
 
 ## After This
 
-- `/code-review` — review event handler implementation
-- `/tdd` — add idempotency and DLQ tests for flagged handlers
+- `/resilience-review` — validate event bus failure modes and dead-letter queue handling
+- `/add-observability` — add consumer lag metrics and dead-letter queue alerts

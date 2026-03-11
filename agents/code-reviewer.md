@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, ruby-reviewer, elixir-reviewer, rust-reviewer, cpp-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.
-tools: ["Read", "Grep", "Glob", "Bash"]
+tools: ["Read", "Grep", "Glob", "Bash", "Agent"]
 model: sonnet
 uses_skills:
   - security-review

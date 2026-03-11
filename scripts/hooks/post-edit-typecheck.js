@@ -9,9 +9,29 @@
  * and reports only errors related to the edited file.
  */
 
-import { execFileSync } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+
+function runWithTimeout(cmd, args, options, timeoutMs) {
+  return new Promise((resolve) => {
+    const child = spawn(cmd, args, { ...options, stdio: ['ignore', 'pipe', 'pipe'] });
+    let stdout = '';
+    let stderr = '';
+
+    const timer = setTimeout(() => {
+      child.kill('SIGTERM');
+      resolve({ timedOut: true, stdout, stderr });
+    }, timeoutMs);
+
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolve({ code, stdout, stderr, timedOut: false });
+    });
+  });
+}
 
 const MAX_STDIN = 1024 * 1024; // 1MB limit
 let data = "";
@@ -24,7 +44,7 @@ process.stdin.on("data", (chunk) => {
   }
 });
 
-process.stdin.on("end", () => {
+process.stdin.on("end", async () => {
   try {
     const input = JSON.parse(data);
     const filePath = input.tool_input?.file_path;
@@ -49,18 +69,20 @@ process.stdin.on("end", () => {
       }
 
       if (fs.existsSync(path.join(dir, "tsconfig.json"))) {
-        try {
-          // Use npx.cmd on Windows to avoid shell: true which enables command injection
-          const npxBin = process.platform === "win32" ? "npx.cmd" : "npx";
-          execFileSync(npxBin, ["tsc", "--noEmit", "--pretty", "false"], {
-            cwd: dir,
-            encoding: "utf8",
-            stdio: ["pipe", "pipe", "pipe"],
-            timeout: 30000,
-          });
-        } catch (err) {
+        // Use npx.cmd on Windows to avoid shell: true which enables command injection
+        const npxBin = process.platform === "win32" ? "npx.cmd" : "npx";
+        const result = await runWithTimeout(
+          npxBin,
+          ["tsc", "--noEmit", "--pretty", "false"],
+          { cwd: dir },
+          20000,
+        );
+
+        if (result.timedOut) {
+          console.error("[Hook] TypeScript check timed out after 20s");
+        } else if (result.code !== 0) {
           // tsc exits non-zero when there are errors — filter to edited file
-          const output = (err.stdout || "") + (err.stderr || "");
+          const output = result.stdout + result.stderr;
           // Compute paths that uniquely identify the edited file.
           // tsc output uses paths relative to its cwd (the tsconfig dir),
           // so check for the relative path, absolute path, and original path.

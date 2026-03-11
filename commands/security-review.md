@@ -13,6 +13,14 @@ description: Run comprehensive DevSecOps security scan — SAST (Semgrep), secre
 
 Run a full security scan for the project at: $ARGUMENTS
 
+## Scope
+
+| In scope | Out of scope |
+|----------|-------------|
+| OWASP Top 10 code vulnerabilities | Dependency CVEs (→ `/sbom`) |
+| Injection, XSS, CSRF, auth flaws | License compliance (→ `/dep-audit`) |
+| Secrets and PII in code | Infrastructure misconfigurations (→ `/iac-review`) |
+
 ## Your Task
 
 Execute a layered DevSecOps security scan covering static analysis, secrets detection, dependency vulnerabilities, container security, and (optionally) dynamic testing. Produce a prioritized report with fix plans for all CRITICAL and HIGH findings. Reference the `devsecops-patterns` skill for detailed tool patterns.

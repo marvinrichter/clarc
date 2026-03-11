@@ -169,5 +169,5 @@ grep -rn "#\[wasm_bindgen_test\]\|wasm_bindgen_test_configure" . --include="*.rs
 
 ## After This
 
-- `/wasm-build` — fix build issues flagged in review
-- `/security-review` — full scan for unsafe blocks
+- `/web-perf` — profile WASM bundle size, loading time, and execution hotspots
+- `/security-review` — audit WASM memory safety and host API usage

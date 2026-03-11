@@ -197,3 +197,16 @@ High-level picture of what building the chosen option looks like:
 Trade-off table: Option A wins on codebase fit (Redis in use), complexity (SSE is simpler than WS), and risk (battle-tested). Option C rejected outright (fails latency SLO). Option B rejected (unnecessary bidirectionality adds ops overhead).
 
 **Decision:** Option A — SSE + Redis. Main trade-off accepted: SSE not supported by IE11 (no IE users in customer base per analytics). Next: `/prd real-time-notifications`.
+
+---
+
+**Input:** `/explore product-search-caching` — product-evaluator gave Go on reducing p99 latency for catalog search from 800ms to <100ms.
+
+**Output:** ADR with 3 options compared. Example:
+- **Option A: Redis read-through cache** — cache search results keyed by query hash; TTL 60s; populated on cache miss by existing search service; Redis already in stack
+- **Option B: Elasticsearch with persistent index** — move catalog search to ES; powerful full-text, but adds a new infra dependency, index sync complexity, and ops burden
+- **Option C: DB query optimization + read replica** — add indexes, move search queries to read replica; zero new deps; likely only gets to ~300ms p99, misses the <100ms target
+
+Trade-off table: Option A wins on time to value (2–3 days), codebase fit (Redis already used), and cost (no new infra). Option C rejected (cannot meet the <100ms SLO based on profiling). Option B rejected (operational overhead disproportionate to the problem; revisit if search requirements expand).
+
+**Decision:** Option A — Redis read-through cache. Main trade-off accepted: stale results for up to 60s after catalog changes (acceptable per product: inventory accuracy SLO is 5 minutes). Next: `/prd product-search-caching`.

@@ -4,183 +4,77 @@ description: "Get a step-by-step workflow plan for a specific task using clarc c
 
 # /guide
 
-Given a task description, return an ordered workflow plan using the right clarc skills, agents, and commands.
+Quick routing guide — for detailed steps, each command has full instructions.
 
-## Instructions
+Match `$ARGUMENTS` to the closest category and route to the right command.
 
-1. Parse `$ARGUMENTS` (the task description after `/guide`)
-2. Match to the closest task type in the dispatch table below
-3. Output the focused 3–5 step workflow — no more, no less
-4. If no match found, use the **unknown task** fallback at the bottom
-
-## Output Format
-
-```
-## Workflow: <task name>
-
-**Step 1 — <phase>**: <action>
-**Step 2 — <phase>**: <action>
-...
-
-Effort: S | M | L   Key risks: <list>
-```
-
-## Task Type Dispatch Table
-
-Parse the task the user described and match it to the closest task type below. Output:
-
-```
-## Workflow: <task name>
-
-### Step 1 — <phase>
-Command/Agent: <what to run>
-Skill to read: `skill-name`
-Action: <specific instruction>
-
-### Step 2 — ...
-...
-
-### Estimated effort: <S | M | L>
-### Key risks: <list>
-```
-
-## Task Type → Workflow Map
-
-### auth / authentication / login / JWT / OAuth / permissions / RBAC
-1. Read skill `auth-patterns` for the right auth pattern (JWT vs session vs OAuth)
-2. `/plan` — generate implementation plan
-3. `/tdd` — write auth tests first (login, logout, token refresh, unauthorized access)
-4. Invoke `security-reviewer` after implementation
-5. `/security-review` — full security scan
-
+### auth / authentication / JWT / OAuth / RBAC
+Implement auth patterns securely with tests and a security scan.
+→ `/plan` → `/tdd` → `/security-review`
 ### testing / unit tests / integration tests / coverage
-1. Read skill `tdd-workflow`
-2. `/tdd` — enforce RED → GREEN → REFACTOR cycle
-3. Run `/test-coverage` to identify gaps
-4. For E2E: `/e2e`
-5. Invoke `tdd-guide` agent if stuck
-
-### E2E tests / end-to-end / playwright / cypress
-1. Read skill `e2e-testing`
-2. `/e2e` — generate and run E2E test journeys
-3. Invoke `e2e-runner` agent for maintenance
-4. Add to CI: `/setup-ci`
-
-### API / REST / endpoint / route / OpenAPI
-1. Read skill `api-design`
-2. Read skill `api-contract` — spec-first: write OpenAPI before code
-3. `/plan` → `/tdd` → implement
-4. `/typescript-review` or `/go-review` (language-appropriate)
-5. `/docs-review` — review API documentation
-
-### deploy / kubernetes / k8s / helm / infra / terraform
-1. Read skill `kubernetes-patterns` or `terraform-patterns`
-2. `/iac-review` — review infrastructure code
-3. `/gitops-review` — validate GitOps setup
-4. Invoke `gitops-architect` for design decisions
-5. `/finops-audit` — check cost impact
-
-### database / migration / schema / SQL / ORM / query
-1. Read skill `database-migrations`
-2. `/database-review` — review schema and queries
-3. `/migrate` — database migration workflow
-4. Invoke `database-reviewer` for query optimization
-
+Write tests first (TDD); use `/e2e` for end-to-end critical paths.
+→ `/tdd` or `/e2e`
+### E2E tests / end-to-end / Playwright / Cypress
+Generate and run E2E test journeys; wire into CI.
+→ `/e2e`
+### API / REST / endpoint / OpenAPI
+Spec-first design, then plan, implement with TDD, and review.
+→ `/plan` → `/tdd` → `/code-review`
+### deploy / kubernetes / k8s / Helm / Terraform
+Review infrastructure code, validate GitOps, check cost impact.
+→ `/iac-review` → `/gitops-review` → `/finops-audit`
+### database / migration / schema / SQL / ORM
+Review schema and queries, then run the migration workflow.
+→ `/database-review` → `/migrate`
 ### refactor / clean up / dead code / simplify
-1. `/debt-audit` — identify technical debt
-2. Read skill `legacy-modernization` if large refactor
-3. Invoke `refactor-cleaner` — find dead code
-4. `/tdd` — ensure tests pass before and after
-5. `/code-review` after each refactor step
-
+Audit debt, remove dead code, guard with tests, then review.
+→ `/debt-audit` → `/tdd` → `/code-review`
 ### performance / slow / optimize / cache / N+1
-1. Read skill `caching-patterns` or `web-performance`
-2. `/profile` — guided profiling workflow
-3. Invoke `performance-analyst` with profiling output
-4. For frontend: `/web-perf`
-5. `/database-review` if queries are slow
-
-### security / vulnerability / OWASP / audit / pentest
-1. `/security-review` — full DevSecOps scan
-2. Invoke `security-reviewer` on affected files
-3. Read skill `auth-patterns` if auth-related
-4. Read skill `supply-chain-security` for dependency risks
-5. `/dep-audit` — dependency vulnerability check
-
+Profile hotspots; review slow queries separately.
+→ `/profile` → `/database-review`
+### security / vulnerability / OWASP / audit
+Full DevSecOps scan plus dependency vulnerability check.
+→ `/security-review` → `/dep-audit`
 ### CI/CD / pipeline / GitHub Actions / deployment
-1. Read skill `ci-cd-patterns`
-2. `/setup-ci` — generate CI pipeline
-3. Read skill `deployment-patterns`
-4. `/gitops-review` if Kubernetes-based
-
-### monitoring / observability / logging / metrics / alerts
-1. Read skill `observability`
-2. `/add-observability` — add production observability
-3. `/slo` — define SLIs and SLOs
-4. Invoke `architect` for observability architecture decisions
-
-### code review / PR review / review changes
-1. `/code-review` — comprehensive review
-2. Language-specific: `/typescript-review`, `/go-review`, `/python-review`, etc.
-3. `/security-review` if touching auth/API
-4. Invoke `pr-review-toolkit:review-pr` for full PR review
-
+Generate or update CI pipeline; validate GitOps for Kubernetes.
+→ `/setup-ci` → `/gitops-review`
+### monitoring / observability / logging / metrics
+Add production observability and define SLOs.
+→ `/add-observability` → `/slo`
+### code review / PR review
+Comprehensive review routed to the right language specialist.
+→ `/code-review`
 ### documentation / docs / README / API docs
-1. Read skill `api-docs-patterns`
-2. `/update-docs` — sync documentation
-3. `/onboard` — generate onboarding docs
-4. `/docs-review` — review existing docs quality
-
-### architecture / design / new service / microservice / system design
-1. Invoke `architect` or `planner` agent
-2. `/explore` — generate solution options with ADR
-3. `/arc42` — document architecture decision
-4. Read skill `adr-writing` — create Architecture Decision Record
-
+Sync docs, generate onboarding artefacts, review quality.
+→ `/update-docs` → `/onboard` → `/docs-review`
+### architecture / design / new service / system design
+Explore options, create ADR, document architecture.
+→ `/explore` → `/arc42`
 ### feature / new feature / implement
-1. `/plan` — create implementation plan
-2. `/tdd` — TDD workflow
-3. `/code-review` after implementation
-4. `/e2e` for critical paths
-
+Plan, build with TDD, review, add E2E for critical paths.
+→ `/plan` → `/tdd` → `/code-review` → `/e2e`
 ### onboarding / setup / new project / getting started
-1. `/quickstart` — clarc interactive onboarding
-2. `/context` — see what's most relevant for this project
-3. `/setup-dev` — set up local development environment
-4. `/onboard` — generate CONTRIBUTING.md and setup scripts
-
+Interactive clarc onboarding; generate CONTRIBUTING.md and setup scripts.
+→ `/quickstart` → `/onboard`
 ### dependency / packages / npm / upgrade / audit
-1. `/dep-audit` — full dependency audit
-2. `/dep-update` — dependency upgrade workflow
-3. Read skill `supply-chain-security`
-
-### accessibility / a11y / WCAG / screen reader
-1. Read skill `accessibility`
-2. `/a11y-audit` — comprehensive accessibility audit
-3. Read skill `accessibility-patterns`
-
+Audit and upgrade dependencies with supply-chain awareness.
+→ `/dep-audit` → `/dep-update`
+### accessibility / a11y / WCAG
+Comprehensive accessibility audit.
+→ `/a11y-audit`
 ### mobile / iOS / Android / Flutter / React Native
-1. Read skill `flutter-patterns` or `react-native-patterns` or `swift-patterns`
-2. Invoke `android-reviewer` or `swift-reviewer` or `flutter-reviewer`
-3. `/mobile-release` — mobile release workflow
-
+Language-appropriate review and mobile release workflow.
+→ `/code-review` → `/mobile-release`
 ### GraphQL / schema / resolver
-1. Read skill `graphql-patterns`
-2. Read skill `api-contract` — contract-first approach
-3. `/code-review`
-
+Contract-first GraphQL design and review.
+→ `/plan` → `/code-review`
 ### release / version / changelog / publish
-1. `/release` — cut a new release
-2. Read skill `release-management`
-
+Cut a new release with changelog and publish steps.
+→ `/release`
 ### unknown task
-If the task doesn't match a category above:
-1. Start with `/plan` — let the planner agent create a structured approach
-2. `/context` — check what clarc components are relevant for this project
-3. Ask: "What type of task is this?" to help narrow the category
+When no category matches, start with planning then explore relevant context.
+→ `/plan` → `/clarc-way`
 
-## After This
+---
 
-- `/plan` — for deeper implementation planning on any selected workflow
-- `/breakdown` — decompose the planned workflow into atomic tasks
-- `/clarc-way` — interactive walkthrough if the task type is still unclear
+See also: `/clarc-way` (interactive workflow guide), `/quickstart` (5-minute onboarding)
