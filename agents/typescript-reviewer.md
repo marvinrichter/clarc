@@ -80,6 +80,14 @@ When invoked:
 - **`any` in test mocks**: Type mock objects as the port interface, not `any`
 - **Missing `readonly`**: Mutable properties on domain/value objects
 
+## Toolchain Detection
+
+Respect the project's existing toolchain — do not recommend switching tools unless explicitly asked:
+
+- **Biome** (`biome.json` present) — defer to Biome for all formatting and linting rules; run `biome check .`
+- **ESLint** (`eslint.config.*` or `.eslintrc.*` present) — follow ESLint rules; run `eslint . --ext .ts`
+- **Both absent** — note the gap but do not prescribe a toolchain choice
+
 ## Diagnostic Commands
 
 ```bash

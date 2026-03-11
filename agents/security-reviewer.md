@@ -48,7 +48,18 @@ npx eslint . --plugin security
 9. **Known Vulnerabilities** — Dependencies up to date? npm audit clean?
 10. **Insufficient Logging** — Security events logged? Alerts configured?
 
-### 3. Code Pattern Review
+### 3. SSRF Heuristics
+
+Flag Server-Side Request Forgery patterns before other code review:
+
+- `fetch(url)`, `axios.get(url)`, `http.get(url)`, `got(url)` where `url` derives from user input (query param, request body, header)
+- `new URL(req.body.url)` followed by a fetch without an allowlist check
+- Internal-network targets reachable: check for missing block on `169.254.0.0/16` (AWS metadata), `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`
+- Redirect-following enabled (`follow: 'follow'` / `maxRedirects > 0`) on user-supplied URLs — allows bypassing domain allowlists via open redirects
+
+**Required guard:** allowlist of permitted hostnames validated against `new URL(url).hostname` before any outbound HTTP call with user-supplied URLs.
+
+### 4. Code Pattern Review
 Flag these patterns immediately:
 
 | Pattern | Severity | Fix |

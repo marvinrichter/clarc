@@ -68,6 +68,14 @@ For every changed field/endpoint/message, apply these rules:
 - Reused field number in Protobuf (corrupts wire encoding)
 - Removed enum value consumers may send
 
+**GraphQL-specific BREAKING changes checklist:**
+- Field removal from any type (Object, Interface, Union)
+- Type narrowing (e.g., `String` → `ID`, widening a scalar to a specific enum)
+- Non-null promotion: `fieldName: String` → `fieldName: String!` (breaks clients that don't send the field)
+- Enum value removal (clients may send or pattern-match the removed value)
+- Directive removal that clients rely on (`@deprecated`, custom directives)
+- Subscription payload shape changes (streaming consumers break silently)
+
 ### Step 4 — Check Against Consumer Pact Expectations
 
 For each BREAKING change, check if any pact file references the changed field/endpoint:

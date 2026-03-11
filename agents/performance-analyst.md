@@ -24,6 +24,18 @@ Before analyzing, determine:
 
 ### 2. Profiling Output Interpretation
 
+**Go pprof profile-type decision table:**
+
+| Profile type | What it reveals | Collect with |
+|---|---|---|
+| CPU | Hot functions consuming execution time | `go tool pprof cpu.prof` |
+| Heap | Allocation hotspots and retained memory | `go tool pprof heap.prof` |
+| Goroutine | Goroutine leak / blocking detection | `go tool pprof goroutine.prof` |
+| Block | Lock contention, channel blocking | `go tool pprof block.prof` |
+| Mutex | Mutex hold-time contention | `go tool pprof mutex.prof` |
+
+Interactive flamegraph for any profile: `go tool pprof -http=:8080 <profile.prof>`
+
 **Reading a pprof/flamegraph:**
 
 Look for:

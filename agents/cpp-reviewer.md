@@ -95,6 +95,17 @@ Fix: What to change
 - **Warning**: MEDIUM issues only (can merge with caution)
 - **Block**: CRITICAL or HIGH issues found
 
+## C++23 Module Support
+
+When reviewing code that uses C++23 modules, check for:
+
+- `import`/`module` units replacing `#include` — verify module partition naming and `export` visibility
+- `std::expected<T, E>` for error-or-value returns (preferred over exceptions in performance-sensitive paths)
+- `std::print` / `std::println` replacing `printf`/`cout` for type-safe, locale-aware output
+- `std::flat_map` / `std::flat_set` for cache-friendly sorted associative containers
+
+**Toolchain requirements for C++23 modules:** Clang 16+, GCC 13+, or MSVC 19.35+. Flag code using modules if the project's CI compiler is older — modules will silently fall back or fail.
+
 ## Reference
 
 For C++ patterns, RAII, and code examples, see skills: `cpp-patterns`, `cpp-patterns-advanced`, `cpp-testing`.

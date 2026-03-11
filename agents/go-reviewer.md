@@ -71,6 +71,16 @@ When invoked:
 - **Package naming**: Short, lowercase, no underscores
 - **Deferred call in loop**: Resource accumulation risk
 
+## Verification Toolchain
+
+After suggesting fixes, verify with these tools before marking issues resolved:
+
+- `go vet ./...` — detects common correctness issues (shadowed variables, unreachable code, etc.)
+- `staticcheck ./...` — deeper static analysis (deprecated API usage, unused code, SA-class checks)
+- `golangci-lint run` — meta-linter running 50+ linters; use `.golangci.yml` to configure enabled set
+
+For wiring these into CI pipelines, see the `go-build-resolver` agent.
+
 ## Diagnostic Commands
 
 ```bash
