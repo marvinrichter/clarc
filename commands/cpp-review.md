@@ -22,3 +22,19 @@ Delegate immediately to the **cpp-reviewer** agent with full context of:
 3. The C++ standard version in use (C++17/20/23)
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
+
+## When to Use This vs /code-review
+
+| | `/cpp-review` | `/code-review` |
+|---|---|---|
+| **Use when** | C++ project or C++ is primary language | Multi-language project or unsure |
+| **Reviewer** | cpp-reviewer (specialist) | code-reviewer → routes to cpp-reviewer automatically |
+| **Output** | C++-specific: RAII, memory safety, concurrency, C++20 | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/cpp-build` — rebuild after addressing compilation errors
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved

@@ -25,6 +25,24 @@ Delegate immediately to the **android-reviewer** agent with full context of:
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
 
+## When to Use This vs /code-review
+
+| | `/android-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Android/Jetpack Compose project | Multi-language project or unsure |
+| **Reviewer** | android-reviewer (specialist) | code-reviewer → routes to android-reviewer automatically |
+| **Output** | Android-specific: Compose, Hilt, Room, Coroutines | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+For pure backend Kotlin (no Android dependencies), use `/kotlin-review` instead.
+
+## After This
+
+- `/kotlin-review` — for backend Kotlin without Android dependencies
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Quick Self-Check (before invoking agent)
 
 Run these checks locally to catch obvious issues:

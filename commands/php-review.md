@@ -50,6 +50,21 @@ php artisan test        # Laravel
 php bin/console lint    # Symfony
 ```
 
+## When to Use This vs /code-review
+
+| | `/php-review` | `/code-review` |
+|---|---|---|
+| **Use when** | PHP 8.4+ / Laravel / Symfony project | Multi-language project or unsure |
+| **Reviewer** | php-reviewer (specialist) | code-reviewer → routes to php-reviewer automatically |
+| **Output** | PHP-specific: strict types, security, framework patterns | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/php-reviewer.md`

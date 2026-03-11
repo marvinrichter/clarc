@@ -22,3 +22,18 @@ Delegate immediately to the **ruby-reviewer** agent with full context of:
 3. Rails version and relevant gem context if applicable
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
+
+## When to Use This vs /code-review
+
+| | `/ruby-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Ruby/Rails project | Multi-language project or unsure |
+| **Reviewer** | ruby-reviewer (specialist) | code-reviewer → routes to ruby-reviewer automatically |
+| **Output** | Ruby-specific: Rails conventions, N+1, Brakeman security | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved

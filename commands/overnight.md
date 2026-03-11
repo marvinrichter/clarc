@@ -8,7 +8,7 @@ Given a feature idea in `$ARGUMENTS`, analyze it, select the right pipeline patt
 
 ---
 
-## Phase 0: Analyze and Select Pattern
+## Step 1 — Analyze and Select Pattern
 
 **Do this before creating any files.**
 
@@ -122,7 +122,7 @@ If the user says "modify: use continuous-claude instead" or similar, switch patt
 
 ---
 
-## Phase 1: Detect Project Configuration
+## Step 2 — Detect Project Configuration
 
 After confirmation, detect the right commands:
 
@@ -144,7 +144,7 @@ After confirmation, detect the right commands:
 
 ---
 
-## Phase 2: Create Spec File
+## Step 3 — Create Spec File
 
 Always create `docs/specs/overnight-YYYY-MM-DD-<feature-name>.md`:
 
@@ -187,7 +187,7 @@ Always create `docs/specs/overnight-YYYY-MM-DD-<feature-name>.md`:
 
 ---
 
-## Phase 3: Initialize SHARED_TASK_NOTES.md
+## Step 4 — Initialize SHARED_TASK_NOTES.md
 
 Always create or overwrite `SHARED_TASK_NOTES.md`:
 
@@ -225,7 +225,7 @@ Always create or overwrite `SHARED_TASK_NOTES.md`:
 
 ---
 
-## Phase 4: Generate Pattern-Specific Setup
+## Step 5 — Generate Pattern-Specific Setup
 
 ### Pattern A: Sequential Pipeline
 
@@ -490,7 +490,7 @@ To start:
 
 ---
 
-## Phase 5: Final Output
+## Step 6 — Final Output
 
 After generating all files, always output:
 

@@ -169,6 +169,16 @@ Run: `black app/routes/user.py app/services/auth.py`
 | ⚠️ Warning | Only MEDIUM issues (merge with caution) |
 | ❌ Block | CRITICAL or HIGH issues found |
 
+## When to Use This vs /code-review
+
+| | `/python-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Python project or Python is primary language | Multi-language project or unsure |
+| **Reviewer** | python-reviewer (specialist) | code-reviewer → routes to python-reviewer automatically |
+| **Output** | Python-specific: type safety, security, Pythonic idioms | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
 ## Integration with Other Commands
 
 - Use `/tdd` first to ensure tests pass

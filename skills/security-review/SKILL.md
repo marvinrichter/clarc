@@ -335,7 +335,6 @@ catch (error) {
 - [ ] Detailed errors only in server logs
 - [ ] No stack traces exposed to users
 
-
 ### 9. Dependency Security
 
 #### Regular Updates

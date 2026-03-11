@@ -6,6 +6,15 @@ description: Guided workshop for designing a multi-agent system — task decompo
 
 Design a multi-agent system for: $ARGUMENTS
 
+## When to Use This vs /orchestrator-design
+
+| | `/agent-design` | `/orchestrator-design` |
+|---|---|---|
+| **Style** | Interactive workshop — multi-step, guided | Direct delegation — one-shot output |
+| **User involvement** | High — validates decomposition, refines pattern | Low — goal in, design document out |
+| **Output** | Design reviewed interactively in conversation | Saved to `docs/architecture/<name>-orchestration.md` |
+| **Use when** | Requirements are fuzzy or first-time design | Requirements are clear, want artifact fast |
+
 ## Your Task
 
 Guide the user through a structured multi-agent system design workshop. Delegate deep architectural work to the `orchestrator-designer` agent, then validate and refine the output interactively.

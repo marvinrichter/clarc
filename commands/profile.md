@@ -167,7 +167,14 @@ python process_large_file.py --input testdata/large.json
 
 ## Step 6 — Interpret Results
 
-After the profile completes, guide the user through reading the output:
+After the profile completes, **invoke the `performance-analyst` agent** with the profiling output.
+
+Pass: the raw profiling data (pprof output, flamegraph file path, Lighthouse report, or N+1 query log). The agent will:
+- Identify top hotspots with expected impact estimates
+- Detect unnecessary allocations, blocking I/O, N+1 queries, missing indexes
+- Provide prioritized optimization recommendations
+
+Then guide the user through reading the output directly:
 
 **Flamegraph:**
 1. Find the WIDEST bars — most CPU time spent there

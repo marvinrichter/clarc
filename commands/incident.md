@@ -6,9 +6,7 @@ description: Open and manage a production incident. Creates a structured inciden
 
 Open a production incident, guide the response, and generate all communication artifacts.
 
-## Instructions
-
-### 1. Parse Arguments
+## Step 1 — Parse Arguments
 
 `$ARGUMENTS` can be:
 - Description of what's broken: `checkout failing with 500 errors`
@@ -18,7 +16,7 @@ Open a production incident, guide the response, and generate all communication a
 
 If empty: ask "What's broken? Describe the symptoms."
 
-### 2. Assess Severity
+## Step 2 — Assess Severity
 
 Based on the description, determine severity:
 - P0: complete outage, login broken, payments failing, data loss
@@ -28,7 +26,7 @@ Based on the description, determine severity:
 
 Ask for confirmation if uncertain: "Based on the description, this looks like P1. Correct?"
 
-### 3. Create Incident Document
+## Step 3 — Create Incident Document
 
 Create `docs/incidents/YYYY-MM-DD-HH-MM-<short-name>.md`:
 
@@ -66,7 +64,7 @@ Create `docs/incidents/YYYY-MM-DD-HH-MM-<short-name>.md`:
 |--------|-------|-----|--------|
 ```
 
-### 4. Generate Communication
+## Step 4 — Generate Communication
 
 **Status page message:**
 ```
@@ -90,7 +88,7 @@ I'll post updates every 15 minutes.
 
 Output both messages for the user to post.
 
-### 5. Guide Root Cause Analysis
+## Step 5 — Guide Root Cause Analysis
 
 Ask diagnostic questions based on the symptoms:
 - "When did it start? Was there a recent deploy?"
@@ -100,7 +98,7 @@ Ask diagnostic questions based on the symptoms:
 
 As answers come in, update the Timeline section in the incident doc.
 
-### 6. Resolution
+## Step 6 — Resolution
 
 When the user says the issue is resolved:
 
@@ -124,7 +122,7 @@ When the user says the issue is resolved:
    Run: /incident post-mortem docs/incidents/<this-file>.md
    ```
 
-### 7. Post-Mortem Mode
+## Step 7 — Post-Mortem Mode
 
 If `$ARGUMENTS` starts with `post-mortem`:
 
@@ -136,7 +134,7 @@ Read the incident file. Generate a full post-mortem using the blameless format (
 
 Save to `docs/incidents/post-mortems/YYYY-MM-DD-<name>-post-mortem.md`.
 
-### 8. Runbook Mode
+## Step 8 — Runbook Mode
 
 If `$ARGUMENTS` starts with `runbook <service> <failure>`:
 

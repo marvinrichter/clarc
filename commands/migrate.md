@@ -6,20 +6,18 @@ description: Database migration workflow — plan, review, apply, and verify sch
 
 Safe database migration workflow with review gate before apply.
 
-## Instructions
-
-### 1. Detect Migration Tool
+## Step 1 — Detect Migration Tool
 
 Check for migration tool in order:
 - `package.json` has `drizzle-orm` → **Drizzle** (`drizzle-kit`)
 - `package.json` has `@prisma/client` → **Prisma** (`prisma migrate`)
 - `pyproject.toml` / `requirements.txt` has `alembic` → **Alembic**
-- `go.mod` has `golang-migrate` or `goose` → **golang-migrate** / **Goose**
+- `go.mod` has `golang-migrate` or `goose` → `golang-migrate` / `Goose`
 - `pom.xml` / `build.gradle` has `flyway` → **Flyway**
 
 If none detected, ask the user which tool they use.
 
-### 2. Parse Arguments
+## Step 2 — Parse Arguments
 
 `$ARGUMENTS` may contain:
 - (empty) → run full workflow: generate → review → apply → verify
@@ -29,7 +27,7 @@ If none detected, ask the user which tool they use.
 - `rollback` → rollback last migration
 - `status` → show migration status
 
-### 3. Generate Migration (if needed)
+## Step 3 — Generate Migration (if needed)
 
 **Drizzle:**
 ```bash
@@ -54,7 +52,7 @@ migrate create -ext sql -dir migrations -seq "$MIGRATION_NAME"
 # Creates: NNNNNN_<name>.up.sql + NNNNNN_<name>.down.sql
 ```
 
-### 4. Review the Migration
+## Step 4 — Review the Migration
 
 Read the generated migration file. Check for:
 
@@ -92,7 +90,7 @@ Proceed anyway? (yes/no)
 
 For CRITICAL issues, do NOT proceed even if user says yes. Explain the safe migration pattern instead.
 
-### 5. Safe Migration Patterns
+## Step 5 — Safe Migration Patterns
 
 **Adding a NOT NULL column to existing table:**
 ```sql
@@ -119,7 +117,7 @@ Phase 1 (app deploy):     Stop reading/writing old column
 Phase 2 (this migration): DROP COLUMN (safe, column already unused)
 ```
 
-### 6. Apply Migration
+## Step 6 — Apply Migration
 
 **Check environment:**
 - If `$ENVIRONMENT` or inferred from git branch is `prod` or `production` → require explicit confirmation:
@@ -156,7 +154,7 @@ migrate -database "$DATABASE_URL" -path migrations up
 flyway migrate
 ```
 
-### 7. Verify
+## Step 7 — Verify
 
 After apply, run the following checks:
 
@@ -174,7 +172,7 @@ After apply, run the following checks:
    SELECT COUNT(*) FROM affected_table;
    ```
 
-### 8. Report
+## Step 8 — Report
 
 ```
 Migration Complete

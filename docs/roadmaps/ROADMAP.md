@@ -2,7 +2,7 @@
 
 ## Active
 
-_No active roadmaps._
+No active roadmaps.
 
 ---
 
@@ -27,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (19)
+## Done (20)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [command-structure-depth](done/command-structure-depth.md) | Command UX 6.2→8.0: step structure, arg docs, next-steps, delegation wiring, 16 review disambiguations, 2 new commands | #31 |
 | [agent-skill-completeness](done/agent-skill-completeness.md) | Agent tool gaps, process skill workflows, RFC 7807 fix, P2 agent quality, skill size extraction | #30 |
 | [command-namespace-cleanup](done/command-namespace-cleanup.md) | eval→llm-eval, multi-* disambiguation, orchestrator-design + sdk-design commands, promote/deps/security renames, instinct-* step depth | #29 |
 | [hook-reliability](done/hook-reliability.md) | Typecheck timeouts, checkpoint staging scope, async race, format-dispatch spawn, pre-write secret scan | #28 |
