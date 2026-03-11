@@ -241,6 +241,55 @@ echo "Error budget at ${BUDGET_PCT}% — deployment allowed"
 
 ---
 
+## Full SLO Lifecycle — End-to-End Walkthrough
+
+This example traces a new API service from zero to fully alerting SLOs.
+
+**1. Define SLI** — measure user-facing success rate in Prometheus:
+```promql
+# availability-sli.promql
+sum(rate(http_requests_total{service="payment-api",status!~"5.."}[5m]))
+/ sum(rate(http_requests_total{service="payment-api"}[5m]))
+```
+
+**2. Set SLO** — target 99.5% availability over a 28-day rolling window.
+Budget: `(1 - 0.995) * 28 * 24 * 60 = 201.6 minutes` of acceptable downtime.
+
+**3. Create burn rate alert** — page on-call if budget burns at 14.4× (exhausted in 2 h):
+```yaml
+# prometheus/rules/payment-api-slo.yml
+- alert: PaymentAPIErrorBudgetCritical
+  expr: |
+    (sum(rate(http_requests_total{service="payment-api",status=~"5.."}[5m]))
+     / sum(rate(http_requests_total{service="payment-api"}[5m])))
+    > 14.4 * 0.005
+  labels:
+    severity: page
+  annotations:
+    summary: "payment-api burning error budget at 14.4× — deploy freeze"
+```
+
+**4. Enforce budget policy** — gate CI deploys when budget < 10%:
+```bash
+# .github/workflows/deploy.yml (excerpt)
+- name: Check error budget
+  run: bash scripts/check-error-budget.sh payment-api 10
+  # → exits 1 and blocks deploy if budget < 10%
+```
+
+**5. Trigger postmortem** — when budget hits 0%, auto-open a Jira ticket:
+```bash
+BUDGET=$(curl -s "$PROMETHEUS/api/v1/query?query=error_budget_remaining_pct{service='payment-api'}" \
+  | jq -r '.data.result[0].value[1]')
+if (( $(echo "$BUDGET <= 0" | bc -l) )); then
+  gh issue create --repo org/postmortems \
+    --title "SLO breach: payment-api $(date +%Y-%m-%d)" \
+    --body "Error budget exhausted. See Grafana dashboard: $DASHBOARD_URL"
+fi
+```
+
+---
+
 ## Related
 
 - [observability](../observability/SKILL.md) — metrics infrastructure

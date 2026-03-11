@@ -169,6 +169,47 @@ Obtain via Bash: `date -u +%Y-%m-%dT%H:%M:%SZ`. Never use a date-only approximat
 }
 ```
 
+## Worked Example — Stocktake with 3 Findings
+
+**Scenario:** Full Stocktake run on a project with 3 skills worth highlighting.
+
+**Phase 1 — Inventory output:**
+```
+Scanning:
+  ✓ ~/.claude/skills/         (42 files)
+  ✓ ~/projects/my-api/.claude/skills/   (3 files)
+```
+
+**Phase 2 — Quality Evaluation results (excerpt):**
+
+| Skill | 7d use | Verdict | Reason |
+|-------|--------|---------|--------|
+| `api-pagination-filtering` | 8 | Keep | Concrete cursor handler (TypeScript), combined request example, and when-to-use decision table. Unique — not covered by api-design. No overlap found. |
+| `chatlog-to-article` | 0 | Merge into `content-creation` | 38-line thin wrapper; no code examples. Step 4 of content-creation already covers the same "extract article angle" workflow. Integrate the single unique tip ("open with a concrete failure, not a lesson") as a callout note in content-creation. |
+| `legacy-http-client` | 0 | Retire | References `node-fetch` v2 patterns superseded by the native `fetch` in Node 18+. The `http-client-patterns` skill covers the same use cases with current API. No unique content remains after removing the deprecated examples. |
+
+**Phase 3 — Consolidation actions proposed:**
+
+```
+Retire:  ~/.claude/skills/legacy-http-client/SKILL.md
+  → Reason: node-fetch v2 is EOL; covered by http-client-patterns
+  → Impact: no dependent skills or MEMORY.md references found
+  Confirm? [y/N]
+
+Merge:   ~/.claude/skills/chatlog-to-article/SKILL.md → content-creation
+  → Action: copy "open with concrete failure" tip to content-creation as a callout
+  → Then delete chatlog-to-article/
+  Confirm? [y/N]
+```
+
+**Result after user confirms both:**
+- `legacy-http-client/` — deleted
+- `content-creation/SKILL.md` — updated with merged tip
+- `chatlog-to-article/` — deleted
+- `api-pagination-filtering/` — unchanged (Keep)
+
+---
+
 ## Notes
 
 - Evaluation is blind: the same checklist applies to all skills regardless of origin (ECC, self-authored, auto-extracted)

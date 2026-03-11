@@ -159,3 +159,40 @@ async function listPostsHandler(req, reply) {
 ```
 
 **Why tie-break on `(createdAt, id)`:** Sorting by timestamp alone causes rows with identical timestamps to appear in arbitrary order across pages. Adding `id` as a secondary sort key makes the cursor deterministic even under bulk inserts.
+
+## Combined Request — Cursor + Filter + Sort + Sparse Fieldset
+
+A single request using all four features at once:
+
+```http
+GET /api/v1/orders?cursor=eyJpZCI6NDIwfQ&limit=10&status=active&created_at[after]=2025-01-01&sort=-total,created_at&fields=id,total,status,customer.name
+Authorization: Bearer <token>
+```
+
+**What each parameter does:**
+
+| Parameter | Meaning |
+|-----------|---------|
+| `cursor=eyJpZCI6NDIwfQ` | Resume after order id=420 (opaque, base64-encoded) |
+| `limit=10` | Return up to 10 results |
+| `status=active` | Filter: only active orders |
+| `created_at[after]=2025-01-01` | Filter: created after Jan 1 2025 |
+| `sort=-total,created_at` | Sort by total descending, then created_at ascending |
+| `fields=id,total,status,customer.name` | Sparse fieldset — omit heavy fields |
+
+**Response:**
+
+```json
+{
+  "data": [
+    { "id": "421", "total": 299.99, "status": "active", "customer": { "name": "Alice" } },
+    { "id": "430", "total": 149.00, "status": "active", "customer": { "name": "Bob" } }
+  ],
+  "meta": {
+    "has_next": true,
+    "next_cursor": "eyJpZCI6NDMwfQ"
+  }
+}
+```
+
+The client passes `next_cursor` value as `cursor` in the next request to get the following page.
