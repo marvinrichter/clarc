@@ -1,6 +1,6 @@
 # Agent & Skill Completeness
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-11
 **Goal:** Close agent wiring gaps (Write tool, missing commands), lift process skill actionability, fix the RFC 7807 inconsistency, and address P2 agent quality issues.
 
@@ -46,19 +46,19 @@ Each of the following skills needs a concrete step-by-step workflow section and/
 
 | ID | Item | Status |
 |----|------|--------|
-| P1-A1 | solution-designer: add Write tool | 📋 |
-| P1-A2 | bash-reviewer + flutter-reviewer: verify Bash tool | 📋 |
-| P1-S1 | product-lifecycle: decision tree | 📋 |
-| P1-S2 | strategic-ddd: bounded context workflow | 📋 |
-| P1-S3 | agent-conflict-resolution: decision tree | 📋 |
-| P1-S4 | instinct-lifecycle: lifecycle steps | 📋 |
-| P1-S5 | continuous-learning-v2: quick-start workflow | 📋 |
-| P1-R1 | tdd-workflow: RFC 7807 example fix | 📋 |
-| P2-A1 | typescript-reviewer: second example | 📋 |
-| P2-A2 | command-auditor: second example | 📋 |
-| P2-A3 | hook-auditor: second example | 📋 |
-| P2-A4 | doc-updater: tighten trigger | 📋 |
-| P2-A5 | scala-reviewer: uses_skills frontmatter | 📋 |
-| P2-A6 | prompt-quality-scorer/reviewer: disambiguation | 📋 |
-| P2-A7 | competitive-analyst/workflow-os: routing boundary | 📋 |
-| P2-S1 | Extract advanced sections from top-5 oversized skills | 📋 |
+| P1-A1 | solution-designer: add Write tool | ✅ |
+| P1-A2 | bash-reviewer + flutter-reviewer: verify Bash tool | ✅ |
+| P1-S1 | product-lifecycle: decision tree | ✅ |
+| P1-S2 | strategic-ddd: bounded context workflow | ✅ |
+| P1-S3 | agent-conflict-resolution: decision tree | ✅ |
+| P1-S4 | instinct-lifecycle: lifecycle steps | ✅ |
+| P1-S5 | continuous-learning-v2: quick-start workflow | ✅ |
+| P1-R1 | tdd-workflow: RFC 7807 example fix | ✅ |
+| P2-A1 | typescript-reviewer: second example | ✅ |
+| P2-A2 | command-auditor: second example | ✅ |
+| P2-A3 | hook-auditor: second example | ✅ |
+| P2-A4 | doc-updater: tighten trigger | ✅ |
+| P2-A5 | scala-reviewer: uses_skills frontmatter | ✅ |
+| P2-A6 | prompt-quality-scorer/reviewer: disambiguation | ✅ (already had notes) |
+| P2-A7 | competitive-analyst/workflow-os: routing boundary | ✅ (already had notes) |
+| P2-S1 | Extract advanced sections from top-5 oversized skills | ✅ cpp-testing (809→301) + api-contract (746→597) + 2 new *-advanced skills |

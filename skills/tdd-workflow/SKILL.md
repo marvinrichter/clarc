@@ -161,8 +161,7 @@ describe('GET /api/markets', () => {
     const data = await response.json()
 
     expect(response.status).toBe(200)
-    expect(data.success).toBe(true)
-    expect(Array.isArray(data.data)).toBe(true)
+    expect(Array.isArray(data.data)).toBe(true)  // envelope pattern: { data: [...], meta: {...} }
   })
 
   it('validates query parameters', async () => {

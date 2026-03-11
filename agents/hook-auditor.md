@@ -236,3 +236,31 @@ Total hooks: 7 | Total hook scripts: 9 | Overall system score: 7.8 / 10
 | LOW      | Error Handling     | session-end.js: fs.writeFileSync not wrapped in try/catch      | Wrap in try/catch, log to stderr on failure   |
 | LOW      | Dead Hooks         | ruby-format hook matches *.rb — no Ruby files in project       | Remove or add comment explaining intent       |
 ```
+
+**Input:** `/hook-audit PostToolUse` — audit only PostToolUse hooks in a clarc installation.
+
+**Output:**
+```
+## Hook Audit: PostToolUse hooks (3 hooks, 3 scripts)
+
+### Event Coverage Map
+| Event Type      | Hooks Count | Scripts                                                        |
+|-----------------|-------------|----------------------------------------------------------------|
+| PostToolUse     | 3           | post-edit-format-dispatch.js, build-failure-router.js, post-edit-workflow-nudge.js |
+
+### Dimension Scores (PostToolUse scope)
+| Dimension          | Score | Note                                                              |
+|--------------------|-------|-------------------------------------------------------------------|
+| False Positive Risk| 7     | post-edit-format-dispatch has no node_modules exclusion           |
+| Performance Impact | 8     | build-failure-router at ~150ms; others <50ms                      |
+| Error Handling     | 9     | All 3 scripts have try/catch; fallback on missing formatter       |
+| Dead Hooks         | 10    | All matchers match real tool calls in project                     |
+| Interaction Conflicts | 9  | post-edit-workflow-nudge and post-edit-format-dispatch both match Edit — order is deterministic (format first) |
+
+### Issues
+| Severity | Dimension          | Finding                                                           | Suggestion                                          |
+|----------|--------------------|-------------------------------------------------------------------|-----------------------------------------------------|
+| LOW      | False Positive Risk | post-edit-format-dispatch fires on Write to vendor/ paths        | Add: `if (toolInput.file_path?.includes('node_modules')) return;` |
+
+Score: 8.6 / 10 (PostToolUse scope only) — GOOD.
+```

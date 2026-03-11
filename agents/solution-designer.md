@@ -1,7 +1,7 @@
 ---
 name: solution-designer
 description: Generates and compares multiple solution approaches for a validated product idea. Produces 2-4 concrete options with trade-off analysis and an Architecture Decision Record (ADR) recommending one approach. Use after product-evaluator has given a Go or Modify recommendation.
-tools: ["Read", "Glob", "Grep", "WebSearch"]
+tools: ["Read", "Write", "Glob", "Grep", "WebSearch"]
 model: opus
 ---
 

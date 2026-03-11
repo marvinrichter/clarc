@@ -217,3 +217,27 @@ Overall system score: X.X / 10
 | MEDIUM | missing_commands | No command for `supply-chain-auditor` agent | Add commands/supply-chain-audit.md |
 | LOW | feedback_loop | `/plan` output lacks "next steps" suggestion | Add "Run /tdd next" at the end |
 ```
+
+**Input:** `/command-audit tdd` — audit a single command `commands/tdd.md`.
+
+**Output:**
+```
+## Command Audit: commands/tdd.md
+
+### Dimension Scores
+| Dimension          | Score | Note                                               |
+|--------------------|-------|----------------------------------------------------|
+| Naming Consistency | 10    | Short, imperative, matches /plan and /e2e patterns |
+| Built-in Conflicts | 10    | No conflict                                        |
+| Argument Design    | 8     | $ARGUMENTS documented; no argument example given   |
+| Feedback Loop      | 9     | RED/GREEN/IMPROVE phases clear; next step to /e2e  |
+| Step Count         | 8     | 5 steps — within ideal 3–6 range                   |
+| Agent Invocation   | 10    | Delegates to tdd-guide; agent verified to exist    |
+
+### Issues
+| Severity | Dimension      | Finding                                            | Suggestion                               |
+|----------|----------------|----------------------------------------------------|------------------------------------------|
+| LOW      | argument_design| No argument example in $ARGUMENTS documentation   | Add: "e.g., /tdd add-authentication"     |
+
+Score: 9.2 / 10 — GOOD. 1 minor issue.
+```

@@ -136,3 +136,24 @@ For detailed TypeScript patterns and code examples, see skills: `ddd-typescript`
 ### Summary
 2 critical, 3 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
 ```
+
+**Input:** 2 modified `.tsx` files after adding a React Server Component for a product listing page in a Next.js 14 app.
+
+**Output:**
+```
+## Review: app/products/page.tsx, app/products/ProductCard.tsx
+
+### CRITICAL
+- [page.tsx:22] SQL injection: `db.query(\`SELECT * FROM products WHERE category = '${searchParams.category}'\`)` — Fix: use parameterized query `db.query('SELECT * FROM products WHERE category = $1', [searchParams.category])`
+- [page.tsx:41] Missing input validation: `searchParams.limit` used directly as `LIMIT ${searchParams.limit}` with no Zod parse — Fix: `const limit = z.coerce.number().min(1).max(100).default(20).parse(searchParams.limit)`
+
+### HIGH
+- [ProductCard.tsx:18] Non-null assertion without justification: `product.imageUrl!` — Fix: use `product.imageUrl ?? '/placeholder.png'` or add a comment explaining guarantee
+- [page.tsx:58] Domain type exposed in response: returns raw DB row directly to component instead of DTO — Fix: map with `toProductDTO(row)` before passing as props
+
+### MEDIUM
+- [ProductCard.tsx:34] `console.log` in production component: `console.log('render', product.id)` — Fix: remove or replace with structured logging
+
+### Summary
+2 critical, 2 high, 1 medium. Block merge until CRITICAL and HIGH are resolved.
+```

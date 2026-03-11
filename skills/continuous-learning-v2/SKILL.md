@@ -21,6 +21,36 @@ An advanced learning system that turns your Claude Code sessions into reusable k
 - Managing project-scoped vs global instincts
 - Promoting instincts from project to global scope
 
+## Quick Start (5 Minutes)
+
+**Step 1: Enable learning** (one-time setup)
+```bash
+install.sh --enable-learning
+```
+This installs the observation hooks and creates `~/.claude/homunculus/`.
+
+**Step 2: Work normally** — instincts capture automatically
+- Run any Claude Code session in a git repo
+- PreToolUse/PostToolUse hooks observe patterns silently
+- After a few sessions, run `/learn-eval` to extract instincts
+
+**Step 3: Review your instincts** (after first few sessions)
+```
+/instinct-status    # see what was captured, per project + global
+/instinct-report    # ranked list with confidence scores
+```
+
+**Step 4: Record outcomes** (ongoing, after each session)
+```
+/instinct-outcome <id> good|bad|neutral
+```
+
+**Step 5: Evolve into skills/commands** (weekly or monthly)
+```
+/evolve             # cluster related instincts into skills/commands
+/instinct-promote   # promote high-confidence patterns to global scope
+```
+
 ## What's New in v2.2
 
 | Feature | v2.1 | v2.2 |

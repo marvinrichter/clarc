@@ -3,6 +3,9 @@ name: scala-reviewer
 description: Expert Scala code reviewer specializing in functional programming idioms, ADT correctness, effect system usage (Cats Effect/ZIO), null safety, and Scala 3 migration patterns. Use for all .scala and .sc file changes. MUST BE USED for Scala projects.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
+uses_skills:
+  - scala-patterns
+  - scala-testing
 ---
 
 # Scala Reviewer
