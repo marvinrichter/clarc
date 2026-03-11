@@ -43,6 +43,16 @@
           }
         ],
         "description": "Suggest manual compaction at logical intervals"
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/budget-guard.js\""
+          }
+        ],
+        "description": "Budget guard: warn if daily spend > CLAUDE_COST_WARN ($5 default), block if > CLAUDE_BUDGET_LIMIT ($20 default). Runs before Agent tool calls (most expensive tool)."
       }
     ],
     "PreCompact": [

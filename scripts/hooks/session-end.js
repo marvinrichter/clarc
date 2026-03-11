@@ -17,9 +17,23 @@ import { getSessionsDir, getDateString, getTimeString, getSessionIdShort, ensure
 // Cost estimation constants (Claude Sonnet, 2026 pricing)
 const SONNET_INPUT_USD_PER_M = 3.0;
 const SONNET_OUTPUT_USD_PER_M = 15.0;
-// Empirical heuristic: ~1200 input + ~300 output tokens per tool call on average
-const EST_INPUT_TOKENS_PER_CALL = 1200;
-const EST_OUTPUT_TOKENS_PER_CALL = 300;
+
+// Per-tool token estimates (input tokens added to context per call).
+// These are calibrated heuristics — actual costs vary by file size and output length.
+// Agent calls are expensive because they spawn a full sub-context (200k token window init).
+// Read/Grep/Glob are cheap because they add a bounded result to context.
+const TOOL_TOKEN_WEIGHTS = {
+  Agent: { input: 8000, output: 2000 },   // full sub-context + synthesis
+  Bash:  { input:  400, output:  200 },   // short command output
+  Read:  { input: 1500, output:   50 },   // file content into context
+  Edit:  { input:  600, output:  150 },   // diff + confirmation
+  Write: { input:  500, output:  100 },   // new file content
+  Grep:  { input:  300, output:  100 },   // search results
+  Glob:  { input:  200, output:   50 },   // file list
+  WebFetch: { input: 2000, output: 100 }, // web page content
+  WebSearch: { input: 800, output: 100 }, // search results
+  default: { input: 800, output: 200 },   // unknown tools
+};
 
 const CLARC_DIR = path.join(os.homedir(), '.clarc');
 const COST_LOG_FILE = path.join(CLARC_DIR, 'cost-log.jsonl');
@@ -37,9 +51,19 @@ function extractSessionSummary(transcriptPath) {
 
   const lines = content.split('\n').filter(Boolean);
   const userMessages = [];
-  const toolsUsed = new Set();
+  const toolsUsed = new Set();          // unique tool names (for display)
+  const toolCallCounts = new Map();     // tool → total call count (for cost estimation)
   const filesModified = new Set();
   let parseErrors = 0;
+
+  function recordToolCall(toolName, filePath) {
+    if (!toolName) return;
+    toolsUsed.add(toolName);
+    toolCallCounts.set(toolName, (toolCallCounts.get(toolName) || 0) + 1);
+    if (filePath && (toolName === 'Edit' || toolName === 'Write')) {
+      filesModified.add(filePath);
+    }
+  }
 
   for (const line of lines) {
     try {
@@ -58,25 +82,16 @@ function extractSessionSummary(transcriptPath) {
       // Collect tool names and modified files (direct tool_use entries)
       if (entry.type === 'tool_use' || entry.tool_name) {
         const toolName = entry.tool_name || entry.name || '';
-        if (toolName) toolsUsed.add(toolName);
-
         const filePath = entry.tool_input?.file_path || entry.input?.file_path || '';
-        if (filePath && (toolName === 'Edit' || toolName === 'Write')) {
-          filesModified.add(filePath);
-        }
+        recordToolCall(toolName, filePath);
       }
 
       // Extract tool uses from assistant message content blocks (Claude Code JSONL format)
       if (entry.type === 'assistant' && Array.isArray(entry.message?.content)) {
         for (const block of entry.message.content) {
           if (block.type === 'tool_use') {
-            const toolName = block.name || '';
-            if (toolName) toolsUsed.add(toolName);
-
             const filePath = block.input?.file_path || '';
-            if (filePath && (toolName === 'Edit' || toolName === 'Write')) {
-              filesModified.add(filePath);
-            }
+            recordToolCall(block.name || '', filePath);
           }
         }
       }
@@ -94,33 +109,45 @@ function extractSessionSummary(transcriptPath) {
   return {
     userMessages: userMessages.slice(-10), // Last 10 user messages
     toolsUsed: Array.from(toolsUsed).slice(0, 20),
+    toolCallCounts: Object.fromEntries(toolCallCounts), // tool → count
+    totalToolCalls: Array.from(toolCallCounts.values()).reduce((a, b) => a + b, 0),
     filesModified: Array.from(filesModified).slice(0, 30),
     totalMessages: userMessages.length
   };
 }
 
 /**
- * Estimate session cost from tool call count and append to ~/.clarc/cost-log.jsonl.
- * Tool calls are the only reliable proxy we have without direct API access.
- * Disclaimer is always shown so users know this is an approximation.
+ * Estimate session cost using per-tool token weights and append to ~/.clarc/cost-log.jsonl.
+ * Uses tool-specific heuristics instead of a flat average: Agent calls are ~10-20× more
+ * expensive than Grep calls, so a flat average gives ±300% error. Per-tool weights reduce
+ * this to ±50–100% — still an estimate, but much more actionable.
  */
-function logSessionCost(toolCallCount, sessionId, date) {
+function logSessionCost(summary, sessionId, date) {
   try {
-    if (toolCallCount === 0) return;
+    const { toolCallCounts = {}, totalToolCalls = 0 } = summary || {};
+    if (totalToolCalls === 0) return;
 
-    const estInputTokens = toolCallCount * EST_INPUT_TOKENS_PER_CALL;
-    const estOutputTokens = toolCallCount * EST_OUTPUT_TOKENS_PER_CALL;
+    // Sum weighted token estimates across all tool types
+    let estInputTokens = 0;
+    let estOutputTokens = 0;
+    for (const [tool, count] of Object.entries(toolCallCounts)) {
+      const weight = TOOL_TOKEN_WEIGHTS[tool] || TOOL_TOKEN_WEIGHTS.default;
+      estInputTokens += weight.input * count;
+      estOutputTokens += weight.output * count;
+    }
+
     const estUsd = (estInputTokens / 1_000_000) * SONNET_INPUT_USD_PER_M + (estOutputTokens / 1_000_000) * SONNET_OUTPUT_USD_PER_M;
 
     const entry = {
       date,
       session_id: sessionId,
-      tool_calls: toolCallCount,
+      total_tool_calls: totalToolCalls,
+      tool_breakdown: toolCallCounts,
       estimated_input_tokens: estInputTokens,
       estimated_output_tokens: estOutputTokens,
       estimated_usd: Math.round(estUsd * 10000) / 10000,
       project: path.basename(process.cwd()),
-      disclaimer: 'Estimate only — exact costs at console.anthropic.com'
+      disclaimer: 'Estimate only (per-tool heuristic, ±50-100%) — exact costs at console.anthropic.com'
     };
 
     if (!fs.existsSync(CLARC_DIR)) {
@@ -129,7 +156,9 @@ function logSessionCost(toolCallCount, sessionId, date) {
     fs.appendFileSync(COST_LOG_FILE, JSON.stringify(entry) + '\n', 'utf8');
 
     const totalK = Math.round((estInputTokens + estOutputTokens) / 100) / 10;
-    log(`[SessionEnd] Cost estimate: ${toolCallCount} tool calls | ~${totalK}k tokens | ~$${entry.estimated_usd.toFixed(4)} (Schätzung)`);
+    const agentCalls = toolCallCounts['Agent'] || 0;
+    const agentNote = agentCalls > 0 ? ` (inkl. ${agentCalls} Agent-Calls)` : '';
+    log(`[SessionEnd] Cost estimate: ${totalToolCalls} tool calls${agentNote} | ~${totalK}k tokens | ~$${entry.estimated_usd.toFixed(4)} (Schätzung)`);
   } catch (err) {
     log(`[SessionEnd] Cost logging error: ${err.message}`);
   }
@@ -189,9 +218,8 @@ async function main() {
     }
   }
 
-  // Token/cost tracking
-  const toolCallCount = summary ? summary.toolsUsed.length : 0;
-  logSessionCost(toolCallCount, shortId, today);
+  // Token/cost tracking — uses per-tool weights for better accuracy
+  logSessionCost(summary, shortId, today);
 
   // Context window warning: fires when session > 90min and .clarc/context.md is absent or stale
   checkContextWarning(sessionFile);

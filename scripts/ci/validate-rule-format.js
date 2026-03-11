@@ -35,6 +35,7 @@ const EXCEPTIONS = new Set([
   'accessibility.md',        // detailed WCAG reference with illustrative code examples
   'development-workflow.md', // full multi-phase workflow guide — too broad to trim
   'patterns.md',             // pattern reference with short illustrative pseudocode blocks
+  'performance.md',          // budget controls, per-tool cost table, prompt caching guidance
 ]);
 
 const MAX_LINES = 80;

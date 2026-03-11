@@ -39,8 +39,15 @@ State your selected pattern and justification explicitly before proceeding.
 6. **Fail gracefully** — if one agent fails, complete the others and report partial results
 7. **Detect and resolve conflicts** — during synthesis, identify contradictions between agent outputs and apply the priority hierarchy from `docs/agent-priority-hierarchy.md`. Every conflict must appear in the `### Conflicts Resolved` section with its resolution rationale.
 8. **Destructive Bash guardrail** — When delegating tasks that include Bash execution (rm, git reset, kubectl delete, DROP TABLE), explicitly instruct the sub-agent: "Do not run destructive commands without confirming with the user first." Pass this as part of the agent prompt.
+9. **Cost routing** — Route cheap subtasks to `summarizer-haiku` before spawning Sonnet agents. Rule: if the subtask is "summarize X", "classify Y", "extract Z from text", or "fill in template" → use `summarizer-haiku`. All others use Sonnet. Opus only for synthesis of deeply conflicting architectural findings.
 
 ## Available Specialist Agents
+
+### Haiku tier (10–15× cheaper — use for simple subtasks)
+
+- **summarizer-haiku** — summaries, classification, boilerplate, text transformations, routing decisions
+
+### Sonnet tier (default — balanced cost and capability)
 
 - **planner** — implementation planning, PRD generation
 - **architect** — system design, architectural decisions
@@ -55,6 +62,11 @@ State your selected pattern and justification explicitly before proceeding.
 - **doc-updater** — documentation and codemaps
 - **refactor-cleaner** — dead code removal
 - **database-reviewer** — SQL, schema, query optimization
+
+### Opus tier (reserve for deep reasoning only)
+
+- **orchestrator** itself uses Opus for pattern selection and synthesis
+- Use Opus sub-agents only for: architectural ADRs, security threat models, complex multi-constraint decisions
 
 ## Coordination Patterns
 
