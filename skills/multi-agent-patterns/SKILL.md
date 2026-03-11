@@ -78,39 +78,6 @@ async function route(task: string, context: string): Promise<AgentResult> {
 }
 ```
 
-### Capability Registry
-
-```typescript
-interface AgentCapability {
-  id: string;
-  description: string;
-  inputSchema: z.ZodSchema;
-  agent: (input: unknown) => Promise<AgentResult>;
-}
-
-const capabilities: AgentCapability[] = [
-  {
-    id: 'analyze_code',
-    description: 'Review code for bugs, style, and security issues',
-    inputSchema: z.object({ code: z.string(), language: z.string() }),
-    agent: codeReviewAgent,
-  },
-  {
-    id: 'generate_tests',
-    description: 'Generate unit tests for a function or class',
-    inputSchema: z.object({ code: z.string(), framework: z.string() }),
-    agent: tddAgent,
-  },
-];
-
-// Pass registry to orchestrator as tools
-const tools = capabilities.map(cap => ({
-  name: cap.id,
-  description: cap.description,
-  input_schema: zodToJsonSchema(cap.inputSchema),
-}));
-```
-
 ---
 
 ## State Management
@@ -151,50 +118,7 @@ class WorkflowContext {
 }
 ```
 
-### External Store (Durable State)
-
-```typescript
-// Redis for durable cross-agent state
-import { createClient } from 'redis';
-
-const redis = createClient();
-
-async function saveAgentState(workflowId: string, state: WorkflowState): Promise<void> {
-  await redis.setEx(
-    `workflow:${workflowId}`,
-    3600,  // 1 hour TTL
-    JSON.stringify(state)
-  );
-}
-
-async function loadAgentState(workflowId: string): Promise<WorkflowState | null> {
-  const raw = await redis.get(`workflow:${workflowId}`);
-  return raw ? JSON.parse(raw) : null;
-}
-```
-
-### Event Log (Append-Only, Auditable)
-
-```typescript
-// DynamoDB event log for full audit trail
-async function appendEvent(workflowId: string, event: WorkflowEvent): Promise<void> {
-  await dynamodb.put({
-    TableName: 'workflow-events',
-    Item: {
-      workflowId,
-      timestamp: Date.now(),
-      sequenceNumber: await getNextSequence(workflowId),
-      event,
-    },
-  });
-}
-
-// Reconstruct state by replaying events
-async function replayWorkflow(workflowId: string): Promise<WorkflowState> {
-  const events = await queryAllEvents(workflowId);
-  return events.reduce(applyEvent, initialState());
-}
-```
+> For durable state (Redis, DynamoDB event log) and task decomposition handoffs, see `multi-agent-patterns-advanced`.
 
 ---
 
@@ -238,27 +162,6 @@ async function summarizeForHandoff(
     max_tokens: maxTokens,
   });
   return summary.content[0].text;
-}
-```
-
-### Task Decomposition Handoff
-
-```typescript
-interface SubTask {
-  id: string;
-  description: string;
-  dependsOn: string[];  // IDs of tasks that must complete first
-  agent: string;
-}
-
-async function decomposeTasks(goal: string): Promise<SubTask[]> {
-  const response = await claude.messages.create({
-    model: 'claude-opus-latest',  // Opus for complex planning
-    system: 'Decompose the goal into parallel and sequential sub-tasks. Output JSON.',
-    messages: [{ role: 'user', content: goal }],
-    max_tokens: 2048,
-  });
-  return JSON.parse(response.content[0].text);
 }
 ```
 
@@ -454,50 +357,6 @@ function logAgentCall(event: {
 
 ---
 
-## Testing Multi-Agent Systems
-
-```typescript
-// Mock sub-agents for deterministic tests
-class MockAgent {
-  constructor(private responses: Map<string, string>) {}
-
-  async run(input: string): Promise<string> {
-    const key = [...this.responses.keys()].find(k => input.includes(k));
-    if (!key) throw new Error(`No mock response for input: ${input}`);
-    return this.responses.get(key)!;
-  }
-}
-
-describe('Orchestrator', () => {
-  it('routes code review tasks to code-review agent', async () => {
-    const mockCodeReviewer = new MockAgent(new Map([
-      ['review this function', '{ "issues": [] }'],
-    ]));
-
-    const orchestrator = new Orchestrator({
-      agents: { 'code-review': mockCodeReviewer },
-    });
-
-    const result = await orchestrator.run('Please review this function: ...');
-    expect(result).toContain('issues');
-  });
-
-  it('handles partial failures gracefully', async () => {
-    const failingAgent = { run: () => Promise.reject(new Error('timeout')) };
-    const fallbackAgent = new MockAgent(new Map([['', 'fallback result']]));
-
-    const result = await runWithFallback(
-      () => failingAgent.run(),
-      () => fallbackAgent.run(''),
-      1
-    );
-    expect(result).toBe('fallback result');
-  });
-});
-```
-
----
-
 ## Anti-Patterns
 
 ### Running Independent Sub-Agents Sequentially Instead of in Parallel
@@ -577,22 +436,4 @@ const classification = await claude.messages.create({
 
 **Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
 
-## Pattern Quick-Selection & Token Budget
-
-| Task Type | Pattern | Agents | Context per agent |
-|-----------|---------|--------|-------------------|
-| Multi-file review | Fan-Out → Fan-In | 3–10 | Minimal (target-specific) |
-| Architecture decision | Split-Role | 2–4 | Full task context |
-| Unknown codebase research | Explorer + Validator | 2 | Explorer: broad; Validator: targeted |
-| Parallel feature development | Worktree Isolation | 2–5 | Feature-specific only |
-| Full feature TDD cycle | Sequential Pipeline | 3–7 | Output of previous stage |
-| Security + quality + tests | Parallel Fan-Out | 3 | Specialist context only |
-
-## Failure Handling & Result Synthesis
-
-| Scenario | Action |
-|----------|--------|
-| Agent timeout | Retry with reduced scope; split task into smaller chunks |
-| Conflicting results | Pass both to a tiebreaker agent; apply: security > quality > style |
-| Partial failures | Complete successful agents; re-run failed with error context |
-| Context overflow | Summarize intermediate results before passing to next stage |
+> For advanced patterns — capability registry, durable state, task decomposition, testing multi-agent systems, pattern quick-selection guide, and failure handling — see `multi-agent-patterns-advanced`.
