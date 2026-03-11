@@ -579,41 +579,22 @@ const classification = await claude.messages.create({
 
 ---
 
-## Pattern Quick-Selection
+## Pattern Quick-Selection & Token Budget
 
-| Task Type | Recommended Pattern |
-|-----------|-------------------|
-| Multi-file review | Fan-Out → Fan-In |
-| Architecture decision | Split-Role (3 roles) |
-| Unknown codebase research | Explorer + Validator |
-| Parallel feature development | Worktree Isolation |
-| Full feature TDD cycle | Sequential Pipeline |
-| Security + quality + tests | Parallel Fan-Out (3 specialist agents) |
+| Task Type | Pattern | Agents | Context per agent |
+|-----------|---------|--------|-------------------|
+| Multi-file review | Fan-Out → Fan-In | 3–10 | Minimal (target-specific) |
+| Architecture decision | Split-Role | 2–4 | Full task context |
+| Unknown codebase research | Explorer + Validator | 2 | Explorer: broad; Validator: targeted |
+| Parallel feature development | Worktree Isolation | 2–5 | Feature-specific only |
+| Full feature TDD cycle | Sequential Pipeline | 3–7 | Output of previous stage |
+| Security + quality + tests | Parallel Fan-Out | 3 | Specialist context only |
 
-## Token Budget by Pattern
+## Failure Handling & Result Synthesis
 
-| Pattern | Typical agent count | Context per agent |
-|---------|-------------------|------------------|
-| Fan-Out | 3–10 | Minimal (target-specific only) |
-| Split-Role | 2–4 | Full task context |
-| Explorer+Validator | 2 | Explorer: broad; Validator: targeted |
-| Worktree | 2–5 | Feature-specific only |
-| Pipeline | 3–7 | Output of previous stage |
-
-## Failure Handling
-
-- **Agent timeout:** Retry with reduced scope; split into smaller chunks if needed
-- **Conflicting results:** Use a tiebreaker agent with both results as context
-- **Partial failures:** Complete successful agents; re-run failed agents with error context
-- **Context overflow:** Summarize intermediate results before passing to next phase
-
-## Result Synthesis
-
-When combining agent results:
-1. Read all agent outputs
-2. Identify agreements (high confidence)
-3. Identify conflicts (need resolution)
-4. Apply domain priority: security > quality > style
-5. Produce unified recommendation
-
----
+| Scenario | Action |
+|----------|--------|
+| Agent timeout | Retry with reduced scope; split task into smaller chunks |
+| Conflicting results | Pass both to a tiebreaker agent; apply: security > quality > style |
+| Partial failures | Complete successful agents; re-run failed with error context |
+| Context overflow | Summarize intermediate results before passing to next stage |
