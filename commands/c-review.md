@@ -62,7 +62,6 @@ Both invoke the same specialist. Use `/code-review` when changes span multiple l
 ## After This
 
 - `/tdd` — add tests if coverage gaps were flagged
-- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
 
 ## Related
 

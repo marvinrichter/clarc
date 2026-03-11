@@ -38,4 +38,3 @@ Both invoke the same specialist. Use `/code-review` when changes span multiple l
 - `/rust-build` — rebuild after addressing borrow errors
 - `/rust-test` — run tests with coverage after fixing issues
 - `/tdd` — add tests if coverage gaps were flagged
-- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved

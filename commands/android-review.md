@@ -41,7 +41,6 @@ For pure backend Kotlin (no Android dependencies), use `/kotlin-review` instead.
 
 - `/kotlin-review` — for backend Kotlin without Android dependencies
 - `/tdd` — add tests if coverage gaps were flagged
-- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
 
 ## Quick Self-Check (before invoking agent)
 

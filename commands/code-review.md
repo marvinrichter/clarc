@@ -38,6 +38,5 @@ The agent:
 
 ## After This
 
-- `/commit-push-pr` — commit, push, and open a PR after all CRITICAL/HIGH issues are resolved
-- `/security` — deeper security scan targeting OWASP Top 10
+- `/security-review` — deeper security scan targeting OWASP Top 10
 - `/tdd` — if test coverage issues were flagged in the review

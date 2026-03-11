@@ -57,7 +57,6 @@ For Android/Compose, use `/android-review` instead — it covers Hilt scoping, R
 
 - `/android-review` — for Android-specific Compose/Hilt/Room review
 - `/tdd` — add tests if coverage gaps were flagged
-- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
 
 ## Related
 
