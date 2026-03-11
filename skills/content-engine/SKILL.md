@@ -130,6 +130,7 @@ What's the biggest "obvious in hindsight" performance fix you've shipped?
 ```
 
 ### Key differences by platform
+
 | Platform | Hook | Length | CTA |
 |---|---|---|---|
 | X thread | Surprising stat in post 1 | 12-15 posts, ~280 chars each | Link in last post |

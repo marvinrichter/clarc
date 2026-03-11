@@ -86,6 +86,7 @@ Before delivering:
 | SOM (Obtainable) | $42M | Engineering-specific PM tools, 3% SAM |
 
 **Key competitors identified:**
+
 | Tool | Pricing | Engineering focus | API quality |
 |------|---------|------------------|-------------|
 | Linear | $8/user/mo | High (GitHub/Jira native) | Excellent |
