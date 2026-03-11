@@ -545,5 +545,5 @@ func fetchData(url string) ([]byte, error) {
 
 **Why:** Discarding the cancel function keeps the context and its resources alive until the deadline, causing resource leaks especially in high-throughput code paths.
 
-> For advanced patterns — full hexagonal architecture with working code (domain, ports, adapters, DI wiring, tests), struct design (functional options, embedding), memory optimization, Go tooling, `slices`/`maps` stdlib (Go 1.21+), and anti-patterns — see skill: `golang-patterns-advanced`.
+> For advanced patterns — full hexagonal architecture with working code (domain, ports, adapters, DI wiring, tests), struct design (functional options, embedding), memory optimization, Go tooling, `slices`/`maps` stdlib (Go 1.21+), and anti-patterns — see skill: `go-patterns-advanced`.
 > For testing patterns — table-driven tests, mocks, integration tests with testcontainers, benchmarks, and fuzz testing — see skill: `go-testing`.

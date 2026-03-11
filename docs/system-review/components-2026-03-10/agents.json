@@ -1,0 +1,1113 @@
+[
+  {
+    "agent": "agent-quality-reviewer",
+    "file": "agents/agent-quality-reviewer.md",
+    "overall_score": 9.0,
+    "dimensions": {
+      "instruction_clarity": { "score": 10, "note": "4 concrete steps, scoring rubrics with exact thresholds per dimension" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for structured scoring with rubric — not complex enough for Opus" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — all needed for reading and scanning agents" },
+      "trigger_precision": { "score": 9, "note": "Description clearly scoped to single agent quality review across 8 dimensions" },
+      "exit_criteria": { "score": 10, "note": "Exact JSON schema output with example, --all mode defined" },
+      "example_density": { "score": 9, "note": "2 examples: single agent review and --all summary table" },
+      "overlap_detection": { "score": 7, "note": "Overlaps slightly with prompt-quality-scorer on instruction quality, but scoped to agents specifically" },
+      "safety_guardrails": { "score": 10, "note": "Read-only agent, no destructive operations" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "agent-system-reviewer",
+    "file": "agents/agent-system-reviewer.md",
+    "overall_score": 8.8,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Clear 5-step process: inventory, delegate, collect, synthesize, report" },
+      "model_appropriateness": { "score": 10, "note": "Opus correct for orchestrating full system review across all components" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for orchestration and file scanning" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to full clarc system review orchestration" },
+      "exit_criteria": { "score": 9, "note": "Markdown report format with health score, summary table, and prioritized issues" },
+      "example_density": { "score": 7, "note": "1 complete example output; could benefit from a second showing partial review" },
+      "overlap_detection": { "score": 9, "note": "Distinct as orchestrator — delegates to specialist reviewers" },
+      "safety_guardrails": { "score": 10, "note": "Read-only orchestrator" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "android-reviewer",
+    "file": "agents/android-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Severity-based review priorities, diagnostic commands, clear approval criteria" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer toolset" },
+      "trigger_precision": { "score": 8, "note": "Description covers Kotlin/Compose/Android — clear scope" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output format with file:line references" },
+      "example_density": { "score": 7, "note": "1 example with multi-severity output" },
+      "overlap_detection": { "score": 8, "note": "Distinct from kotlin-reviewer (Android-specific: Compose, lifecycle, Room)" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "architect",
+    "file": "agents/architect.md",
+    "overall_score": 8.6,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Structured process: context gathering, pattern selection, design output" },
+      "model_appropriateness": { "score": 10, "note": "Opus correct for architectural reasoning and complex design decisions" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, WebSearch — appropriate for research and codebase analysis" },
+      "trigger_precision": { "score": 8, "note": "Description covers system design and architecture — broad but appropriate" },
+      "exit_criteria": { "score": 8, "note": "Architecture document with diagrams and ADR format" },
+      "example_density": { "score": 7, "note": "1 example showing architecture output" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with solution-designer on architectural decisions, but architect is broader" },
+      "safety_guardrails": { "score": 10, "note": "Read-only, no file modifications" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "bash-reviewer",
+    "file": "agents/bash-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Severity-based priorities, POSIX compliance, shellcheck integration" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for shell script review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .sh/.bash files specifically" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block criteria" },
+      "example_density": { "score": 7, "note": "1 detailed example with multiple severity levels" },
+      "overlap_detection": { "score": 9, "note": "Unique — no other agent reviews shell scripts" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "build-error-resolver",
+    "file": "agents/build-error-resolver.md",
+    "overall_score": 8.1,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Clear error analysis workflow: capture, diagnose, fix, verify" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for build error diagnosis and fixing" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep, Glob — needs write access to fix errors" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to build and compile errors across languages" },
+      "exit_criteria": { "score": 7, "note": "Implicit exit when build passes — could be more explicit about output format" },
+      "example_density": { "score": 7, "note": "1 example showing error resolution flow" },
+      "overlap_detection": { "score": 7, "note": "Overlaps with go-build-resolver for Go — but scoped as general-purpose" },
+      "safety_guardrails": { "score": 8, "note": "Has Write/Edit/Bash but focused on fixing build errors; could use explicit confirmation step" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "c-reviewer",
+    "file": "agents/c-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "C11/C17 focus, memory safety priorities, severity levels well defined" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for C code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer toolset" },
+      "trigger_precision": { "score": 8, "note": "Description covers C code with memory safety emphasis" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Distinct from cpp-reviewer — C-specific patterns" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "code-reviewer",
+    "file": "agents/code-reviewer.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Clear routing logic by file extension to specialist reviewers" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for routing orchestration" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for routing and basic review" },
+      "trigger_precision": { "score": 7, "note": "Description is broad — 'code review orchestrator' could match many scenarios" },
+      "exit_criteria": { "score": 8, "note": "Aggregated review output from specialists" },
+      "example_density": { "score": 7, "note": "1 example showing routing behavior" },
+      "overlap_detection": { "score": 8, "note": "Distinct as orchestrator — delegates to language specialists" },
+      "safety_guardrails": { "score": 10, "note": "Read-only orchestrator" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "command-auditor",
+    "file": "agents/command-auditor.md",
+    "overall_score": 8.7,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "6 UX dimensions with scoring rubrics and thresholds" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for structured command auditing" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — all needed for scanning commands" },
+      "trigger_precision": { "score": 9, "note": "Description scoped to clarc command UX auditing" },
+      "exit_criteria": { "score": 9, "note": "JSON output schema with scoring and issues" },
+      "example_density": { "score": 8, "note": "1 detailed example with full JSON output" },
+      "overlap_detection": { "score": 9, "note": "Unique — only agent auditing command UX" },
+      "safety_guardrails": { "score": 10, "note": "Read-only auditor" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "competitive-analyst",
+    "file": "agents/competitive-analyst.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Structured competitor research process with clear categories" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for strategic competitive analysis requiring deep reasoning" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, WebSearch — needs web for competitor research" },
+      "trigger_precision": { "score": 7, "note": "Description overlaps with workflow-os-competitor-analyst — both do competitive analysis" },
+      "exit_criteria": { "score": 8, "note": "Markdown report with feature matrix and gap analysis" },
+      "example_density": { "score": 7, "note": "1 example showing competitive analysis output" },
+      "overlap_detection": { "score": 5, "note": "Significant overlap with workflow-os-competitor-analyst — both analyze competitors" },
+      "safety_guardrails": { "score": 10, "note": "Read-only analyst" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "competitive-analyst and workflow-os-competitor-analyst both perform competitive analysis with overlapping scope",
+        "suggestion": "Clarify distinction: competitive-analyst for general product competitors, workflow-os-competitor-analyst for clarc-specific AI tool competitors. Or merge into one."
+      }
+    ],
+    "verdict": "GOOD — 1 medium issue (overlap with workflow-os-competitor-analyst)"
+  },
+  {
+    "agent": "contract-reviewer",
+    "file": "agents/contract-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Clear API contract break detection process with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for API contract review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for spec and code analysis" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to API contract break detection" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with breaking/non-breaking classification" },
+      "example_density": { "score": 7, "note": "1 example with breaking change detection" },
+      "overlap_detection": { "score": 9, "note": "Unique — no other agent focuses on API contract breaks" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "cpp-reviewer",
+    "file": "agents/cpp-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "C++ Core Guidelines focus, C++20/23 patterns, severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for C++ code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer toolset" },
+      "trigger_precision": { "score": 8, "note": "Description covers .cpp/.cc/.h/.hpp files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Distinct from c-reviewer — C++ specific patterns" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "csharp-reviewer",
+    "file": "agents/csharp-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "C# 12/.NET 8 focus, severity levels, diagnostic commands" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for C# code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers C#/.NET code changes" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique C# reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "data-architect",
+    "file": "agents/data-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Data Mesh design process with domain decomposition, data products, self-serve platform" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for complex data architecture decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate but could use Bash for validation" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to Data Mesh architecture design" },
+      "exit_criteria": { "score": 8, "note": "Architecture document with domain decomposition and platform design" },
+      "example_density": { "score": 7, "note": "1 example showing Data Mesh output" },
+      "overlap_detection": { "score": 9, "note": "Unique — Data Mesh specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "database-reviewer",
+    "file": "agents/database-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "PostgreSQL focus, query optimization, schema design, RLS, severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for database review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .sql/.prisma files and PostgreSQL" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output format" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique database reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "design-critic",
+    "file": "agents/design-critic.md",
+    "overall_score": 8.0,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Visual design critique across typography, color, spacing, hierarchy" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for structured design critique" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, Bash — adequate though could benefit from image analysis" },
+      "trigger_precision": { "score": 7, "note": "Description covers screenshots, wireframes, UI code — fairly broad" },
+      "exit_criteria": { "score": 8, "note": "Structured critique output with severity levels" },
+      "example_density": { "score": 7, "note": "1 example showing design critique" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with design-system-reviewer on visual quality" },
+      "safety_guardrails": { "score": 10, "note": "Read-only critic" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "design-system-reviewer",
+    "file": "agents/design-system-reviewer.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "6 audit dimensions: CSS tokens, dark mode, icons, a11y, design-code consistency" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for design system auditing" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for CSS/component analysis" },
+      "trigger_precision": { "score": 8, "note": "Description clearly scoped to design system audit" },
+      "exit_criteria": { "score": 8, "note": "Scored report with pass/fail per dimension" },
+      "example_density": { "score": 7, "note": "1 example showing audit output" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with design-critic on visual quality aspects" },
+      "safety_guardrails": { "score": 10, "note": "Read-only auditor" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "devsecops-reviewer",
+    "file": "agents/devsecops-reviewer.md",
+    "overall_score": 8.1,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Security scan categories: secrets, dependencies, OWASP, infra" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for security scanning" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for running security tools" },
+      "trigger_precision": { "score": 7, "note": "Overlaps with security-reviewer — both scan for security issues" },
+      "exit_criteria": { "score": 8, "note": "Severity-tagged security findings" },
+      "example_density": { "score": 7, "note": "1 example showing security scan output" },
+      "overlap_detection": { "score": 5, "note": "Significant overlap with security-reviewer — both detect secrets, injection, OWASP issues" },
+      "safety_guardrails": { "score": 10, "note": "Read-only scanner" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "devsecops-reviewer and security-reviewer both scan for OWASP Top 10, secrets, and injection vulnerabilities",
+        "suggestion": "Clarify distinction: security-reviewer for code-level review, devsecops-reviewer for CI/CD pipeline and infrastructure security. Or merge."
+      }
+    ],
+    "verdict": "GOOD — 1 medium issue (overlap with security-reviewer)"
+  },
+  {
+    "agent": "doc-updater",
+    "file": "agents/doc-updater.md",
+    "overall_score": 8.0,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Documentation sync workflow: detect changes, update docs, verify links" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for documentation tasks" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep, Glob — needs write access for doc updates" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to documentation and codemap updates" },
+      "exit_criteria": { "score": 7, "note": "Updated docs — could be more explicit about what constitutes 'done'" },
+      "example_density": { "score": 7, "note": "1 example showing doc update workflow" },
+      "overlap_detection": { "score": 8, "note": "Distinct documentation specialist" },
+      "safety_guardrails": { "score": 7, "note": "Has Write/Edit tools — shows changes before writing but no explicit confirmation step" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "docs-architect",
+    "file": "agents/docs-architect.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Documentation strategy and platform selection process" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for documentation architecture decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for research and analysis" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to documentation strategy and platform selection" },
+      "exit_criteria": { "score": 8, "note": "Documentation architecture plan with platform recommendation" },
+      "example_density": { "score": 7, "note": "1 example showing documentation architecture output" },
+      "overlap_detection": { "score": 8, "note": "Distinct from doc-updater — architect vs. updater" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "e2e-runner",
+    "file": "agents/e2e-runner.md",
+    "overall_score": 8.1,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Playwright E2E test generation and execution workflow" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for E2E test generation" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep, Glob — needs write for test files, Bash for running" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to E2E testing with Playwright" },
+      "exit_criteria": { "score": 8, "note": "Tests passing with coverage report" },
+      "example_density": { "score": 7, "note": "1 example showing E2E test generation" },
+      "overlap_detection": { "score": 8, "note": "Distinct from tdd-guide — E2E specific vs general TDD" },
+      "safety_guardrails": { "score": 7, "note": "Has Write/Edit/Bash — writes test files but no explicit confirmation before writing" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "elixir-reviewer",
+    "file": "agents/elixir-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "OTP patterns, Ecto, Sobelow security, functional idioms with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Elixir code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .ex/.exs files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Elixir reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "feedback-analyst",
+    "file": "agents/feedback-analyst.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Qualitative feedback analysis: clustering, theme extraction, idea seeds" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for qualitative analysis requiring deep reasoning" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for feedback analysis" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to qualitative user feedback analysis" },
+      "exit_criteria": { "score": 8, "note": "Clustered themes with idea seeds output" },
+      "example_density": { "score": 7, "note": "1 example showing feedback analysis output" },
+      "overlap_detection": { "score": 9, "note": "Unique feedback analyst" },
+      "safety_guardrails": { "score": 10, "note": "Read-only analyst" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "finops-advisor",
+    "file": "agents/finops-advisor.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Cloud cost optimization with Infracost, right-sizing, tagging checks" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for cost analysis — could use Opus for complex optimization" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for Infracost commands" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to cloud cost optimization" },
+      "exit_criteria": { "score": 8, "note": "Cost report with optimization recommendations" },
+      "example_density": { "score": 7, "note": "1 example showing cost analysis output" },
+      "overlap_detection": { "score": 9, "note": "Unique FinOps specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only advisor" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "flutter-reviewer",
+    "file": "agents/flutter-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Flutter/Dart review with widget patterns, state management, platform channels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Flutter code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers Flutter/Dart code" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Flutter reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "frontend-architect",
+    "file": "agents/frontend-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Micro-Frontend architecture design with composition patterns" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for complex frontend architecture decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for architecture research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to Micro-Frontend architecture" },
+      "exit_criteria": { "score": 8, "note": "Architecture document with composition strategy" },
+      "example_density": { "score": 7, "note": "1 example showing micro-frontend architecture" },
+      "overlap_detection": { "score": 8, "note": "Distinct from architect — frontend-specific" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "gitops-architect",
+    "file": "agents/gitops-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "GitOps setup with ArgoCD/Flux, progressive delivery, secrets management" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for GitOps infrastructure design" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for GitOps design" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to GitOps setup design" },
+      "exit_criteria": { "score": 8, "note": "GitOps architecture plan with tool selection" },
+      "example_density": { "score": 7, "note": "1 example showing GitOps design output" },
+      "overlap_detection": { "score": 9, "note": "Unique GitOps specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "go-build-resolver",
+    "file": "agents/go-build-resolver.md",
+    "overall_score": 7.9,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Go-specific build error resolution: go build, go vet, golangci-lint" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Go build fixing" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep, Glob — needs write access to fix errors" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to Go build errors specifically" },
+      "exit_criteria": { "score": 7, "note": "Implicit exit when build passes — could be more explicit" },
+      "example_density": { "score": 6, "note": "Limited examples — mostly diagnostic command references" },
+      "overlap_detection": { "score": 6, "note": "Overlaps with build-error-resolver for Go build errors" },
+      "safety_guardrails": { "score": 8, "note": "Has Write/Edit/Bash but focused on fixing Go build errors" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "example_density",
+        "finding": "Limited concrete input/output examples for Go build error resolution",
+        "suggestion": "Add 2 complete examples: one showing a common go vet error fix, one showing a dependency resolution"
+      },
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "Overlaps with build-error-resolver which also handles Go build errors",
+        "suggestion": "Clarify that go-build-resolver handles Go-specific toolchain issues (go mod, cgo, go vet) while build-error-resolver is the general-purpose fallback"
+      }
+    ],
+    "verdict": "GOOD — 2 medium issues"
+  },
+  {
+    "agent": "go-reviewer",
+    "file": "agents/go-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Idiomatic Go review: error handling, concurrency, interface design, severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Go code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .go files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example with multiple findings" },
+      "overlap_detection": { "score": 9, "note": "Unique Go reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "hook-auditor",
+    "file": "agents/hook-auditor.md",
+    "overall_score": 8.7,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "5 audit dimensions for hook system with scoring rubrics" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for hook system auditing" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for hook testing" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to clarc hook system audit" },
+      "exit_criteria": { "score": 9, "note": "JSON output schema with health score and issues" },
+      "example_density": { "score": 8, "note": "1 detailed example with full JSON output" },
+      "overlap_detection": { "score": 9, "note": "Unique hook auditor" },
+      "safety_guardrails": { "score": 10, "note": "Read-only auditor" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "java-reviewer",
+    "file": "agents/java-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Java 25+ focus, Spring Boot, JPA, security patterns with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Java code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .java/.kt files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 8, "note": "Overlaps slightly with kotlin-reviewer for .kt files but distinct Java focus" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "kotlin-reviewer",
+    "file": "agents/kotlin-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Idiomatic Kotlin: coroutines, sealed classes, null safety, severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Kotlin code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .kt/.kts files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with java-reviewer for .kt files and android-reviewer for Android Kotlin" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "mlops-architect",
+    "file": "agents/mlops-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "MLOps infrastructure design: experiment tracking, model serving, monitoring" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for complex ML infrastructure decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for MLOps research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to MLOps infrastructure design" },
+      "exit_criteria": { "score": 8, "note": "MLOps architecture plan with tool selection" },
+      "example_density": { "score": 7, "note": "1 example showing MLOps design output" },
+      "overlap_detection": { "score": 9, "note": "Unique MLOps specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "modernization-planner",
+    "file": "agents/modernization-planner.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Legacy modernization roadmap with Strangler Fig, Branch-by-Abstraction patterns" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for complex modernization planning" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for codebase analysis" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to legacy codebase modernization" },
+      "exit_criteria": { "score": 8, "note": "Modernization roadmap with phases and risk assessment" },
+      "example_density": { "score": 7, "note": "1 example showing modernization plan" },
+      "overlap_detection": { "score": 9, "note": "Unique modernization specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only planner" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "orchestrator",
+    "file": "agents/orchestrator.md",
+    "overall_score": 8.1,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Multi-agent coordination: fan-out, synthesis, conflict resolution" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for orchestrating multiple agents" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, Bash — could benefit from Write for saving synthesis output" },
+      "trigger_precision": { "score": 7, "note": "Description somewhat broad — 'orchestrate multiple agents' could match many patterns" },
+      "exit_criteria": { "score": 8, "note": "Synthesized output from all agents" },
+      "example_density": { "score": 7, "note": "1 example showing orchestration flow" },
+      "overlap_detection": { "score": 7, "note": "Overlaps with agent-system-reviewer in orchestration role — but different scope" },
+      "safety_guardrails": { "score": 10, "note": "Orchestrator delegates — does not write directly" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "orchestrator-designer",
+    "file": "agents/orchestrator-designer.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Multi-agent system design with pattern selection guidance" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for complex system design" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for design research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to multi-agent system design" },
+      "exit_criteria": { "score": 8, "note": "System design document with pattern selection" },
+      "example_density": { "score": 7, "note": "1 example showing multi-agent design" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with orchestrator — but designer vs. executor" },
+      "safety_guardrails": { "score": 10, "note": "Read-only designer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "performance-analyst",
+    "file": "agents/performance-analyst.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Performance hotspot analysis: profiling, flamegraphs, Lighthouse, N+1 detection" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for performance analysis" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for profiling tools" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to performance hotspot analysis" },
+      "exit_criteria": { "score": 8, "note": "Performance report with prioritized findings" },
+      "example_density": { "score": 7, "note": "1 example showing performance analysis output" },
+      "overlap_detection": { "score": 9, "note": "Unique performance specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only analyst" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "php-reviewer",
+    "file": "agents/php-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "PHP 8.4+ focus, readonly classes, enums, fibers, security patterns" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for PHP code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers PHP code" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique PHP reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "planner",
+    "file": "agents/planner.md",
+    "overall_score": 8.4,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Structured planning: PRD, architecture, task breakdown, dependency analysis" },
+      "model_appropriateness": { "score": 10, "note": "Opus correct for complex implementation planning" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, WebSearch, Bash — comprehensive for research and analysis" },
+      "trigger_precision": { "score": 8, "note": "Description covers complex features, refactoring, new modules" },
+      "exit_criteria": { "score": 8, "note": "Planning documents: PRD, architecture, task list" },
+      "example_density": { "score": 7, "note": "1 example showing planning output" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with architect on architecture sections, but planner is broader" },
+      "safety_guardrails": { "score": 10, "note": "Read-only planner" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "platform-architect",
+    "file": "agents/platform-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Internal Developer Platform design with golden paths, self-service" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for platform architecture" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for platform research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to Internal Developer Platform design" },
+      "exit_criteria": { "score": 8, "note": "Platform architecture plan with capability map" },
+      "example_density": { "score": 7, "note": "1 example showing platform design" },
+      "overlap_detection": { "score": 9, "note": "Unique platform engineering specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "presentation-designer",
+    "file": "agents/presentation-designer.md",
+    "overall_score": 7.9,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Slide deck design with structure, visual hierarchy, storytelling" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for presentation design" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, Bash — could benefit from Write for generating slides" },
+      "trigger_precision": { "score": 7, "note": "Overlaps with talk-coach on presentation content" },
+      "exit_criteria": { "score": 8, "note": "Slide deck outline with design guidance" },
+      "example_density": { "score": 7, "note": "1 example showing slide design output" },
+      "overlap_detection": { "score": 6, "note": "Overlaps with talk-coach — both work on presentations" },
+      "safety_guardrails": { "score": 10, "note": "Read-only designer" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "presentation-designer and talk-coach both handle presentations — unclear boundary",
+        "suggestion": "Clarify: talk-coach for content/narrative/rehearsal, presentation-designer for visual design/layout/slide generation"
+      }
+    ],
+    "verdict": "GOOD — 1 medium issue"
+  },
+  {
+    "agent": "product-evaluator",
+    "file": "agents/product-evaluator.md",
+    "overall_score": 8.6,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "5-criteria evaluation: problem clarity, user fit, feasibility, alternatives, opportunity cost" },
+      "model_appropriateness": { "score": 10, "note": "Opus correct for critical product evaluation decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for research and analysis" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to product idea evaluation with Go/No-Go" },
+      "exit_criteria": { "score": 9, "note": "Explicit Go/No-Go/Modify recommendation with scoring" },
+      "example_density": { "score": 7, "note": "1 detailed example with full evaluation output" },
+      "overlap_detection": { "score": 9, "note": "Unique product evaluator" },
+      "safety_guardrails": { "score": 10, "note": "Read-only evaluator" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "prompt-quality-scorer",
+    "file": "agents/prompt-quality-scorer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Prompt engineering quality scoring with weighted dimensions" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for structured prompt scoring" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for prompt file analysis" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to prompt engineering quality evaluation" },
+      "exit_criteria": { "score": 9, "note": "JSON output schema with dimension scores" },
+      "example_density": { "score": 7, "note": "1 detailed example with JSON output" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with prompt-reviewer on prompt quality, but scorer is quantitative" },
+      "safety_guardrails": { "score": 10, "note": "Read-only scorer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "prompt-reviewer",
+    "file": "agents/prompt-reviewer.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "System prompt review with anti-patterns, structure, tone analysis" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for prompt review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for prompt analysis" },
+      "trigger_precision": { "score": 7, "note": "Description overlaps with prompt-quality-scorer on prompt analysis" },
+      "exit_criteria": { "score": 8, "note": "Review output with severity-tagged findings" },
+      "example_density": { "score": 7, "note": "1 example showing prompt review output" },
+      "overlap_detection": { "score": 6, "note": "Overlaps with prompt-quality-scorer — both analyze prompt quality" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "prompt-reviewer and prompt-quality-scorer both analyze prompt quality with overlapping criteria",
+        "suggestion": "Clarify: prompt-quality-scorer for quantitative scoring, prompt-reviewer for qualitative review with rewrite suggestions"
+      }
+    ],
+    "verdict": "GOOD — 1 medium issue"
+  },
+  {
+    "agent": "python-reviewer",
+    "file": "agents/python-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "PEP 8, Pythonic idioms, type hints, security with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Python code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .py files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Python reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "r-reviewer",
+    "file": "agents/r-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Tidyverse patterns, pipe operators, vectorization, testing with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for R code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .R files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique R reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "refactor-cleaner",
+    "file": "agents/refactor-cleaner.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Dead code cleanup: knip/depcheck/ts-prune analysis, safe removal workflow" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for refactoring tasks" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep, Glob — needs write access for cleanup" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to dead code cleanup and dependency removal" },
+      "exit_criteria": { "score": 8, "note": "Cleaned codebase with removed dead code" },
+      "example_density": { "score": 7, "note": "1 example showing refactoring workflow" },
+      "overlap_detection": { "score": 9, "note": "Unique refactoring specialist" },
+      "safety_guardrails": { "score": 9, "note": "Explicit 'show before write' guardrail — confirmation before deletions" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "resilience-reviewer",
+    "file": "agents/resilience-reviewer.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Failure mode analysis: circuit breakers, retries, timeouts, fallbacks" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for resilience review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — sufficient for code analysis" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to failure mode and circuit breaker review" },
+      "exit_criteria": { "score": 8, "note": "Resilience report with findings and recommendations" },
+      "example_density": { "score": 7, "note": "1 example showing resilience review" },
+      "overlap_detection": { "score": 9, "note": "Unique resilience specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "ruby-reviewer",
+    "file": "agents/ruby-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Rails best practices, Brakeman security, N+1 detection with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Ruby code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .rb/.rake files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Ruby reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "rust-reviewer",
+    "file": "agents/rust-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Ownership, borrowing, async/Tokio, error handling with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Rust code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .rs files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Rust reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "scala-reviewer",
+    "file": "agents/scala-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Cats Effect/ZIO patterns, functional idioms, severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Scala code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .scala/.sc files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Scala reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "sdk-architect",
+    "file": "agents/sdk-architect.md",
+    "overall_score": 8.3,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "SDK architecture: API surface design, versioning, DX patterns" },
+      "model_appropriateness": { "score": 9, "note": "Opus correct for SDK architecture decisions" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, WebSearch — appropriate for SDK research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to SDK architecture design" },
+      "exit_criteria": { "score": 8, "note": "SDK architecture plan with API design" },
+      "example_density": { "score": 7, "note": "1 example showing SDK design output" },
+      "overlap_detection": { "score": 9, "note": "Unique SDK specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only architect" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "security-reviewer",
+    "file": "agents/security-reviewer.md",
+    "overall_score": 8.4,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "OWASP Top 10, secrets detection, injection, SSRF with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for security review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for security scanning tools" },
+      "trigger_precision": { "score": 8, "note": "Description covers auth, input handling, APIs, sensitive data" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with CRITICAL/HIGH/MEDIUM/LOW" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 6, "note": "Overlaps with devsecops-reviewer on OWASP, secrets, injection" },
+      "safety_guardrails": { "score": 9, "note": "Explicit 'never auto-apply remediations' guardrail" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "security-reviewer and devsecops-reviewer share significant overlap in OWASP and secrets detection",
+        "suggestion": "Clarify scope: security-reviewer for code-level vulnerabilities, devsecops-reviewer for CI/CD pipeline and infrastructure security"
+      }
+    ],
+    "verdict": "GOOD — 1 medium issue"
+  },
+  {
+    "agent": "skill-depth-analyzer",
+    "file": "agents/skill-depth-analyzer.md",
+    "overall_score": 8.8,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "7 dimensions with scoring rubrics, exact calculation formula" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for structured skill analysis" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, WebSearch, Bash — includes WebSearch for freshness checks" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to skill prompt-engineering quality analysis" },
+      "exit_criteria": { "score": 10, "note": "Exact JSON schema with computation formula" },
+      "example_density": { "score": 9, "note": "2 examples: single skill analysis and --all mode summary table" },
+      "overlap_detection": { "score": 8, "note": "Distinct from agent-quality-reviewer — analyzes skills, not agents" },
+      "safety_guardrails": { "score": 10, "note": "Read-only analyzer" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "solution-designer",
+    "file": "agents/solution-designer.md",
+    "overall_score": 8.7,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "5-step process: load context, generate options, compare trade-offs, recommend, write ADR" },
+      "model_appropriateness": { "score": 10, "note": "Opus correct for complex solution design with trade-off analysis" },
+      "tool_coverage": { "score": 8, "note": "Read, Glob, Grep, WebSearch — appropriate but could use Write for saving ADR" },
+      "trigger_precision": { "score": 9, "note": "Description precisely scoped to post-evaluation solution design" },
+      "exit_criteria": { "score": 9, "note": "Exact ADR template with all sections defined" },
+      "example_density": { "score": 8, "note": "1 detailed example with complete ADR output showing 3 options" },
+      "overlap_detection": { "score": 7, "note": "Some overlap with architect on design decisions, but solution-designer is product-scoped" },
+      "safety_guardrails": { "score": 10, "note": "Read-only designer" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "supply-chain-auditor",
+    "file": "agents/supply-chain-auditor.md",
+    "overall_score": 8.2,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Supply chain security: SBOM, dependency analysis, license compliance" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for supply chain auditing" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — needs Bash for SBOM tools" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to supply chain security risk analysis" },
+      "exit_criteria": { "score": 8, "note": "Security audit report with risk assessment" },
+      "example_density": { "score": 7, "note": "1 example showing audit output" },
+      "overlap_detection": { "score": 9, "note": "Unique supply chain specialist" },
+      "safety_guardrails": { "score": 10, "note": "Read-only auditor" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "swift-reviewer",
+    "file": "agents/swift-reviewer.md",
+    "overall_score": 8.5,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Swift concurrency, protocol architecture, SwiftUI, DDD with severity levels" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for Swift code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set" },
+      "trigger_precision": { "score": 8, "note": "Description covers .swift files" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block" },
+      "example_density": { "score": 7, "note": "1 detailed example" },
+      "overlap_detection": { "score": 9, "note": "Unique Swift reviewer" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "talk-coach",
+    "file": "agents/talk-coach.md",
+    "overall_score": 7.8,
+    "dimensions": {
+      "instruction_clarity": { "score": 8, "note": "Talk outline review with narrative structure, pacing, audience fit" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for talk coaching" },
+      "tool_coverage": { "score": 8, "note": "Read, Grep, Glob, Bash — adequate for reviewing talk outlines" },
+      "trigger_precision": { "score": 7, "note": "Overlaps with presentation-designer on slide/talk content" },
+      "exit_criteria": { "score": 8, "note": "Review feedback with improvement suggestions" },
+      "example_density": { "score": 6, "note": "Limited concrete examples of coaching output" },
+      "overlap_detection": { "score": 6, "note": "Overlaps with presentation-designer — both work on presentations/talks" },
+      "safety_guardrails": { "score": 10, "note": "Read-only coach" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "example_density",
+        "finding": "Limited concrete input/output examples for talk coaching",
+        "suggestion": "Add 2 complete examples: one showing outline review, one showing slide deck feedback"
+      },
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "talk-coach and presentation-designer both handle presentations with unclear boundary",
+        "suggestion": "Clarify: talk-coach for content/narrative/rehearsal coaching, presentation-designer for visual slide design"
+      }
+    ],
+    "verdict": "GOOD — 2 medium issues"
+  },
+  {
+    "agent": "tdd-guide",
+    "file": "agents/tdd-guide.md",
+    "overall_score": 8.6,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "Clear Red-Green-Refactor cycle, package manager detection, coverage verification" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for TDD guidance" },
+      "tool_coverage": { "score": 9, "note": "Read, Write, Edit, Bash, Grep — all needed for TDD workflow" },
+      "trigger_precision": { "score": 8, "note": "Description covers TDD for new features, bug fixes, refactoring" },
+      "exit_criteria": { "score": 8, "note": "Tests passing with 80%+ coverage" },
+      "example_density": { "score": 7, "note": "Inline examples of test commands and quality checklist" },
+      "overlap_detection": { "score": 8, "note": "Distinct from e2e-runner — TDD methodology vs E2E execution" },
+      "safety_guardrails": { "score": 9, "note": "Explicit 'Show Before Write' guardrail with confirmation step" }
+    },
+    "issues": [],
+    "verdict": "GOOD — no high issues"
+  },
+  {
+    "agent": "typescript-reviewer",
+    "file": "agents/typescript-reviewer.md",
+    "overall_score": 8.7,
+    "dimensions": {
+      "instruction_clarity": { "score": 10, "note": "Extremely detailed: 6 severity categories, hexagonal architecture violations, DDD violations, type safety, code quality, performance" },
+      "model_appropriateness": { "score": 8, "note": "Sonnet correct for TypeScript code review" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, Bash — standard reviewer set with uses_skills for depth" },
+      "trigger_precision": { "score": 8, "note": "Description covers .ts/.tsx/.js files with clear framework scope" },
+      "exit_criteria": { "score": 9, "note": "Severity-tagged output with approve/warning/block criteria" },
+      "example_density": { "score": 8, "note": "1 detailed example with 6 findings across 4 severity levels" },
+      "overlap_detection": { "score": 9, "note": "Unique TypeScript reviewer — most detailed of all language reviewers" },
+      "safety_guardrails": { "score": 10, "note": "Read-only reviewer" }
+    },
+    "issues": [],
+    "verdict": "EXCELLENT — no issues"
+  },
+  {
+    "agent": "workflow-os-competitor-analyst",
+    "file": "agents/workflow-os-competitor-analyst.md",
+    "overall_score": 8.0,
+    "dimensions": {
+      "instruction_clarity": { "score": 9, "note": "5-step process: understand clarc, research competitors, build matrix, identify uniques, prioritize gaps" },
+      "model_appropriateness": { "score": 7, "note": "Sonnet may be insufficient for deep competitive strategic analysis — Opus would be more appropriate" },
+      "tool_coverage": { "score": 9, "note": "Read, Grep, Glob, WebSearch — all needed for competitive research" },
+      "trigger_precision": { "score": 8, "note": "Description scoped to clarc vs AI tool competitors" },
+      "exit_criteria": { "score": 9, "note": "Markdown report with feature matrix, uniques, gaps, and backlog" },
+      "example_density": { "score": 8, "note": "1 detailed example with feature matrix and gap analysis" },
+      "overlap_detection": { "score": 5, "note": "Significant overlap with competitive-analyst — both perform competitor research" },
+      "safety_guardrails": { "score": 10, "note": "Read-only analyst" }
+    },
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "dimension": "overlap_detection",
+        "finding": "workflow-os-competitor-analyst and competitive-analyst both perform competitive analysis — significant duplication",
+        "suggestion": "Merge into one competitive-analyst with a --clarc flag for clarc-specific analysis, or clearly distinguish scope in descriptions"
+      },
+      {
+        "severity": "MEDIUM",
+        "dimension": "model_appropriateness",
+        "finding": "Uses sonnet for strategic competitive analysis that requires deep reasoning about market positioning",
+        "suggestion": "Consider upgrading to opus for deeper strategic analysis, consistent with competitive-analyst which uses opus"
+      }
+    ],
+    "verdict": "GOOD — 2 medium issues"
+  }
+]

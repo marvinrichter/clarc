@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "date": "2026-03-10",
+    "total_agents": 61,
+    "avg_score": 8.82,
+    "high_severity": 1,
+    "medium_severity": 5,
+    "low_severity": 55
+  },
+  "top_issues": [
+    {
+      "severity": "HIGH",
+      "agent": "agent-system-reviewer",
+      "dimension": "tool_coverage",
+      "detail": "Missing Write tool despite being instructed to save reports to docs/system-review/. Also missing Edit tool.",
+      "fix": "Add 'Write' and 'Edit' to tools list in agents/agent-system-reviewer.md"
+    },
+    {
+      "severity": "MEDIUM",
+      "agent": "typescript-reviewer",
+      "dimension": "example_density",
+      "detail": "Only 1 example despite being the most-used language reviewer agent.",
+      "fix": "Add a second example covering a different scenario (e.g., React component or Node.js backend)"
+    },
+    {
+      "severity": "MEDIUM",
+      "agent": "command-auditor",
+      "dimension": "example_density",
+      "detail": "Only 1 example.",
+      "fix": "Add second example"
+    },
+    {
+      "severity": "MEDIUM",
+      "agent": "hook-auditor",
+      "dimension": "example_density",
+      "detail": "Only 1 example.",
+      "fix": "Add second example"
+    },
+    {
+      "severity": "MEDIUM",
+      "agent": "doc-updater",
+      "dimension": "trigger_precision",
+      "detail": "Trigger description too broad — overlaps with planner and architect.",
+      "fix": "Narrow to 'after structural changes, before releases, when codemaps are stale'"
+    },
+    {
+      "severity": "MEDIUM",
+      "agent": "solution-designer",
+      "dimension": "tool_coverage",
+      "detail": "Missing Write tool despite generating ADR documents.",
+      "fix": "Add 'Write' to tools list"
+    },
+    {
+      "severity": "LOW",
+      "agent": "bash-reviewer",
+      "dimension": "tool_coverage",
+      "detail": "No Bash tool despite referencing CLI commands for shellcheck/shfmt.",
+      "fix": "Add Bash to tools list"
+    },
+    {
+      "severity": "LOW",
+      "agent": "workflow-os-competitor-analyst",
+      "dimension": "example_density",
+      "detail": "Only 1 example.",
+      "fix": "Add second example"
+    },
+    {
+      "severity": "LOW",
+      "agent": "competitive-analyst vs workflow-os-competitor-analyst",
+      "dimension": "overlap_detection",
+      "detail": "Model inconsistency — similar tasks using different model tiers without clear justification.",
+      "fix": "Document routing boundary in both agent descriptions"
+    },
+    {
+      "severity": "LOW",
+      "agent": "prompt-quality-scorer + prompt-reviewer",
+      "dimension": "overlap_detection",
+      "detail": "Overlap without clear routing boundary between the two prompt-focused agents.",
+      "fix": "Add explicit 'not to be confused with prompt-reviewer' line to each"
+    },
+    {
+      "severity": "LOW",
+      "agent": "scala-reviewer",
+      "dimension": "tool_coverage",
+      "detail": "Missing uses_skills frontmatter.",
+      "fix": "Add uses_skills: [scala-patterns, scala-testing]"
+    }
+  ],
+  "dimension_averages": {
+    "instruction_clarity": 9.1,
+    "model_appropriateness": 8.9,
+    "tool_coverage": 8.4,
+    "trigger_precision": 8.7,
+    "exit_criteria": 8.8,
+    "example_density": 8.6,
+    "overlap_detection": 8.9,
+    "safety_guardrails": 9.2
+  }
+}

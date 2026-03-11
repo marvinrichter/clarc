@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "date": "2026-03-10",
+    "total_skills": 237,
+    "analyzed": 45,
+    "avg_score": 8.8,
+    "high_severity_count": 2,
+    "medium_severity_count": 12,
+    "low_severity_count": 3
+  },
+  "top_skills": [
+    { "skill": "debugging-workflow", "score": 9.55 },
+    { "skill": "adr-writing", "score": 9.55 },
+    { "skill": "ddd-typescript", "score": 9.50 },
+    { "skill": "typescript-patterns", "score": 9.45 },
+    { "skill": "caching-patterns", "score": 9.45 }
+  ],
+  "bottom_skills": [
+    { "skill": "continuous-learning-v2", "score": 6.55 },
+    { "skill": "strategic-ddd", "score": 7.30 },
+    { "skill": "agent-conflict-resolution", "score": 7.35 },
+    { "skill": "clarc-onboarding", "score": 7.40 },
+    { "skill": "product-lifecycle", "score": 7.70 }
+  ],
+  "systemic_issues": [
+    {
+      "id": "SYS-01",
+      "severity": "HIGH",
+      "skill": "go-patterns",
+      "detail": "References golang-patterns-advanced in footer — actual directory is go-patterns-advanced. Broken cross-reference.",
+      "fix": "Replace golang-patterns-advanced → go-patterns-advanced in skills/go-patterns/SKILL.md"
+    },
+    {
+      "id": "SYS-02",
+      "severity": "HIGH",
+      "skill": "continuous-learning-v2",
+      "detail": "Version contradiction: frontmatter says 2.1.0, body contains 'What's New in v2.2' feature table.",
+      "fix": "Align version to 2.2.0 in frontmatter or remove v2.2 table from body."
+    },
+    {
+      "id": "SYS-03",
+      "severity": "MEDIUM",
+      "skills": ["product-lifecycle", "strategic-ddd", "agent-conflict-resolution", "instinct-lifecycle", "continuous-learning-v2"],
+      "detail": "Process/lifecycle skills average 29% actionability vs 58% for technical skills.",
+      "fix": "Add concrete step-by-step workflows and decision trees to lift actionability."
+    },
+    {
+      "id": "SYS-04",
+      "severity": "MEDIUM",
+      "detail": "31% of analyzed skills (14/45) exceed 400-line ideal. Root cause: advanced/stack-specific content not split into companion skill.",
+      "fix": "Extract advanced sections into *-advanced companion skills where they don't already exist."
+    },
+    {
+      "id": "SYS-05",
+      "severity": "MEDIUM",
+      "skills": ["api-design", "tdd-workflow"],
+      "detail": "RFC 7807 inconsistency: api-design recommends RFC 7807 (no success flag), but tdd-workflow integration test example checks data.success:true.",
+      "fix": "Update tdd-workflow integration test example to use RFC 7807 error shape."
+    }
+  ],
+  "skills": [
+    { "skill": "debugging-workflow", "overall": 9.55, "severity": "LOW" },
+    { "skill": "adr-writing", "overall": 9.55, "severity": "LOW" },
+    { "skill": "ddd-typescript", "overall": 9.50, "severity": "LOW" },
+    { "skill": "typescript-patterns", "overall": 9.45, "severity": "LOW" },
+    { "skill": "caching-patterns", "overall": 9.45, "severity": "LOW" },
+    { "skill": "tdd-workflow", "overall": 9.20, "severity": "MEDIUM", "issues": ["SYS-05: success flag in test example"] },
+    { "skill": "api-design", "overall": 9.15, "severity": "MEDIUM", "issues": ["SYS-05: inconsistent with tdd-workflow"] },
+    { "skill": "go-patterns", "overall": 8.90, "severity": "HIGH", "issues": ["SYS-01: broken cross-ref golang-patterns-advanced"] },
+    { "skill": "continuous-learning-v2", "overall": 6.55, "severity": "HIGH", "issues": ["SYS-02: version contradiction 2.1.0 vs v2.2 in body"] },
+    { "skill": "strategic-ddd", "overall": 7.30, "severity": "MEDIUM", "issues": ["SYS-03: low actionability"] },
+    { "skill": "agent-conflict-resolution", "overall": 7.35, "severity": "MEDIUM", "issues": ["SYS-03: low actionability"] },
+    { "skill": "product-lifecycle", "overall": 7.70, "severity": "MEDIUM", "issues": ["SYS-03: low actionability"] }
+  ]
+}

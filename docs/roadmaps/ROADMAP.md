@@ -2,7 +2,11 @@
 
 ## Active
 
-_No active roadmaps — all P0/P1 issues resolved. v1.0 ready._
+| Roadmap | Goal |
+|---------|------|
+| [hook-reliability](hook-reliability.md) | Fix P0/P1 hook issues: typecheck timeouts, checkpoint staging scope, async race, format-dispatch blocking, Write-tool secret scan |
+| [command-namespace-cleanup](command-namespace-cleanup.md) | Fix eval/evaluate collision, multi-* disambiguation, missing commands for 2 agents, P2 naming drift |
+| [agent-skill-completeness](agent-skill-completeness.md) | Close agent wiring gaps, lift process skill actionability, fix RFC 7807 inconsistency, P2 agent quality |
 
 ---
 
