@@ -109,6 +109,10 @@ Create detailed steps with:
 - [ ] Criterion 2
 ```
 
+## Architectural Decision Escalation
+
+If the task involves choosing between architectural patterns (monolith vs. microservices, REST vs. GraphQL, DB engine), delegate the relevant decision to the `architect` agent and incorporate its ADR recommendation into the task list. Do not make architectural pattern selections unilaterally — surface the trade-offs via `architect` first.
+
 ## Best Practices
 
 1. **Be Specific**: Use exact file paths, function names, variable names

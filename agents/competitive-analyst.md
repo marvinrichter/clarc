@@ -216,6 +216,11 @@ MARKET GAPS (opportunities)
 
 If you want to compare **clarc specifically** against Cursor, Copilot, Windsurf, Aider, Devin, or Continue.dev — use `workflow-os-competitor-analyst`. This agent covers **any market or product category**; the other agent is clarc-vs-tools only.
 
+## After This
+
+- `/discover` — use findings to seed product ideas
+- `/evaluate` — assess competitive gap as a feature opportunity
+
 ## Completion Criteria
 
 Done when: feature matrix complete for all specified competitors; at least 3 market gaps identified with evidence; opportunity list prioritized by size and feasibility. Stop after completing the specified competitor set — do not research additional competitors unless explicitly asked.

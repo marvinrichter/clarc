@@ -162,6 +162,28 @@ Fix: Ran `npm install react@19 react-dom@19` to satisfy peer requirement; packag
 Build Status: SUCCESS | Errors Fixed: 2 | Files Modified: next.config.js, package.json, package-lock.json
 ```
 
+**Input:** Go build fails with `import cycle not allowed` after moving code between packages.
+
+```
+[FIXED] internal/user/service.go
+Error: import cycle — internal/user imports internal/order, internal/order imports internal/user
+Fix: Extracted shared type OrderSummary into a new package internal/shared/types.go.
+Both packages now import internal/shared; the cycle is broken.
+
+Build Status: SUCCESS | Errors Fixed: 1 | Files Modified: internal/shared/types.go (new), internal/user/service.go, internal/order/service.go
+```
+
+**Input:** Python `ImportError: No module named 'app.utils'` when running tests from the project root.
+
+```
+[FIXED] Missing __init__.py
+Error: Python cannot resolve app.utils — app/ directory lacks an __init__.py, so it is not treated as a package.
+Fix: Created app/__init__.py (empty file). Also created app/utils/__init__.py for the utils sub-package.
+Run: pytest from project root — import resolves correctly.
+
+Build Status: SUCCESS | Errors Fixed: 1 | Files Modified: app/__init__.py (new), app/utils/__init__.py (new)
+```
+
 ## Not This Agent
 
 - **Go build errors** → use `go-build-resolver` for Go-specific tooling (`go vet`, `staticcheck`, `golangci-lint`, module proxy issues)

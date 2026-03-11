@@ -247,6 +247,13 @@ Next steps: `/arc42 section-5` to update building blocks, then run `/explore not
 
 Next steps: `/arc42 section-3` to update the system context diagram, then `/explore auth-service-extraction` to generate the ADR.
 
+## When NOT to Use This Agent
+
+- **Implementation timelines or task lists** → use `planner` instead. The architect designs the structure; the planner breaks it into steps and assigns owners.
+- **Build errors or compilation fixes** → use `build-error-resolver`.
+- **Code-level review** → use `code-reviewer` or a language-specific reviewer.
+- **Ongoing implementation work** → architect delivers the ADR and stops; hand off to planner for the task list.
+
 ## Completion Criteria
 
 Done when: ADR written with problem statement, options, trade-offs, and recommendation; C4/arc42 diagram described or generated; concrete next steps listed (which commands to run, which files to update). Stop here — do not begin implementation.

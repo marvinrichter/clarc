@@ -243,3 +243,10 @@ Overall system score: X.X / 10
 
 Score: 9.2 / 10 — GOOD. 1 minor issue.
 ```
+
+## Partial Audit Exit Criteria
+
+A partial audit (--scope or single command) is complete when:
+(a) all issues in scope are listed with severity and suggestion,
+(b) a partial-audit disclaimer is included at the top of the report ("Note: This is a partial audit of [scope] — overall system score is not calculated."),
+(c) overall score is not stated, to avoid misleading extrapolation from a limited sample.
