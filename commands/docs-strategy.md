@@ -47,5 +47,5 @@ Pass `$ARGUMENTS` as the focus area. Without arguments, a full strategy is produ
 ## After This
 
 - `/update-docs` — populate the new documentation structure with content from code
-- `/api-contract` — generate OpenAPI spec to feed into the new docs platform
+- `/contract-test` — generate OpenAPI spec to feed into the new docs platform
 - `/setup-ci` — configure the CI pipeline recommended by this strategy

@@ -49,13 +49,12 @@ Pass `$ARGUMENTS` as the API type to narrow scope. Without arguments, all change
 
 | Need | Command |
 |------|---------|
-| API design from scratch | `/api-design` |
-| Contract-first spec + codegen | `/api-contract` |
+| Contract-based consumer-driven testing | `/contract-test` |
 | This command: break detection on existing API | `/contract-review` |
 | Full security scan of API | `/security-review` |
 
 ## After This
 
-- `/api-contract` — enforce contract-first spec + run oasdiff in CI to prevent future breaks
+- `/contract-test` — set up consumer-driven contract tests to prevent future breaks automatically
 - `/security-review` — if endpoint changes touch auth or input handling
 - `/dep-audit` — if schema change requires consumer updates in dependencies

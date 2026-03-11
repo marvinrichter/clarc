@@ -65,4 +65,4 @@ Pass `$ARGUMENTS` as the focus area. Without arguments, all dimensions are revie
 
 - `/chaos-experiment` — validate resilience findings with real fault injection
 - `/slo` — define SLOs (error rate, latency p99) that reflect resilience requirements
-- `/observability` — add circuit breaker metrics and retry counters to dashboards
+- `/add-observability` — add circuit breaker metrics and retry counters to dashboards
