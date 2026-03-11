@@ -102,6 +102,63 @@ Tips:
 
 ---
 
+## Budget Controls
+
+clarc includes an active budget-guard system to prevent surprise bills.
+
+### Environment variables
+
+```bash
+export CLAUDE_COST_WARN=5        # warn (stderr) before Agent calls if daily spend > $5
+export CLAUDE_BUDGET_LIMIT=20    # block Agent calls if daily spend > $20 (0 = disabled)
+```
+
+Add these to your shell profile (`~/.zshrc`, `~/.bashrc`) or `~/.claude/settings.json` under `"env"`.
+
+### How it works
+
+The `budget-guard` PreToolUse hook fires before every Agent tool call. It reads today's accumulated cost from `~/.clarc/cost-log.jsonl` and warns or blocks based on the thresholds above. Estimates are heuristic (±50–100%). Ground-truth: `console.anthropic.com`.
+
+### Per-response cost footer
+
+The `response-dashboard` Stop hook shows a summary after each response:
+
+```
+────────────────────────────────────────────────────────
+ tools: Read×5  Edit×3  Bash×2  Agent×1
+ agents: typescript-reviewer [sonnet]
+ cost:  ~$0.08  ·  ~9.5k tokens (est.)
+────────────────────────────────────────────────────────
+```
+
+Disable: `CLARC_RESPONSE_DASHBOARD=false` or in `.clarc/hooks-config.json`:
+```json
+{ "response_dashboard": false }
+```
+
+---
+
+## Per-Tool Cost Awareness
+
+Not all tools cost the same. Agent calls are 20–40× more expensive than a Grep:
+
+| Tool | Est. input tokens | Notes |
+|---|---|---|
+| Grep / Glob | 200–300 | Search results are small |
+| Bash | 400 | Short command output |
+| Read | 1,500 | Full file content into context |
+| Edit / Write | 500–600 | Diff + confirmation |
+| WebFetch | 2,000 | Web page content |
+| **Agent** | **8,000** | Full sub-context initialization |
+
+**Rule:** Before spawning an Agent, ask: can Grep + Read answer this instead?
+
+### Haiku for cheap subtasks
+
+The `summarizer-haiku` agent (10–15× cheaper than Sonnet) handles summarization, classification, boilerplate generation, and text extraction. Use it for any task that doesn't require reasoning — just text transformation.
+
+---
+
 ## Agent Teams Cost Warning
 
 [Agent Teams](https://code.claude.com/docs/en/agent-teams) (experimental) spawns multiple independent context windows. Each teammate consumes tokens separately.
@@ -109,12 +166,6 @@ Tips:
 - Only use for tasks where parallelism adds clear value (multi-module work, parallel reviews)
 - For simple sequential tasks, subagents (Task tool) are more token-efficient
 - Enable with: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings
-
----
-
-## Future: configure-ecc Integration
-
-The `configure-ecc` install wizard could offer to set these environment variables during setup, with explanations of the cost tradeoffs. This would help new users optimize from day one rather than discovering these settings after hitting limits.
 
 ---
 
@@ -126,9 +177,15 @@ The `configure-ecc` install wizard could offer to set these environment variable
 /model opus                # Only for complex reasoning
 /clear                     # Between unrelated tasks
 /compact                   # At logical breakpoints
-/cost                      # Check spending
+/cost                      # Claude Code native cost check
+/session-cost              # clarc accumulated cost estimate (per-tool breakdown)
 
-# Environment variables (add to ~/.claude/settings.json "env" block)
+# Budget controls (add to shell profile or ~/.claude/settings.json env block)
+CLAUDE_COST_WARN=5
+CLAUDE_BUDGET_LIMIT=20
+CLARC_RESPONSE_DASHBOARD=false   # disable per-response cost footer
+
+# Token optimization settings
 MAX_THINKING_TOKENS=10000
 CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50
 CLAUDE_CODE_SUBAGENT_MODEL=haiku

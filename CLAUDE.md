@@ -41,6 +41,7 @@ The project is organized into several core components:
 - `/e2e` - Generate and run E2E tests
 - `/code-review` - Quality review
 - `/build-fix` - Fix build errors
+- `/session-cost` - Show estimated token/cost breakdown for current session
 - `/learn-eval` - Extract patterns from sessions (with quality gate)
 - `/skill-create` - Generate skills from git history
 
