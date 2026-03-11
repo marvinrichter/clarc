@@ -1,0 +1,225 @@
+{
+  "generated": "2026-03-12",
+  "summary": {
+    "total_analyzed": 30,
+    "total_in_repo": 247,
+    "avg_score": 7.6,
+    "critical": 0,
+    "high": 1,
+    "medium": 12,
+    "low": 14
+  },
+  "skills": [
+    {
+      "file": "autonomous-loops/SKILL.md",
+      "score": 6.5,
+      "severity": "HIGH",
+      "issues": [
+        "Only 24% actionable content across 498 lines — 3 of 6 patterns are prose descriptions of external projects with no runnable examples",
+        "References 'Codex' (OpenAI model) incorrectly in a Claude workflow skill — should be claude-sonnet-latest"
+      ]
+    },
+    {
+      "file": "continuous-learning-v2/SKILL.md",
+      "score": 6.9,
+      "severity": "MEDIUM",
+      "issues": [
+        "69% prose — version comparison tables and ASCII diagrams dominate over runnable content",
+        "Duplicate Quick Start headings at line 23 and line 193 with different (incomplete vs. complete) content"
+      ]
+    },
+    {
+      "file": "clarc-mcp-integration/SKILL.md",
+      "score": 7.0,
+      "severity": "MEDIUM",
+      "issues": [
+        "Only 3 minimal examples; multi-agent orchestrator pattern is pseudocode — cannot be used directly"
+      ]
+    },
+    {
+      "file": "clarc-way/SKILL.md",
+      "score": 7.1,
+      "severity": "MEDIUM",
+      "issues": [
+        "29% actionable content — describes pipeline without showing it in use",
+        "No worked example showing a typical bug fix command sequence"
+      ]
+    },
+    {
+      "file": "cost-management/SKILL.md",
+      "score": 7.3,
+      "severity": "MEDIUM",
+      "issues": [
+        "Grep-before-Read efficiency example uses pseudocode (Read(...), Grep(...)) rather than actual Claude Code tool-call syntax"
+      ]
+    },
+    {
+      "file": "clarc-onboarding/SKILL.md",
+      "score": 7.4,
+      "severity": "MEDIUM",
+      "issues": [
+        "30% actionable content — role-specific paths are pure tables with no example session",
+        "References unverified commands: /a11y-audit, /web-perf, /iac-review, /finops-audit, /agent-stats"
+      ]
+    },
+    {
+      "file": "go-patterns/SKILL.md",
+      "score": 7.7,
+      "severity": "MEDIUM",
+      "issues": [
+        "549 lines — 83% over ideal ceiling. Interface Design, Package Organization, hexagonal layout should move to go-patterns-advanced"
+      ]
+    },
+    {
+      "file": "arc42-c4/SKILL.md",
+      "score": 7.8,
+      "severity": "MEDIUM",
+      "issues": [
+        "434 lines — full arc42 template (310 lines) should be a separate docs/templates/arc42-template.md file",
+        "Trigger conditions don't specify when NOT to use arc42 (e.g., projects under 10 files)"
+      ]
+    },
+    {
+      "file": "python-patterns/SKILL.md",
+      "score": 7.9,
+      "severity": "MEDIUM",
+      "issues": [
+        "554 lines — Decorators and NamedTuples sections should move to python-patterns-advanced",
+        "EAFP vs LBYL inconsistency: EAFP promoted as preferred but LBYL examples appear without clarification"
+      ]
+    },
+    {
+      "file": "agent-conflict-resolution/SKILL.md",
+      "score": 7.9,
+      "severity": "MEDIUM",
+      "issues": [
+        "37% actionable content — decision trees are ASCII pseudocode; no copy-paste conflict signal template"
+      ]
+    },
+    {
+      "file": "agent-evolution-patterns/SKILL.md",
+      "score": 8.0,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "verification-loop/SKILL.md",
+      "score": 8.0,
+      "severity": "LOW",
+      "issues": ["No build-failure recovery example"]
+    },
+    {
+      "file": "legacy-modernization/SKILL.md",
+      "score": 8.1,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "project-local-skills/SKILL.md",
+      "score": 8.1,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "tdd-workflow/SKILL.md",
+      "score": 8.1,
+      "severity": "LOW",
+      "issues": ["403 lines — mock patterns section could move to a -advanced variant"]
+    },
+    {
+      "file": "api-design/SKILL.md",
+      "score": 8.3,
+      "severity": "LOW",
+      "issues": ["Versioning section duplicates content in api-design-advanced"]
+    },
+    {
+      "file": "clarc-hooks-authoring/SKILL.md",
+      "score": 8.3,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "ci-cd-patterns/SKILL.md",
+      "score": 8.3,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "typescript-patterns/SKILL.md",
+      "score": 8.4,
+      "severity": "MEDIUM",
+      "issues": ["484 lines — module organization section too long; should be trimmed or split"]
+    },
+    {
+      "file": "prompt-engineering/SKILL.md",
+      "score": 8.4,
+      "severity": "LOW",
+      "issues": ["Versioning section duplicates git-workflow rules"]
+    },
+    {
+      "file": "observability/SKILL.md",
+      "score": 8.4,
+      "severity": "LOW",
+      "issues": ["Alertmanager section could be a separate skill"]
+    },
+    {
+      "file": "multi-agent-patterns/SKILL.md",
+      "score": 8.5,
+      "severity": "LOW",
+      "issues": ["440 lines — SDK loop section could be trimmed"]
+    },
+    {
+      "file": "docker-patterns/SKILL.md",
+      "score": 8.5,
+      "severity": "LOW",
+      "issues": ["Postgres version inconsistency vs ci-cd-patterns"]
+    },
+    {
+      "file": "agent-reliability/SKILL.md",
+      "score": 8.6,
+      "severity": "LOW",
+      "issues": ["434 lines — rate limiting section could move to -advanced"]
+    },
+    {
+      "file": "context-management/SKILL.md",
+      "score": 8.2,
+      "severity": "LOW",
+      "issues": ["128k context window hardcoded — actual limit varies by model"]
+    },
+    {
+      "file": "repomap/SKILL.md",
+      "score": 8.2,
+      "severity": "NONE",
+      "issues": []
+    },
+    {
+      "file": "debugging-workflow/SKILL.md",
+      "score": 8.7,
+      "severity": "LOW",
+      "issues": ["OTel section overlaps with observability skill"]
+    },
+    {
+      "file": "auth-patterns/SKILL.md",
+      "score": 8.7,
+      "severity": "LOW",
+      "issues": ["471 lines — RBAC section could move to a dedicated skill"]
+    },
+    {
+      "file": "multi-agent-patterns/SKILL.md",
+      "score": 8.5,
+      "severity": "LOW",
+      "issues": ["440 lines — slightly over ideal"]
+    },
+    {
+      "file": "arc42-c4/SKILL.md",
+      "score": 7.8,
+      "severity": "MEDIUM",
+      "issues": ["434 lines; embedded template should be a separate file"]
+    }
+  ],
+  "systemic_patterns": [
+    "Length inflation: 7 of 30 skills exceed 400 lines. Advanced content creeps back into base skills — the -advanced split convention is underused.",
+    "Meta-skills need examples: clarc-way, clarc-onboarding, continuous-learning-v2 score 7.1-7.4 because they describe workflows without showing them in use.",
+    "Strong reference quality: debugging-workflow, auth-patterns, docker-patterns, clarc-hooks-authoring, ci-cd-patterns, agent-reliability (8.3-8.7) set the quality bar."
+  ]
+}

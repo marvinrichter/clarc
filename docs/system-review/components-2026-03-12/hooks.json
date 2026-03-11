@@ -1,0 +1,105 @@
+{
+  "summary": {
+    "system_score": 7.4,
+    "hook_count": 21,
+    "script_count": 39,
+    "scripts_referenced": 14,
+    "dead_refs": 0,
+    "dead_scripts": 18,
+    "critical": 0,
+    "high": 1,
+    "medium": 4,
+    "low": 4
+  },
+  "event_coverage": {
+    "PreToolUse": 5,
+    "PreCompact": 1,
+    "SessionStart": 2,
+    "PostToolUse": 10,
+    "Stop": 2,
+    "Notification": 1,
+    "SessionEnd": 3
+  },
+  "dimensions": {
+    "event_coverage": 9,
+    "false_positive_risk": 7,
+    "performance_impact": 7,
+    "error_handling": 8,
+    "dead_refs": 10,
+    "dead_scripts": 4,
+    "missing_critical_hooks": 9,
+    "interaction_conflicts": 8
+  },
+  "issues": [
+    {
+      "severity": "HIGH",
+      "dimension": "dead_scripts",
+      "file": "scripts/hooks/post-edit-format-dispatch.js",
+      "description": "18 sub-formatter scripts dispatched via runtime EXT_MAP path join. A bug in the dispatcher or wrong CLAUDE_PLUGIN_ROOT silently disables all language formatters with no error. No startup validation.",
+      "suggestion": "Add EXT_MAP validation at dispatch startup: verify each resolved script path exists and emit a stderr warning for any missing."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "interaction_conflicts",
+      "file": "scripts/hooks/auto-checkpoint.js",
+      "description": "auto-checkpoint (sync, PostToolUse) commits the file before post-edit-format-dispatch (async) runs. The checkpoint captures unformatted code. /undo restores pre-format state.",
+      "suggestion": "Document this trade-off. If unacceptable: make format-dispatch synchronous and reorder so checkpoint fires after format."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "performance_impact",
+      "file": "scripts/hooks/auto-checkpoint.js",
+      "description": "Up to 5 synchronous spawnSync git calls per Edit/Write. On slow repos this blocks the PostToolUse handler for 1-3 seconds per file edit, even with the 60-second rate limit.",
+      "suggestion": "Migrate git calls to async spawn with Promise wrappers."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "performance_impact",
+      "file": "scripts/hooks/response-dashboard.js",
+      "description": "On long sessions, reads and parses the full JSONL transcript via fs.readFileSync on every Stop hook invocation. Large transcripts (>5MB) create measurable latency.",
+      "suggestion": "Add a file-size guard: for transcripts >5MB, read only the tail (last ~50,000 bytes)."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "false_positive_risk",
+      "file": "scripts/hooks/post-edit-workflow-nudge.js",
+      "description": "tdd-sequence-guard fires on every Write to a source file lacking a test counterpart — affects non-TDD projects, infra scripts, generated code, and migrations.",
+      "suggestion": "Skip for paths matching infra/, migrations/, scripts/, generated/, __generated__. Consider defaulting to disabled."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "false_positive_risk",
+      "file": "scripts/hooks/doc-file-warning.js",
+      "description": "Fires on valid .md files (API.md, NOTES.md, SETUP.md) that don't match its allowlist. Always exits 0, never blocks, but noisy.",
+      "suggestion": null
+    },
+    {
+      "severity": "LOW",
+      "dimension": "false_positive_risk",
+      "file": "scripts/hooks/build-failure-router.js",
+      "description": "Generic pattern /exited with code [1-9]/i matches any non-zero Bash exit, not just build failures. isBuildCmd check mitigates but not eliminates.",
+      "suggestion": null
+    },
+    {
+      "severity": "LOW",
+      "dimension": "error_handling",
+      "file": "scripts/hooks/doc-file-warning.js",
+      "description": "Missing explicit process.exit(0) at end of stdin handler, inconsistent with all other hook scripts.",
+      "suggestion": null
+    },
+    {
+      "severity": "LOW",
+      "dimension": "error_handling",
+      "file": "scripts/hooks/notification-handler.js",
+      "description": "Uses process.env.HOME || process.env.USERPROFILE fallback instead of os.homedir(). Less reliable cross-platform.",
+      "suggestion": null
+    }
+  ],
+  "missing_hooks": [
+    "PostToolUse on Write for TypeScript typecheck — post-edit-typecheck.js matches only Edit. New .ts/.tsx files written via Write are not type-checked.",
+    "PreToolUse on Edit for secret scan — pre-write-secret-scan.js matches only Write. Secrets introduced via Edit new_string are only caught at git commit time.",
+    "No .rb extension in EXT_MAP in post-edit-format-dispatch.js — Ruby files not auto-formatted despite ruby-reviewer agent being present."
+  ],
+  "dead_refs": [],
+  "dead_scripts_note": "18 sub-formatter scripts dispatched via post-edit-format-dispatch.js at runtime via EXT_MAP — not dead code, but fragile indirect references. If dispatcher fails, all 18 silently die."
+}

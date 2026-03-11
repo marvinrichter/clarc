@@ -1,0 +1,193 @@
+{
+  "generated": "2026-03-12",
+  "summary": {
+    "total_commands": 172,
+    "system_score": 7.35,
+    "critical": 0,
+    "high": 3,
+    "medium": 8,
+    "low": 5,
+    "missing_commands": ["/cfp", "/guide", "/security (should be /security-review)"]
+  },
+  "dimensions": {
+    "naming_consistency": 8,
+    "built_in_conflicts": 10,
+    "overlap_detection": 7,
+    "missing_commands": 6,
+    "argument_design": 7,
+    "feedback_loop": 8,
+    "step_count": 6,
+    "agent_invocation": 7
+  },
+  "issues": [
+    {
+      "severity": "HIGH",
+      "dimension": "missing_commands",
+      "command": "talk-outline.md",
+      "description": "After This references /cfp — commands/cfp.md does not exist. A cfp-coach agent exists in agents/.",
+      "suggestion": "Create commands/cfp.md backed by cfp-coach agent, or remove the /cfp reference"
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "missing_commands",
+      "command": "clarc-way.md",
+      "description": "Body references '/guide <task>' — commands/guide.md does not exist",
+      "suggestion": "Replace with /clarc-way or /plan, or create commands/guide.md"
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "missing_commands",
+      "command": "quickstart.md",
+      "description": "References /security — correct command is /security-review. commands/security.md does not exist.",
+      "suggestion": "Change /security to /security-review in quickstart.md"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "naming_consistency",
+      "command": "instinct-projects.md",
+      "description": "Usage section shows /projects (not /instinct-projects)",
+      "suggestion": "Update usage section to show the correct command name /instinct-projects"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "naming_consistency",
+      "command": "instinct-promote.md",
+      "description": "Usage section shows /promote (not /instinct-promote)",
+      "suggestion": "Update usage section to show the correct command name /instinct-promote"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "naming_consistency",
+      "command": "multi-backend.md",
+      "description": "Usage shows /backend; actual command name is /multi-backend",
+      "suggestion": "Update usage example to /multi-backend"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "naming_consistency",
+      "command": "multi-frontend.md",
+      "description": "Usage shows /frontend; actual command name is /multi-frontend",
+      "suggestion": "Update usage example to /multi-frontend"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "wasm-build.md",
+      "description": "9 steps — exceeds 8-step ceiling",
+      "suggestion": "Merge 1-2 consecutive related steps"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "arc42.md",
+      "description": "9 steps (0-8) — exceeds 8-step ceiling",
+      "suggestion": "Merge 1-2 consecutive related steps"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "release.md",
+      "description": "9 steps — exceeds 8-step ceiling",
+      "suggestion": "Merge 1-2 consecutive related steps"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "onboard.md",
+      "description": "9 steps (0-8) — exceeds 8-step ceiling",
+      "suggestion": "Merge 1-2 consecutive related steps"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "backstage-setup.md",
+      "description": "9 steps — exceeds 8-step ceiling, also missing Arguments section",
+      "suggestion": "Merge steps; add Arguments section"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "agent_invocation",
+      "command": "data-mesh-review.md",
+      "description": "data-architect agent exists but is not invoked",
+      "suggestion": "Add explicit Step 0 delegation to data-architect agent"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "agent_invocation",
+      "command": "frontend-arch-review.md",
+      "description": "frontend-architect agent exists but is not invoked",
+      "suggestion": "Add explicit Step 0 delegation to frontend-architect agent"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "agent_invocation",
+      "command": "mlops-review.md",
+      "description": "Delegation described in description/frontmatter but body steps contain no delegation instruction",
+      "suggestion": "Add Step 0 delegation instruction matching security-review.md pattern"
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "agent_invocation",
+      "command": "resilience-review.md",
+      "description": "Delegation described in description/frontmatter but body steps contain no delegation instruction",
+      "suggestion": "Add Step 0 delegation instruction matching security-review.md pattern"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "argument_design",
+      "command": "multi-backend.md",
+      "description": "Uses $ARGUMENTS but has no ## Arguments section",
+      "suggestion": "Add Arguments section"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "argument_design",
+      "command": "multi-frontend.md",
+      "description": "Uses $ARGUMENTS but has no ## Arguments section",
+      "suggestion": "Add Arguments section"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "argument_design",
+      "command": "backstage-setup.md",
+      "description": "Uses $ARGUMENTS but has no ## Arguments section",
+      "suggestion": "Add Arguments section"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "brand-identity.md",
+      "description": "No After This section",
+      "suggestion": "Add After This with 2-3 follow-on command suggestions"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "agent-instincts.md",
+      "description": "No After This section",
+      "suggestion": "Add After This section"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "instinct-outcome.md",
+      "description": "No After This section",
+      "suggestion": "Add After This section"
+    },
+    {
+      "severity": "LOW",
+      "dimension": "overlap_detection",
+      "command": "go-test.md",
+      "description": "Overlaps ~80% with /tdd for Go codebases with no disambiguation note",
+      "suggestion": "Add disambiguation: 'Quick test run — /go-test; TDD workflow — /tdd'"
+    }
+  ],
+  "overlap_groups": [
+    ["go-test.md", "tdd.md"]
+  ],
+  "missing_commands": [
+    "/cfp — referenced in talk-outline.md; cfp-coach agent exists and is ready",
+    "/guide — referenced in clarc-way.md; no backing agent identified",
+    "/security — incorrect reference in quickstart.md; should be /security-review"
+  ]
+}
