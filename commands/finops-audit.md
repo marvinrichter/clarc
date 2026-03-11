@@ -12,6 +12,19 @@ Systematically analyze cloud costs, infrastructure configuration, and CI/CD pipe
 
 ---
 
+## Step 0 — Delegate to finops-advisor (Start Here)
+
+**Invoke the `finops-advisor` agent** with the Terraform/Kubernetes configuration files and any cost reports available.
+
+Pass: directory of IaC files (`$ARGUMENTS` or `.`), and optionally a cost export (CSV or JSON). The agent will:
+- Analyze cloud resource configuration for cost optimization opportunities
+- Estimate ROI with prioritized recommendations (rightsizing, reservations, waste elimination)
+- Identify tagging gaps and governance issues
+
+> For a quick audit of a single PR or IaC change, Step 0 alone is sufficient. Continue to the manual checklist below for a comprehensive quarterly audit.
+
+---
+
 ## Audit Checklist
 
 ### 1. Tagging Coverage

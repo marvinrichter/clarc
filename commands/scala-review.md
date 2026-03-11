@@ -41,6 +41,21 @@ This command invokes the **scala-reviewer** agent for Scala-specific code review
 - Scala 2 syntax that Scala 3 can express more clearly
 - Unused implicits or given instances
 
+## When to Use This vs /code-review
+
+| | `/scala-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Scala project with Cats Effect or ZIO | Multi-language project or unsure |
+| **Reviewer** | scala-reviewer (specialist) | code-reviewer → routes to scala-reviewer automatically |
+| **Output** | Scala-specific: ADTs, effect systems, null safety | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/scala-reviewer.md`

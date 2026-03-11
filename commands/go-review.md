@@ -135,6 +135,16 @@ Recommendation: ❌ Block merge until CRITICAL issue is fixed
 | ⚠️ Warning | Only MEDIUM issues (merge with caution) |
 | ❌ Block | CRITICAL or HIGH issues found |
 
+## When to Use This vs /code-review
+
+| | `/go-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Go project or Go is primary language | Multi-language project or unsure |
+| **Reviewer** | go-reviewer (specialist) | code-reviewer → routes to go-reviewer automatically |
+| **Output** | Go-specific: concurrency, error wrapping, idiomatic patterns | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
 ## Integration with Other Commands
 
 - Use `/go-test` first to ensure tests pass

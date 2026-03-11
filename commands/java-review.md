@@ -103,6 +103,16 @@ Verdict: WARNING — 2 HIGH issues should be resolved before merge.
 | ⚠️ Warning | Only MEDIUM issues (merge with caution) |
 | ❌ Block | CRITICAL or HIGH issues found |
 
+## When to Use This vs /code-review
+
+| | `/java-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Java/Spring Boot project | Multi-language project or unsure |
+| **Reviewer** | java-reviewer (specialist) | code-reviewer → routes to java-reviewer automatically |
+| **Output** | Java-specific: hexagonal architecture, DDD, security | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
 ## Integration with Other Commands
 
 - Use `/tdd` first to ensure tests are written test-first

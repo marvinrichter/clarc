@@ -6,12 +6,28 @@ description: Run Rust tests with coverage. Enforces TDD workflow with table-driv
 
 Run the full Rust test suite with coverage reporting.
 
-## What This Command Does
+## Step 1 — Run Tests
 
-1. **Run Tests**: Execute `cargo test` with output capture
-2. **Race Detection**: Run with `--test-threads=1` if race conditions suspected
-3. **Coverage**: Measure coverage with `cargo tarpaulin` if installed
-4. **Property Tests**: Identify and run proptest/quickcheck suites
+```bash
+cargo test 2>&1
+```
+
+For specific tests: `cargo test test_name -- --nocapture`
+
+## Step 2 — Check Coverage
+
+```bash
+cargo tarpaulin --out Stdout 2>/dev/null || cargo test
+```
+
+Target: **80%+ line coverage**. If tarpaulin is not installed: `cargo install cargo-tarpaulin`.
+
+## Step 3 — Interpret Results
+
+- **All pass, coverage ≥ 80%** — Approve
+- **All pass, coverage 70–79%** — Warning; add tests before merge
+- **Compile errors** — Run `/rust-build` first
+- **Test failures** — Fix root cause; do not skip tests
 
 ## Diagnostic Commands
 

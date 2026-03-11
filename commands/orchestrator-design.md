@@ -58,7 +58,16 @@ Next: implement agents in agents/ and wire them in commands/ or via /orchestrate
 - `multi-language SDK generation from OpenAPI spec`
 - `onboarding new engineers — repo tour, setup, first PR`
 
+## When to Use This vs /agent-design
+
+| | `/orchestrator-design` | `/agent-design` |
+|---|---|---|
+| **Style** | Direct delegation — one-shot output | Interactive workshop — guided, multi-step |
+| **User involvement** | Low — goal in, design document out | High — validates decomposition, refines pattern |
+| **Use when** | Requirements are clear, want artifact fast | Requirements are fuzzy or need interactive refinement |
+
 ## See Also
 
+- `/agent-design` — interactive workshop for designing multi-agent systems
 - `/orchestrate` — run an orchestration workflow (uses the orchestrator agent)
 - `/plan` — single-agent implementation planning

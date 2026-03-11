@@ -40,6 +40,21 @@ This command invokes the **flutter-reviewer** agent for Flutter/Dart-specific co
 - `setState()` called with no actual state change
 - Non-semantic accessibility labels
 
+## When to Use This vs /code-review
+
+| | `/flutter-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Flutter/Dart project | Multi-language project or unsure |
+| **Reviewer** | flutter-reviewer (specialist) | code-reviewer → routes to flutter-reviewer automatically |
+| **Output** | Flutter-specific: widget architecture, performance, null safety | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/flutter-reviewer.md`

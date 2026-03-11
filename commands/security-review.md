@@ -12,6 +12,19 @@ Execute a layered DevSecOps security scan covering static analysis, secrets dete
 
 ---
 
+## Step 0 — Automated File Scan (Start Here)
+
+**Invoke the `devsecops-reviewer` agent** to scan all changed files immediately.
+
+Pass the list of changed files (`git diff --name-only` or `$ARGUMENTS`) to the agent. The agent will:
+- Scan for OWASP Top 10 vulnerabilities, hardcoded secrets, SQL injection, SSRF, unsafe crypto
+- Flag IaC misconfigurations in Terraform/Kubernetes files
+- Produce CRITICAL/HIGH/MEDIUM findings with concrete fixes
+
+> If only scanning recent code changes, Step 0 alone may be sufficient. Continue to Steps 1–6 for a full project-wide deep scan.
+
+---
+
 ## Step 1: SAST — Static Application Security Testing
 
 ### Semgrep (All Languages)

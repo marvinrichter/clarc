@@ -49,6 +49,22 @@ dotnet test
 dotnet format --verify-no-changes
 ```
 
+## When to Use This vs /code-review
+
+| | `/csharp-review` | `/code-review` |
+|---|---|---|
+| **Use when** | C#/.NET project | Multi-language project or unsure |
+| **Reviewer** | csharp-reviewer (specialist) | code-reviewer → routes to csharp-reviewer automatically |
+| **Output** | C#-specific: nullable types, async/await, CQRS, EF Core | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/build-fix` — fix compilation errors before proceeding
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/csharp-reviewer.md`

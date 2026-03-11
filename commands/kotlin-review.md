@@ -41,6 +41,24 @@ This command invokes the **kotlin-reviewer** agent for Kotlin-specific code revi
 - Missing `data class` for value types
 - Unsealed class hierarchies where sealed would be safer
 
+## When to Use This vs /code-review
+
+| | `/kotlin-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Kotlin backend or library project | Multi-language project or unsure |
+| **Reviewer** | kotlin-reviewer (specialist) | code-reviewer → routes to kotlin-reviewer automatically |
+| **Output** | Kotlin-specific: coroutines, null safety, sealed classes | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+For Android/Compose, use `/android-review` instead — it covers Hilt scoping, Room, and Compose patterns.
+
+## After This
+
+- `/android-review` — for Android-specific Compose/Hilt/Room review
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/kotlin-reviewer.md`

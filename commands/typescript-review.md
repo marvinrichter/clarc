@@ -22,3 +22,19 @@ Delegate immediately to the **typescript-reviewer** agent with full context of:
 3. The current branch and PR context if available
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
+
+## When to Use This vs /code-review
+
+| | `/typescript-review` | `/code-review` |
+|---|---|---|
+| **Use when** | TypeScript project or TypeScript is primary language | Multi-language project or unsure |
+| **Reviewer** | typescript-reviewer (specialist) | code-reviewer → routes to typescript-reviewer automatically |
+| **Output** | TypeScript-specific: DDD, type safety, hexagonal architecture | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/typescript-build` — type-check after addressing type errors
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved

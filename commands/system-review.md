@@ -41,9 +41,9 @@ Saves results to `docs/system-review/components-YYYY-MM-DD/`.
 Runs all components + systemic analysis. Recommended with `/overnight`:
 1. All steps from Components Mode
 2. **prompt-quality-scorer `--all`** → prompt engineering quality
-3. **learning-audit** → continuous-learning-v2 health
-4. **workflow-check** → 6 critical developer journey coverage
-5. **competitive-review** → clarc vs. competitors feature matrix
+3. `/learning-audit` → continuous-learning-v2 health
+4. `/workflow-check` → 6 critical developer journey coverage
+5. `/competitive-review` → clarc vs. competitors feature matrix
 6. **agent-system-reviewer** → synthesizes everything into a unified Priority Matrix
 
 **Use**: Monthly, before major roadmap planning sessions.
@@ -76,6 +76,7 @@ Runs all components + systemic analysis. Recommended with `/overnight`:
    - Run `/learning-audit`
    - Run `/workflow-check`
    - Run `/competitive-review`
+
 3. **Synthesize**: Launch agent-system-reviewer to produce the Priority Matrix
 4. **Final report**: Save to `docs/system-review/YYYY-MM-DD-full-report.md`
 5. **Recommended actions**: End with top 5 P0/P1 actions for next roadmap

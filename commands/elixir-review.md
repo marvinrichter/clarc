@@ -22,3 +22,18 @@ Delegate immediately to the **elixir-reviewer** agent with full context of:
 3. Phoenix/LiveView context if applicable
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
+
+## When to Use This vs /code-review
+
+| | `/elixir-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Elixir/Phoenix/OTP project | Multi-language project or unsure |
+| **Reviewer** | elixir-reviewer (specialist) | code-reviewer → routes to elixir-reviewer automatically |
+| **Output** | Elixir-specific: OTP patterns, Ecto, Sobelow security | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved

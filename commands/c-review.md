@@ -49,6 +49,21 @@ gcc -Wall -Wextra -fsanitize=address,undefined -o output source.c
 valgrind --leak-check=full ./output
 ```
 
+## When to Use This vs /code-review
+
+| | `/c-review` | `/code-review` |
+|---|---|---|
+| **Use when** | C systems/embedded project | Multi-language project or unsure |
+| **Reviewer** | c-reviewer (specialist) | code-reviewer → routes to c-reviewer automatically |
+| **Output** | C-specific: memory safety, pointer discipline, goto-cleanup | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
+
 ## Related
 
 - Agent: `agents/c-reviewer.md`

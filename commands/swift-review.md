@@ -22,3 +22,19 @@ Delegate immediately to the **swift-reviewer** agent with full context of:
 3. Target iOS/macOS deployment version if relevant
 
 Pass `$ARGUMENTS` verbatim to the agent as the focus hint.
+
+## When to Use This vs /code-review
+
+| | `/swift-review` | `/code-review` |
+|---|---|---|
+| **Use when** | Swift/SwiftUI/iOS project | Multi-language project or unsure |
+| **Reviewer** | swift-reviewer (specialist) | code-reviewer → routes to swift-reviewer automatically |
+| **Output** | Swift-specific: concurrency, actors, SwiftUI patterns | Combined report across all changed languages |
+
+Both invoke the same specialist. Use `/code-review` when changes span multiple languages.
+
+## After This
+
+- `/swift-build` — rebuild after addressing compilation errors
+- `/tdd` — add tests if coverage gaps were flagged
+- `/commit-push-pr` — commit and open PR after CRITICAL/HIGH are resolved
