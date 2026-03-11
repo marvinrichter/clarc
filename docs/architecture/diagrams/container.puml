@@ -1,0 +1,45 @@
+@startuml container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container View — clarc
+
+Person(dev, "Developer")
+
+System_Boundary(clarc, "clarc (~/.clarc/)") {
+    Container(installer, "Installer", "Bash + Node.js", "install.sh + setup-wizard.js\nSymlinks components into editor targets.\nHandles multi-editor, --uninstall, --upgrade.")
+
+    Container(agents, "Agents", "Markdown + YAML frontmatter", "61 specialized subagent definitions.\nRouted by Claude Code automatically or on demand.")
+
+    Container(skills, "Skills", "Markdown (SKILL.md)", "250 domain knowledge libraries.\nLoaded on-demand by Claude Code when relevant.")
+
+    Container(commands, "Commands", "Markdown", "179 slash commands (/tdd, /plan, /arc42 …).\nUser-invocable workflows.")
+
+    Container(hooks, "Hooks", "JSON + Node.js scripts", "hooks/hooks.json — hook event definitions.\nscripts/hooks/*.js — 35 hook implementations.\nCovers: PreToolUse, PostToolUse, SessionStart,\nSessionEnd, PreCompact, Stop.")
+
+    Container(rules, "Rules", "Markdown", "20 language rule sets + common/.\nAlways-on coding standards and checklists.")
+
+    Container(learning, "Learning Flywheel", "Node.js scripts", "evaluate-session.js, instinct-decay.js,\nagent-evolution.js, sync-instincts.js.\nObserve → Evolve → Promote → Export.")
+
+    Container(mcp_server, "MCP Server", "Node.js ESM", "mcp-server/index.js — 8 tools.\nExposes clarc state to external MCP clients.")
+
+    Container(ci, "CI Validators", "Node.js scripts", "scripts/ci/ — validates agents, skills,\ncommands, rules, hooks, naming, wiring.")
+
+    ContainerDb(lib, "Shared Libraries", "Node.js ESM", "scripts/lib/ — utils, package-manager,\nproject-detect, skill-search, session-manager,\nsecret-scanner.")
+}
+
+System_Ext(claude_code, "Claude Code", "~/.claude/")
+System_Ext(cursor, "Cursor IDE", ".cursor/rules/")
+System_Ext(github, "GitHub")
+System_Ext(mcp_client, "MCP Client")
+
+Rel(dev, installer, "npx github:marvinrichter/clarc\nor ./install.sh")
+Rel(installer, claude_code, "Symlinks agents, commands,\nskills, rules")
+Rel(installer, cursor, "Symlinks rules")
+Rel(hooks, learning, "SessionEnd triggers\nlearn-eval + weekly evolve")
+Rel(hooks, lib, "Uses shared utils")
+Rel(mcp_server, lib, "skill-search, project-detect")
+Rel(ci, github, "Pre-push + GitHub Actions")
+Rel(mcp_client, mcp_server, "MCP stdio protocol")
+Rel(learning, agents, "Instinct overlays injected\nat session start")
+
+@enduml

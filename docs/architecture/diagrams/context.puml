@@ -1,0 +1,26 @@
+@startuml context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title System Context — clarc
+
+Person(dev, "Developer", "Uses an AI coding assistant\n(Claude Code, Cursor, OpenCode, Codex)")
+
+System(clarc, "clarc", "Workflow OS for AI coding assistants.\nAgents · Skills · Commands · Hooks · Rules · Learning flywheel.")
+
+System_Ext(claude_code, "Claude Code", "Anthropic CLI tool.\nLoads agents, skills, commands, rules from ~/.claude/")
+System_Ext(cursor, "Cursor IDE", "Reads rules from .cursor/rules/")
+System_Ext(opencode, "OpenCode", "Reads commands + agent prompts from .opencode/")
+System_Ext(codex, "Codex CLI", "Reads instructions from codex/")
+System_Ext(github, "GitHub / git", "Source of truth for clarc content.\nPre-push CI validates all components.")
+System_Ext(mcp_client, "MCP Client", "External tools querying clarc state\nvia the clarc MCP server (8 tools)")
+
+Rel(dev, clarc, "Installs via npx / install.sh")
+Rel(dev, claude_code, "Works in")
+Rel(clarc, claude_code, "Symlinks agents, commands,\nskills, rules → ~/.claude/")
+Rel(clarc, cursor, "Symlinks rules → .cursor/rules/")
+Rel(clarc, opencode, "Copies commands → .opencode/")
+Rel(clarc, codex, "Copies commands → codex/")
+Rel(clarc, github, "Updates via git pull\n(~/.clarc/ clone)")
+Rel(mcp_client, clarc, "Queries via MCP protocol\n(stdio transport)")
+
+@enduml

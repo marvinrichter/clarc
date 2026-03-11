@@ -1,0 +1,41 @@
+@startuml deployment
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+title Deployment View — clarc Installation
+
+Deployment_Node(github_cloud, "GitHub (cloud)", "github.com/marvinrichter/clarc") {
+    Container(repo, "clarc repository", "Git", "Source of truth for all components.\nPre-push CI validates every change.")
+}
+
+Deployment_Node(dev_machine, "Developer Machine", "macOS / Linux / Windows (WSL2)") {
+    Deployment_Node(clarc_home, "~/.clarc/", "git clone of clarc") {
+        Container(clarc_src, "clarc source", "Markdown + Node.js + Bash", "Agents, skills, commands, rules, hooks,\nscripts, mcp-server. Updatable via git pull.")
+    }
+
+    Deployment_Node(claude_home, "~/.claude/", "Claude Code user directory") {
+        Container(symlinks, "Symlinked components", "Symlinks → ~/.clarc/", "agents/ → ~/.clarc/agents/\ncommands/ → ~/.clarc/commands/\nrules/ → ~/.clarc/rules/\nhooks/ → hooks.json (project plugin)")
+        ContainerDb(sessions, "projects/", "JSON snapshots", "Session state, instinct store,\nnudge cooldown, learned skills.")
+        ContainerDb(instincts, "homunculus/", "JSON", "Agent-instinct overlays.\nInjected at SessionStart.")
+    }
+
+    Deployment_Node(project, "Project Directory", "User's codebase") {
+        Container(plugin, ".claude-plugin/\nplugin.json", "Claude Code plugin", "Declares CLAUDE_PLUGIN_ROOT.\nHook scripts resolve paths relative to it.")
+        ContainerDb(local_skills, ".clarc/skills/", "Optional", "Project-local skill overrides.\nScanned at SessionStart.")
+    }
+
+    Deployment_Node(cursor, "Cursor IDE (optional)", ".cursor/") {
+        Container(cursor_rules, "rules/", "Markdown", "50+ language rules.\nInstalled with --target cursor.")
+    }
+
+    Deployment_Node(opencode, "OpenCode (optional)", ".opencode/") {
+        Container(oc_commands, "commands/\ninstructions/", "Markdown + JSON", "57 commands, agent prompts.\nInstalled with --target opencode.")
+    }
+}
+
+Rel(repo, clarc_home, "git pull (update)\nor initial clone via npx")
+Rel(clarc_home, symlinks, "install.sh creates symlinks\n(or copies with --copy flag)")
+Rel(clarc_home, cursor_rules, "install.sh --target cursor")
+Rel(clarc_home, oc_commands, "install.sh --target opencode")
+Rel(plugin, clarc_home, "CLAUDE_PLUGIN_ROOT resolves hook paths")
+
+@enduml

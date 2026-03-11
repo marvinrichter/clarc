@@ -1,0 +1,36 @@
+@startuml runtime-learning
+title Runtime View — Learning Flywheel
+
+actor Developer
+participant "Claude Code" as CC
+participant "/learn-eval\ncommand" as LE
+participant "instinct store\n(~/.clarc/instincts/)" as IS
+participant "/evolve\ncommand" as EV
+participant "skills/\n(promoted skills)" as Skills
+participant "agent-instincts/\n(session overlays)" as AI
+
+== Observation ==
+Developer -> CC: Session completes
+CC -> LE: Developer invokes /learn-eval
+LE -> LE: Quality gate:\n- Minimum confidence 0.7\n- Deduplication check\n- Save-location decision\n  (global vs project-scoped)
+LE -> IS: Write instinct files\n(JSON with domain, pattern, confidence)
+
+== Conflict Detection ==
+IS -> IS: Scan for contradicting instincts\nin same domain
+IS -> IS: Write conflicts.json
+
+Developer -> CC: /instinct-status
+CC -> IS: Read all instincts + conflicts
+IS -> CC: Report by domain + confidence
+
+== Evolution ==
+Developer -> CC: /evolve (or auto Monday)
+CC -> EV: Cluster accumulated instincts
+EV -> EV: Identify stable high-signal patterns\n(confidence > 0.8, seen 3+ times)
+EV -> Skills: Promote to permanent skill\n(skills/<domain>/SKILL.md update)
+EV -> AI: Update agent-instinct overlays\n(injected at next SessionStart)
+
+== Decay ==
+IS -> IS: instinct-decay.js\n(reduce confidence of stale instincts\nif not reinforced for 30+ days)
+
+@enduml

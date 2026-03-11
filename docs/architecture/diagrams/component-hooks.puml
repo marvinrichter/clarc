@@ -1,0 +1,53 @@
+@startuml component-hooks
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component View — Hook System
+
+Container_Boundary(hooks_sys, "Hook System") {
+    Component(hooks_json, "hooks.json", "JSON", "Hook event → matcher → script mapping.\nSingle source of truth for all hook bindings.")
+
+    Component(session_start, "session-start.js", "Node.js", "Loads session snapshot, detects project type,\ninjects SKILL_MAP, loads instinct overlays.\nOutputs up to 3000 chars context to Claude.")
+
+    Component(pre_bash, "pre-bash-dispatch.js", "Node.js", "Blocks dev servers outside tmux,\ntmux reminder, git push review, secret guard.")
+
+    Component(pre_secret, "pre-write-secret-scan.js", "Node.js", "Scans Write content for secrets:\nAWS keys, GH tokens, PEM, Slack, api_key.\nExit 2 = abort write.")
+
+    Component(format_dispatch, "post-edit-format-dispatch.js", "Node.js", "Routes to language-specific formatter\nafter every Edit/Write. 15 language formatters.")
+
+    Component(typecheck, "post-edit-typecheck.js\npost-edit-typecheck-rust.js", "Node.js (async)", "Runs tsc --noEmit or cargo check\nasync with 10s debounce + 15–20s timeout.")
+
+    Component(nudge, "post-edit-workflow-nudge.js", "Node.js", "5 advisory nudges: security scan,\ncode-review, doc-update, clarc-self-dev, TDD guard.\nCooldown-based, suppresible per project.")
+
+    Component(build_router, "build-failure-router.js", "Node.js", "Detects compile errors in Bash output.\nSuggests build-error-resolver agent.")
+
+    Component(checkpoint, "auto-checkpoint.js", "Node.js", "Git checkpoint after Edit/Write.\nEnables /undo command.")
+
+    Component(pre_compact, "pre-compact.js", "Node.js", "Saves session state snapshot before\ncontext compaction. Prevents context loss.")
+
+    Component(session_end, "session-end.js", "Node.js", "Evaluates session quality.\nTriggers weekly evolve batch on Mondays.")
+
+    Component(suggest_compact, "suggest-compact.js", "Node.js (async)", "Suggests manual compaction at 50-tool threshold\n(configurable via COMPACT_THRESHOLD).")
+}
+
+ContainerDb(lib, "scripts/lib/", "Shared utils")
+ContainerDb(instincts, "~/.clarc/agent-instincts/", "Learned instinct overlays")
+ContainerDb(sessions, "~/.claude/projects/", "Session snapshots")
+
+Rel(hooks_json, session_start, "SessionStart")
+Rel(hooks_json, pre_bash, "PreToolUse: Bash")
+Rel(hooks_json, pre_secret, "PreToolUse: Write")
+Rel(hooks_json, format_dispatch, "PostToolUse: Edit|Write")
+Rel(hooks_json, typecheck, "PostToolUse: Edit")
+Rel(hooks_json, nudge, "PostToolUse: Edit|Write")
+Rel(hooks_json, build_router, "PostToolUse: Bash")
+Rel(hooks_json, checkpoint, "PostToolUse: Edit|Write")
+Rel(hooks_json, pre_compact, "PreCompact")
+Rel(hooks_json, session_end, "Stop")
+Rel(hooks_json, suggest_compact, "PreToolUse: Edit|Write (async)")
+
+Rel(session_start, lib, "utils, project-detect,\npackage-manager, session-aliases")
+Rel(session_start, instincts, "Loads overlays")
+Rel(session_start, sessions, "Reads latest snapshot")
+Rel(pre_compact, sessions, "Writes snapshot")
+
+@enduml

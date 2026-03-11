@@ -1,0 +1,43 @@
+@startuml runtime-session
+title Runtime View — Session Lifecycle
+
+actor Developer
+participant "Claude Code" as CC
+participant "session-start.js" as SS
+participant "Hook Scripts" as HS
+participant "~/.claude/\nagents + skills" as Assets
+participant "Learning\nFlywheel" as LF
+participant "~/.claude/projects/\nsnapshots" as Snap
+
+== Session Start ==
+Developer -> CC: Opens project in Claude Code
+CC -> SS: SessionStart hook fires
+SS -> Snap: Read latest session snapshot
+SS -> Assets: Load instinct overlays\n(~/.clarc/agent-instincts/)
+SS -> CC: Inject context (≤3000 chars):\nopen tasks, recent files, SKILL_MAP,\ninstincts, rules version status
+
+== During Session ==
+Developer -> CC: Edits a file
+CC -> HS: PostToolUse: Edit fires
+HS -> HS: format-dispatch (auto-format)
+HS -> HS: post-edit-typecheck (async)
+HS -> HS: workflow-nudge (5 checks, cooldown)
+HS -> HS: auto-checkpoint (git commit)
+
+Developer -> CC: Runs /tdd or /code-review
+CC -> Assets: Load tdd-guide.md or\ncode-reviewer.md agent
+Assets -> CC: Agent instructions injected
+
+Developer -> CC: Triggers context compaction
+CC -> HS: PreCompact hook fires
+HS -> Snap: Save structured snapshot\n(open tasks, touched files, exchanges)
+
+== Session End ==
+CC -> HS: Stop hook fires → session-end.js
+HS -> LF: evaluate-session.js\n(quality gate on instinct extraction)
+LF -> Snap: Write session evaluation
+alt Monday
+  LF -> LF: Weekly evolve batch\n(auto-cluster instincts)
+end
+
+@enduml
