@@ -289,7 +289,7 @@ EOF",
 
 **Audit call** (same shape, different ROLE_FILE + Scope in TASK body).
 
-**Model flags**: `{{GEMINI_MODEL_FLAG}}` = `--gemini-model gemini-3-pro-preview ` for Gemini; empty for Codex.
+**Model flags**: `{{GEMINI_MODEL_FLAG}}` = `--gemini-model gemini-3-pro-preview` (trailing space) for Gemini; empty for Codex.
 
 **Wait for result**: `TaskOutput({ task_id: "<id>", block: true, timeout: 600000 })` — never kill; poll if needed.
 

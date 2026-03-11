@@ -78,4 +78,4 @@ Write a summary to `.reports/codemap-diff.txt`:
 ## After This
 
 - `/update-docs` — update documentation after codemap refresh
-- `/doc-updater` — full documentation sync
+- `/update-docs` — full documentation sync (use after codemaps are refreshed)
