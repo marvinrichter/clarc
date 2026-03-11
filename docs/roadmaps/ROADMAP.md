@@ -2,7 +2,9 @@
 
 ## Active
 
-No active roadmaps.
+| Roadmap | Goal | Status |
+|---------|------|--------|
+| [command-ux-completeness](command-ux-completeness.md) | Zero audit findings — After This for 149 commands, 2 new commands, overlap disambiguation, step restructuring | 📋 Planned |
 
 ---
 

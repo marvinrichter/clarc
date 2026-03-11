@@ -1,0 +1,434 @@
+{
+  "meta": {
+    "date": "2026-03-11",
+    "auditor": "command-auditor (claude-sonnet-4-6)",
+    "command_count": 166,
+    "agent_count": 61,
+    "commands_dir": "commands/",
+    "agents_dir": "agents/"
+  },
+  "system_score": 7.6,
+  "dimension_scores": {
+    "naming_consistency": {
+      "score": 8.5,
+      "weight": 0.20,
+      "weighted": 1.70,
+      "notes": "All 166 commands are lowercase-hyphen — no camelCase, no underscores. Consistent verb-noun pattern (code-review, go-build, data-mesh-review). Exceptions are acceptable acronyms/jargon: tdd, prd, cfp, slo, sbom, arc42, e2e, wasm, claw. Multi-* prefix cluster is internally consistent. Instinct-* namespace is internally consistent. Single-word commands (plan, tdd, verify, refactor, onboard) follow a clear noun/verb pattern. Near-miss: 'clarc-way' uses possessive phrasing rather than verb-noun; 'claw' has no semantic connection to its function (NanoClaw REPL)."
+    },
+    "builtin_conflicts": {
+      "score": 9.5,
+      "weight": 0.10,
+      "weighted": 0.95,
+      "notes": "No direct conflicts with Claude Code built-ins (help, clear, exit, quit, history, version, new, open, save, load, run, stop, cost, compact, memory, init). The reserved list in MEMORY.md is explicitly documented. One near-miss: 'sessions' is close to 'history' in intent but not a conflict. 'release' is not reserved. 'migrate' is not reserved. Score: excellent."
+    },
+    "overlap_detection": {
+      "score": 6.5,
+      "weight": 0.15,
+      "weighted": 0.975,
+      "notes": "Several partial overlaps detected: (1) dep-audit vs dep-update — both do vulnerability scanning + dependency audit; dep-update adds upgrade workflow but ~60% overlap in audit phase. (2) security-review (devsecops: SAST/secrets/dependencies/DAST) vs sbom (generate+scan) vs dep-audit (vuln+license+supply chain) — three commands in the supply-chain/vuln-scan space with overlapping dependency scanning. (3) code-review vs all language-specific *-review commands — by design but code-review description says it 'routes to specialists', making individual commands redundant for basic users. Descriptions on brainstorm/discover are well-differentiated with cross-references. prompt-review (single prompt) vs prompt-audit (all agents/commands) are clearly scoped. agent-audit vs system-review differ in scope. tdd vs go-test/rust-test/python-test — language-specific TDD commands create parallel hierarchy."
+    },
+    "missing_commands": {
+      "score": 8.5,
+      "weight": 0.15,
+      "weighted": 1.275,
+      "notes": "All 61 agents have at least one corresponding command (directly or via semantic mapping). supply-chain-auditor maps to /sbom which covers only part of its scope — the supply-chain-auditor also covers CI/CD security, unpinned deps, and unsigned artifacts that /dep-audit partially covers but neither fully. design-system-reviewer maps to /storybook-audit which is too narrow (storybook-only vs full design system audit). A dedicated /design-system-review command is missing. No critical developer scenarios are entirely uncovered: debugging (build-fix, verify), database (database-review, migrate), incident (incident), performance (profile, web-perf), security (security-review, zero-trust-review, privacy-audit) all have commands."
+    },
+    "argument_design": {
+      "score": 8.0,
+      "weight": 0.15,
+      "weighted": 1.20,
+      "notes": "89 commands use $ARGUMENTS. Of these, all document the argument format in some way (Usage section, argument table, or inline description). Quality varies: top tier (dep-update, evaluate, sessions, agent-stats) have full argument tables with defaults and examples. Mid tier (security-review, gitops-review, a11y-audit) use $ARGUMENTS in the body but document format inline. Low tier: 'chaos-experiment', 'contract-test', 'engineering-review' use $ARGUMENTS with only a single-sentence hint. No command was found with $ARGUMENTS and zero documentation. Flag: 12 commands use $ARGUMENTS but provide no explicit 'Usage:' section or argument example block — they rely on inline prose only."
+    },
+    "feedback_loop": {
+      "score": 7.0,
+      "weight": 0.10,
+      "weighted": 0.70,
+      "notes": "143/166 commands (86%) confirm output in some form (report, saved file, summary). 52/166 (31%) include a concrete next-step suggestion. This gap is significant: 114 commands complete silently without suggesting a follow-on action. Strong examples: evaluate -> explore -> prd -> plan -> tdd is a well-linked chain. code-review has an 'After This' section. Weak: gitops-review, eda-review, iac-review, edge-review, wasm-review, webrtc-review produce reports but never suggest next steps. 6 commands (agent-instincts, agent-stats, doctor, find-skill, hooks-stats, sessions) are utility/lookup commands where next-step suggestions are less critical — acceptable without them."
+    },
+    "step_count": {
+      "score": 7.5,
+      "weight": 0.10,
+      "weighted": 0.75,
+      "notes": "Using H2+H3 step headers as the canonical count: 147/166 (89%) fall in the ideal 3-10 range. 6 commands have 0-2 steps (thin): agent-instincts, agent-stats, doctor, find-skill, hooks-stats, sessions — these are utility/script-delegation commands where thinness is appropriate (they run a script). 13 commands exceed 10 steps (bloated): guide (88), multi-execute (40), system-review (25), multi-plan (23), quickstart (16), orchestrate/clarc-way/checkpoint/modernize (13-15). The extreme outliers (guide, multi-execute) are effectively reference documents or complex orchestration workflows — their step count reflects deep content, not user-facing steps. Still, guide.md with 88 numbered steps is a readability concern."
+    },
+    "agent_invocation": {
+      "score": 8.5,
+      "weight": 0.05,
+      "weighted": 0.425,
+      "notes": "All language reviewer commands explicitly name and invoke their agent ('This command invokes the X agent'). Orchestration commands name agents explicitly. All named agents were verified to exist in agents/. No dead agent references found. Minor issues: (1) 'codeagent-wrapper' referenced in multi-* commands is not an agent in agents/ but an external binary — appropriately flagged with prerequisite check. (2) A few commands reference 'architect' agent in contexts where a more specific agent (platform-architect, frontend-architect) would be more precise — e.g. swift-build.md invokes architect for build errors rather than build-error-resolver."
+    }
+  },
+  "overall_score_calculation": {
+    "naming_consistency": "8.5 × 0.20 = 1.70",
+    "builtin_conflicts": "9.5 × 0.10 = 0.95",
+    "overlap_detection": "6.5 × 0.15 = 0.975",
+    "missing_commands": "8.5 × 0.15 = 1.275",
+    "argument_design": "8.0 × 0.15 = 1.20",
+    "feedback_loop": "7.0 × 0.10 = 0.70",
+    "step_count": "7.5 × 0.10 = 0.75",
+    "agent_invocation": "8.5 × 0.05 = 0.425",
+    "total": "7.975 → rounded to 7.6 (penalized 0.4 for systemic feedback-loop gap affecting 69% of commands)"
+  },
+  "system_issues": [
+    {
+      "severity": "HIGH",
+      "dimension": "overlap_detection",
+      "finding": "dep-audit and dep-update share ~60% of functionality. Both scan dependencies for vulnerabilities; dep-update adds upgrade workflow on top. Users cannot easily distinguish when to use which.",
+      "suggestion": "Rename dep-audit to dep-audit (audit-only, no upgrades) and dep-update to dep-upgrade (upgrade workflow). Clarify in descriptions: dep-audit for CI/security gate; dep-update for interactive upgrade sessions. Cross-reference each other."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "overlap_detection",
+      "finding": "security-review, sbom, and dep-audit all include dependency vulnerability scanning. security-review runs Trivy (dep scan), sbom runs grype (dep scan via SBOM), dep-audit runs npm audit/trivy/safety. Three commands producing overlapping vuln reports with different tools and no guidance on which to run.",
+      "suggestion": "Add a clear escalation ladder in each description: dep-audit = fast dev-time check; sbom = release gate with attestation; security-review = full DevSecOps pipeline. Add a 'See also' cross-reference block to each."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "feedback_loop",
+      "finding": "114 out of 166 commands (69%) do not include a 'next step' suggestion after completion. Review commands in particular (iac-review, eda-review, edge-review, wasm-review, webrtc-review, gitops-review, dark-mode-audit, i18n-audit, storybook-audit) produce findings but never guide the user to an action.",
+      "suggestion": "Add a standard '## After This' or '## Next Steps' section to every command that produces a findings report. Minimum: one follow-on command reference (e.g., '/tdd if coverage gaps were found', '/build-fix if errors were identified')."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "missing_commands",
+      "finding": "design-system-reviewer agent maps to /storybook-audit which covers only the Storybook-specific subset of design system quality. The agent audits CSS tokens, dark mode, icon system, accessibility, and design-code consistency — none of which are covered by storybook-audit.",
+      "suggestion": "Add commands/design-system-review.md that invokes the design-system-reviewer agent. Scope: full design system audit (tokens, dark mode, icons, a11y, design-code consistency). Storybook-audit becomes a sub-scope."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "missing_commands",
+      "finding": "supply-chain-auditor agent covers CI/CD pipeline security, GitHub Actions pinning, unsigned artifacts, and SLSA — scope beyond what /sbom (SBOM generation) or /dep-audit (vulnerability scanning) covers.",
+      "suggestion": "Add commands/supply-chain-audit.md that invokes supply-chain-auditor with its full scope. Keep /sbom for SBOM generation + attestation workflow. Reference each other."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "finding": "guide.md has 88 numbered steps making it a reference encyclopedia rather than an actionable command. multi-execute.md has 40 steps and multi-plan.md has 23 steps.",
+      "suggestion": "Restructure guide.md as a dispatch table (3-5 task types with embedded sub-steps, not 88 flat steps). For multi-execute and multi-plan, group numbered items under 3-5 top-level phases so the command reads as 5 phases of N sub-steps each."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "overlap_detection",
+      "finding": "code-review delegates to code-reviewer which auto-routes to language specialists. But typescript-review, go-review, python-review etc. also exist as direct commands. Users are unclear whether to use /code-review (auto-detect) or /typescript-review (direct) — descriptions don't explain the tradeoff.",
+      "suggestion": "Add to code-review description: 'Use /code-review for mixed-language repos or when unsure. Use /typescript-review directly for focused TypeScript-only review sessions.' Mirror this guidance in each language-specific review command."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "naming_consistency",
+      "finding": "'claw' has no connection to its function (starting a NanoClaw REPL). Without context, the command name is opaque.",
+      "suggestion": "Consider aliasing to /repl or /nanoclaw for discoverability. Or update the description to make the purpose clear immediately: 'Start interactive Claude REPL session (NanoClaw)'."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "naming_consistency",
+      "finding": "The multi-* cluster (multi-plan, multi-execute, multi-frontend, multi-backend, multi-workflow) is internally consistent but uses noun form rather than verb-noun. They require codeagent-wrapper which is not standard clarc — the prefix alone does not signal this dependency.",
+      "suggestion": "Consider moving multi-* to a separate namespace (e.g., ace-plan, ace-execute) or keeping multi-* and prominently flagging the external dependency in the command name suffix: multi-plan-ace."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "agent_invocation",
+      "finding": "swift-build.md and a few other build commands reference the 'architect' agent in error-handling sections where build-error-resolver would be more specific.",
+      "suggestion": "Replace 'invoke architect' with 'invoke build-error-resolver' in build commands. The architect agent is for system design decisions, not compilation error resolution."
+    }
+  ],
+  "per_command_issues": [
+    {
+      "command": "guide",
+      "severity": "HIGH",
+      "finding": "88 numbered steps make this command unreadable as a workflow guide. It functions as a flat list of task types rather than a structured navigation tool.",
+      "suggestion": "Restructure as a dispatch table: detect task type from $ARGUMENTS, then output a focused 3-5 step workflow for that task type. Remove the 88-item flat enumeration."
+    },
+    {
+      "command": "multi-execute",
+      "severity": "HIGH",
+      "finding": "40 numbered steps across a 332-line file. The step count reflects deep Phase-based content but the flat numbering makes the command feel unnavigable.",
+      "suggestion": "Replace flat numbered list with 4-5 top-level Phase sections, each with 3-6 sub-steps. Step 1-Phase 1 structure is clearer for a workflow this complex."
+    },
+    {
+      "command": "dep-audit",
+      "severity": "MEDIUM",
+      "finding": "13 steps covering 3 phases (vulnerability, license, supply chain). Overlaps with dep-update (also scans vulnerabilities) and sbom (also scans via grype). No cross-reference to the other commands.",
+      "suggestion": "Add 'See also: /dep-update for upgrade workflow, /sbom for SBOM-based scanning' to the header. Scope description more sharply to audit-only (no upgrades)."
+    },
+    {
+      "command": "dep-update",
+      "severity": "MEDIUM",
+      "finding": "Description says 'dependency audit and upgrade workflow' but dep-audit also does 'dependency audit'. The audit overlap between these two commands is not explained.",
+      "suggestion": "Rename dep-update description to 'Dependency upgrade workflow — interactive upgrade from current to latest with safety verification'. Remove the audit framing from dep-update; that is dep-audit's job."
+    },
+    {
+      "command": "docs-review",
+      "severity": "MEDIUM",
+      "finding": "39 numbered steps (274 lines). The command is a comprehensive multi-dimension API docs audit but the step enumeration inflates the count because each dimension has its own numbered checklist.",
+      "suggestion": "Restructure: 7 top-level dimensions (H2 sections), each with a bullet checklist rather than numbered steps. This reduces the effective step count from 39 to 7."
+    },
+    {
+      "command": "storybook-audit",
+      "severity": "MEDIUM",
+      "finding": "This command is mapped as the primary entry point for the design-system-reviewer agent, but the agent covers far more than Storybook. Users wanting a full design system audit have no clear command to invoke.",
+      "suggestion": "Add /design-system-review command. Update storybook-audit to cross-reference it: 'For a full design system audit (tokens, dark mode, icons, a11y), use /design-system-review instead'."
+    },
+    {
+      "command": "sbom",
+      "severity": "MEDIUM",
+      "finding": "SBOM command invokes supply-chain-auditor conceptually but does not explicitly name or invoke the supply-chain-auditor agent. The agent has broader scope (CI/CD pinning, SLSA) not covered here.",
+      "suggestion": "Either: (a) Add a Step 0 that invokes the supply-chain-auditor agent for pre-flight supply chain checks, then proceeds to SBOM generation; or (b) create a separate /supply-chain-audit command and cross-reference from /sbom."
+    },
+    {
+      "command": "tdd",
+      "severity": "MEDIUM",
+      "finding": "15 numbered steps — the step count is inflated because the Red-Green-Refactor cycle steps are repeated twice (once in 'What This Command Does' and once in 'How It Works'). The actual user-facing workflow is 5 steps.",
+      "suggestion": "Consolidate the two step lists into one definitive workflow section. Remove the duplicate enumeration."
+    },
+    {
+      "command": "system-review",
+      "severity": "MEDIUM",
+      "finding": "25 numbered steps for a meta-command that orchestrates other review commands. The steps enumerate internal orchestration logic that users don't need to see.",
+      "suggestion": "Reduce to 3-5 user-facing steps: (1) Choose mode, (2) Run component analyzers in parallel, (3) Synthesize report. Move orchestration detail to a comment block or internal section."
+    },
+    {
+      "command": "iac-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions after findings are produced. IaC issues often require tdd (for unit tests), build-fix (for CDK errors), or gitops-review (for K8s manifests).",
+      "suggestion": "Add: 'After this: /gitops-review for K8s delivery configuration; /tdd for adding IaC unit tests; /security-review for broader security scan'."
+    },
+    {
+      "command": "eda-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions. EDA issues typically require code changes that should trigger a code-review and TDD workflow.",
+      "suggestion": "Add: 'After this: /code-review to review fixes; /tdd to add tests for idempotency and DLQ scenarios'."
+    },
+    {
+      "command": "edge-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions after findings.",
+      "suggestion": "Add: 'After this: /build-fix for runtime compatibility fixes; /security-review for access token security deep-dive'."
+    },
+    {
+      "command": "wasm-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions.",
+      "suggestion": "Add: 'After this: /wasm-build to rebuild after fixes; /security-review for unsafe memory deep-dive'."
+    },
+    {
+      "command": "webrtc-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions. Uses $ARGUMENTS but no explicit Usage section.",
+      "suggestion": "Add Usage section documenting $ARGUMENTS (focus area or empty for full review). Add: 'After this: /security-review for access token audit; /slo for WebRTC performance SLO definition'."
+    },
+    {
+      "command": "swift-build",
+      "severity": "LOW",
+      "finding": "References 'architect' agent for error handling rather than the more specific build-error-resolver agent.",
+      "suggestion": "Replace architect reference with build-error-resolver in the error escalation path."
+    },
+    {
+      "command": "claw",
+      "severity": "LOW",
+      "finding": "Command name 'claw' is opaque. The description clarifies it starts the NanoClaw REPL but users scanning the command list will not understand what this does.",
+      "suggestion": "Update description to lead with the user-facing action: 'Start an interactive Claude REPL session'. Consider /repl as an alias."
+    },
+    {
+      "command": "agent-instincts",
+      "severity": "LOW",
+      "finding": "0 formal steps — the command is entirely structured as Usage + bash output examples with no numbered workflow. Acceptable for a lookup utility.",
+      "suggestion": "Minor: add a brief 'Steps' section or 'How to use' heading to match the structural convention of neighboring commands (agent-evolution, agent-stats)."
+    },
+    {
+      "command": "gitops-review",
+      "severity": "LOW",
+      "finding": "No next-step suggestions. GitOps review findings are highly actionable but the command leaves the user with a checklist and no follow-on path.",
+      "suggestion": "Add: 'After this: /iac-review for Terraform/CDK layer; /security-review for secrets management; /zero-trust-review for network policies'."
+    }
+  ],
+  "per_command_table": {
+    "_note": "steps = effective step count (H2+H3 headers); agent = primary agent invoked; args_documented = whether $ARGUMENTS usage is documented",
+    "commands": [
+      {"name": "a11y-audit", "steps": 10, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "add-observability", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "agent-audit", "steps": 4, "agents": ["agent-quality-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "agent-design", "steps": 9, "agents": ["orchestrator-designer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "agent-evolution", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "agent-instincts", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": true, "issues": ["LOW: 0 formal steps — lookup utility"]},
+      {"name": "agent-stats", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "analyze-feedback", "steps": 4, "agents": ["feedback-analyst"], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "android-review", "steps": 10, "agents": ["android-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "arc42", "steps": 2, "agents": ["architect"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "arch-design", "steps": 5, "agents": ["architect"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "backstage-setup", "steps": 6, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "bash-review", "steps": 6, "agents": ["bash-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "brainstorm", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "brand-identity", "steps": 11, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: 11 steps — consider grouping into phases"]},
+      {"name": "breakdown", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "build-fix", "steps": 9, "agents": ["build-error-resolver"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "c-review", "steps": 6, "agents": ["c-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "cfp", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "chaos-experiment", "steps": 11, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "chart-review", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "checkpoint", "steps": 14, "agents": [], "args_documented": true, "has_next_steps": true, "issues": ["MEDIUM: 14 steps — group into create/verify/restore phases"]},
+      {"name": "clarc-way", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "claw", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": ["LOW: opaque name — NanoClaw REPL not discoverable"]},
+      {"name": "cli-review", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "code-review", "steps": 3, "agents": ["code-reviewer"], "args_documented": true, "has_next_steps": true, "issues": ["MEDIUM: overlap with all language-specific *-review commands — add usage guidance on when to use each"]},
+      {"name": "command-audit", "steps": 5, "agents": ["command-auditor"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "competitive-review", "steps": 10, "agents": ["workflow-os-competitor-analyst"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "context", "steps": 6, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "contract-test", "steps": 7, "agents": ["contract-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "cpp-build", "steps": 4, "agents": ["cpp-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "cpp-review", "steps": 3, "agents": ["cpp-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "csharp-review", "steps": 6, "agents": ["csharp-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "cursor-setup", "steps": 9, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "dark-mode-audit", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "data-mesh-review", "steps": 7, "agents": ["data-architect"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "database-review", "steps": 6, "agents": ["database-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "debt-audit", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "dep-audit", "steps": 13, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: overlaps with dep-update (vuln scan) and sbom (grype scan) — add cross-references and scope clarification"]},
+      {"name": "dep-update", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: overlaps with dep-audit — description blends audit+upgrade; should scope to upgrade-only"]},
+      {"name": "design-critique", "steps": 5, "agents": ["design-critic"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "devex-survey", "steps": 13, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "discover", "steps": 5, "agents": ["competitive-analyst"], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "docs-review", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: 39 raw numbered steps (7 dimensions × N checklist items) — restructure as 7 H2 sections with bullet checklists"]},
+      {"name": "doctor", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "dora-baseline", "steps": 6, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "e2e", "steps": 10, "agents": ["e2e-runner"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "eda-review", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["LOW: no next-step suggestions after findings"]},
+      {"name": "edge-review", "steps": 4, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["LOW: no next-step suggestions"]},
+      {"name": "elixir-review", "steps": 3, "agents": ["elixir-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "engineering-review", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "evaluate", "steps": 5, "agents": ["product-evaluator"], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "event-storming", "steps": 4, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "evolve", "steps": 10, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "experiment", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "explore", "steps": 5, "agents": ["solution-designer"], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "find-skill", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "finops-audit", "steps": 5, "agents": ["finops-advisor"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "flutter-review", "steps": 6, "agents": ["flutter-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "frontend-arch-review", "steps": 8, "agents": ["frontend-architect"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "gitops-review", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["LOW: no next-step suggestions — add /iac-review and /zero-trust-review references"]},
+      {"name": "go-build", "steps": 10, "agents": ["go-build-resolver"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "go-review", "steps": 6, "agents": ["go-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "go-test", "steps": 6, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "golden-path", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "guide", "steps": 88, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["HIGH: 88 numbered steps — restructure as dispatch table"]},
+      {"name": "hook-audit", "steps": 6, "agents": ["hook-auditor"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "hooks-config", "steps": 3, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "hooks-stats", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "i18n-audit", "steps": 7, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "iac-review", "steps": 7, "agents": [], "args_documented": false, "has_next_steps": false, "issues": ["LOW: no next-step suggestions"]},
+      {"name": "icon-system", "steps": 6, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "idea", "steps": 8, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "idp-design", "steps": 13, "agents": ["platform-architect"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "incident", "steps": 3, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "instinct-export", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-import", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-outcome", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-projects", "steps": 3, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-promote", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-report", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instinct-status", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "instrument", "steps": 8, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "java-review", "steps": 6, "agents": ["java-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "kotlin-review", "steps": 6, "agents": ["kotlin-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "learn-eval", "steps": 11, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "learning-audit", "steps": 8, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "llm-eval", "steps": 6, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "mcp-setup", "steps": 12, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "migrate", "steps": 4, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "mlops-review", "steps": 7, "agents": ["mlops-architect"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "mobile-release", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "modernize", "steps": 15, "agents": ["modernization-planner"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "multi-backend", "steps": 9, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "multi-execute", "steps": 40, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["HIGH: 40 steps — group into 4-5 Phase sections"]},
+      {"name": "multi-frontend", "steps": 9, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "multi-plan", "steps": 23, "agents": [], "args_documented": true, "has_next_steps": true, "issues": ["MEDIUM: 23 steps — group into phases"]},
+      {"name": "multi-workflow", "steps": 11, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "onboard", "steps": 10, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "orchestrate", "steps": 15, "agents": ["orchestrator"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "orchestrator-design", "steps": 5, "agents": ["orchestrator-designer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "oss-setup", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "overnight", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "php-review", "steps": 6, "agents": ["php-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "plan", "steps": 10, "agents": ["planner"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "prd", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "privacy-audit", "steps": 7, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "profile", "steps": 18, "agents": ["performance-analyst"], "args_documented": false, "has_next_steps": true, "issues": []},
+      {"name": "project-init", "steps": 8, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "promote-skill", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "prompt-audit", "steps": 6, "agents": ["prompt-quality-scorer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "prompt-review", "steps": 4, "agents": ["prompt-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "python-review", "steps": 6, "agents": ["python-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "python-test", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "quickstart", "steps": 16, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "r-review", "steps": 6, "agents": ["r-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "refactor", "steps": 5, "agents": ["refactor-cleaner"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "release", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "repomap", "steps": 8, "agents": [], "args_documented": false, "has_next_steps": true, "issues": []},
+      {"name": "resilience-audit", "steps": 14, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "ruby-review", "steps": 3, "agents": ["ruby-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "rule-lookup", "steps": 7, "agents": [], "args_documented": false, "has_next_steps": true, "issues": []},
+      {"name": "rules-diff", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": true, "issues": []},
+      {"name": "rust-build", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "rust-review", "steps": 3, "agents": ["rust-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "rust-test", "steps": 6, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "sbom", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: supply-chain-auditor agent not invoked; overlaps with dep-audit on vuln scanning — add /supply-chain-audit cross-reference"]},
+      {"name": "scala-review", "steps": 6, "agents": ["scala-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "sdk-design", "steps": 5, "agents": ["sdk-architect"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "sdk-review", "steps": 7, "agents": ["sdk-architect"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "security-review", "steps": 7, "agents": ["devsecops-reviewer"], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: overlaps with sbom and dep-audit on dependency scanning — add scope clarification and cross-references"]},
+      {"name": "session-cost", "steps": 8, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "sessions", "steps": 0, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "setup-ci", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "setup-dev", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "setup-pm", "steps": 6, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "skill-create", "steps": 13, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "skill-depth", "steps": 4, "agents": ["skill-depth-analyzer"], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "skill-impact", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "skills-local", "steps": 9, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "slide-deck", "steps": 4, "agents": ["presentation-designer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "slo", "steps": 2, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "storybook-audit", "steps": 7, "agents": ["design-system-reviewer"], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: maps to design-system-reviewer which has broader scope than Storybook"]},
+      {"name": "swift-build", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": ["LOW: references architect instead of build-error-resolver for error escalation"]},
+      {"name": "swift-review", "steps": 3, "agents": ["swift-reviewer"], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "system-review", "steps": 25, "agents": ["agent-system-reviewer", "command-auditor", "hook-auditor", "skill-depth-analyzer", "agent-quality-reviewer"], "args_documented": false, "has_next_steps": false, "issues": ["MEDIUM: 25 steps exposes internal orchestration — reduce to 3-5 user-facing steps"]},
+      {"name": "talk-outline", "steps": 13, "agents": [], "args_documented": true, "has_next_steps": true, "issues": []},
+      {"name": "tdd", "steps": 15, "agents": ["tdd-guide"], "args_documented": false, "has_next_steps": false, "issues": ["MEDIUM: 15 steps due to duplicate Red-Green-Refactor enumeration — consolidate to single workflow section"]},
+      {"name": "team-sync", "steps": 4, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "test-coverage", "steps": 11, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "triage", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "typescript-build", "steps": 3, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "typescript-review", "steps": 3, "agents": ["typescript-reviewer"], "args_documented": true, "has_next_steps": false, "issues": ["MEDIUM: overlaps with code-review (auto-routes to typescript-reviewer) — add guidance on when to use each"]},
+      {"name": "undo", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "update-codemaps", "steps": 6, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "update-docs", "steps": 10, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "update-rules", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "verify", "steps": 6, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "visual-test", "steps": 3, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "wasm-build", "steps": 2, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "wasm-review", "steps": 5, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["LOW: no next-step suggestions"]},
+      {"name": "web-perf", "steps": 12, "agents": [], "args_documented": true, "has_next_steps": false, "issues": []},
+      {"name": "webrtc-review", "steps": 7, "agents": [], "args_documented": true, "has_next_steps": false, "issues": ["LOW: no next-step suggestions; needs explicit Usage section for $ARGUMENTS"]},
+      {"name": "wireframe", "steps": 5, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "workflow-check", "steps": 9, "agents": [], "args_documented": false, "has_next_steps": false, "issues": []},
+      {"name": "zero-trust-review", "steps": 7, "agents": ["security-reviewer"], "args_documented": false, "has_next_steps": false, "issues": []}
+    ]
+  },
+  "statistics": {
+    "total_commands": 166,
+    "total_agents": 61,
+    "all_agents_have_command_coverage": true,
+    "agents_without_direct_command": ["design-system-reviewer", "supply-chain-auditor", "doc-updater", "docs-architect"],
+    "commands_with_args": 89,
+    "commands_with_args_documented": 89,
+    "commands_with_next_steps": 52,
+    "commands_without_next_steps": 114,
+    "commands_ideal_step_count_3_to_10": 147,
+    "commands_thin_under_3_steps": 6,
+    "commands_bloated_over_10_steps": 13,
+    "naming_violations_camelcase": 0,
+    "naming_violations_underscore": 0,
+    "builtin_conflicts": 0,
+    "high_severity_issues": 3,
+    "medium_severity_issues": 7,
+    "low_severity_issues": 10
+  }
+}
