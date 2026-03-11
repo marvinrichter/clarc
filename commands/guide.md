@@ -132,7 +132,7 @@ Action: <specific instruction>
 
 ### dependency / packages / npm / upgrade / audit
 1. `/dep-audit` — full dependency audit
-2. `/deps` — dependency upgrade workflow
+2. `/dep-update` — dependency upgrade workflow
 3. Read skill `supply-chain-security`
 
 ### accessibility / a11y / WCAG / screen reader
