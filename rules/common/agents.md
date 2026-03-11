@@ -23,6 +23,14 @@ No user prompt needed — invoke these agents proactively:
 
 ---
 
+## Haiku Tier Agents (10–15× cheaper — use for lightweight tasks)
+
+| Agent | Purpose | When to Use |
+|-------|---------|-------------|
+| `summarizer-haiku` | Summaries, classification, boilerplate generation, text transformations | Summarize findings, classify severity levels, fill templates, extract patterns |
+
+---
+
 ## Core Workflow Agents
 
 | Agent | Purpose | When to Use |

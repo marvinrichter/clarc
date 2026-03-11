@@ -109,24 +109,97 @@ def call_with_retry(func, *, max_retries: int = _MAX_RETRIES):
 
 Cache long system prompts to avoid resending them on every request.
 
+**Requirements:**
+- Minimum cacheable block: **1024 tokens** (~750 words)
+- Cache TTL: **5 minutes** (ephemeral) — reset on each cache hit
+- Savings: **90% discount** on cached input tokens (pay only 10%)
+- Latency savings: 2–5× faster responses on cache hits
+
+**What to cache:**
+- System prompts (instructions, rules, persona)
+- Tool definitions / schemas
+- Large static context (codebase summaries, documentation)
+- Few-shot examples that repeat across requests
+
+**What NOT to cache:**
+- The variable user input (changes each request)
+- Session-specific context that changes frequently
+
 ```python
+# Python SDK — mark stable sections with cache_control
 messages = [
     {
         "role": "user",
         "content": [
             {
                 "type": "text",
-                "text": system_prompt,
-                "cache_control": {"type": "ephemeral"},  # Cache this
+                "text": system_prompt,           # stable — cache this
+                "cache_control": {"type": "ephemeral"},
             },
             {
                 "type": "text",
-                "text": user_input,  # Variable part
+                "text": few_shot_examples,       # stable — cache this too
+                "cache_control": {"type": "ephemeral"},
+            },
+            {
+                "type": "text",
+                "text": user_input,              # variable — do NOT cache
             },
         ],
     }
 ]
+
+# Verify caching worked — check response usage
+response = client.messages.create(model=model, messages=messages, max_tokens=1024)
+usage = response.usage
+cache_read = getattr(usage, 'cache_read_input_tokens', 0)
+cache_write = getattr(usage, 'cache_creation_input_tokens', 0)
+print(f"Cache hit: {cache_read} tokens | Cache write: {cache_write} tokens")
 ```
+
+```typescript
+// TypeScript SDK — same pattern
+const response = await client.messages.create({
+  model,
+  max_tokens: 1024,
+  messages: [{
+    role: 'user',
+    content: [
+      { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+      { type: 'text', text: userInput },  // variable — no cache
+    ],
+  }],
+});
+
+const { cache_read_input_tokens, cache_creation_input_tokens } = response.usage;
+```
+
+**Multi-turn conversations — cache the growing history:**
+
+```python
+# Cache all previous turns; only the latest user message is variable
+def build_cached_conversation(history: list[dict], new_user_message: str) -> list[dict]:
+    if not history:
+        return [{"role": "user", "content": new_user_message}]
+
+    # Mark last assistant message in history as cacheable
+    cached_history = history[:-1] + [{
+        **history[-1],
+        "content": [
+            {"type": "text", "text": history[-1]["content"],
+             "cache_control": {"type": "ephemeral"}},
+        ] if isinstance(history[-1]["content"], str) else history[-1]["content"],
+    }]
+    return cached_history + [{"role": "user", "content": new_user_message}]
+```
+
+**Expected savings for a 2000-token system prompt at 1000 requests/day:**
+
+| Scenario | Daily input tokens | Daily cost (Sonnet) |
+|---|---|---|
+| No caching | 2,000,000 | $6.00 |
+| With caching (90% hit rate) | 200,000 cache + 2M original writes | ~$0.90 |
+| **Savings** | | **~$5.10/day** |
 
 ## Composition
 

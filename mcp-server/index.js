@@ -39,6 +39,23 @@ const AGENTS_DIR = path.join(__dirname, '..', 'agents');
 const RULES_DIR = path.join(__dirname, '..', 'rules');
 const SKILLS_DIR = path.join(__dirname, '..', 'skills');
 
+// In-memory cache for the component graph (expensive: scans all agent files).
+// Invalidated when agents dir mtime changes. TTL: 1 hour max.
+const _graphCache = {
+  data: null,
+  mtime: 0,
+  builtAt: 0,
+  MAX_AGE_MS: 60 * 60 * 1000, // 1 hour
+};
+
+function getAgentsDirMtime() {
+  try {
+    return fs.statSync(AGENTS_DIR).mtimeMs;
+  } catch {
+    return 0;
+  }
+}
+
 // ─── Tool definitions ──────────────────────────────────────────────────────
 
 const TOOLS = [
@@ -349,41 +366,31 @@ function handleRuleCheck({ rule } = {}) {
   return { found: true, rule, content };
 }
 
-function handleGetComponentGraph({ agent, skill } = {}) {
+function buildFullGraph() {
   const graph = {}; // agent → [skills]
   const reverseGraph = {}; // skill → [agents]
 
-  if (!fs.existsSync(AGENTS_DIR)) {
-    return { error: 'agents/ directory not found', agents_dir: AGENTS_DIR };
-  }
+  if (!fs.existsSync(AGENTS_DIR)) return { graph, reverseGraph };
 
   for (const file of fs.readdirSync(AGENTS_DIR)) {
     if (!file.endsWith('.md')) continue;
     const agentName = file.replace('.md', '');
-    if (agent && agentName !== agent) continue;
-
     try {
       const content = fs.readFileSync(path.join(AGENTS_DIR, file), 'utf8');
       const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
       if (!fmMatch) continue;
-
-      // Parse uses_skills field (YAML list or inline array)
       const usesMatch = fmMatch[1].match(/^uses_skills:\s*(.+)$/m);
       if (!usesMatch) continue;
-
       let skills = [];
       const raw = usesMatch[1].trim();
       if (raw.startsWith('[')) {
-        // Inline: [skill-a, skill-b]
         skills = raw.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
       } else {
-        // Multi-line list: grab subsequent "- skill" lines
         const listMatch = fmMatch[1].match(/^uses_skills:\s*\n((?:\s+-\s+\S+\n?)+)/m);
         if (listMatch) {
           skills = listMatch[1].split('\n').map(l => l.trim().replace(/^-\s+/, '').replace(/^["']|["']$/g, '')).filter(Boolean);
         }
       }
-
       if (skills.length === 0) continue;
       graph[agentName] = skills;
       for (const s of skills) {
@@ -394,17 +401,45 @@ function handleGetComponentGraph({ agent, skill } = {}) {
       // Skip unreadable agent files
     }
   }
+  return { graph, reverseGraph };
+}
+
+function getCachedGraph() {
+  const now = Date.now();
+  const currentMtime = getAgentsDirMtime();
+  const age = now - _graphCache.builtAt;
+  if (_graphCache.data && _graphCache.mtime === currentMtime && age < _graphCache.MAX_AGE_MS) {
+    return _graphCache.data;
+  }
+  const built = buildFullGraph();
+  _graphCache.data = built;
+  _graphCache.mtime = currentMtime;
+  _graphCache.builtAt = now;
+  return built;
+}
+
+function handleGetComponentGraph({ agent, skill } = {}) {
+  if (!fs.existsSync(AGENTS_DIR)) {
+    return { error: 'agents/ directory not found', agents_dir: AGENTS_DIR };
+  }
+
+  const { graph, reverseGraph } = getCachedGraph();
+
+  // Apply filters if requested
+  const filteredGraph = agent ? (graph[agent] ? { [agent]: graph[agent] } : {}) : graph;
 
   // Filter reverse graph by skill if requested
   const filteredReverse = skill ? { [skill]: reverseGraph[skill] || [] } : reverseGraph;
 
   return {
-    agents: Object.keys(graph).length,
+    agents: Object.keys(filteredGraph).length,
     skills_referenced: Object.keys(reverseGraph).length,
-    agent_to_skills: graph,
-    skill_to_agents: filteredReverse
+    agent_to_skills: filteredGraph,
+    skill_to_agents: filteredReverse,
+    cached: true,
   };
 }
+
 
 function handleGetHealthStatus({ check = 'all' } = {}) {
   const claudeDir = path.join(os.homedir(), '.claude');

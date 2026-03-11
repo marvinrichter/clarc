@@ -49,13 +49,55 @@ For complex tasks requiring deep reasoning:
 3. Use multiple critique rounds for thorough analysis
 4. Use split role sub-agents for diverse perspectives
 
+## Budget Controls
+
+Set these environment variables to prevent surprise bills:
+
+```bash
+export CLAUDE_COST_WARN=5       # Warn before Agent calls if daily spend > $5
+export CLAUDE_BUDGET_LIMIT=20   # Block Agent calls if daily spend > $20 (0 = disabled)
+```
+
+The `budget-guard` hook enforces these limits automatically on every Agent tool call.
+Check accumulated spend: `/session-cost`
+Exact costs: console.anthropic.com
+
+## Agent Overhead Awareness
+
+Agent tool calls are the most expensive operation (8–10× more than a Grep call):
+
+| Tool | Relative cost |
+|---|---|
+| Grep / Glob | 1× baseline |
+| Read (typical file) | 3× |
+| Bash | 1.5× |
+| Edit / Write | 2× |
+| **Agent** | **20–40×** |
+
+Before spawning an Agent ask: can I accomplish this with Grep + Read instead?
+For summarization, classification, or boilerplate → use `summarizer-haiku` (10–15× cheaper than Sonnet).
+
+## Prompt Caching (for LLM app builders)
+
+If building applications with the Anthropic API that repeat long system prompts:
+
+```python
+# Add cache_control to stable prompt sections (min 1024 tokens)
+{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}
+```
+
+Cache TTL: 5 minutes. Savings: 90% discount on cached input tokens.
+See skill `cost-aware-llm-pipeline` for full implementation patterns.
+
 ## Performance Checklist
 
 Before selecting a model or starting a large task:
-- [ ] Use Haiku for high-frequency or lightweight agent invocations
+- [ ] Use Haiku (`summarizer-haiku`) for summaries, classification, boilerplate
 - [ ] Use Sonnet for main development work (default)
 - [ ] Use Opus only for complex architectural decisions
 - [ ] Context window < 80% before starting large refactors
+- [ ] Set `CLAUDE_COST_WARN` and `CLAUDE_BUDGET_LIMIT` if spending is a concern
+- [ ] Check if task can use Grep/Read instead of spawning an Agent
 
 ## Build Troubleshooting
 

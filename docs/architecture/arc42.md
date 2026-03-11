@@ -1,7 +1,7 @@
 # arc42 Architecture Documentation — clarc
 
 > **clarc** v0.9.0 · Workflow OS for AI coding assistants
-> Generated: 2026-03-11 · Render diagrams: [PlantUML online](https://www.plantuml.com/plantuml/uml/) or VS Code PlantUML extension
+> Generated: 2026-03-12 · Render diagrams: [PlantUML online](https://www.plantuml.com/plantuml/uml/) or VS Code PlantUML extension
 
 ---
 
@@ -28,10 +28,10 @@
 
 clarc turns Claude Code (and compatible AI coding assistants) from a reactive chat tool into a **structured engineering system**. It provides:
 
-- **Agents** — 61 specialized subagents that delegate planning, review, testing, and debugging
+- **Agents** — 62 specialized subagents that delegate planning, review, testing, and debugging
 - **Skills** — 250 domain knowledge libraries loaded on demand
 - **Commands** — 179 slash commands for repeatable engineering workflows
-- **Hooks** — 35 background automations (format, lint, secret scan, state persistence)
+- **Hooks** — 37 background automations (format, lint, secret scan, budget guard, response dashboard, state persistence)
 - **Rules** — 20 language rule sets always active in every session
 - **Learning flywheel** — session patterns promoted into permanent skills over time
 
@@ -55,6 +55,7 @@ clarc turns Claude Code (and compatible AI coding assistants) from a reactive ch
 | Security | No secrets in source; no secrets written to disk | `pre-write-secret-scan.js` |
 | Learnability | New developer onboarded in < 10 minutes | `/quickstart` command |
 | Evolvability | System improves from its own usage | Learning flywheel |
+| Cost Visibility | User sees cost and tool breakdown after every response | `response-dashboard.js` Stop hook |
 
 ### Stakeholders
 
@@ -132,7 +133,7 @@ Context summary:
 
 ### Level 2 — Component: Hook System
 
-The Hook System is clarc's most complex container — it coordinates 35 Node.js scripts across 6 event types.
+The Hook System is clarc's most complex container — it coordinates 37 Node.js scripts across 6 event types.
 
 ![Hook Component Diagram](diagrams/component-hooks.puml)
 
@@ -144,6 +145,7 @@ The Hook System is clarc's most complex container — it coordinates 35 Node.js 
 | PreToolUse | Write | `pre-write-secret-scan.js` | Block writes with secrets (exit 2) |
 | PreToolUse | Write | `doc-file-warning.js` | Warn about non-standard doc file paths |
 | PreToolUse | Edit\|Write | `suggest-compact.js` | Suggest compaction at 50-tool threshold (async) |
+| PreToolUse | Agent | `budget-guard.js` | Warn/block Agent calls when daily spend exceeds threshold |
 | PreCompact | * | `pre-compact.js` | Save session snapshot before compaction |
 | PostToolUse | Edit\|Write | `post-edit-format-dispatch.js` | Auto-format in 15 languages |
 | PostToolUse | Edit | `post-edit-typecheck.js` | `tsc --noEmit` (async, debounced) |
@@ -151,8 +153,11 @@ The Hook System is clarc's most complex container — it coordinates 35 Node.js 
 | PostToolUse | Edit\|Write | `post-edit-workflow-nudge.js` | 5 advisory nudges with cooldown |
 | PostToolUse | Bash | `build-failure-router.js` | Detect compile errors, suggest agent |
 | PostToolUse | Edit\|Write | `auto-checkpoint.js` | Git checkpoint for /undo |
+| PostToolUse | Agent | `agent-tracker.js` | Track agent invocation frequency |
 | SessionStart | * | `session-start.js` | Load context, skills, instincts |
-| Stop | * | `session-end.js` | Evaluate session, trigger weekly evolve |
+| SessionEnd | * | `session-end.js` | Evaluate session, log per-tool cost, trigger weekly evolve |
+| Stop | * | `response-dashboard.js` | Show per-response tool usage, agents, and cost estimate |
+| Stop | * | `check-console-log.js` | Warn if console.log found in modified JS/TS files |
 
 ### Shared Libraries (`scripts/lib/`)
 
@@ -295,6 +300,56 @@ All hook scripts and shared libraries follow immutable data patterns — functio
 - `suggest-compact.js` nudges manual compaction at 50 tool calls (configurable)
 - `pre-compact.js` always saves state before compaction so nothing is lost
 
+### 8.7 Cost Management & Budget Controls
+
+clarc includes a three-layer cost management system:
+
+**Per-response dashboard** (`response-dashboard.js` — Stop hook):
+- Fires after every Claude response
+- Parses `transcript_path` JSONL to find the last human turn as response boundary
+- Counts all tool calls in assistant turns after that boundary
+- Resolves agent model tier from agent frontmatter
+- Outputs a 3-line formatted summary to stderr (non-blocking):
+  ```
+  ────────────────────────────────────────────────────────
+   tools: Read×5  Edit×3  Bash×2  Agent×1
+   agents: typescript-reviewer [sonnet]
+   cost:  ~$0.08  ·  ~9.5k tokens (est.)
+  ────────────────────────────────────────────────────────
+  ```
+- Suppressible via `CLARC_RESPONSE_DASHBOARD=false` or `.clarc/hooks-config.json`
+
+**Daily budget guard** (`budget-guard.js` — PreToolUse/Agent):
+- Fires before every Agent tool call (agents are 20–40× more expensive than simple tools)
+- Reads `~/.clarc/cost-log.jsonl` to sum today's accumulated estimated spend
+- Warns via stderr if spend exceeds `CLAUDE_COST_WARN` (default $5)
+- Blocks (exit 2) if spend exceeds `CLAUDE_BUDGET_LIMIT` (default $20, 0 = disabled)
+- Cost estimates: ±50–100% accuracy; ground truth: `console.anthropic.com`
+
+**Session cost log** (`session-end.js` — SessionEnd hook):
+- Appends one JSON entry to `~/.clarc/cost-log.jsonl` per session
+- Uses per-tool token weight table (Agent=8k, Read=1.5k, Bash=400, Grep=300, ...)
+- Accurate within ±50–100%; drives `budget-guard.js` decisions next session
+
+**Per-tool weight table:**
+
+| Tool | Input tokens | Output tokens |
+|------|-------------|---------------|
+| Agent | 8,000 | 2,000 |
+| WebFetch | 2,000 | 100 |
+| Read | 1,500 | 50 |
+| Edit | 600 | 150 |
+| Write | 500 | 100 |
+| WebSearch | 800 | 100 |
+| Bash | 400 | 200 |
+| Grep | 300 | 100 |
+| Glob | 200 | 50 |
+
+**Model tier routing** (`summarizer-haiku` agent):
+- Haiku-tier agent (10–15× cheaper than Sonnet) for text summarization, classification, boilerplate generation
+- Orchestrator routes to `summarizer-haiku` for subtasks that don't require reasoning
+- Never used for code review, security analysis, or architecture decisions
+
 ---
 
 ## 9. Architecture Decisions
@@ -321,6 +376,8 @@ Decisions pending formalization:
 | Hook failure | A hook script throws an unexpected error | User work continues uninterrupted | Hook exits 0, error logged |
 | Component update | Developer runs `git pull` in `~/.clarc/` | All symlinks immediately reflect new content | Zero additional steps |
 | Skill search | MCP client queries `skill_search` | Matching skills returned ranked by relevance | < 100ms |
+| Cost guard | Daily Agent spend exceeds `CLAUDE_BUDGET_LIMIT` | Agent call is blocked with spend summary | Exit code 2 before agent is spawned |
+| Response dashboard | Claude finishes a response | Tool usage, agents used, and cost estimate shown | < 50ms parsing; non-blocking |
 
 ---
 
@@ -365,3 +422,7 @@ Decisions pending formalization:
 | **Worktree isolation** | A multi-agent coordination pattern where each agent runs in a separate git worktree to prevent file conflicts. |
 | **ADR** | Architecture Decision Record — a document capturing the context, options, and rationale for a significant technical choice. |
 | **CLARC_ROOT** | The root directory of the clarc installation (`~/.clarc/` or the local development repo). Used by hooks to resolve component paths. |
+| **budget-guard** | A PreToolUse/Agent hook that reads `~/.clarc/cost-log.jsonl` and warns or blocks Agent calls if daily estimated spend exceeds configured thresholds. |
+| **response-dashboard** | A Stop hook that parses the session transcript to produce a per-response summary of tools used, agents invoked, and estimated token cost. |
+| **cost-log.jsonl** | An append-only JSONL file at `~/.clarc/cost-log.jsonl` logging per-session estimated token costs. Used by `budget-guard.js` to compute daily spend. |
+| **summarizer-haiku** | A Haiku-tier agent (10–15× cheaper than Sonnet) for text summarization, classification, and boilerplate — routes cheap subtasks away from expensive models. |
