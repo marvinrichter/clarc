@@ -408,6 +408,65 @@ v2.1 is fully compatible with v2.0 and v1:
 - No actual code or conversation content is shared
 - You control what gets exported and promoted
 
+## Runnable Examples
+
+### Example 1: Export → Edit → Import (Share Instincts Between Machines)
+
+```bash
+# On machine A: export instincts from a project to a portable file
+cd ~/projects/my-api
+/instinct-export
+# → Writes ~/.claude/homunculus/export-my-api-2026-03-11.yaml
+# → Contains 12 instincts (8 project-scoped, 4 global)
+
+# Optionally inspect and edit before sharing
+cat ~/.claude/homunculus/export-my-api-2026-03-11.yaml
+# Remove any instincts you don't want to share (delete the yaml block)
+
+# Transfer to machine B (or share with a teammate)
+scp ~/.claude/homunculus/export-my-api-2026-03-11.yaml remote:~/
+
+# On machine B: import with scope control
+# --scope=global promotes all imported instincts to global (apply in every project)
+# --scope=project keeps them scoped to the current project
+cd ~/projects/my-api
+/instinct-import ~/export-my-api-2026-03-11.yaml --scope=project
+# → Imported 12 instincts into projects/a1b2c3d4e5f6/instincts/inherited/
+# → Run /instinct-status to review
+```
+
+### Example 2: Extract Instincts from a Session with `learn-eval`
+
+```bash
+# After finishing a Claude Code session in a git repo, run learn-eval to extract patterns
+cd ~/projects/my-react-app
+/learn-eval
+
+# learn-eval reads the latest session observations and outputs extracted instincts:
+# → Analyzing 47 observations from session 2026-03-11T14:22:00Z
+# → Found 3 candidate instincts:
+#
+#   [1] prefer-custom-hooks (confidence: 0.72, scope: project)
+#       Trigger: "when extracting stateful logic from components"
+#       Action: "Extract into a custom hook in src/hooks/ rather than keeping in component"
+#       Evidence: Observed 4 times; user refactored useState+useEffect into useOrders on 14:35
+#
+#   [2] always-validate-zod (confidence: 0.65, scope: project)
+#       Trigger: "when adding a new API route handler"
+#       Action: "Validate request body with a Zod schema before processing"
+#
+#   [3] conventional-commits (confidence: 0.90, scope: global)
+#       Trigger: "when writing a commit message"
+#       Action: "Use feat/fix/chore prefix — never a bare description"
+
+# Accept all, accept individual, or skip:
+# Accept instinct 1 and 3, skip 2? → y n y
+# → Saved prefer-custom-hooks to projects/f3a8.../instincts/personal/
+# → Saved conventional-commits to instincts/personal/ (global)
+```
+
+---
+
 ## Related
 
 - [Skill Creator](https://skill-creator.app) - Generate instincts from repo history

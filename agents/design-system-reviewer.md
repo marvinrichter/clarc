@@ -187,6 +187,42 @@ LOW      — Naming inconsistency, style duplication, minor polish
 2. Add `aria-hidden="true"` to 8 decorative icons (15 min)
 ```
 
+**Input (passing audit):** Small design system — token names consistent, dark mode coverage 100%, 0 issues.
+
+```markdown
+## Design System Audit — src/tokens/
+
+### Summary
+| Dimension | Score | Critical | High | Medium | Low |
+|-----------|-------|----------|------|--------|-----|
+| Token Structure | 10 | 0 | 0 | 0 | 0 |
+| Dark Mode | 10 | 0 | 0 | 0 | 0 |
+| **Overall** | **10** | **0** | **0** | **0** | **0** |
+
+### What's Working Well
+All color values reference semantic tokens. Dark mode uses off-black/off-white surfaces with a 4-step elevation scale. No hardcoded values found.
+```
+
+**Input (failing audit):** Component library with hardcoded colors and missing dark mode tokens.
+
+```markdown
+## Design System Audit — src/components/
+
+### Summary
+| Dimension | Score | Critical | High | Medium | Low |
+|-----------|-------|----------|------|--------|-----|
+| Token Structure | 4 | 0 | 2 | 1 | 0 |
+| Dark Mode | 3 | 1 | 0 | 0 | 0 |
+| **Overall** | **3.5** | **1** | **2** | **1** | **0** |
+
+### Critical Findings
+- `components/Card.tsx:8` — dark mode background is `#000000` (pure black) — Fix: use `--color-surface-dark` token
+
+### High Findings
+- `components/Button.tsx:14` — hardcoded `color: #2563EB` — Fix: replace with `var(--color-brand-primary)`
+- `components/Input.tsx:22` — hardcoded `border: 1px solid #D1D5DB` — Fix: use `var(--color-border-default)`
+```
+
 **Input:** Audit the `packages/ui/` directory of a Vue 3 + CSS custom properties component library — focused only on dark mode and accessibility dimensions.
 
 **Output:**

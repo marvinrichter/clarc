@@ -108,6 +108,11 @@ For Android architecture patterns, Compose examples, and Hilt scoping details, s
 - **Pure Kotlin (server-side, CLI, Ktor, Spring Boot)** → use `kotlin-reviewer` instead. This agent is only relevant when `AndroidManifest.xml` or the Android Gradle plugin is present.
 - **Build errors** → use `build-error-resolver`.
 
+## Routing
+
+- **Kotlin-only modules without Android framework usage** (no `AndroidManifest.xml`, no Jetpack imports) → use `kotlin-reviewer`.
+- **Jetpack Compose, Hilt, Room, ViewModel, or any `android.*` framework** → use `android-reviewer` (this agent).
+
 ## Completion Criteria
 
 Done when: all CRITICAL and HIGH findings listed with file:line references; each finding includes a concrete fix; summary table with severity counts output; verdict (Approve / Warning / Block) stated.

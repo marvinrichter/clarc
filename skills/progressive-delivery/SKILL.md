@@ -154,6 +154,47 @@ kubectl logs -l app=my-app,rollout-pod-template-hash=<canary-hash> --tail=100
 
 **Why this matters:** An aborted rollout is not a failed deploy — it's the safety system working. P99 spikes during canary often indicate N+1 queries or memory pressure that only manifests under real traffic.
 
+## Rollout Lifecycle — Full Walkthrough
+
+This example shows a complete canary rollout from creation to promotion, including an abort when metrics degrade.
+
+```bash
+# 1. Create rollout (update image tag in Git → ArgoCD syncs, or apply directly)
+kubectl argo rollouts set image my-app my-app=myorg/my-app:v1.3.0
+
+# 2. Watch rollout progress (opens live dashboard)
+kubectl argo rollouts get rollout my-app --watch
+# → Step 1/4 — Weight: 10%  ✔ AnalysisRun: Progressing
+
+# 3. After 5-min pause, analysis runs automatically:
+#    success-rate AnalysisRun checks Prometheus → result[0] = 0.98 (≥ 0.95) ✔
+#    latency-p99  AnalysisRun checks Prometheus → result[0] = 0.21s (≤ 0.5s) ✔
+
+# 4. Canary reaches 25% — health checks pass, ready to promote manually:
+kubectl argo rollouts promote my-app
+# → Promoted. Weight advancing: 25% → 50% → 100%
+
+# --- Error spike scenario ---
+# At 50% traffic, Prometheus shows error rate 0.08 (< 0.95 success threshold)
+# AnalysisRun fails; Argo Rollouts auto-aborts and routes 100% back to stable
+
+# 5. Abort manually if you detect the spike before auto-abort:
+kubectl argo rollouts abort my-app
+# → Aborting rollout... Scaling down canary pods
+
+# 6. Verify stable version is fully serving:
+kubectl argo rollouts status my-app
+# → Degraded (aborted) — then → Healthy after scale-down completes
+
+# 7. Check abort reason:
+kubectl argo rollouts get rollout my-app
+# → AnalysisRun: Failed  Metric: success-rate  Value: 0.08  (required ≥ 0.95)
+```
+
+**Why abort is safe:** `kubectl argo rollouts abort` immediately sets canary weight to 0% and routes all traffic to the stable ReplicaSet — no downtime for users.
+
+---
+
 ## Decision: When to Use Each Pattern
 
 | Pattern | Use when | Rollback speed | Risk |

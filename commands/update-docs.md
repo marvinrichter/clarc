@@ -6,6 +6,13 @@ description: Sync documentation with the codebase, generating from source-of-tru
 
 Sync documentation with the codebase, generating from source-of-truth files.
 
+## Arguments
+
+- (no args) — updates README and codemaps (default)
+- `contributing` — updates `CONTRIBUTING.md`
+- `tour` — generates/updates `docs/onboarding/architecture-tour.md`
+- `changelog` — generates changelog entries from recent commits
+
 ## Step 1: Identify Sources of Truth
 
 | Source | Generates |

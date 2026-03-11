@@ -84,6 +84,14 @@ psql -c "SELECT indexrelname, idx_scan, idx_tup_read FROM pg_stat_user_indexes O
 - [ ] EXPLAIN ANALYZE run on complex queries
 - [ ] Transactions kept short
 
+## Scope — PostgreSQL Only
+
+This agent is a **PostgreSQL specialist**. For NoSQL databases, use the appropriate specialist:
+
+- **MongoDB, Redis, DynamoDB** → use the `nosql-patterns` skill and route to a generalist reviewer
+- **MySQL / MariaDB** — some advice applies, but MySQL-specific syntax and optimizer differences are out of scope
+- If the codebase mixes PostgreSQL with a NoSQL store, review only the PostgreSQL side here
+
 ## Reference
 
 For detailed index patterns, schema design examples, connection management, concurrency strategies, JSONB patterns, and full-text search, see skills: `postgres-patterns`, `database-migrations`, and `sql-patterns`.

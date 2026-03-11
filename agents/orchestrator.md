@@ -38,6 +38,7 @@ State your selected pattern and justification explicitly before proceeding.
 5. **Always synthesize** — produce a unified output after all agents complete
 6. **Fail gracefully** — if one agent fails, complete the others and report partial results
 7. **Detect and resolve conflicts** — during synthesis, identify contradictions between agent outputs and apply the priority hierarchy from `docs/agent-priority-hierarchy.md`. Every conflict must appear in the `### Conflicts Resolved` section with its resolution rationale.
+8. **Destructive Bash guardrail** — When delegating tasks that include Bash execution (rm, git reset, kubectl delete, DROP TABLE), explicitly instruct the sub-agent: "Do not run destructive commands without confirming with the user first." Pass this as part of the agent prompt.
 
 ## Available Specialist Agents
 

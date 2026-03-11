@@ -587,51 +587,13 @@ maps.DeleteFunc(m, func(k string, v int) bool { return v == 0 })
 
 ## Quick Reference: Go Idioms
 
-| Idiom | Description |
-|-------|-------------|
+| Idiom | Rule |
+|-------|------|
 | Accept interfaces, return structs | Functions accept interface params, return concrete types |
 | Errors are values | Treat errors as first-class values, not exceptions |
-| Don't communicate by sharing memory | Use channels for coordination between goroutines |
+| Don't communicate by sharing memory | Use channels for goroutine coordination |
 | Make the zero value useful | Types should work without explicit initialization |
-| A little copying is better than a little dependency | Avoid unnecessary external dependencies |
 | Clear is better than clever | Prioritize readability over cleverness |
-| gofmt is no one's favorite but everyone's friend | Always format with gofmt/goimports |
 | Return early | Handle errors first, keep happy path unindented |
 
-## Anti-Patterns to Avoid
-
-```go
-// Bad: Naked returns in long functions
-func process() (result int, err error) {
-    // ... 50 lines ...
-    return // What is being returned?
-}
-
-// Bad: Using panic for control flow
-func GetUser(id string) *User {
-    user, err := db.Find(id)
-    if err != nil {
-        panic(err) // Don't do this
-    }
-    return user
-}
-
-// Bad: Passing context in struct
-type Request struct {
-    ctx context.Context // Context should be first param
-    ID  string
-}
-
-// Good: Context as first parameter
-func ProcessRequest(ctx context.Context, id string) error {
-    // ...
-}
-
-// Bad: Mixing value and pointer receivers
-type Counter struct{ n int }
-func (c Counter) Value() int { return c.n }    // Value receiver
-func (c *Counter) Increment() { c.n++ }        // Pointer receiver
-// Pick one style and be consistent
-```
-
-**Remember**: Go code should be boring in the best way - predictable, consistent, and easy to understand. When in doubt, keep it simple.
+> For anti-patterns (naked returns, panic for control flow, mixed receivers, context in struct), see the core `go-patterns` skill.

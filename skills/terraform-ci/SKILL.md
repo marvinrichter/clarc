@@ -223,6 +223,48 @@ pulumi convert --from terraform --language typescript ./infra/modules/vpc
 
 ---
 
+## Infracost Cost Gate — Runnable CI Step
+
+Add this step to your `plan` job (after `Terraform Plan`, before `Comment Plan on PR`) to block PRs that increase monthly cloud costs by more than 15%:
+
+```yaml
+      - name: Install Infracost
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
+        env:
+          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+
+      - name: Run Infracost diff
+        id: infracost
+        run: |
+          infracost diff \
+            --path infrastructure/environments/prod \
+            --compare-to main \
+            --format json \
+            --out-file /tmp/infracost.json
+          # Extract percentage change (positive = cost increase)
+          PCT=$(jq '.diffTotalMonthlyCost | tonumber' /tmp/infracost.json 2>/dev/null || echo "0")
+          echo "cost_delta_pct=$PCT" >> "$GITHUB_OUTPUT"
+        working-directory: .
+
+      - name: Enforce cost threshold
+        run: |
+          DELTA="${{ steps.infracost.outputs.cost_delta_pct }}"
+          echo "Monthly cost delta: $DELTA USD"
+          # Block if increase > $500/month; tag PR for cost-review if > $50
+          if (( $(echo "$DELTA > 500" | bc -l) )); then
+            echo "::error::Monthly cost increase \$$DELTA exceeds \$500 threshold — add 'cost-approved' label to override"
+            exit 1
+          elif (( $(echo "$DELTA > 50" | bc -l) )); then
+            gh pr edit "${{ github.event.pull_request.number }}" --add-label "cost-review"
+            echo "::warning::Monthly cost increase \$$DELTA — tagged for cost-review"
+          fi
+```
+
+**Prerequisites:** `INFRACOST_API_KEY` secret set in GitHub repo settings (free at infracost.io).
+
+---
+
 ## Related Skills
 
 - `iac-modern-patterns` — Pulumi TypeScript, AWS CDK L1/L2/L3, Bicep, cdktf — full reference for non-HCL IaC

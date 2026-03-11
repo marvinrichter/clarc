@@ -27,6 +27,13 @@ npx ts-prune                                # Unused TypeScript exports
 npx eslint . --report-unused-disable-directives  # Unused eslint directives
 ```
 
+### Language-Specific Dead-Code Tools
+
+For non-TypeScript projects, use these language-native tools instead of (or in addition to) the Node.js tools above:
+
+- **Go** — `deadcode` (`golang.org/x/tools/cmd/deadcode ./...`) for reachability analysis; `staticcheck` rule `U1000` flags unreachable exported identifiers
+- **Python** — `vulture` (`vulture . --min-confidence 80`) for unused functions, classes, and variables; `pyflakes` for unused imports and undefined names
+
 ## Workflow
 
 ### 1. Analyze

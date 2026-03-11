@@ -268,6 +268,98 @@ Numbers are sequential and never reused. Deprecated ADRs stay in the index.
 
 ---
 
+## Complete Filled-In ADR Example
+
+> This is a real decision written out in full — not a template with placeholders.
+
+```markdown
+# ADR-007: Use Cursor Pagination over Offset Pagination
+
+**Date:** 2025-11-03
+**Status:** Accepted
+**Deciders:** @sarah (backend lead), @james (API consumer team)
+**Consulted:** @ops (DB performance)
+**Informed:** All API consumers via Slack #api-changes
+
+---
+
+## Context
+
+Our `/api/v1/orders` endpoint is used by mobile clients with infinite scroll and by
+data-export jobs that page through all records. Today we use offset pagination
+(`?page=2&per_page=20`). Three problems have emerged as the orders table grew past 2M rows:
+
+1. `OFFSET 1900000` takes 3.8s on production Postgres — users see spinner during scroll
+2. Rows inserted during export jobs cause pages to shift, resulting in duplicate or missing rows
+3. Our DB has no composite index on `(status, created_at)` — adding one for offset queries is high-risk
+
+Our SLO for list endpoints is p95 < 200ms. We are currently at 4100ms for late pages.
+
+---
+
+## Decision
+
+**We will switch to cursor-based pagination using an opaque base64 cursor encoding `{id, createdAt}`.**
+
+Cursor pagination queries `WHERE (created_at, id) < (:cursor_created_at, :cursor_id)` —
+this uses an existing index and returns constant-time results regardless of page depth.
+The cursor is opaque to clients, preventing them from constructing invalid positions.
+
+---
+
+## Consequences
+
+### Positive
+- Late-page query time drops from 3.8s to ~12ms (constant, index-seek)
+- Export jobs no longer see duplicate/missing rows under concurrent inserts
+- No new DB indexes required — existing `(id, created_at)` index covers the cursor query
+
+### Negative
+- Clients cannot jump to page N or display "Page 12 of 84" — only next/prev navigation
+- Existing clients using `?page=` must migrate; we will maintain backward compat for 90 days
+- Cursor tokens expire after 7 days (prevents unbounded cursor accumulation)
+
+### Risks
+- If a client caches a cursor > 7 days, they will receive a 400 with `cursor_expired` type
+- The base64 encoding is not encrypted — clients should treat cursors as opaque but not secret
+
+---
+
+## Alternatives Considered
+
+### Option A: Keep offset pagination with added index
+
+**Description:** Add a composite index on `(status, created_at, id)` to speed up large offsets.
+
+**Why rejected:**
+Adding the index on a 2M-row live table requires a long migration (estimated 45-min lock on Postgres 14).
+Even with the index, `OFFSET 1000000` still reads 1M index entries — O(N) time, not O(1).
+The duplicate-rows problem under concurrent inserts is also not fixed.
+
+**What it would have been good for:**
+Small tables (<100k rows) where simplicity outweighs performance, or admin UIs that need
+"jump to page N" functionality and have low QPS.
+
+### Option B: Keyset pagination with numeric ID only
+
+**Description:** Use `WHERE id > :last_id` with a simple integer cursor.
+
+**Why rejected:**
+Our orders are sometimes inserted out of chronological order (backfill jobs). Sorting by `id`
+alone returns orders in insertion order, not business order. The tie-breaking on `(created_at, id)`
+is required to match the expected `sort=-created_at` contract that mobile clients depend on.
+
+---
+
+## Links
+
+- [Issue #1847: Orders list endpoint SLO breach](https://github.com/org/repo/issues/1847)
+- [ADR-003: Postgres as primary datastore](./ADR-003-postgres.md)
+- [Benchmark results: cursor vs offset on 2M rows](../benchmarks/pagination-2025-11-01.md)
+```
+
+---
+
 ## Checklist
 
 - [ ] Decision stated clearly in one sentence at the top
