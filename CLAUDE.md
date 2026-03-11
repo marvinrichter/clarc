@@ -74,6 +74,23 @@ Update: `cd ~/.clarc && git pull` — symlinks update instantly, no re-install.
 
 File naming: lowercase with hyphens (e.g., `python-reviewer.md`, `tdd-workflow.md`)
 
+## Self-Development Workflow (Clarc-on-Clarc)
+
+When developing clarc itself, ALWAYS use these agents after modifying the corresponding files:
+
+| File changed | Agent / tool to use |
+|---|---|
+| `agents/*.md` | `agent-quality-reviewer` agent |
+| `skills/**/*.md` | `skill-depth-analyzer` agent |
+| `commands/*.md` | `command-auditor` agent |
+| `scripts/*.js` | `code-reviewer` agent (routes to `typescript-reviewer`) |
+| `hooks/hooks.json` | `hook-auditor` agent |
+| `rules/**/*.md` | `node scripts/ci/validate-rule-format.js` |
+
+These checks are MANDATORY — not optional. Do not mark any task complete without running the relevant agent first.
+
+For new scripts (`scripts/*.js`): follow TDD — write the test in `tests/` before implementing.
+
 ## Versioning
 
 The canonical version is in `package.json`. All version references across the project (README badges, install scripts, changelogs) must match `package.json`. Current version: `0.9.0` (pre-launch).

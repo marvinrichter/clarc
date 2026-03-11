@@ -2,14 +2,15 @@
 /**
  * PostToolUse Hook: Workflow nudges after Edit/Write.
  *
- * Combines 4 advisory checks in a single async process to minimize overhead.
+ * Combines 5 advisory checks in a single async process to minimize overhead.
  * All nudges are suppressible via .clarc/hooks-config.json.
  *
  * Checks:
- *  1. security-scan-nudge  — file path contains auth/secret/token/api keywords
- *  2. code-review-nudge    — source file changed (with 5-min cooldown)
- *  3. doc-update-nudge     — new clarc component written (agents/skills/commands)
- *  4. tdd-sequence-guard   — source file written with no test counterpart
+ *  1. security-scan-nudge   — file path contains auth/secret/token/api keywords
+ *  2. code-review-nudge     — source file changed (with 5-min cooldown)
+ *  3. doc-update-nudge      — new clarc component written (agents/skills/commands)
+ *  3b. clarc-self-dev-nudge — suggest review agent for modified clarc component (.md/.json)
+ *  4. tdd-sequence-guard    — source file written with no test counterpart
  *
  * Config: .clarc/hooks-config.json (project-local) or ~/.clarc/hooks-config.json (global)
  * {
@@ -25,6 +26,7 @@ import os from 'os';
 // ─── Extension sets ─────────────────────────────────────────────────────────
 
 const SOURCE_EXTS = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.go', '.py', '.java', '.kt', '.rs', '.rb', '.ex', '.exs', '.cs', '.swift', '.cpp', '.c', '.php', '.scala']);
+
 const TEST_INDICATORS = ['.test.', '.spec.', '_test.', 'test_', '/test/', '/tests/', '/spec/', '__tests__/'];
 
 // ─── Security-sensitive path keywords ───────────────────────────────────────
@@ -39,6 +41,13 @@ const COMPONENT_DIRS = [
   path.join(CLARC_ROOT, 'skills'),
   path.join(CLARC_ROOT, 'commands'),
 ];
+
+// Maps component directory → review agent for clarc self-development nudge
+const COMPONENT_REVIEW_AGENTS = {
+  [path.join(CLARC_ROOT, 'agents')]: 'agent-quality-reviewer',
+  [path.join(CLARC_ROOT, 'skills')]: 'skill-depth-analyzer',
+  [path.join(CLARC_ROOT, 'commands')]: 'command-auditor',
+};
 
 // ─── Config helpers ──────────────────────────────────────────────────────────
 
@@ -125,6 +134,8 @@ process.stdin.on('end', () => {
     const isTest = isTestFile(filePath);
     const isWrite = toolName === 'Write';
     const isComponent = COMPONENT_DIRS.some(d => filePath.startsWith(d));
+    // .md/.json files in clarc component dirs are treated as "source" for review nudges
+    const isClarcComponent = isComponent && (ext === '.md' || ext === '.json');
 
     // 1. Security scan nudge — trigger on *content*, not filename, to avoid false positives
     //    Checks the actual text being written (new_string for Edit, content for Write).
@@ -155,6 +166,20 @@ process.stdin.on('end', () => {
     if (!isDisabled(cfg, 'doc-update-nudge') && isWrite && isComponent) {
       console.error('[doc-update] New clarc component detected.');
       console.error('[doc-update] → Run /update-codemaps and /update-docs to keep the index current.');
+    }
+
+    // 3b. Clarc self-development nudge — suggest the right review agent per component type
+    if (!isDisabled(cfg, 'clarc-self-dev-nudge') && isClarcComponent) {
+      const cooldownMinutes = cfg.clarc_self_dev_cooldown_minutes ?? cfg.code_review_cooldown_minutes ?? 5;
+      if (!isCoolingDown('clarc-self-dev-nudge', cooldownMinutes)) {
+        const entry = Object.entries(COMPONENT_REVIEW_AGENTS).find(([dir]) => filePath.startsWith(dir));
+        if (entry) {
+          const agent = entry[1];
+          console.error(`[clarc-dev] Clarc component modified — run the ${agent} agent.`);
+          console.error(`[clarc-dev] → Use the Agent tool with subagent_type="${agent}".`);
+          setCooldown('clarc-self-dev-nudge');
+        }
+      }
     }
 
     // 4. TDD sequence guard (Write only, source files, no test file)
