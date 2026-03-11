@@ -84,3 +84,8 @@ const totalUsd = todayEntries.reduce((s, e) => s + e.estimated_usd, 0);
 - `skills/cost-management` — deep dive into cost drivers and efficiency strategies
 - `commands/undo.md` — restore checkpoints without re-running expensive operations
 - `~/.clarc/cost-log.jsonl` — raw cost data
+
+## After This
+
+- `/undo` — restore a checkpoint to avoid re-running expensive operations
+- `/sessions` — manage sessions if costs indicate long-running sessions

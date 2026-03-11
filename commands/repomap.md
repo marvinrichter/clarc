@@ -58,3 +58,8 @@ No tree-sitter or native dependencies required — runs anywhere Node.js runs.
 
 For deeper analysis → skill: `repomap`
 For full project context → `/context`
+
+## After This
+
+- `/context` — get full project context using the refreshed repomap
+- `/update-docs` — update documentation after structural changes

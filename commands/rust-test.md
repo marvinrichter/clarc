@@ -92,3 +92,8 @@ tests/
 - Skills: `skills/rust-testing/`, `skills/rust-patterns/`
 - Use `/rust-build` if compilation fails first
 - Use `/rust-review` for a full code quality review
+
+## After This
+
+- `/rust-review` — review code quality after tests are green
+- `/verify` — run full build + tests before committing

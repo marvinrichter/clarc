@@ -200,3 +200,8 @@ Next: Deploy application code that uses the new column.
 - `apply` → apply pending (after manual review)
 - `rollback` → rollback last applied migration
 - `status` → show which migrations are pending/applied
+
+## After This
+
+- `/tdd` — add tests for migrated schema and data
+- `/database-review` — review migration queries and indexes

@@ -183,3 +183,8 @@ Ready to implement. Options:
 - `order-push-notifications`
 - `push notifications`
 - (empty — lists ideas with eval + ADR and asks)
+
+## After This
+
+- `/plan` — create implementation plan from the PRD
+- `/tdd` — start implementation with test-driven development

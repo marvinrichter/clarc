@@ -4,6 +4,13 @@ description: Run comprehensive DevSecOps security scan — SAST (Semgrep), secre
 
 # DevSecOps Security Scan
 
+<!-- ESCALATION LADDER (choose the right scope):
+       dev-time dependency check → /dep-audit
+       release gate + SBOM attestation → /sbom
+       full DevSecOps pipeline scan → /security-review (this command)
+     See also: /dep-audit, /sbom, /supply-chain-audit
+-->
+
 Run a full security scan for the project at: $ARGUMENTS
 
 ## Your Task
@@ -364,3 +371,8 @@ Based on findings, add these gates to your pipeline:
 
 **Reference:** See `devsecops-patterns` skill for tool installation and full CI integration patterns.
 **Agent:** Use `devsecops-reviewer` for automated review of specific changed files.
+
+## After This
+
+- `/tdd` — add security regression tests for fixed vulnerabilities
+- `/dep-update` — upgrade vulnerable dependencies found in the scan

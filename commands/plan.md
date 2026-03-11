@@ -111,3 +111,8 @@ After planning:
 
 This command invokes the `planner` agent located at:
 `~/.claude/agents/planner.md`
+
+## After This
+
+- `/tdd` — implement the plan with test-driven development
+- `/breakdown` — decompose plan into atomic tasks

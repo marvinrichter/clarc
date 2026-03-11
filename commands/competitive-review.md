@@ -60,3 +60,8 @@ Structure:
 3. **Display executive summary**: Top strengths and gaps inline
 4. **Save full report**: To `docs/system-review/competitive-analysis-YYYY-MM-DD.md`
 5. **Suggest roadmap items**: Add top P0 gaps to memory for next roadmap planning
+
+## After This
+
+- `/discover` — discover product opportunities from competitive gaps
+- `/brainstorm` — brainstorm features to address identified gaps

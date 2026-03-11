@@ -156,3 +156,9 @@ Both invoke the same specialist. Use `/code-review` when changes span multiple l
 
 - Agent: `agents/go-reviewer.md`
 - Skills: `skills/go-patterns/`, `skills/go-testing/`
+
+## After This
+
+- `/tdd` — add tests for Go code that failed review
+- `/go-build` — fix compilation errors flagged during review
+- `/security-review` — full scan if security issues found

@@ -93,3 +93,8 @@ End with a summary table and verdict.
 
 `data-visualization` — chart type decision table, ARIA patterns, Okabe-Ito palette, responsive SVG, Canvas vs. SVG threshold
 `dashboard-design` — chart states (loading/empty/error), real-time update strategies
+
+## After This
+
+- `/code-review` — review chart implementation code
+- `/tdd` — add tests for chart data transformations

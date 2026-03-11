@@ -181,3 +181,8 @@ The agent will stop and report if:
 
 - Agent: `agents/go-build-resolver.md`
 - Skill: `skills/go-patterns/`
+
+## After This
+
+- `/go-review` — review code quality after the build is green
+- `/tdd` — add tests to prevent regression

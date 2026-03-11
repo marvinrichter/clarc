@@ -91,3 +91,8 @@ addopts = "--cov=src --cov-fail-under=80"
 - Agent: `agents/python-reviewer.md`
 - Skills: `skills/python-testing/`, `skills/python-testing-advanced/`
 - Use `/python-review` for a full code quality review
+
+## After This
+
+- `/python-review` — review code quality after tests are green
+- `/verify` — run full build + tests before committing

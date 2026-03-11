@@ -45,3 +45,8 @@ This command invokes the **r-reviewer** agent for R-specific code review.
 
 - Agent: `agents/r-reviewer.md`
 - Skills: `skills/r-patterns/`, `skills/r-testing/`
+
+## After This
+
+- `/tdd` — add tests for R code that failed review
+- `/build-fix` — fix dependency or package issues

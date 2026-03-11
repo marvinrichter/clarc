@@ -54,3 +54,8 @@ Create one with: /skill-create --local <name>
 - Command: `/skill-create --local <name>` — scaffold a new project-local skill
 - Command: `/promote-skill <name>` — promote a local skill to global clarc
 - Skill: `project-local-skills` — full workflow guide for local skills
+
+## After This
+
+- `/promote-skill <name>` — promote a local skill to the global clarc registry
+- `/skill-depth` — verify the quality score of local skills

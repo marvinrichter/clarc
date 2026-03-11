@@ -228,3 +228,10 @@ Top priority files to migrate:
 - `storybook-patterns` — CSF3, play functions, addons, Chromatic
 - `visual-testing` — Chromatic, Playwright visual regression, baselines
 - `accessibility` — WCAG guidelines checked by addon-a11y
+
+> **Scope note**: This command covers Storybook stories only. For a full design system audit (CSS tokens, dark mode, icon system, accessibility, design-code consistency), use `/design-system-review` instead.
+
+## After This
+
+- `/design-system-review` — full design system audit (tokens, dark mode, icons, a11y)
+- `/code-review` — review component implementation after story coverage gaps are fixed

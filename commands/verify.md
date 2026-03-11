@@ -61,3 +61,8 @@ $ARGUMENTS can be:
 - `full` - All checks (default)
 - `pre-commit` - Checks relevant for commits
 - `pre-pr` - Full checks plus security scan
+
+## After This
+
+- `/tdd` — fix failing tests or add missing coverage
+- `/build-fix` — fix compilation errors blocking the build

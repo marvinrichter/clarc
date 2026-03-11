@@ -78,3 +78,7 @@ Use functional patterns over classes.
 - **Stdout output** (no `--output`): copy/paste directly or pipe to a file for review
 - **Next steps**: teammates can import with `/instinct-import <file>` to inherit the same patterns
 - Use `--min-confidence 0.7` to export only battle-tested instincts when sharing with others
+
+## After This
+
+- `/instinct-import` — import exported instincts on the target project

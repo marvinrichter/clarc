@@ -251,3 +251,8 @@ trino --execute "SELECT user, query FROM system.runtime.queries WHERE query LIKE
 - Skill: `skills/data-engineering/` — ETL/ELT pipelines, dbt, Spark fundamentals
 - Skill: `skills/gdpr-privacy/` — GDPR implementation patterns for PII in data pipelines
 - Skill: `skills/observability/` — monitoring data pipeline SLOs
+
+## After This
+
+- `/arch-design` — design the data mesh architecture
+- `/tdd` — add data contract tests

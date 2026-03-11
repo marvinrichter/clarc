@@ -191,3 +191,8 @@ evolved_from:
 
 [Generated content based on clustered instincts]
 ```
+
+## After This
+
+- `/learn-eval` — evaluate session quality before evolving instincts
+- `/instinct-status` — check evolved instinct scores

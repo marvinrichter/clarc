@@ -23,18 +23,6 @@ Use `/tdd` when:
 - Refactoring existing code
 - Building critical business logic
 
-## How It Works
-
-The tdd-guide agent will:
-
-1. **Define interfaces** for inputs/outputs
-2. **Write tests that will FAIL** (because code doesn't exist yet)
-3. **Run tests** and verify they fail for the right reason
-4. **Write minimal implementation** to make tests pass
-5. **Run tests** and verify they pass
-6. **Refactor** code while keeping tests green
-7. **Check coverage** and add more tests if below 80%
-
 ## TDD Cycle
 
 ```
@@ -301,26 +289,13 @@ Coverage: 100% ✅ (Target: 80%)
 
 ## Important Notes
 
-**MANDATORY**: Tests must be written BEFORE implementation. The TDD cycle is:
+**MANDATORY**: Tests must be written BEFORE implementation. Never skip the RED phase. Never write code before tests.
 
-1. **RED** - Write failing test
-2. **GREEN** - Implement to pass
-3. **REFACTOR** - Improve code
+## After This
 
-Never skip the RED phase. Never write code before tests.
+- `/code-review` — review implementation quality after tests are green
+- `/test-coverage` — verify coverage meets 80% threshold
+- `/build-fix` — if build or type errors block the green phase
+- `/verify` — full build + type-check + test run before committing
 
-## Integration with Other Commands
-
-- Use `/plan` first to understand what to build
-- Use `/tdd` to implement with tests
-- Use `/build-fix` if build errors occur
-- Use `/code-review` to review implementation
-- Use `/test-coverage` to verify coverage
-
-## Related Agents
-
-This command invokes the `tdd-guide` agent located at:
-`~/.claude/agents/tdd-guide.md`
-
-And can reference the `tdd-workflow` skill at:
-`~/.claude/skills/tdd-workflow/`
+> Agent: `tdd-guide` · Skill: `tdd-workflow`

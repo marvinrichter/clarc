@@ -173,3 +173,8 @@ Output this summary:
 
 - `wasm-patterns` — wasm-bindgen, JS interop, WASI, Component Model
 - `wasm-performance` — deeper size optimization and profiling
+
+## After This
+
+- `/wasm-review` — review WebAssembly code quality after the build is green
+- `/security-review` — check unsafe blocks flagged during build

@@ -129,3 +129,8 @@ IF [change], THEN [metric] will [direction ~X%], BECAUSE [mechanism].
 - Analysis date: [end date + 1 day]
 - Decision criteria: [exact rule for ship/kill]
 ```
+
+## After This
+
+- `/tdd` — add tests for experiment tracking code
+- `/instrument` — add analytics instrumentation for experiment metrics

@@ -51,3 +51,9 @@ shfmt -d script.sh  # formatting diff
 
 - Agent: `agents/bash-reviewer.md`
 - Skills: `skills/bash-patterns/`, `skills/bash-testing/`
+
+## After This
+
+- `/tdd` — add tests for scripts that failed review
+- `/build-fix` — fix shell errors flagged by shellcheck
+- `/security-review` — full DevSecOps scan if security issues found

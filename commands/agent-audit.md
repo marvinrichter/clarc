@@ -93,3 +93,8 @@ Results saved to `docs/system-review/agent-audit-<date>.json`.
 - **HIGH** (score 1–4): Must fix — significantly reduces agent effectiveness
 - **MEDIUM** (score 5–6): Should fix — noticeable quality gap
 - **LOW** (score 7–8, below threshold): Nice to fix — minor improvement possible
+
+## After This
+
+- `/system-review components` — re-run full component review after agent fixes
+- `/prompt-audit` — review prompt quality of fixed agents

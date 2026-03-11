@@ -82,3 +82,7 @@ For `github`:
 - The `mcp-configs/mcp-servers.json` file contains all servers in one file (alternative format)
 - HTTP-type servers (Vercel, Cloudflare) require no `npx` — they connect via URL
 - For security: never commit `~/.claude.json` to version control (it contains your tokens)
+
+## After This
+
+- `/doctor` — verify MCP server connectivity

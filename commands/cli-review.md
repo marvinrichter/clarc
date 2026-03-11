@@ -45,3 +45,8 @@ Review a CLI tool's implementation for UX quality, composability, and correctnes
 
 - `cli-patterns` — argument design, subcommands, exit codes, testing
 - `cli-ux` — error messages, help text, config hierarchy, autocomplete, progress
+
+## After This
+
+- `/tdd` — add tests for CLI commands flagged in review
+- `/code-review` — review CLI implementation fixes

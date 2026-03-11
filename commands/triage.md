@@ -109,3 +109,8 @@ Total: 4 issues processed. Actions: 1 close (stale), 1 close (question), 2 label
 ```
 
 Then print all `gh` commands grouped by action type (label, close, comment) for the user to review and run.
+
+## After This
+
+- `/plan` — create implementation plan for triaged issues
+- `/breakdown` — decompose the highest-priority issue

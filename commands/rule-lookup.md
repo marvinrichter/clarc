@@ -73,3 +73,8 @@ Run /find-skill <topic> to search for more specific guidance.
 - If the user provides a topic not in the mapping, do a best-effort match against rule file names and content
 - If still no match, explain that no rule exists for that topic and suggest creating one in `rules/common/`
 - The two-layer model: rules = constraints (≤ 80 lines), skills = patterns and examples (≥ 50 lines)
+
+## After This
+
+- `/rules-diff` — preview pending rule updates
+- `/doctor` — verify rule installation is healthy

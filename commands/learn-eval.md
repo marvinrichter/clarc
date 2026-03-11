@@ -88,3 +88,8 @@ user-invocable: false
 - Focus on patterns that will save time in future sessions
 - Keep skills focused — one pattern per skill
 - If Coverage score is low, add related variants before saving
+
+## After This
+
+- `/evolve` — evolve instincts from the evaluated sessions
+- `/instinct-status` — check current instinct scores

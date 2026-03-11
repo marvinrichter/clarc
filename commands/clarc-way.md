@@ -92,3 +92,8 @@ User: A — new idea
 - Skill: `clarc-way` — full methodology reference with skip matrix and principles
 - Command: `/quickstart` — interactive onboarding for new clarc users
 - Command: `/find-skill` — search all available skills by topic
+
+## After This
+
+- `/guide <task>` — get a step-by-step workflow for the specific task
+- `/tdd` — start implementing with test-driven development

@@ -272,3 +272,9 @@ NEXT STEPS
 - `api-docs-patterns` — full documentation patterns reference (Mintlify, Redoc, Scalar, Vale, changelog automation)
 - `api-design` — API design conventions that affect documentation quality
 - `api-contract` — spec linting, code generation, breaking-change CI
+
+## After This
+
+- `/update-docs` — sync documentation after code changes are made
+- `/setup-ci` — add spectral lint + Vale + oasdiff to CI pipeline
+- `/code-review` — review any documentation code changes before committing

@@ -36,6 +36,17 @@ The agent:
 - **LOW / INFO**: Discretionary. Note for future improvement.
 - **Approve**: No CRITICAL or HIGH issues — safe to commit or open PR.
 
+## Routing Guidance
+
+Use `/code-review` for **mixed-language repos** or when you want the orchestrator to pick the right specialist automatically.
+
+Use a language-specific command directly for **focused, single-language sessions**:
+- `/typescript-review` — TypeScript/JavaScript only
+- `/go-review` — Go only
+- `/python-review` — Python only
+- `/java-review` — Java/Kotlin only
+- `/swift-review`, `/rust-review`, `/ruby-review`, `/elixir-review`, `/cpp-review`
+
 ## After This
 
 - `/security-review` — deeper security scan targeting OWASP Top 10

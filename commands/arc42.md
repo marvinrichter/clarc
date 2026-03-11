@@ -211,3 +211,8 @@ Next steps:
 - `section-7` → regenerate deployment view
 - `decisions` → rebuild the ADR index in Section 9
 - `update` → re-read codebase, update all sections that seem stale
+
+## After This
+
+- `/plan` — create implementation plan based on the architecture document
+- `/arch-design` — design specific subsystems if needed

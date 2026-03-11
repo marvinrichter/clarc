@@ -28,3 +28,8 @@ Pass a file path via `$ARGUMENTS` to review a prompt stored on disk, or paste th
 2. **Invoke prompt-reviewer agent** — pass the full prompt content as context.
 3. **Report findings** — the agent outputs findings grouped by severity (CRITICAL / HIGH / MEDIUM / LOW) and a final verdict.
 4. **Remediation** — if CRITICAL or HIGH issues are found, offer to apply the suggested fixes directly to the file.
+
+## After This
+
+- `/prompt-audit` — audit the full prompt system after individual fixes
+- `/tdd` — add eval tests for the reviewed prompt

@@ -102,3 +102,8 @@ To propose this skill to all clarc users:
 - Command: `/skill-create --local <name>` — scaffold a new project-local skill
 - Command: `/skills-local` — list all project-local skills
 - Skill: `project-local-skills` — full workflow guide
+
+## After This
+
+- `/skill-depth` — verify the promoted skill's quality score
+- `/system-review components` — re-run component review after promotion

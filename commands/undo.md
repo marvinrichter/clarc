@@ -64,3 +64,8 @@ Claude: Last checkpoint: 2026-03-08T14:23:11Z (commit abc1234)
 - `scripts/hooks/auto-checkpoint.js` — creates checkpoints automatically
 - `~/.clarc/checkpoints.log` — checkpoint history (JSON array, max 50 entries)
 - `/session-cost` — view session cost estimates
+
+## After This
+
+- `/checkpoint create` — create a new checkpoint after restoring to a clean state
+- `/verify` — confirm build + tests pass after the undo

@@ -66,3 +66,7 @@ Results saved to `docs/system-review/hook-audit-<date>.json`.
 4. **List issues by severity**: HIGH first, then MEDIUM, then LOW
 5. **Save results**: Write to `docs/system-review/hook-audit-YYYY-MM-DD.json`
 6. **For HIGH issues**: Provide the specific fix needed with code if applicable
+
+## After This
+
+- `/system-review components` — full component review after hook fixes

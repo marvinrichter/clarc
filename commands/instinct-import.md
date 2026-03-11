@@ -126,3 +126,7 @@ Run /instinct-status to see all instincts.
 - **Updated N instinct**: a higher-confidence import replaced a lower-confidence local copy
 - **Skipped N instincts**: your local copies are already as confident or better — no action needed
 - After import, run `/instinct-status` to verify the new instincts and check for conflicts
+
+## After This
+
+- `/instinct-status` — verify imported instincts are active

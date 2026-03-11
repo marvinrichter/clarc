@@ -131,3 +131,8 @@ npx github:marvinrichter/clarc doctor
 - `/find-skill` — search all 200+ skills by topic
 - `/doctor` — health-check your clarc installation
 - Skill: `clarc-way` — full methodology reference with skip matrix
+
+## After This
+
+- `/clarc-way` — interactive workflow guide for the next task
+- `/tdd` — start your first feature with test-driven development

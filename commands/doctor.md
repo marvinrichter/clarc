@@ -84,3 +84,8 @@ Run `/update-rules` to apply the latest rules, or manually: `cd ~/.clarc && git 
 - Command: `/clarc-way` — interactive workflow guide
 - Command: `/update-rules` — apply latest rule updates
 - Command: `/rules-diff` — preview changes before applying
+
+## After This
+
+- `/update-rules` — apply rule updates if staleness is detected
+- `/quickstart` — run interactive onboarding if setup gaps are found

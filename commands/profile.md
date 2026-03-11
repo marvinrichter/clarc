@@ -226,3 +226,8 @@ docker run -d --name pyroscope -p 4040:4040 grafana/pyroscope
 - `web-performance` — browser-side performance profiling
 - `load-testing` — generating realistic load during profiling
 - `observability` — setting up P99 latency metrics in production
+
+## After This
+
+- `/slo` — define performance SLOs based on profiling results
+- `/tdd` — add performance regression tests

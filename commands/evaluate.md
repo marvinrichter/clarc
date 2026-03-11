@@ -71,3 +71,8 @@ Next: /explore <name> — generate solution approaches and pick one.
 - `push notifications`  (partial match — will search)
 - `oauth2-github-login`
 - (empty — lists all ideas and asks)
+
+## After This
+
+- `/explore` — design solution options for a Go recommendation
+- `/prd` — write the PRD if evaluation recommends proceeding

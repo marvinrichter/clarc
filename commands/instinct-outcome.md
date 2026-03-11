@@ -82,3 +82,7 @@ Recorded good outcome for "test-first-workflow"
 - `usage_count` increments on every outcome recording
 - Use `/instinct-status` to see current confidence levels
 - Use `/instinct-report` to see ranked list with trends
+
+## After This
+
+- `/evolve` — trigger instinct evolution when enough outcomes are collected

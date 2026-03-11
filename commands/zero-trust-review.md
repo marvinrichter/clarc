@@ -209,3 +209,8 @@ kubectl logs -n payments -l app=payment-processor -c istio-proxy --tail=100 | gr
 - Skill: `skills/devsecops-patterns/` — automated security scanning in CI
 - Command: `/dep-audit` — dependency vulnerability scanning
 - Agent: `agents/security-reviewer.md` — comprehensive security audit
+
+## After This
+
+- `/security-review` — full DevSecOps scan after zero-trust fixes
+- `/tdd` — add policy tests for NetworkPolicy and AuthorizationPolicy

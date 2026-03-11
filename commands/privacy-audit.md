@@ -312,3 +312,8 @@ Privacy Maturity: 4/7
 - Skill: `skills/gdpr-privacy/` — GDPR compliance checklist and policy templates
 - Command: `/security-review` — security vulnerabilities alongside privacy issues
 - Rule: `rules/common/security.md` — privacy obligations in the security checklist
+
+## After This
+
+- `/security-review` — full DevSecOps scan if PII exposure found
+- `/tdd` — add GDPR compliance tests

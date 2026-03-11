@@ -65,6 +65,12 @@ swift build 2>&1 | grep -E "^.*error:" | head -20
 
 ## Related
 
-- Agent: `agents/swift-reviewer.md`
+- Agent: `agents/swift-reviewer.md` — code quality review
+- Agent: `agents/build-error-resolver.md` — escalate here when errors resist surgical fixes
 - Skills: `skills/swift-patterns/`, `skills/swift-patterns-advanced/`, `skills/swift-concurrency-6-2/`
 - Use `/swift-review` for a full code quality review
+
+## After This
+
+- `/swift-review` — review code quality after the build is green
+- `/mobile-release` — run release checks once compilation is confirmed clean

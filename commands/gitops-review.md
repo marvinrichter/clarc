@@ -150,3 +150,9 @@ Provide a structured report:
 ---
 
 **Reference:** See `gitops-patterns` skill for implementation examples of all patterns above.
+
+## After This
+
+- `/iac-review` — review Terraform/Kubernetes manifests
+- `/security-review` — full DevSecOps scan
+- `/zero-trust-review` — if NetworkPolicy or PeerAuthentication gaps found

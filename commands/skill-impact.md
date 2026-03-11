@@ -38,3 +38,7 @@ Show the impact of changing skill `$ARGUMENTS`.
 
 5. **Always append at the end:**
    > Index source: `skills/SKILL_AGENTS.md` — regenerate with `node scripts/ci/generate-skill-agents-index.js`
+
+## After This
+
+- `/system-review components` — full system review if high-impact skills are missing

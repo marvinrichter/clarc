@@ -230,3 +230,8 @@ curl "https://api.pagerduty.com/incidents?time_zone=UTC&since=$THIS_MONTH_ISO&st
 - `/dora-baseline` — first-time DORA measurement
 - `/devex-survey` — quarterly developer experience survey
 - `incident-response` — improving MTTR and post-mortem quality
+
+## After This
+
+- `/dora-baseline` — re-measure DORA metrics after improvement actions
+- `/plan` — create action plan from review findings

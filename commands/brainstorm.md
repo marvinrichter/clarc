@@ -151,3 +151,8 @@ Suggested next step:
 - `authentication post-password` — trend-focused
 - `make code review faster and higher quality` — process-focused
 - (empty) — ask for the problem space
+
+## After This
+
+- `/idea` — capture the best idea for evaluation
+- `/evaluate` — evaluate the idea for Go/No-Go

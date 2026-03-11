@@ -4,6 +4,19 @@ description: WebRTC architecture review — P2P vs SFU vs MCU decision, TURN con
 
 # WebRTC Architecture Review
 
+## Usage
+
+```
+/webrtc-review                    — full review across all 8 dimensions
+/webrtc-review architecture       — P2P vs SFU vs MCU assessment only
+/webrtc-review turn               — TURN configuration only
+/webrtc-review security           — access token security + recording consent only
+/webrtc-review signaling          — signaling robustness + ICE handling only
+/webrtc-review <focus-area>       — any Step name for targeted review
+```
+
+Pass `$ARGUMENTS` as the focus area. Without arguments, all 8 steps are reviewed.
+
 Perform a systematic review of a WebRTC implementation. Adapt depth based on `$ARGUMENTS` — default to full review if no specific focus is given.
 
 ## Step 1 — Architecture Assessment
@@ -156,3 +169,8 @@ Fix: ...
 - `realtime-patterns` — when to use WebRTC vs WebSocket vs SSE
 - `security-review` — general security checklist
 - `gdpr-privacy` — GDPR consent and data retention
+
+## After This
+
+- `/security-review` — full DevSecOps scan if access token or secret exposure is found
+- `/slo` — define WebRTC SLOs (ICE success rate, call quality p95 latency)

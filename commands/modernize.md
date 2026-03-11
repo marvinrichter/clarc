@@ -274,3 +274,9 @@ Recovery time: < 5 minutes
 - `legacy-modernization` — full patterns (Strangler Fig, ACL, Branch-by-Abstraction, database migration)
 - `technical-debt` — assessing whether this component should be modernized vs. deferred
 - `tdd-workflow` — writing characterization tests before starting migration
+
+## After This
+
+- `/tdd` — write tests before migrating legacy code
+- `/plan` — create detailed migration plan
+- `/code-review` — review migrated code

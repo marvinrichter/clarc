@@ -121,3 +121,8 @@ Reference: skill ci-cd-patterns
 - `pr-checks` — only CI workflow (no docker, no deploy)
 - `full` — CI + Docker + deploy with staging and production gates
 - `staging-only` — CI + Docker + staging deploy only
+
+## After This
+
+- `/tdd` — verify tests run correctly in the new CI pipeline
+- `/doctor` — confirm clarc is configured correctly in CI

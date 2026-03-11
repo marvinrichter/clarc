@@ -200,3 +200,8 @@ Next step: reach Measured (5/7) by addressing HIGH issues
 - Skill: `skills/eval-harness/` — offline and production evaluation
 - Skill: `skills/observability/` — metrics and alerting setup
 - Command: `/slo` — define model latency SLOs
+
+## After This
+
+- `/tdd` — add tests for ML pipeline components
+- `/slo` — define model serving SLOs

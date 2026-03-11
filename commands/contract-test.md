@@ -308,3 +308,8 @@ jobs:
 - `contract-testing` — Pact patterns, OpenAPI testing, schema compatibility, oasdiff
 - `api-contract` — Contract-First API design, OpenAPI spec
 - `api-design` — REST API design patterns
+
+## After This
+
+- `/tdd` — add unit tests for contract-tested components
+- `/code-review` — review contract test implementation

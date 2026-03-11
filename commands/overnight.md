@@ -528,3 +528,8 @@ Examples:
 - `refactor the entire auth system to a strategy pattern across 3 services` → Ralphinho
 - `generate 10 variations of the dashboard component from the spec` → Infinite Loop
 - `I want to try a new caching approach, not sure if Redis or in-memory` → NanoClaw first
+
+## After This
+
+- `/learn-eval` — evaluate the overnight session quality
+- `/evolve` — evolve instincts from overnight findings

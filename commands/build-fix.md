@@ -68,3 +68,8 @@ Show results:
 | Build tool misconfiguration | Read config file; compare with working defaults |
 
 Fix one error at a time for safety. Prefer minimal diffs over refactoring.
+
+## After This
+
+- `/tdd` — add tests to prevent regression after the build is fixed
+- `/verify` — confirm full build + type-check + tests pass

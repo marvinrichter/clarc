@@ -81,3 +81,8 @@ Suggest 3 tags appropriate for the target conference (e.g., for KubeCon: `platfo
 ## Reference Skill
 
 `conference-abstract` — abstract structure, rejection reasons, title formats, bio templates, CFP format adaptation
+
+## After This
+
+- `/slide-deck` — build the slide deck for the accepted talk
+- `/talk-outline` — structure the talk before building slides

@@ -64,3 +64,8 @@ cmake -B build-asan -DCMAKE_BUILD_TYPE=Debug \
 - Agent: `agents/cpp-reviewer.md`
 - Skills: `skills/cpp-patterns/`, `skills/cpp-patterns-advanced/`, `skills/cpp-testing/`
 - Use `/cpp-review` for a full code quality review
+
+## After This
+
+- `/cpp-review` — review code quality after the build is green
+- `/tdd` — add tests to prevent regression

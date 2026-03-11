@@ -4,6 +4,15 @@ description: Generate SBOM (Software Bill of Materials), run vulnerability scan,
 
 # SBOM Command
 
+<!-- SCOPE: SBOM generation + attestation only.
+     ESCALATION LADDER:
+       dev-time dependency check → /dep-audit
+       SBOM generation + release attestation → /sbom (this command)
+       full supply chain security (CI pinning, SLSA, provenance) → /supply-chain-audit
+       full DevSecOps pipeline scan → /security-review
+     See also: /dep-audit, /supply-chain-audit, /security-review
+-->
+
 Generate and integrate a Software Bill of Materials: $ARGUMENTS
 
 ## Your Task
@@ -208,3 +217,8 @@ echo "vulnerabilities.json" >> .gitignore
 
 - `supply-chain-security` — SLSA, cosign, SBOM formats, VEX
 - `dependency-audit` — per-language dependency vulnerability scanning
+
+## After This
+
+- `/supply-chain-audit` — run before SBOM generation to check GitHub Actions pinning, SLSA, and provenance
+- `/security-review` — full DevSecOps scan if HIGH/CRITICAL vulnerabilities are found in the SBOM

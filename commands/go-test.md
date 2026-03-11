@@ -266,3 +266,8 @@ go test -race -cover ./...
 
 - Skill: `skills/go-testing/`
 - Skill: `skills/tdd-workflow/`
+
+## After This
+
+- `/go-review` — review code quality after tests are green
+- `/verify` — run full build + type-check + tests before committing

@@ -120,3 +120,8 @@ Produce the sprint task list:
 - [ ] Deployed to staging and smoke tested
 - [ ] Product/design sign-off
 ```
+
+## After This
+
+- `/tdd` — implement the broken-down tasks with TDD
+- `/plan` — create a full implementation plan from the breakdown

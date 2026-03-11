@@ -278,3 +278,8 @@ jobs:
 - `web-performance` — detailed Core Web Vitals patterns, React optimization, font performance
 - `performance-profiling` — server-side profiling when backend is the bottleneck
 - `load-testing` — server performance under realistic traffic
+
+## After This
+
+- `/tdd` — add performance regression tests for critical metrics
+- `/code-review` — review performance optimisation changes

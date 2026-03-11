@@ -71,3 +71,8 @@ Next: implement agents in agents/ and wire them in commands/ or via /orchestrate
 - `/agent-design` — interactive workshop for designing multi-agent systems
 - `/orchestrate` — run an orchestration workflow (uses the orchestrator agent)
 - `/plan` — single-agent implementation planning
+
+## After This
+
+- `/orchestrate` — implement the designed orchestration workflow
+- `/tdd` — add orchestration tests

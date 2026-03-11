@@ -142,3 +142,8 @@ Expected coverage:
 ```
 
 Save to: `docs/system-review/workflow-check-YYYY-MM-DD.md`
+
+## After This
+
+- `/system-review full` — full system review after workflow gaps are fixed
+- `/competitive-review` — compare clarc workflow coverage against competitors

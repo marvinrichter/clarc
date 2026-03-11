@@ -26,6 +26,18 @@ Multi-model collaborative execution - Get prototype from plan → Claude refacto
 
 $ARGUMENTS
 
+## Phases at a Glance
+
+| Phase | Name | What Happens |
+|-------|------|-------------|
+| 0 | Read Plan | Parse plan file, confirm `SESSION_ID`, route by task type |
+| 1 | Context Retrieval | MCP tool fetches relevant code context |
+| 3 | Prototype Acquisition | Codex (backend) / Gemini (frontend) returns Unified Diff Patch |
+| 4 | Code Implementation | Claude refactors dirty prototype → production-grade code |
+| 5 | Audit & Delivery | Parallel Codex+Gemini review → integrate fixes → delivery report |
+
+> **Note**: Phase 2 is intentionally reserved. See [Reference](#reference) for call syntax and model parameters.
+
 ---
 
 ## Core Protocols
@@ -35,92 +47,6 @@ $ARGUMENTS
 - **Dirty Prototype Refactoring**: Treat Codex/Gemini Unified Diff as "dirty prototype", must refactor to production-grade code
 - **Stop-Loss Mechanism**: Do not proceed to next phase until current phase output is validated
 - **Prerequisite**: Only execute after user explicitly replies "Y" to `/ccg:plan` output (if missing, must confirm first)
-
----
-
-## Multi-Model Call Specification
-
-**Call Syntax** (parallel: use `run_in_background: true`):
-
-```
-# Resume session call (recommended) - Implementation Prototype
-Bash({
-  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}resume <SESSION_ID> - \"$PWD\" <<'EOF'
-ROLE_FILE: <role prompt path>
-<TASK>
-Requirement: <task description>
-Context: <plan content + target files>
-</TASK>
-OUTPUT: Unified Diff Patch ONLY. Strictly prohibit any actual modifications.
-EOF",
-  run_in_background: true,
-  timeout: 3600000,
-  description: "Brief description"
-})
-
-# New session call - Implementation Prototype
-Bash({
-  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}- \"$PWD\" <<'EOF'
-ROLE_FILE: <role prompt path>
-<TASK>
-Requirement: <task description>
-Context: <plan content + target files>
-</TASK>
-OUTPUT: Unified Diff Patch ONLY. Strictly prohibit any actual modifications.
-EOF",
-  run_in_background: true,
-  timeout: 3600000,
-  description: "Brief description"
-})
-```
-
-**Audit Call Syntax** (Code Review / Audit):
-
-```
-Bash({
-  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}resume <SESSION_ID> - \"$PWD\" <<'EOF'
-ROLE_FILE: <role prompt path>
-<TASK>
-Scope: Audit the final code changes.
-Inputs:
-- The applied patch (git diff / final unified diff)
-- The touched files (relevant excerpts if needed)
-Constraints:
-- Do NOT modify any files.
-- Do NOT output tool commands that assume filesystem access.
-</TASK>
-OUTPUT:
-1) A prioritized list of issues (severity, file, rationale)
-2) Concrete fixes; if code changes are needed, include a Unified Diff Patch in a fenced code block.
-EOF",
-  run_in_background: true,
-  timeout: 3600000,
-  description: "Brief description"
-})
-```
-
-**Model Parameter Notes**:
-- `{{GEMINI_MODEL_FLAG}}`: When using `--backend gemini`, replace with `--gemini-model gemini-3-pro-preview` (note trailing space); use empty string for codex
-
-**Role Prompts**:
-
-| Phase | Codex | Gemini |
-|-------|-------|--------|
-| Implementation | `~/.claude/.ccg/prompts/codex/architect.md` | `~/.claude/.ccg/prompts/gemini/frontend.md` |
-| Review | `~/.claude/.ccg/prompts/codex/reviewer.md` | `~/.claude/.ccg/prompts/gemini/reviewer.md` |
-
-**Session Reuse**: If `/ccg:plan` provided SESSION_ID, use `resume <SESSION_ID>` to reuse context.
-
-**Wait for Background Tasks** (max timeout 600000ms = 10 minutes):
-
-```
-TaskOutput({ task_id: "<task_id>", block: true, timeout: 600000 })
-```
-
-**IMPORTANT**:
-- Must specify `timeout: 600000`, otherwise default 30 seconds will cause premature timeout
-- If still incomplete after 10 minutes, continue polling with `TaskOutput`, **NEVER kill the process**
-- If waiting is skipped due to timeout, **MUST call `AskUserQuestion` to ask user whether to continue waiting or kill task**
 
 ---
 
@@ -330,3 +256,46 @@ After audit passes, report to user:
 1. `/ccg:plan` generates plan + SESSION_ID
 2. User confirms with "Y"
 3. `/ccg:execute` reads plan, reuses SESSION_ID, executes implementation
+
+## After This
+
+- `/code-review` — verify the refactored implementation quality
+- `/tdd` — add missing test coverage for the delivered changes
+- `/verify` — run full build + type-check + tests to confirm clean delivery
+
+---
+
+## Reference
+
+> Technical call syntax — consult when debugging or customising model invocations.
+
+### Multi-Model Call Syntax
+
+**Implementation prototype** (`run_in_background: true`):
+
+```
+Bash({
+  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}resume <SESSION_ID> - \"$PWD\" <<'EOF'
+ROLE_FILE: <role prompt path>
+<TASK>
+Requirement: <description>
+Context: <plan + key files>
+</TASK>
+OUTPUT: Unified Diff Patch ONLY. Strictly prohibit any actual modifications.
+EOF",
+  run_in_background: true, timeout: 3600000
+})
+```
+
+**Audit call** (same shape, different ROLE_FILE + Scope in TASK body).
+
+**Model flags**: `{{GEMINI_MODEL_FLAG}}` = `--gemini-model gemini-3-pro-preview ` for Gemini; empty for Codex.
+
+**Wait for result**: `TaskOutput({ task_id: "<id>", block: true, timeout: 600000 })` — never kill; poll if needed.
+
+**Role prompts**:
+
+| Phase | Codex | Gemini |
+|-------|-------|--------|
+| Implementation | `~/.claude/.ccg/prompts/codex/architect.md` | `~/.claude/.ccg/prompts/gemini/frontend.md` |
+| Review | `~/.claude/.ccg/prompts/codex/reviewer.md` | `~/.claude/.ccg/prompts/gemini/reviewer.md` |

@@ -218,3 +218,8 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 - `/instinct-import` - Import generated instincts
 - `/instinct-status` - View learned instincts
 - `/evolve` - Cluster instincts into skills/agents
+
+## After This
+
+- `/skill-depth` — verify the new skill's quality score
+- `/promote-skill` — promote the skill to the global clarc registry

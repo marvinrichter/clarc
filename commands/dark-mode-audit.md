@@ -108,3 +108,8 @@ Produce a structured report:
 ### Quick wins (can fix in < 30 minutes)
 [Highest-impact, lowest-effort fixes]
 ```
+
+## After This
+
+- `/code-review` — review dark mode token fixes
+- `/design-system-review` — full design system audit if token gaps are widespread

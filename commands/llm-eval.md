@@ -124,3 +124,8 @@ $ARGUMENTS:
 - `report <name>` - Generate full report
 - `list` - Show all evals
 - `clean` - Remove old eval logs (keeps last 10 runs)
+
+## After This
+
+- `/tdd` — add unit tests for eval harness logic
+- `/prompt-review` — review prompts based on eval findings

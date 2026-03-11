@@ -93,3 +93,8 @@ Results saved to `docs/system-review/skill-depth-<date>.json`.
    - Display the summary table (sorted by score ascending)
    - Print full JSON only for skills scoring below 7.0
 4. **Suggest improvements**: For each HIGH issue, provide a concrete fix suggestion
+
+## After This
+
+- `/promote-skill` — promote high-quality skills to the global registry
+- `/system-review components` — re-run component review after skill improvements

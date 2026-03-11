@@ -78,3 +78,7 @@ To see current package manager detection results, run:
 ```bash
 node scripts/setup-package-manager.js --detect
 ```
+
+## After This
+
+- `/doctor` — verify package manager configuration is correct

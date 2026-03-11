@@ -108,3 +108,8 @@ End with a summary of total findings by category and severity.
 
 - `i18n-patterns` — locale detection, key design, RTL CSS logical properties, Intl API
 - `i18n-frameworks` — framework-specific translation function wrappers
+
+## After This
+
+- `/tdd` — add i18n tests for flagged missing translations
+- `/code-review` — review i18n fixes

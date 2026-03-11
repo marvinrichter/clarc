@@ -70,3 +70,8 @@ Subtitle — Speaker Name — Conference 2024
 - `presentation-design` — narrative arc, slide density, slide type catalogue
 - `talk-preparation` — time boxing, speaker notes format
 - `html-slides` — self-contained Reveal.js output
+
+## After This
+
+- `/talk-outline` — structure the talk narrative before finalising slides
+- `/design-critique` — get feedback on slide design
