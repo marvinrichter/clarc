@@ -347,7 +347,7 @@ fi
 - **File:** `terraform/s3_artifacts.tf`, line 12
 - **Category:** IaC Misconfiguration — public storage
 - **Fix:**
-  ```hcl
+  ~~~hcl
   # Before (vulnerable)
   acl = "public-read"
   # After (secure)
@@ -355,7 +355,7 @@ fi
   # Add explicit block:
   block_public_acls       = true
   block_public_policy     = true
-  ```
+  ~~~
 
 ## HIGH — Fix Before Release
 

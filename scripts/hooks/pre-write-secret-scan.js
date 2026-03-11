@@ -12,8 +12,6 @@
  * Reuses secret patterns from scripts/lib/secret-scanner.js.
  */
 
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { scanForSecrets } from '../lib/secret-scanner.js';
 
 const MAX_STDIN = 512 * 1024;
