@@ -1,8 +1,6 @@
 ---
 name: clarc-mcp-integration
 description: "Patterns for using clarc MCP server in multi-agent workflows, CI pipelines, and external tools"
-skill_family: tooling
-related_agents: []
 ---
 
 # clarc MCP Integration
@@ -68,10 +66,53 @@ Checks clarc installation integrity. Returns `healthy: true/false` and an `issue
 }
 ```
 
-**CI gate pattern:**
+**CI gate pattern (one-liner):**
 ```bash
 node mcp-server/index.js <<< '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"get_health_status","arguments":{}}}' \
   | jq -e '.result.content[0].text | fromjson | .healthy'
+```
+
+**CI gate script (full — save as `scripts/ci/check-clarc-health.js`):**
+```javascript
+#!/usr/bin/env node
+// check-clarc-health.js — exits 0 if clarc is healthy, 1 otherwise
+// Usage: node scripts/ci/check-clarc-health.js
+// Add to CI as a pre-step gate before running agents.
+
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const mcpServer = resolve(__dirname, '../../mcp-server/index.js');
+const request = JSON.stringify({
+  jsonrpc: '2.0', id: 1, method: 'tools/call',
+  params: { name: 'get_health_status', arguments: {} }
+});
+
+const proc = spawn('node', [mcpServer], { stdio: ['pipe', 'pipe', 'inherit'] });
+let output = '';
+proc.stdout.on('data', chunk => { output += chunk; });
+proc.stdin.write(request + '\n');
+proc.stdin.end();
+
+proc.on('close', () => {
+  try {
+    const parsed = JSON.parse(output);
+    const status = JSON.parse(parsed.result.content[0].text);
+    if (status.healthy) {
+      console.log('clarc health: OK');
+      process.exit(0);
+    } else {
+      console.error('clarc health: FAILED');
+      console.error('Issues:', status.issues.join(', '));
+      process.exit(1);
+    }
+  } catch (err) {
+    console.error('clarc health: could not parse response', err.message);
+    process.exit(1);
+  }
+});
 ```
 
 ## Multi-Agent Pattern: clarc-aware orchestrator

@@ -180,6 +180,38 @@ Phases can be skipped when genuinely not needed. The skip matrix above is the gu
 
 ---
 
+## Bug Fix Walkthrough
+
+Bug fixes skip Phase 0 (no discovery needed) and Phase 1 (no upfront plan for a known defect). Start directly at Phase 2 with a failing test.
+
+**Scenario:** `getUserById` returns `null` instead of throwing when the user does not exist.
+
+```
+# 1. Write the failing test first (RED)
+/tdd
+→ [tdd-guide] Write: test_getUserById_throws_when_user_not_found
+→ Run: npm test -- --testNamePattern getUserById
+→ Confirm: test FAILS (currently returns null, not throws)
+
+# 2. Fix the implementation (GREEN)
+→ Edit src/api/users.ts: throw NotFoundError when db returns null
+→ Run: npm test -- --testNamePattern getUserById
+→ Confirm: test PASSES
+
+# 3. Quality gate before commit
+/code-review
+→ [typescript-reviewer] MEDIUM: missing error type export — fix it
+→ Run: npm test (full suite, all green)
+
+# 4. Commit
+→ git commit -m "fix: throw NotFoundError when getUserById receives unknown id"
+```
+
+**What was skipped:** `/idea`, `/evaluate`, `/explore`, `/prd`, `/plan` — all unnecessary for a well-understood defect.
+**What was not skipped:** `/tdd` (failing test first), `/code-review` (quality gate before commit).
+
+---
+
 ## Comparison: clarc Way vs. SPARC
 
 | Dimension | clarc Way | SPARC (ruflo) |

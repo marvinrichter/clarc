@@ -368,6 +368,8 @@ app.get('/health/ready', async (req, res) => {
 
 ## Alerting Rules (Prometheus/Alertmanager)
 
+> This section covers basic alert rules. For advanced Alertmanager configuration (routing trees, inhibition, silences, PagerDuty/Slack receivers, multi-window multi-burn-rate SLO alerts), this could be expanded into a dedicated `alertmanager-patterns` skill.
+
 ```yaml
 # alerts.yaml
 groups:

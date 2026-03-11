@@ -1,7 +1,6 @@
 ---
 name: continuous-learning-v2
 description: Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.2 adds project-scoped instincts to prevent cross-project contamination.
-version: 2.2.0
 ---
 
 # Continuous Learning v2.2 — Instinct-Based Architecture
@@ -28,6 +27,31 @@ install.sh --enable-learning
 ```
 This installs the observation hooks and creates `~/.claude/homunculus/`.
 
+Or enable manually — add to `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/hooks/observe.sh"
+      }]
+    }],
+    "PostToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/hooks/observe.sh"
+      }]
+    }]
+  }
+}
+```
+
+If installed manually to `~/.claude/skills`, replace `${CLAUDE_PLUGIN_ROOT}/skills/...` with `~/.claude/skills/...`.
+
 **Step 2: Work normally** — instincts capture automatically
 - Run any Claude Code session in a git repo
 - PreToolUse/PostToolUse hooks observe patterns silently
@@ -50,37 +74,28 @@ This installs the observation hooks and creates `~/.claude/homunculus/`.
 /instinct-promote   # promote high-confidence patterns to global scope
 ```
 
-## What's New in v2.2
+## What's New
 
-| Feature | v2.1 | v2.2 |
-|---------|------|------|
-| Agent evolution | Not connected | `/agent-evolution` promotes instincts to agent overlays |
-| Overlay injection | None | `session-start.js` injects overlays at session start |
-| Flywheel | Capture → evolve → skills | Capture → evolve → skills + agent overlays |
-| Rollback | `/instinct-outcome bad` lowers confidence | + suggests overlay removal |
-| Commands | 6 | 8 (+agent-evolution, +agent-instincts) |
+**v2.2** (current)
+- `/agent-evolution` command: promotes high-confidence instincts to agent overlays
+- `session-start.js` injects agent overlays automatically at session start
+- Full flywheel: capture → evolve → skills + agent overlays
+- `/instinct-outcome bad` now also suggests overlay removal
+- 8 commands (added `/agent-evolution`, `/agent-instincts`)
 
-## What's New in v2.1
+**v2.1**
+- Project-scoped instinct storage (`projects/<hash>/`) — no more cross-project contamination
+- Project detection via git remote URL or repo path
+- Auto-promotion when the same instinct appears in 2+ projects at confidence ≥ 0.8
+- 6 commands (added `/instinct-promote`, `/projects`)
 
-| Feature | v2.0 | v2.1 |
-|---------|------|------|
-| Storage | Global (~/.claude/homunculus/) | Project-scoped (projects/<hash>/) |
-| Scope | All instincts apply everywhere | Project-scoped + global |
-| Detection | None | git remote URL / repo path |
-| Promotion | N/A | Project → global when seen in 2+ projects |
-| Commands | 4 (status/evolve/export/import) | 6 (+promote/projects) |
-| Cross-project | Contamination risk | Isolated by default |
-
-## What's New in v2 (vs v1)
-
-| Feature | v1 | v2 |
-|---------|----|----|
-| Observation | Stop hook (session end) | PreToolUse/PostToolUse (100% reliable) |
-| Analysis | Main context | Background agent (Haiku) |
-| Granularity | Full skills | Atomic "instincts" |
-| Confidence | None | 0.3-0.9 weighted |
-| Evolution | Direct to skill | Instincts -> cluster -> skill/command/agent |
-| Sharing | None | Export/import instincts |
+**v2 vs v1**
+- Observation moved from Stop hook to PreToolUse/PostToolUse hooks (100% reliable, was ~50-80%)
+- Background Haiku agent for analysis instead of main context
+- Atomic "instincts" instead of full skills (one trigger, one action)
+- Confidence scoring (0.3–0.9) added
+- Evolution pipeline: instincts → cluster → skill/command/agent
+- Export/import instincts for sharing
 
 ## The Instinct Model
 
@@ -189,59 +204,7 @@ The system automatically detects your current project:
 
 Each project gets a 12-character hash ID (e.g., `a1b2c3d4e5f6`). A registry file at `~/.claude/homunculus/projects.json` maps IDs to human-readable names.
 
-## Quick Start
-
-### 1. Enable Observation Hooks
-
-Add to your `~/.claude/settings.json`.
-
-**If installed as a plugin** (recommended):
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/hooks/observe.sh"
-      }]
-    }],
-    "PostToolUse": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/hooks/observe.sh"
-      }]
-    }]
-  }
-}
-```
-
-**If installed manually** to `~/.claude/skills`:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh"
-      }]
-    }],
-    "PostToolUse": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh"
-      }]
-    }]
-  }
-}
-```
-
-### 2. Initialize Directory Structure
+### Directory Structure Setup
 
 The system creates directories automatically on first use, but you can also create them manually:
 
@@ -250,17 +213,6 @@ The system creates directories automatically on first use, but you can also crea
 mkdir -p ~/.claude/homunculus/{instincts/{personal,inherited},evolved/{agents,skills,commands},projects}
 
 # Project directories are auto-created when the hook first runs in a git repo
-```
-
-### 3. Use the Instinct Commands
-
-```bash
-/instinct-status     # Show learned instincts (project + global)
-/evolve              # Cluster related instincts into skills/commands
-/instinct-export     # Export instincts to file
-/instinct-import     # Import instincts from others
-/instinct-promote    # Promote project instincts to global scope
-/projects            # List all known projects and their instinct counts
 ```
 
 ## Commands

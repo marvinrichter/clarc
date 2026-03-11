@@ -104,6 +104,21 @@ Unlock the full workflow OS. Add these:
 Start with: `/context` → `/e2e` → `/a11y-audit` → `/web-perf`
 Key skills: `frontend-patterns`, `state-management`, `accessibility-patterns`, `e2e-testing`
 
+**Example session — frontend developer, Day 1:**
+```
+User: /context
+clarc: Detected React + TypeScript project. Relevant skills: frontend-patterns, state-management, e2e-testing.
+
+User: /e2e add checkout flow test
+clarc: [e2e-runner] Generated Playwright test: checkout-flow.spec.ts — 3 critical paths covered.
+
+User: /a11y-audit
+clarc: [design-system-reviewer] Found 2 issues: missing aria-label on cart button, colour contrast ratio 3.2:1 (min 4.5:1).
+
+User: /web-perf
+clarc: [performance-analyst] LCP 3.8s (target <2.5s) — ProductImage not lazy-loaded. Fix: add loading="lazy".
+```
+
 ### Backend Developer
 Start with: `/context` → `/tdd` → `/database-review` → `/security-review`
 Key skills: `api-design`, `auth-patterns`, `database-migrations`, `observability`

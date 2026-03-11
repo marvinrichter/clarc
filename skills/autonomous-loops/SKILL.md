@@ -60,6 +60,23 @@ claude -p "Run the full build, lint, type check, and test suite. Fix any failure
 claude -p "Create a conventional commit for all staged changes. Use 'feat: add OAuth2 login flow' as the message."
 ```
 
+### Quick Start
+
+```bash
+#!/bin/bash
+# minimal-pipeline.sh — run this to start a sequential pipeline
+set -e
+
+SPEC="${1:-docs/feature-spec.md}"   # pass spec file as first arg
+
+claude -p "Read ${SPEC}. Implement the feature using TDD. Write tests first."
+claude -p "Review all changed files. Remove redundant type tests and dead code. Run the test suite."
+claude -p "Run: npm run build && npm test && npm run lint. Fix any failures. Do not add features."
+claude -p "Create a conventional commit for staged changes. Use the spec filename as context."
+
+echo "Pipeline complete."
+```
+
 ### Key Design Principles
 
 1. **Each step is isolated** — A fresh context window per `claude -p` call means no context bleed between steps.
@@ -129,6 +146,19 @@ CLAW_SESSION=my-project CLAW_SKILLS=tdd-workflow,security-review node scripts/cl
 | Context accumulation | Grows per turn | Fresh each step |
 | CI/CD integration | Poor | Excellent |
 
+### Quick Start
+
+```bash
+# Start a named NanoClaw session with skill context injected
+CLAW_SESSION=my-feature CLAW_SKILLS=tdd-workflow node scripts/claw.js
+
+# Or start an unnamed default session (history in ~/.claude/claw/default.md)
+node scripts/claw.js
+
+# View session history
+cat ~/.claude/claw/my-feature.md
+```
+
 See the `/claw` command documentation for full details.
 
 ---
@@ -163,6 +193,28 @@ PHASE 5 (infinite mode): Loop in waves of 3-5 until context is low.
 ```bash
 /project:infinite specs/component-spec.md src/ 5
 /project:infinite specs/component-spec.md src/ infinite
+```
+
+### Quick Start
+
+```bash
+# 1. Create the command file (one-time setup)
+mkdir -p .claude/commands
+cat > .claude/commands/infinite.md << 'EOF'
+Parse from $ARGUMENTS: spec_file, output_dir, count (integer or "infinite")
+PHASE 1: Read and deeply understand the specification.
+PHASE 2: List output_dir, find highest iteration number. Start at N+1.
+PHASE 3: Plan creative directions — each agent gets a DIFFERENT theme/approach.
+PHASE 4: Deploy sub-agents in parallel (Task tool). Each receives full spec,
+  directory snapshot, assigned iteration number, and unique creative direction.
+PHASE 5 (infinite mode): Loop in waves of 3-5 until context is low.
+EOF
+
+# 2. Invoke — generate 5 component variants from a spec
+/project:infinite specs/button-spec.md src/components/ 5
+
+# 3. Infinite mode — runs until context is exhausted
+/project:infinite specs/test-cases-spec.md tests/ infinite
 ```
 
 ### Key Insight: Uniqueness via Assignment
@@ -200,6 +252,20 @@ note right
   --max-duration 2h | completion signal
 end note
 @enduml
+```
+
+### Quick Start
+
+```bash
+# Install
+curl -fsSL https://raw.githubusercontent.com/AnandChowdhary/continuous-claude/HEAD/install.sh | bash
+
+# Run: fix all linter errors, up to 5 iterations, cost cap $3
+continuous-claude \
+  --prompt "Fix all ESLint errors across the codebase. Run npm run lint after each fix." \
+  --max-runs 5 \
+  --max-cost 3.00 \
+  --completion-signal "CONTINUOUS_CLAUDE_PROJECT_COMPLETE"
 ```
 
 ### Installation
@@ -312,6 +378,30 @@ claude -p "Review all changes in the working tree. Remove:
 Keep all business logic tests. Run the test suite after cleanup."
 ```
 
+### Quick Start
+
+```bash
+#!/bin/bash
+# de-sloppify.sh — run after any implement step
+set -e
+
+BRANCH="${1:-HEAD}"
+
+# Step 1: implement (already done — this script runs after)
+echo "Running De-Sloppify cleanup pass on branch: ${BRANCH}"
+
+# Step 2: dedicated cleanup agent in a fresh context
+claude -p "Review all files changed since $(git merge-base main ${BRANCH}).
+Remove:
+- Tests that verify TypeScript generics or JavaScript language behavior (not business logic)
+- Redundant null checks the type system already rules out
+- console.log and commented-out code
+- Overly defensive error handling for impossible states
+Keep all business logic tests intact. Run: npm test after cleanup."
+
+echo "De-Sloppify complete. Run: git diff to review."
+```
+
 ### Key Insight
 
 > Two focused agents (Implementer + De-Sloppify) outperform one constrained agent with negative instructions.
@@ -374,11 +464,11 @@ Each stage runs in its own agent process with its own context window:
 |-------|-------|---------|
 | Research | Sonnet | Read codebase + RFC, produce context doc |
 | Plan | Opus | Design implementation steps |
-| Implement | Codex | Write code following the plan |
+| Implement | claude-sonnet-latest | Write code following the plan |
 | Test | Sonnet | Run build + test suite |
 | PRD Review | Sonnet | Spec compliance check |
 | Code Review | Opus | Quality + security check |
-| Review Fix | Codex | Address review issues |
+| Review Fix | claude-sonnet-latest | Address review issues |
 | Final Review | Opus | Quality gate (large tier only) |
 
 **Critical design:** The reviewer never wrote the code it reviews. This eliminates author bias — the most common source of missed issues in self-review.
@@ -392,6 +482,21 @@ After quality pipelines complete, each unit branch: rebases onto main → runs b
 ### Worktree Isolation
 
 Every unit runs in an isolated worktree (`/tmp/workflow-wt-{unit-id}/`). Stages for the same unit share a worktree, preserving context files, plan files, and code changes across research → plan → implement → test → review.
+
+### Quick Start
+
+```bash
+# 1. Write an RFC document (e.g., docs/rfcs/auth-refactor.md)
+# 2. Run the Ralphinho orchestrator pointing at your RFC
+claude -p "
+Read docs/rfcs/auth-refactor.md.
+Decompose into work units with a dependency DAG (JSON format: id, deps[], tier, acceptance[]).
+For each layer in the DAG, launch parallel sub-agents (Task tool) in isolated worktrees.
+Each sub-agent runs the pipeline for its tier (trivial→implement+test; medium→research+plan+implement+test+review).
+After all units complete, run the merge queue: rebase each branch onto main, run tests, fast-forward merge or evict with context.
+Output: list of merged branches and any evicted units with reasons.
+"
+```
 
 ### Key Design Principles
 

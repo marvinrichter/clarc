@@ -21,32 +21,21 @@ Production-grade TypeScript patterns for type-safe, maintainable applications.
 
 ### Strict tsconfig.json
 
+Enable `strict` plus these additional checks:
+
 ```json
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-
-    // Strict mode — ALL of these
-    "strict": true,              // enables all strict checks below
-    "noUncheckedIndexedAccess": true,  // arr[0] is T | undefined
+    "target": "ES2022", "module": "NodeNext", "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-
-    // Interop
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+    "declaration": true, "declarationMap": true, "sourceMap": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
@@ -155,29 +144,12 @@ interface Repository<T, Id = string> {
 // Generic with default
 interface PaginatedResult<T> {
   data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    hasNext: boolean;
-  };
+  meta: { total: number; page: number; limit: number; hasNext: boolean };
 }
 
-function paginate<T>(
-  items: T[],
-  page: number,
-  limit: number
-): PaginatedResult<T> {
+function paginate<T>(items: T[], page: number, limit: number): PaginatedResult<T> {
   const start = (page - 1) * limit;
-  return {
-    data: items.slice(start, start + limit),
-    meta: {
-      total: items.length,
-      page,
-      limit,
-      hasNext: start + limit < items.length,
-    },
-  };
+  return { data: items.slice(start, start + limit), meta: { total: items.length, page, limit, hasNext: start + limit < items.length } };
 }
 ```
 
@@ -269,23 +241,15 @@ const user = result.value;  // Narrowed to User
 ```typescript
 type AsyncResult<T, E = Error> = Promise<Result<T, E>>;
 
+// Wrap async calls: catch all exceptions → Err, return Ok on success
 async function fetchUser(id: string): AsyncResult<User, ApiError> {
   try {
     const response = await fetch(`/api/users/${id}`);
-    if (!response.ok) {
-      return Err({ code: response.status, message: response.statusText });
-    }
+    if (!response.ok) return Err({ code: response.status, message: response.statusText });
     return Ok(await response.json() as User);
   } catch (err) {
     return Err({ code: 0, message: 'Network error' });
   }
-}
-
-// Chain results
-async function getUsername(id: string): AsyncResult<string> {
-  const result = await fetchUser(id);
-  if (!result.ok) return result;  // Propagate error
-  return Ok(result.value.name);
 }
 ```
 
@@ -326,32 +290,14 @@ getUser(pid);  // Type error: ProductId not assignable to UserId
 
 ```
 src/
-├── domain/           # Pure domain types and logic
-│   ├── user.ts       # User type, value objects, domain rules
-│   ├── order.ts
-│   └── index.ts      # Re-export public API
-├── application/      # Use cases (service layer)
-│   ├── user-service.ts
-│   └── order-service.ts
+├── domain/           # Pure domain types and logic (User, Order, value objects)
+├── application/      # Use cases / service layer
 ├── infrastructure/   # External adapters (DB, HTTP, email)
-│   ├── user-repository.ts
-│   └── email-service.ts
 ├── api/              # HTTP controllers/routes
-│   ├── users.ts
-│   └── orders.ts
-└── shared/           # Shared utilities
-    ├── result.ts
-    └── pagination.ts
+└── shared/           # Shared utilities (Result, pagination)
 ```
 
-### Barrel Exports
-
-```typescript
-// domain/index.ts — explicit exports (avoid star re-exports)
-export type { User, UserId } from './user';
-export type { Order, OrderStatus, OrderEvent } from './order';
-export { createUser, validateEmail } from './user';
-```
+Each layer has an `index.ts` with explicit named exports — never `export * from './internal'`. See Anti-Pattern: "Exporting Bare Types Without a Public API Surface" below.
 
 ## Quick Reference
 

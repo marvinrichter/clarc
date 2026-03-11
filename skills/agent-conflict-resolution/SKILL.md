@@ -1,13 +1,6 @@
 ---
 name: agent-conflict-resolution
 description: Decision framework for resolving conflicts between clarc agents — priority hierarchy, conflict classes, escalation protocol, and real-world examples
-skill_family: orchestration
-related_agents:
-  - orchestrator
-  - security-reviewer
-  - architect
-  - tdd-guide
-  - performance-analyst
 ---
 
 ## When to Activate
@@ -244,6 +237,29 @@ If `[agent-name]` recommended [opposite action]:
 - Conflict class: `[class-name]`
 - Resolution rule: [which agent wins and why]
 - Action: DEFER | PROCEED | ESCALATE TO USER
+```
+
+### Copy-Paste Template
+
+Copy this block verbatim into your agent output whenever a conflict exists:
+
+```markdown
+---
+## ⚠ Conflict Signal
+
+**This recommendation may conflict with another agent.**
+
+| Field | Value |
+|-------|-------|
+| Conflicting agent | `<agent-name>` (e.g. `security-reviewer`) |
+| Their recommendation | <one-line summary of opposing recommendation> |
+| Conflict class | `<class>` (security-vs-simplicity / architecture-vs-pragmatism / methodology-vs-urgency / performance-vs-correctness / style-vs-consistency) |
+| Winner per hierarchy | <agent that wins> — <one-sentence rationale> |
+| Suggested action | DEFER / PROCEED / ESCALATE TO USER |
+
+> If you are the orchestrator: apply the winner's recommendation and record this conflict
+> in the `### Conflicts Resolved` table of your synthesis output.
+---
 ```
 
 **Example:**

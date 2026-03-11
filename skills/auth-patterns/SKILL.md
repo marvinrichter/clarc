@@ -304,6 +304,8 @@ export async function apiKeyAuth(req, res, next) {
 
 ## Pattern 5: RBAC (Role-Based Access Control)
 
+> This section covers flat role-based permission checks. For full RBAC implementation patterns (attribute-based access, hierarchical roles, policy engines like OPA/Casbin) → see `kubernetes-patterns` for K8s RBAC, or consider a dedicated `rbac-patterns` skill for application-level RBAC.
+
 ```typescript
 // Define roles and permissions
 const permissions = {

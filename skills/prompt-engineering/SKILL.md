@@ -286,9 +286,7 @@ Initial prompt.
 
 ### Git history as audit trail
 
-- Commit each prompt change separately with a descriptive message
-- Reference the eval result in the commit body
-- Tag prompt releases: `git tag prompt-v2`
+Treat prompt versions like code: one commit per prompt change, descriptive message, eval result in the commit body. See `git-workflow` rules for commit message format.
 
 ---
 

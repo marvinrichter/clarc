@@ -30,6 +30,16 @@ pnpm build 2>&1 | tail -20
 
 If build fails, STOP and fix before continuing.
 
+**Build-Failure Recovery — concrete steps:**
+```
+1. Read the first error in full (not just the last line — root cause is usually first)
+2. Identify the file and line: grep the error message for a file path
+3. Read that file section (offset + limit), fix the specific error
+4. Re-run the build command — do NOT proceed to Phase 2–6 until Phase 1 is green
+5. If the same error recurs after a fix, invoke the build-error-resolver agent:
+   say "fix the build" — it auto-triggers with the full error context
+```
+
 ### Phase 2: Type Check
 ```bash
 # TypeScript projects

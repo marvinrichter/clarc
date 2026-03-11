@@ -257,16 +257,14 @@ async function collectPartialResults<T>(
 
 ## Claude Agent SDK Patterns
 
+The core agentic loop: call the model, handle `tool_use` stop reason by executing tools and appending results, repeat until `end_turn`.
+
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
-
 const client = new Anthropic();
 
-// Tool-based agent routing via tool_use
 async function orchestratorLoop(goal: string): Promise<string> {
-  const messages: Anthropic.MessageParam[] = [
-    { role: 'user', content: goal }
-  ];
+  const messages: Anthropic.MessageParam[] = [{ role: 'user', content: goal }];
 
   while (true) {
     const response = await client.messages.create({
@@ -278,27 +276,21 @@ async function orchestratorLoop(goal: string): Promise<string> {
     });
 
     if (response.stop_reason === 'end_turn') {
-      return response.content
-        .filter(b => b.type === 'text')
-        .map(b => b.text)
-        .join('');
+      return response.content.filter(b => b.type === 'text').map(b => b.text).join('');
     }
 
-    if (response.stop_reason === 'tool_use') {
-      messages.push({ role: 'assistant', content: response.content });
-
-      const toolResults = await Promise.all(
-        response.content
-          .filter((b): b is Anthropic.ToolUseBlock => b.type === 'tool_use')
-          .map(async (toolUse) => ({
-            type: 'tool_result' as const,
-            tool_use_id: toolUse.id,
-            content: await executeTool(toolUse.name, toolUse.input),
-          }))
-      );
-
-      messages.push({ role: 'user', content: toolResults });
-    }
+    // Handle tool calls: execute all in parallel, append results
+    messages.push({ role: 'assistant', content: response.content });
+    const toolResults = await Promise.all(
+      response.content
+        .filter((b): b is Anthropic.ToolUseBlock => b.type === 'tool_use')
+        .map(async (t) => ({
+          type: 'tool_result' as const,
+          tool_use_id: t.id,
+          content: await executeTool(t.name, t.input),
+        }))
+    );
+    messages.push({ role: 'user', content: toolResults });
   }
 }
 ```

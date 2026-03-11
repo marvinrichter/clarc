@@ -1,7 +1,6 @@
 ---
 name: context-management
 description: Context window auto-management — signals, strategies, and recovery protocol. Detects approaching context limits and guides compact vs checkpoint decisions to prevent lost work.
-version: 1.0.0
 ---
 
 # Context Window Auto-Management
@@ -152,7 +151,7 @@ To opt in: `mkdir .clarc` in your project root.
 
 ## Context Window Budget
 
-Approximate token budget guidance (128k context window):
+Approximate token budget guidance. Context window size varies by model — check current limits at [Anthropic docs](https://docs.anthropic.com/api). The proportions below apply regardless of the exact window size:
 
 | Component | Typical tokens | Notes |
 |-----------|---------------|-------|
@@ -160,7 +159,7 @@ Approximate token budget guidance (128k context window):
 | Conversation history | ~40k | Grows over session |
 | Working files | ~30k | Keep focused |
 | Tool outputs | ~20k | Flush when done |
-| **Available for new work** | **~30k** | After 90 min session |
+| **Available for new work** | **~30k** | After 90 min session (assumes ~128k window) |
 
 When available budget drops below ~20k: checkpoint + compact.
 

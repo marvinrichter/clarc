@@ -1,7 +1,6 @@
 ---
 name: cost-management
 description: Claude API cost awareness — token estimation, cost drivers, and efficiency strategies for Claude Code sessions
-tags: [cost, tokens, performance, claude-api]
 ---
 
 # Cost Management — Claude API Token Awareness
@@ -64,14 +63,21 @@ of prior context into every new tool call. (`/compact` is a built-in Claude Code
 ## Efficiency Strategies
 
 ### Grep before Read
-```javascript
-// Instead of:
-Read('src/api/users.ts')  // entire 500-line file
 
-// Do:
-Grep('getUserById', 'src/api/')  // find the function
-Read('src/api/users.ts', offset=45, limit=30)  // read only those lines
+Instead of loading an entire file, locate the relevant lines first:
+
 ```
+// EXPENSIVE — loads all 500 lines into context:
+Read { file_path: "src/api/users.ts" }
+
+// CHEAP — finds the line number first, then reads only 30 lines:
+Grep { pattern: "getUserById", path: "src/api/", output_mode: "content", -n: true }
+// → src/api/users.ts:47:export async function getUserById(id: string) {
+
+Read { file_path: "src/api/users.ts", offset: 47, limit: 30 }
+```
+
+On a 500-line file this saves ~470 lines of input tokens per lookup. Across a 50-file session the savings compound to tens of thousands of tokens.
 
 ### Delegate to Haiku for simple tasks
 Haiku is ~8× cheaper than Sonnet. Use it for:
@@ -97,12 +103,21 @@ costs far less than loading all those files into the Sonnet main context.
 clarc automatically logs estimated session costs to `~/.clarc/cost-log.jsonl`.
 
 ```bash
-# View cost log
-cat ~/.clarc/cost-log.jsonl | tail -20
+# View recent cost log entries
+tail -5 ~/.clarc/cost-log.jsonl | jq .
 
 # Run /session-cost command for a formatted summary
 /session-cost
 ```
+
+**Example `~/.clarc/cost-log.jsonl` entries:**
+```jsonl
+{"date":"2026-03-12","session_id":"ses_abc123","model":"claude-sonnet-4-6","tool_calls":{"Read":14,"Grep":8,"Edit":6,"Bash":4,"Agent":1},"est_input_tokens":42000,"est_output_tokens":8500,"est_cost_usd":0.25,"duration_min":22}
+{"date":"2026-03-12","session_id":"ses_def456","model":"claude-sonnet-4-6","tool_calls":{"Read":31,"Grep":5,"Edit":12,"Bash":9,"Agent":3},"est_input_tokens":98000,"est_output_tokens":21000,"est_cost_usd":0.61,"duration_min":51}
+{"date":"2026-03-11","session_id":"ses_ghi789","model":"claude-opus-4-6","tool_calls":{"Read":8,"Grep":3,"Edit":2,"Bash":2,"Agent":0},"est_input_tokens":18000,"est_output_tokens":4200,"est_cost_usd":0.59,"duration_min":14}
+```
+
+Key fields: `tool_calls` shows which tools drove cost; `est_cost_usd` is the session estimate; `Agent` calls are the most expensive per-call (each spawns a new context window).
 
 **Important**: These are estimates based on tool-call count heuristics.
 For exact costs, check [console.anthropic.com → Billing](https://console.anthropic.com).

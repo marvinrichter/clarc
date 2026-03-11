@@ -9,6 +9,8 @@ description: Advanced Go patterns — hexagonal architecture with full working e
 
 ## When to Activate
 
+- Designing interface hierarchies or choosing between small and large interfaces
+- Organizing packages for a Go service (hexagonal layout, naming, dependency direction)
 - Designing hexagonal/clean architecture in Go
 - Optimizing memory or performance
 - Configuring Go tooling (golangci-lint, etc.)
@@ -584,6 +586,113 @@ maps.DeleteFunc(m, func(k string, v int) bool { return v == 0 })
 > ```go
 > for k := range maps.Keys(m) { ... }
 > ```
+
+## Interface Design
+
+### Small, Focused Interfaces
+
+```go
+// Good: Single-method interfaces
+type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+
+// Compose interfaces as needed
+type ReadWriteCloser interface {
+    Reader
+    Writer
+    io.Closer
+}
+```
+
+### Define Interfaces Where They're Used
+
+```go
+// In the consumer package, not the provider
+package service
+
+// UserStore defines what this service needs
+type UserStore interface {
+    GetUser(id string) (*User, error)
+    SaveUser(user *User) error
+}
+
+type Service struct {
+    store UserStore
+}
+// Concrete implementation lives in another package — it doesn't know about this interface
+```
+
+### Optional Behavior with Type Assertions
+
+```go
+type Flusher interface {
+    Flush() error
+}
+
+func WriteAndFlush(w io.Writer, data []byte) error {
+    if _, err := w.Write(data); err != nil {
+        return err
+    }
+    if f, ok := w.(Flusher); ok {
+        return f.Flush()
+    }
+    return nil
+}
+```
+
+## Package Organization
+
+### Hexagonal Project Layout
+
+Go's idioms naturally align with hexagonal (ports & adapters) architecture:
+
+```text
+myproject/
+├── cmd/
+│   └── myapp/
+│       └── main.go           # Entry point + DI wiring
+├── internal/
+│   ├── domain/               # Pure Go types + behavior — zero external imports
+│   ├── app/                  # Use cases: orchestrate domain + call port interfaces
+│   ├── handler/              # Inbound adapters: HTTP, gRPC, CLI
+│   ├── repository/           # Outbound adapters: Postgres, Redis, external APIs
+│   └── config/               # Configuration structs, no business logic
+├── pkg/
+│   └── client/               # Public API client (if library)
+├── api/
+│   └── v1/                   # API definitions (proto, OpenAPI)
+├── go.mod
+└── Makefile
+```
+
+### Package Naming
+
+```go
+// Good: Short, lowercase, no underscores
+package user
+
+// Bad: Verbose, mixed case, or redundant
+package httpHandler
+package json_parser
+package userService // Redundant 'Service' suffix
+```
+
+### Avoid Package-Level State
+
+```go
+// Bad: Global mutable state in init()
+var db *sql.DB
+func init() { db, _ = sql.Open("postgres", os.Getenv("DATABASE_URL")) }
+
+// Good: Dependency injection via constructor
+type Server struct { db *sql.DB }
+func NewServer(db *sql.DB) *Server { return &Server{db: db} }
+```
 
 ## Quick Reference: Go Idioms
 

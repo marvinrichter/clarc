@@ -325,6 +325,8 @@ useEffect(() => {
 
 ## Distributed Tracing (Production)
 
+> **Cross-reference:** The OpenTelemetry setup and instrumentation patterns below are also covered in depth in the `observability` skill, including collector configuration, sampling strategies, and Grafana/Jaeger dashboard setup. Use this section for debugging context; use `observability` for production rollout.
+
 When a request is slow and you don't know which service caused it:
 
 ```typescript

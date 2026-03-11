@@ -311,6 +311,8 @@ function logAgentCall(log: AgentCallLog): void {
 
 ## Rate Limiting
 
+> For general-purpose rate limiting patterns (sliding window, distributed rate limiting with Redis, per-user quotas) — see `resilience-patterns`. The token bucket below is specific to controlling Anthropic API call rates from agent code.
+
 ```typescript
 // Token bucket rate limiter for API calls
 class TokenBucket {
