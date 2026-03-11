@@ -8,10 +8,10 @@ Read an existing codebase and generate accurate onboarding documentation: README
 
 ## Instructions
 
-### 0. Parse Arguments
+### 1. Parse Arguments and Read the Codebase
 
-`$ARGUMENTS` can be:
-- (empty) → full onboarding suite (steps 1–8)
+`$ARGUMENTS` controls scope:
+- (empty) → full onboarding suite
 - `readme` → only README.md
 - `contributing` → only CONTRIBUTING.md
 - `architecture` → delegate to `/arc42` (arc42 + C4 diagrams)
@@ -20,8 +20,6 @@ Read an existing codebase and generate accurate onboarding documentation: README
 - `checklist` → only GitHub Onboarding Issue Template (step 7)
 - `setup` → only setup script audit (step 4)
 - `all` → all documents
-
-### 1. Read the Codebase
 
 Explore the project thoroughly before writing anything:
 
@@ -389,7 +387,7 @@ Save this file to `.github/ISSUE_TEMPLATE/onboarding.md`.
 
 ---
 
-### 8. Delegate Architecture Documentation
+### 7. Delegate Architecture Documentation
 
 Architecture documentation follows the arc42 standard with C4 diagrams. Delegate to the `/arc42` command:
 
@@ -411,7 +409,7 @@ If `/arc42` was already run (`arc42.md` exists), skip and report.
 
 ---
 
-### 9. Final Report
+### 8. Final Report
 
 ```
 DEVELOPER ONBOARDING ARTIFACTS GENERATED

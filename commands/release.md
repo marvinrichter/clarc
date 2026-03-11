@@ -111,7 +111,7 @@ Update the version field in whichever files exist:
 - `pom.xml` → `<version><new-version></version>`
 - `build.gradle` → `version = '<new-version>'`
 
-### 7. Commit, Tag, Push
+### 7. Commit, Tag, Push, and Create GitHub Release
 
 ```bash
 git add CHANGELOG.md package.json  # (or whichever files changed)
@@ -121,8 +121,6 @@ git push origin main
 git push origin v<new-version>
 ```
 
-### 8. Create GitHub Release
-
 ```bash
 gh release create v<new-version> \
   --title "v<new-version>" \
@@ -130,7 +128,7 @@ gh release create v<new-version> \
   --latest
 ```
 
-### 9. Report
+### 8. Report
 
 ```
 RELEASE COMPLETE

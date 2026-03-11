@@ -29,6 +29,20 @@ Use `/frontend-arch-review` when:
 
 ## Review Process
 
+### Step 0 — Delegate to frontend-architect Agent
+
+**Invoke the `frontend-architect` agent** to perform the architectural review.
+
+Pass `$ARGUMENTS` (path or context) to the agent. The agent will:
+- Assess team boundaries and MFE domain alignment
+- Review Module Federation configuration and shared dependency strategy
+- Check routing, state sharing, fallback, and CI/CD independence
+- Produce CRITICAL/HIGH/MEDIUM findings with concrete fixes
+
+> If reviewing a specific Remote or Module Federation config, Step 0 alone may be sufficient. Continue to Steps 1–8 for a full manual deep scan.
+
+---
+
 ### Step 1 — Team Boundary Analysis
 
 ```bash

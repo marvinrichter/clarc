@@ -66,7 +66,7 @@ The failing test is not optional. It proves the bug exists and proves your fix w
 
 For security-sensitive changes (auth, APIs, user input):
 ```
-/security         → OWASP Top 10, secrets, injection, SSRF
+/security-review  → OWASP Top 10, secrets, injection, SSRF
 ```
 
 ---

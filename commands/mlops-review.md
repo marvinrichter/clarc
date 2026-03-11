@@ -26,6 +26,21 @@ Use `/mlops-review` when:
 - Planning a fine-tuning or retraining project
 - During an engineering health check or MLOps maturity assessment
 
+## Review Process
+
+### Step 0 — Delegate to mlops-architect Agent
+
+**Invoke the `mlops-architect` agent** to perform the MLOps maturity review.
+
+Pass `$ARGUMENTS` (path, model name, or system description) to the agent. The agent will:
+- Audit experiment tracking, model registry, serving SLOs, and drift detection
+- Assess retraining pipelines, A/B testing capability, and data quality checks
+- Produce a prioritized CRITICAL/HIGH/MEDIUM findings report with MLOps maturity score
+
+> For a targeted audit (e.g., drift detection only), Step 0 alone may be sufficient. Continue to the Review Checklist for a full manual deep scan.
+
+---
+
 ## Review Checklist
 
 ### 1. Experiment Tracking

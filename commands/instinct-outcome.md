@@ -86,3 +86,5 @@ Recorded good outcome for "test-first-workflow"
 ## After This
 
 - `/evolve` — trigger instinct evolution when enough outcomes are collected
+- `/instinct-report` — see the updated ranked instinct list with trend indicators
+- `/instinct-status` — check current confidence levels across all instincts

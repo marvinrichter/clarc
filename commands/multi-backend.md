@@ -27,8 +27,16 @@ Backend-focused workflow (Research → Ideation → Plan → Execute → Optimiz
 ## Usage
 
 ```bash
-/backend <backend task description>
+/multi-backend <backend task description>
 ```
+
+## Arguments
+
+`$ARGUMENTS` — a description of the backend task to implement. Examples:
+
+- `/multi-backend "Add rate-limiting middleware to all API routes"`
+- `/multi-backend "Implement cursor-based pagination for the orders endpoint"`
+- `/multi-backend "Refactor the payment service to use idempotency keys"`
 
 ## Context
 

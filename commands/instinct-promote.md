@@ -25,10 +25,10 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py promote 
 ## Usage
 
 ```bash
-/promote                      # Auto-detect promotion candidates
-/promote --dry-run            # Preview auto-promotion candidates
-/promote --force              # Promote all qualified candidates without prompt
-/promote grep-before-edit     # Promote one specific instinct from current project
+/instinct-promote                      # Auto-detect promotion candidates
+/instinct-promote --dry-run            # Preview auto-promotion candidates
+/instinct-promote --force              # Promote all qualified candidates without prompt
+/instinct-promote grep-before-edit     # Promote one specific instinct from current project
 ```
 
 ## What to Do

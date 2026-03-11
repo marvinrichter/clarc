@@ -120,7 +120,7 @@ Check TypeScript types are complete:
 grep "export function\|export class" pkg/*.d.ts
 ```
 
-## Step 8 — Run Tests
+## Step 8 — Run Tests and Report
 
 ```bash
 # Native unit tests (fast)
@@ -133,7 +133,7 @@ wasm-pack test --chrome --headless
 wasm-pack test --node
 ```
 
-## Step 9 — Report
+Output this summary after tests complete:
 
 Output this summary:
 

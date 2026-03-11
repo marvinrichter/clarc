@@ -35,7 +35,7 @@ Based on your answer, clarc provides a tailored pipeline with the exact sequence
 Phase 0: Discovery        /idea → /evaluate → /explore → /prd
 Phase 1: Planning         /plan
 Phase 2: Implementation   /tdd (RED → GREEN → IMPROVE)
-Phase 3: Quality          /code-review  +  /security (when needed)
+Phase 3: Quality          /code-review  +  /security-review (when needed)
 Phase 4: Ship             git commit (conventional format) + push + PR
 ```
 
@@ -95,5 +95,5 @@ User: A — new idea
 
 ## After This
 
-- `/guide <task>` — get a step-by-step workflow for the specific task
+- `/clarc-way <task>` — re-run for a specific task type when you need guidance
 - `/tdd` — start implementing with test-driven development

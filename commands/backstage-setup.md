@@ -191,7 +191,7 @@ yarn install
 yarn dev  # Starts both frontend and backend
 ```
 
-## Step 7 — Build Docker Image for Production
+## Step 7 — Build Docker Image and Configure CI/CD
 
 ```dockerfile
 # packages/backend/Dockerfile
@@ -218,7 +218,7 @@ CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app
 docker build -t backstage-backend:latest -f packages/backend/Dockerfile .
 ```
 
-## Step 8 — GitHub Actions CI/CD
+### GitHub Actions CI/CD
 
 ```yaml
 # .github/workflows/backstage.yml
@@ -256,7 +256,7 @@ jobs:
           # Deploy to your platform (ECS, k8s, etc.)
 ```
 
-## Step 9 — First Catalog Entity
+## Step 8 — First Catalog Entity
 
 ```bash
 # Add catalog-info.yaml to your first service repo
@@ -286,6 +286,16 @@ curl -X POST http://localhost:7007/api/catalog/locations \
   -H 'Content-Type: application/json' \
   -d '{"type":"github","target":"https://github.com/your-org/my-service/blob/main/catalog-info.yaml"}'
 ```
+
+## Arguments
+
+`$ARGUMENTS` — optional focus area or target configuration. Examples:
+
+- (empty) → full Backstage setup from scratch
+- `github` → GitHub App creation and integration only (Steps 3-4)
+- `techdocs` → TechDocs configuration and local build
+- `docker` → Docker image build and CI/CD pipeline only (Step 7)
+- `catalog` → catalog entity registration and discovery (Step 8)
 
 ## Validation Checklist
 

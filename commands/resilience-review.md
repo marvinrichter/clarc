@@ -31,6 +31,19 @@ Pass `$ARGUMENTS` as the focus area. Without arguments, all dimensions are revie
 7. **Graceful Degradation** — Does the system degrade gracefully or fail completely when a dependency is unavailable?
 8. **Health Check Review** — Are liveness/readiness/startup probes correctly separated and fast enough?
 
+## Step 0 — Delegate to resilience-reviewer Agent
+
+**Invoke the `resilience-reviewer` agent** to perform the resilience audit.
+
+Pass `$ARGUMENTS` (focus area or file path) to the agent. The agent will:
+- Inventory all external dependencies (HTTP, DB, queue, config)
+- Analyse failure modes and check for circuit breakers, timeouts, retries, and fallbacks
+- Produce a CRITICAL/HIGH/MEDIUM report with recommended chaos experiments
+
+> For a focused review (e.g., circuit-breakers only), Step 0 alone may be sufficient. Continue to the Scan Phase for a full manual deep scan.
+
+---
+
 ## Scan Phase
 
 Before reviewing code manually, run these scans to inventory all external dependencies:

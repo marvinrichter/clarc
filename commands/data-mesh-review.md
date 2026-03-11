@@ -28,6 +28,20 @@ Use `/data-mesh-review` when:
 
 ## Review Process
 
+### Step 0 — Delegate to data-architect Agent
+
+**Invoke the `data-architect` agent** to perform the architectural review.
+
+Pass `$ARGUMENTS` (path or context) to the agent. The agent will:
+- Assess domain boundaries and data product alignment
+- Review data contracts, quality checks, and SLO definitions
+- Check PII governance and lineage configuration
+- Produce CRITICAL/HIGH/MEDIUM findings with concrete remediation steps
+
+> If reviewing a specific data product or domain, Step 0 alone may be sufficient. Continue to Steps 1–7 for a full manual deep scan.
+
+---
+
 ### Step 1 — Domain Boundary Analysis
 
 ```bash

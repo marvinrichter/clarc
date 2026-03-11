@@ -70,3 +70,4 @@ Overlay for typescript-reviewer:
 
 - `/evolve` — trigger evolution if instincts have accumulated enough outcomes
 - `/instinct-status` — check current instinct scores
+- `/instinct-outcome` — record a good or bad outcome to adjust confidence for a specific instinct

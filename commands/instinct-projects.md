@@ -25,7 +25,7 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py projects
 ## Usage
 
 ```bash
-/projects
+/instinct-projects
 ```
 
 ## Preconditions

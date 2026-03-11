@@ -27,8 +27,16 @@ Frontend-focused workflow (Research → Ideation → Plan → Execute → Optimi
 ## Usage
 
 ```bash
-/frontend <UI task description>
+/multi-frontend <UI task description>
 ```
+
+## Arguments
+
+`$ARGUMENTS` — a description of the UI/UX task to implement. Examples:
+
+- `/multi-frontend "Build a responsive dashboard with animated charts"`
+- `/multi-frontend "Redesign the checkout flow for mobile"`
+- `/multi-frontend "Add dark mode support to the design system tokens"`
 
 ## Context
 

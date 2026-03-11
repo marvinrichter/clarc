@@ -157,7 +157,7 @@ Grep for TODO/FIXME/HACK. Include: detected single points of failure (single DB 
 **Section 12 — Glossary:**
 Extract: domain terms from model/entity names, technical abbreviations used in code (RLS, BFF, CQRS, etc.).
 
-### 6. Save Diagram Files
+### 6. Save Diagrams and Update ADR Index
 
 For each PlantUML diagram generated, save to `docs/architecture/diagrams/<name>.puml`.
 
@@ -171,12 +171,10 @@ If the project uses a Markdown renderer that supports PlantUML inline (e.g., via
 @enduml
 ```
 
-### 7. Update ADR Index in Section 9
-
 After any `/explore` command produces a new ADR, remind the user:
 "Add the new ADR to the arc42.md Section 9 index, or run `/arc42 decisions` to rebuild it automatically."
 
-### 8. Report
+### 7. Report
 
 ```
 arc42 DOCUMENTATION COMPLETE
