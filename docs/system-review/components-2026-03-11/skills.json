@@ -1,0 +1,761 @@
+{
+  "reviewed_at": "2026-03-11",
+  "total_skills_sampled": 40,
+  "avg_score": 8.53,
+  "skills": [
+    {
+      "name": "continuous-learning-v2",
+      "scores": {
+        "actionability": 7,
+        "trigger_precision": 8,
+        "example_completeness": 7,
+        "internal_consistency": 6,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 8
+      },
+      "overall": 7.15,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Internal inconsistency: frontmatter declares version 2.2.0 but body heading reads Continuous Learning v2.1 - Instinct-Based Architecture; heading also contains a line-break artifact. C=6."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 419 lines exceeds ideal 300-line ceiling. L=6."
+        },
+        {
+          "severity": "LOW",
+          "description": "Actionability: meta-skill with heavy prose explaining the learning loop; code-to-prose ratio ~30%. A=7."
+        },
+        {
+          "severity": "LOW",
+          "description": "Example completeness: workflow diagrams and partial snippets dominate; fewer than 3 fully runnable end-to-end examples. E=7."
+        }
+      ]
+    },
+    {
+      "name": "deployment-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 6,
+        "example_completeness": 8,
+        "internal_consistency": 8,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 7.55,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Trigger precision: activation conditions overlap heavily with docker-patterns, ci-cd-patterns, and kubernetes-patterns. A generic deploy task could fire all four. T=6."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 468 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "security-review",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 8,
+        "example_completeness": 9,
+        "internal_consistency": 8,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.15,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 555 lines. L=6."
+        },
+        {
+          "severity": "LOW",
+          "description": "Trigger covers all backend security work but code examples are Supabase/Next.js-centric; projects on other stacks may get less actionable guidance."
+        }
+      ]
+    },
+    {
+      "name": "skill-stocktake",
+      "scores": {
+        "actionability": 7,
+        "trigger_precision": 9,
+        "example_completeness": 7,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.15,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Actionability: meta-skill explaining the stocktake process; concrete command examples are sparse. A=7."
+        },
+        {
+          "severity": "LOW",
+          "description": "Example completeness: shows output format but only one complete worked example. E=7."
+        }
+      ]
+    },
+    {
+      "name": "python-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 8,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 555 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "tdd-workflow",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 8,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 553 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "multi-agent-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 598 lines, at CI maximum. L=6."
+        }
+      ]
+    },
+    {
+      "name": "gdpr-privacy",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 423 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "gitops-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 507 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "llm-app-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 504 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "ci-cd-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 8,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": []
+    },
+    {
+      "name": "api-docs-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.3,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 488 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "adr-writing",
+      "scores": {
+        "actionability": 7,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.35,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Actionability: heavy template/prose structure; code-to-prose ratio is below 40% since ADR format is inherently prose-driven. A=7."
+        }
+      ]
+    },
+    {
+      "name": "api-design",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 5,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.4,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 600 lines, at CI limit. Would benefit from splitting into api-design-rest and api-design-async. L=5."
+        }
+      ]
+    },
+    {
+      "name": "slo-workflow",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 7,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.4,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Example completeness: 4 examples are all complete but none shows an end-to-end SLO lifecycle (define to alert to burn-rate to postmortem). E=7."
+        }
+      ]
+    },
+    {
+      "name": "legacy-modernization",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.5,
+      "issues": []
+    },
+    {
+      "name": "prompt-engineering",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.5,
+      "issues": []
+    },
+    {
+      "name": "rag-patterns",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.5,
+      "issues": []
+    },
+    {
+      "name": "api-contract",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.5,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 597 lines, just under CI limit. L=6."
+        }
+      ]
+    },
+    {
+      "name": "typescript-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 8,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.55,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 484 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "terraform-ci",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 7,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.65,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Example completeness: 4 examples, some partial (Infracost output interpretation shown as prose rather than a fully runnable CI step). E=7."
+        }
+      ]
+    },
+    {
+      "name": "progressive-delivery",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 7,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.65,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Example completeness: 3 complete YAML examples plus 2 bash snippets; a full end-to-end scenario (rollout create to promote to abort) as a single executable flow is missing. E=7."
+        }
+      ]
+    },
+    {
+      "name": "api-pagination-filtering",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 7,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.65,
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "Example completeness: 3 examples, all runnable; missing a complete worked example combining cursor pagination with filtering and sorting in one request/response pair. E=7."
+        }
+      ]
+    },
+    {
+      "name": "problem-details",
+      "scores": {
+        "actionability": 8,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.7,
+      "issues": []
+    },
+    {
+      "name": "debugging-workflow",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 405 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "auth-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 471 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "go-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 550 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "observability",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 417 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "kubernetes-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 8,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": []
+    },
+    {
+      "name": "event-driven-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": []
+    },
+    {
+      "name": "typescript-patterns-advanced",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 436 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "agent-reliability",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 6,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.75,
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Length: 560 lines. L=6."
+        }
+      ]
+    },
+    {
+      "name": "feature-flags",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.85,
+      "issues": []
+    },
+    {
+      "name": "typescript-testing",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 8,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.85,
+      "issues": []
+    },
+    {
+      "name": "async-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.95,
+      "issues": []
+    },
+    {
+      "name": "docker-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.95,
+      "issues": []
+    },
+    {
+      "name": "database-migrations",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.95,
+      "issues": []
+    },
+    {
+      "name": "ddd-typescript",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.95,
+      "issues": []
+    },
+    {
+      "name": "resilience-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 8,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 8.95,
+      "issues": []
+    },
+    {
+      "name": "caching-patterns",
+      "scores": {
+        "actionability": 9,
+        "trigger_precision": 9,
+        "example_completeness": 9,
+        "internal_consistency": 9,
+        "length_calibration": 9,
+        "cross_reference_validity": 10,
+        "freshness": 9
+      },
+      "overall": 9.05,
+      "issues": []
+    }
+  ],
+  "systemic_issues": [
+    {
+      "id": "SYS-A",
+      "severity": "MEDIUM",
+      "title": "Length creep -- 45% of sampled skills exceed 400 lines",
+      "description": "18 of 40 sampled skills (45%) score L=6 (400-600 lines), and 1 skill (api-design) scores L=5 (at the 600-line CI maximum). Ideal range is 100-300 lines. Affected skills: debugging-workflow, typescript-patterns, auth-patterns, go-patterns, observability, security-review, multi-agent-patterns, gdpr-privacy, tdd-workflow, gitops-patterns, typescript-patterns-advanced, deployment-patterns, llm-app-patterns, api-contract, api-docs-patterns, agent-reliability, python-patterns, continuous-learning-v2. api-design is at the CI ceiling.",
+      "suggestion": "Introduce a split policy: any skill that reaches 450 lines should be reviewed for extraction of a *-advanced or *-reference companion. The 9 skills already at 550+ lines are the highest-priority candidates. Consider adding a CI warning at 450 lines (soft limit) separate from the hard 600-line limit."
+    },
+    {
+      "id": "SYS-B",
+      "severity": "MEDIUM",
+      "title": "deployment-patterns trigger overlaps with three specialized skills",
+      "description": "deployment-patterns activates on the same conditions as docker-patterns (containerization), ci-cd-patterns (pipeline configuration), and kubernetes-patterns (cluster deployments). A user asking about deploying a service could reasonably fire all four skills simultaneously, with conflicting or redundant guidance. T=6.",
+      "suggestion": "Narrow deployment-patterns trigger to only the integration scenario -- choosing and coordinating between deployment strategies across docker, k8s, and CI -- and add an explicit disambiguation note at the top pointing to the specialized skills for single-technology questions."
+    },
+    {
+      "id": "SYS-C",
+      "severity": "MEDIUM",
+      "title": "continuous-learning-v2 version inconsistency in body heading",
+      "description": "The frontmatter declares version 2.2.0 but the body heading reads Continuous Learning v2.1 - Instinct-Based Architecture, with a line-break artifact in the heading. This creates internal confusion about which version is authoritative and makes the skill look stale on first read. C=6.",
+      "suggestion": "Update the body heading to match the frontmatter version (2.2.0) and remove the line-break artifact. If v2.1 vs v2.2 represents a meaningful architectural difference, add a brief changelog note at the bottom."
+    },
+    {
+      "id": "SYS-D",
+      "severity": "LOW",
+      "title": "Example thinness in focused short skills",
+      "description": "Four skills in the 161-248 line range (slo-workflow, terraform-ci, progressive-delivery, api-pagination-filtering) each have 3-4 examples but lack an end-to-end scenario tying the examples together. Each scores E=7.",
+      "suggestion": "For each of the four affected skills, add one composite putting-it-all-together code block that chains the individual patterns into a realistic workflow. This adds ~15-25 lines and would raise E to 8-9 without violating the length target."
+    }
+  ],
+  "resolved_issues": [
+    {
+      "id": "SYS-01",
+      "previously_reported": "2026-03-10",
+      "title": "go-patterns cross-reference pointed to non-existent golang-patterns-advanced",
+      "resolution": "CONFIRMED FIXED -- footer now correctly references go-patterns-advanced (verified via Glob)"
+    },
+    {
+      "id": "SYS-05",
+      "previously_reported": "2026-03-10",
+      "title": "tdd-workflow integration test checked data.success instead of data.data",
+      "resolution": "CONFIRMED FIXED -- example now checks response.data.data conforming to RFC 7807 envelope pattern"
+    }
+  ],
+  "top_issues_summary": "The corpus is in strong shape overall (avg 8.53/10, 0 HIGH issues). The dominant systemic concern is length creep: 45% of sampled skills exceed the 400-line soft ceiling, with the highest-scoring content quality often trapped in over-long files that make the length dimension drag down otherwise excellent skills. Three focused fixes would eliminate the only per-skill MEDIUM issues: (1) split or trim the 9 skills at 550+ lines, (2) narrow deployment-patterns trigger to remove overlap with docker-patterns/ci-cd-patterns/kubernetes-patterns, and (3) fix the continuous-learning-v2 version heading mismatch. Two issues from the 2026-03-10 review (go-patterns cross-ref and tdd-workflow success flag) are confirmed resolved."
+}
