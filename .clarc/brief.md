@@ -14,8 +14,8 @@ Published as `npx github:marvinrichter/clarc` and symlinked into `~/.claude/` on
 
 ## Key numbers (keep in sync with README.md)
 - Agents: 61
-- Skills: 228
-- Commands: 160
+- Skills: 247
+- Commands: 172
 - Rule sets: 20+ (common + language-specific)
 
 ## Repository layout
@@ -48,5 +48,5 @@ tests/            Test suite for scripts
 - `hooks/hooks.json` — all hook definitions
 
 ## Roadmap
-All roadmaps v2–v26 completed. See `~/.claude/projects/.../memory/roadmaps/done/`.
+All 24 roadmaps completed. See `docs/roadmaps/done/` (24 archived entries).
 Ideas backlog: `~/.claude/projects/.../memory/ideas-backlog.md` (I01–I60).
