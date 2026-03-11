@@ -645,6 +645,14 @@ if [[ "$TARGET" == "claude" ]]; then
     hdr "Commands ($local_verb)"
     install_files "$SCRIPT_DIR/commands" "$CLAUDE_COMMANDS_DIR" "commands" "commands"
 
+    # --- Hooks ---
+    hdr "Hooks"
+    if [[ "$DRY_RUN" == true ]]; then
+        node "$SCRIPT_DIR/scripts/merge-hooks.js" --dry-run
+    else
+        node "$SCRIPT_DIR/scripts/merge-hooks.js"
+    fi
+
     if [[ "$USE_SYMLINKS" == true ]]; then
         echo ""
         echo -e "  ${_DIM}Files are symlinked → \`git pull\` in ~/.clarc updates everything automatically.${_RESET}"
@@ -720,7 +728,6 @@ if [[ "$TARGET" == "claude" ]]; then
     hdr "Next steps"
     echo "  • Use commands: /tdd  /plan  /code-review  /verify"
     echo "  • Update: cd ~/.clarc && git pull  (symlinks update instantly)"
-    echo "  • Activate hooks: merge hooks/hooks.json into ~/.claude/settings.json"
     echo "  • Check for updates: ./install.sh --check"
     echo "  • Uninstall: ./install.sh --uninstall"
     echo "  • Docs:  https://github.com/marvinrichter/clarc"

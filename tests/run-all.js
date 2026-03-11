@@ -31,6 +31,7 @@ const testFiles = [
   'scripts/setup-package-manager.test.js',
   'scripts/skill-create-output.test.js',
   'scripts/install-manifest.test.js',
+  'scripts/merge-hooks.test.js',
   'evals/agents.eval.js',
   'evals/commands.eval.js',
   'evals/skills.eval.js',
