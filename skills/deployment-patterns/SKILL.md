@@ -9,14 +9,18 @@ Production deployment workflows and CI/CD best practices.
 
 ## When to Activate
 
-- Setting up CI/CD pipelines
-- Dockerizing an application
-- Planning deployment strategy (blue-green, canary, rolling)
-- Implementing health checks and readiness probes
-- Preparing for a production release
-- Configuring environment-specific settings
+**See instead:**
+- Container configuration → `docker-patterns`
+- CI pipeline setup → `ci-cd-patterns`
+- Kubernetes manifests → `kubernetes-patterns`
+
+Use this skill when:
+- Choosing or implementing a deployment strategy (blue-green, canary, rolling, feature flags)
+- Orchestrating a release across environments (staging → production promotion)
 - Designing a rollback plan for a risky schema change or infrastructure update
+- Planning traffic shifting and progressive delivery steps
 - Validating environment variable configuration at application startup to fail fast on misconfiguration
+- Preparing a production readiness checklist before go-live
 
 ## Deployment Strategies
 

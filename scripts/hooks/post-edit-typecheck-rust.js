@@ -9,9 +9,29 @@
  * and reports only errors related to the edited file.
  */
 
-import { execFileSync } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+
+function runWithTimeout(cmd, args, options, timeoutMs) {
+  return new Promise((resolve) => {
+    const child = spawn(cmd, args, { ...options, stdio: ['ignore', 'pipe', 'pipe'] });
+    let stdout = '';
+    let stderr = '';
+
+    const timer = setTimeout(() => {
+      child.kill('SIGTERM');
+      resolve({ timedOut: true, stdout, stderr });
+    }, timeoutMs);
+
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolve({ code, stdout, stderr, timedOut: false });
+    });
+  });
+}
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';
@@ -23,7 +43,7 @@ process.stdin.on('data', (chunk) => {
   }
 });
 
-process.stdin.on('end', () => {
+process.stdin.on('end', async () => {
   try {
     const input = JSON.parse(data);
     const filePath = input.tool_input?.file_path;
@@ -49,16 +69,18 @@ process.stdin.on('end', () => {
       }
 
       if (fs.existsSync(path.join(dir, 'Cargo.toml'))) {
-        try {
-          execFileSync('cargo', ['check', '--message-format=short'], {
-            cwd: dir,
-            encoding: 'utf8',
-            stdio: ['pipe', 'pipe', 'pipe'],
-            timeout: 60000,
-          });
-        } catch (err) {
+        const result = await runWithTimeout(
+          'cargo',
+          ['check', '--message-format=short'],
+          { cwd: dir },
+          15000,
+        );
+
+        if (result.timedOut) {
+          console.error('[Hook] Cargo check timed out after 15s');
+        } else if (result.code !== 0) {
           // cargo check exits non-zero when there are errors — filter to edited file
-          const output = (err.stdout || '') + (err.stderr || '');
+          const output = result.stdout + result.stderr;
           const relPath = path.relative(dir, resolvedPath);
           const candidates = new Set([filePath, resolvedPath, relPath, path.basename(filePath)]);
           const relevantLines = output

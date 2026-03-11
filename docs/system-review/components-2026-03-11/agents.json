@@ -1,0 +1,236 @@
+{
+  "reviewed_at": "2026-03-11",
+  "total_agents_sampled": 30,
+  "avg_score": 4.51,
+  "score_note": "Scores on 1-5 scale (not 1-10). Equivalent to ~9.0/10 when normalized.",
+  "agents": [
+    {
+      "name": "competitive-analyst",
+      "overall": 4.00,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Examples are excerpts only; Write tool used without confirm step"},
+        {"severity": "LOW", "description": "No After This guidance"}
+      ]
+    },
+    {
+      "name": "feedback-analyst",
+      "overall": 4.05,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Grep tool missing from tools list despite using text search patterns"}
+      ]
+    },
+    {
+      "name": "data-architect",
+      "overall": 4.10,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Write tool used without confirm step for architecture documents"}
+      ]
+    },
+    {
+      "name": "e2e-runner",
+      "overall": 4.30,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Write/Bash used without confirm step; potential for unintended file creation"}
+      ]
+    },
+    {
+      "name": "prompt-quality-scorer",
+      "overall": 4.30,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Uses Sonnet for system-wide deep analysis — Opus would be more appropriate for scoring 100+ prompts"}
+      ]
+    },
+    {
+      "name": "architect",
+      "overall": 4.40,
+      "issues": [
+        {"severity": "LOW", "description": "Vague step verbs in sections 1-2; trigger precision could be improved"}
+      ]
+    },
+    {
+      "name": "build-error-resolver",
+      "overall": 4.40,
+      "issues": [
+        {"severity": "LOW", "description": "Body examples are TypeScript-only despite polyglot description; Go/Python examples missing"}
+      ]
+    },
+    {
+      "name": "solution-designer",
+      "overall": 4.40,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Only 1 worked example; complex agent needs at least 2-3 domain examples"}
+      ]
+    },
+    {
+      "name": "android-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "Minor overlap boundary with kotlin-reviewer not documented"}
+      ]
+    },
+    {
+      "name": "bash-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "Overlap with security-reviewer for shell injection not disambiguated"}
+      ]
+    },
+    {
+      "name": "c-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "Overlap with cpp-reviewer for C++ code with C headers not disambiguated"}
+      ]
+    },
+    {
+      "name": "command-auditor",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "No exit criteria for partial audits (when only some commands have issues)"}
+      ]
+    },
+    {
+      "name": "cpp-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "C++23 modules not mentioned despite being in claimed specialization"}
+      ]
+    },
+    {
+      "name": "database-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "NoSQL patterns not covered despite description mentioning 'database' broadly"}
+      ]
+    },
+    {
+      "name": "design-system-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "No example of what a passing vs failing audit looks like"}
+      ]
+    },
+    {
+      "name": "go-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "No mention of go vet / staticcheck integration"}
+      ]
+    },
+    {
+      "name": "performance-analyst",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "Missing guidance on pprof CPU vs memory vs goroutine profiles"}
+      ]
+    },
+    {
+      "name": "tdd-guide",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "Coverage threshold (80%) hardcoded; should note it can be configured per project"}
+      ]
+    },
+    {
+      "name": "typescript-reviewer",
+      "overall": 4.50,
+      "issues": [
+        {"severity": "LOW", "description": "No mention of Biome vs ESLint preference"}
+      ]
+    },
+    {
+      "name": "doc-updater",
+      "overall": 4.60,
+      "issues": [
+        {"severity": "LOW", "description": "Announce-but-not-confirm write pattern for README updates"}
+      ]
+    },
+    {
+      "name": "agent-system-reviewer",
+      "overall": 4.65,
+      "issues": [
+        {"severity": "MEDIUM", "description": "Write without confirm on --recompute flag could overwrite existing reports"}
+      ]
+    },
+    {
+      "name": "contract-reviewer",
+      "overall": 4.65,
+      "issues": [
+        {"severity": "LOW", "description": "GraphQL schema breaking changes not fully covered"}
+      ]
+    },
+    {
+      "name": "planner",
+      "overall": 4.65,
+      "issues": [
+        {"severity": "LOW", "description": "No guidance on when to escalate to architect agent"}
+      ]
+    },
+    {
+      "name": "refactor-cleaner",
+      "overall": 4.65,
+      "issues": [
+        {"severity": "LOW", "description": "knip/depcheck/ts-prune only; no Go or Python equivalent tools mentioned"}
+      ]
+    },
+    {
+      "name": "security-reviewer",
+      "overall": 4.65,
+      "issues": [
+        {"severity": "LOW", "description": "SSRF detection heuristics not described"}
+      ]
+    },
+    {
+      "name": "code-reviewer",
+      "overall": 4.70,
+      "issues": [
+        {"severity": "LOW", "description": "No Agent tool listed despite being an orchestrator that delegates to specialist reviewers"}
+      ]
+    },
+    {
+      "name": "go-build-resolver",
+      "overall": 4.80,
+      "issues": [
+        {"severity": "LOW", "description": "Announce-but-not-confirm write pattern for go.mod updates"}
+      ]
+    },
+    {
+      "name": "product-evaluator",
+      "overall": 4.80,
+      "issues": [
+        {"severity": "LOW", "description": "No Write tool in tools list despite generating eval documents"}
+      ]
+    },
+    {
+      "name": "agent-quality-reviewer",
+      "overall": 4.85,
+      "issues": [
+        {"severity": "LOW", "description": "Sonnet may miss borderline quality cases; Opus recommended for --all mode"}
+      ]
+    },
+    {
+      "name": "orchestrator",
+      "overall": 4.95,
+      "issues": [
+        {"severity": "LOW", "description": "No guardrail documented for destructive Bash in delegated sub-agents"}
+      ]
+    }
+  ],
+  "high_severity_issues": [],
+  "medium_severity_issues": [
+    "competitive-analyst: Write without confirm step",
+    "feedback-analyst: Grep tool missing",
+    "data-architect: Write without confirm step",
+    "e2e-runner: Write/Bash without confirm step",
+    "prompt-quality-scorer: Sonnet instead of Opus for system-wide analysis",
+    "solution-designer: Only 1 worked example",
+    "agent-system-reviewer: Write without confirm on --recompute"
+  ],
+  "systemic_patterns": [
+    "Announce-but-not-confirm write pattern appears in 4 agents (doc-updater, go-build-resolver, data-architect, e2e-runner)",
+    "Missing Grep tool in 2 agents that perform text search",
+    "Model selection: 3 agents use Sonnet for tasks that would benefit from Opus",
+    "Missing Agent tool in code-reviewer despite being an orchestrator"
+  ],
+  "top_issues_summary": "0 HIGH issues. 7 MEDIUM issues, all related to: (1) Write/Bash used without confirm step in 4 agents creating potential for unintended side effects; (2) Missing tools in agent tool lists (Grep in feedback-analyst, Agent in code-reviewer, Write in product-evaluator); (3) Model selection — prompt-quality-scorer uses Sonnet for a task requiring deep analysis of 100+ items. Overall agent quality is high (avg 4.51/5.0). Primary improvement opportunity is standardizing the confirm-before-write pattern across all file-producing agents."
+}

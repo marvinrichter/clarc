@@ -100,6 +100,10 @@ Common causes: race conditions (use auto-wait locators), network timing (wait fo
 - Test duration < 10 minutes
 - Artifacts uploaded and accessible
 
+## Before Writing Files
+
+Before creating **new** test files (as opposed to updating existing ones), announce the planned file paths and the user flows or scenarios they will cover, then confirm with the user before writing. Updating an existing test file does not require confirmation — proceed directly after announcing the change in the dry-run preview.
+
 ## Reference
 
 For detailed Playwright patterns, Page Object Model examples, configuration templates, CI/CD workflows, and artifact management strategies, see skill: `e2e-testing`.

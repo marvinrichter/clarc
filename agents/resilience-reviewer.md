@@ -111,6 +111,32 @@ HttpURLConnection.connect()          # no setConnectTimeout
 - [What's already done well]
 ```
 
+## Scan Phase — Dependency Inventory
+
+Before reviewing code, run these scans to locate all external dependencies:
+
+```bash
+# Find HTTP clients
+grep -rn "fetch\|axios\|got\|httpx\|requests\.\|http\.Get\|HttpClient\|RestTemplate" \
+  --include="*.ts" --include="*.py" --include="*.go" --include="*.java" .
+
+# Find database connections
+grep -rn "pg\|mysql\|mongodb\|redis\|dynamodb\|pool\|createConnection" \
+  --include="*.ts" --include="*.js" .
+
+# Find queue/event connections
+grep -rn "kafka\|rabbitmq\|sqs\|pubsub\|amqp" \
+  --include="*.ts" --include="*.py" --include="*.go" -i .
+
+# Find config/service discovery
+grep -rn "consul\|etcd\|zookeeper\|configserver" \
+  --include="*.ts" --include="*.yaml" --include="*.go" -i .
+
+# Find health check probes
+grep -rn "livenessProbe\|readinessProbe\|startupProbe" \
+  --include="*.yaml" --include="*.yml" .
+```
+
 ## Common Patterns to Find
 
 ```bash

@@ -23,17 +23,6 @@ Use `/tdd` when:
 - Refactoring existing code
 - Building critical business logic
 
-## TDD Cycle
-
-```
-RED → GREEN → REFACTOR → REPEAT
-
-RED:      Write a failing test
-GREEN:    Write minimal code to pass
-REFACTOR: Improve code, keep tests passing
-REPEAT:   Next feature/scenario
-```
-
 ## Example Usage
 
 ```

@@ -220,6 +220,10 @@ Based on this review, the highest-value additions for the next roadmap are:
 [list — may be available but undiscovered]
 ```
 
+## Before Writing Files
+
+When invoked with `--recompute` (which overwrites existing reports), announce the files that will be overwritten along with their current modification dates, then confirm with the user before proceeding. Read-only analysis and report generation to new file paths do not require confirmation.
+
 Save to: `docs/system-review/YYYY-MM-DD-full-report.md`
 
 Also update `docs/system-review/coverage-map.md` by running:

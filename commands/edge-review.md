@@ -174,5 +174,5 @@ grep -rn "waitUntil\|passThroughOnException" src/ --include="*.ts"
 
 ## After This
 
-- `/build-fix` — fix edge function errors flagged in review
-- `/security-review` — full scan if origin bypass or secret exposure found
+- `/security-review` — audit edge authentication, TLS termination, and header injection
+- `/web-perf` — profile bundle size and cold start latency

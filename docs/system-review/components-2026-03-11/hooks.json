@@ -1,0 +1,154 @@
+{
+  "reviewed_at": "2026-03-11",
+  "total_hooks": 20,
+  "total_hook_scripts_in_dir": 37,
+  "scripts_referenced_by_hooks": 18,
+  "event_coverage_map": {
+    "PreToolUse": {
+      "count": 4,
+      "scripts": [
+        "pre-bash-dispatch.js",
+        "doc-file-warning.js",
+        "pre-write-secret-scan.js",
+        "suggest-compact.js"
+      ]
+    },
+    "PreCompact": {
+      "count": 1,
+      "scripts": [
+        "pre-compact.js"
+      ]
+    },
+    "SessionStart": {
+      "count": 2,
+      "scripts": [
+        "session-start.js",
+        "context-banner.js"
+      ]
+    },
+    "PostToolUse": {
+      "count": 9,
+      "scripts": [
+        "agent-tracker.js",
+        "auto-checkpoint.js",
+        "pr-url-logger.js",
+        "post-edit-format-dispatch.js",
+        "system-health-check.js",
+        "post-edit-workflow-nudge.js",
+        "build-failure-router.js",
+        "post-edit-typecheck.js",
+        "post-edit-typecheck-rust.js",
+        "skills/continuous-learning-v2/hooks/observe.sh"
+      ]
+    },
+    "Stop": {
+      "count": 1,
+      "scripts": [
+        "check-console-log.js"
+      ]
+    },
+    "Notification": {
+      "count": 1,
+      "scripts": [
+        "notification-handler.js"
+      ]
+    },
+    "SessionEnd": {
+      "count": 3,
+      "scripts": [
+        "session-end.js",
+        "evaluate-session.js",
+        "scripts/instinct-decay.js"
+      ]
+    }
+  },
+  "dimension_scores": {
+    "event_coverage": {
+      "score": 9,
+      "note": "All critical Claude Code events covered. PreToolUse, PostToolUse, Stop, Notification, SessionStart, SessionEnd, and PreCompact all have hooks. Notification handler fires on all (*) events which is appropriate for advisory-only purposes."
+    },
+    "false_positive_risk": {
+      "score": 7,
+      "note": "post-edit-format-dispatch correctly excludes node_modules/vendor/dist/.git paths. pre-write-secret-scan fires on ALL Write calls including binary or generated files \u2014 no file-extension guard before running scanForSecrets on content. doc-file-warning fires on ALL Write calls to .md/.txt files before checking exemptions. system-health-check has tight path guards (agents/skills/commands only) \u2014 clean. post-edit-workflow-nudge security nudge correctly checks written content rather than just filename. post-edit-typecheck fires on ALL Edit events and checks for .ts/.tsx extension internally \u2014 the hook-level matcher is broad (Edit) so every non-TS Edit still pays Node.js startup cost before the script does its own filtering."
+    },
+    "performance_impact": {
+      "score": 7,
+      "note": "High-frequency PostToolUse Edit|Write hooks spawn multiple processes per edit: auto-checkpoint (sync git ops, 15s timeout), post-edit-format-dispatch (async, 10s, spawns child formatter), system-health-check (sync disk reads), post-edit-workflow-nudge (async, 5s), post-edit-typecheck (async, 30s timeout \u2014 tsc --noEmit via execFileSync which is synchronous in practice), post-edit-typecheck-rust (async, 60s timeout \u2014 cargo check can take 10-60s). TypeScript and Rust type-check hooks are the main performance risk. auto-checkpoint uses spawnSync for git operations but is rate-limited to 1/60s. 6+ PostToolUse Edit hooks running concurrently per edit is notable overhead."
+    },
+    "error_handling": {
+      "score": 8,
+      "note": "All scripts have try/catch at top level and exit 0 on errors (never blocking). post-edit-format-dispatch surfaces formatter errors clearly to stderr with tool-specific installation hints. auto-checkpoint has comprehensive error handling including secret-guard bypass logic. session-end.js wraps file writes in try/catch and logs errors. pre-write-secret-scan.js correctly uses process.exit(2) to block writes on secret detection. Minor: post-edit-typecheck.js uses execFileSync (synchronous) which can block up to 30s inside the stdin end callback \u2014 the outer try/catch covers it but the experience is suboptimal."
+    },
+    "dead_references": {
+      "score": 10,
+      "note": "All 18 referenced scripts verified to exist: all scripts/hooks/*.js present, scripts/instinct-decay.js confirmed present, skills/continuous-learning-v2/hooks/observe.sh confirmed present. No broken references found."
+    },
+    "dead_hooks": {
+      "score": 8,
+      "note": "post-edit-typecheck-rust.js is registered as PostToolUse Edit with no Rust files in the clarc project itself. post-edit-typecheck.js fires on every Edit even though clarc has only limited .ts files. These hooks are designed for user projects, not clarc itself \u2014 they are not truly dead but produce overhead during clarc development with no payoff."
+    },
+    "missing_critical_hooks": {
+      "score": 9,
+      "note": "All critical hooks are present: PostToolUse Edit|Write \u2192 auto-format dispatch, PostToolUse Edit|Write on agents/skills/commands \u2192 system-health-check, SessionEnd \u2192 session-end.js state persistence, Stop \u2192 check-console-log, PreToolUse Write \u2192 pre-write-secret-scan, PreToolUse Bash \u2192 pre-bash-dispatch with secret guard. Minor: observe.sh (PostToolUse Edit|Write|Bash) uses a shell script rather than a JS module \u2014 stylistically inconsistent but functional."
+    },
+    "interaction_conflicts": {
+      "score": 8,
+      "note": "No active blocking conflicts detected. auto-checkpoint (sync) runs before post-edit-format-dispatch (async) by design. console.log detection occurs in two places: inline in post-edit-format-dispatch (warnConsoleLogs after each JS/TS Edit) AND in Stop hook via check-console-log.js (git-based scan after each response). This is intentional duplication but produces redundant warnings. post-edit-workflow-nudge and system-health-check both fire on Edit|Write with no shared state conflict. suggest-compact fires on PreToolUse before the edit \u2014 correct for the use case."
+    }
+  },
+  "overall_score": 8.2,
+  "score_calculation": "9x0.20 + 7x0.15 + 7x0.15 + 8x0.15 + 10x0.10 + 8x0.10 + 9x0.10 + 8x0.05 = 1.80 + 1.05 + 1.05 + 1.20 + 1.00 + 0.80 + 0.90 + 0.40 = 8.20",
+  "issues": [
+    {
+      "severity": "MEDIUM",
+      "dimension": "performance_impact",
+      "hook": "PostToolUse Edit \u2014 post-edit-typecheck.js",
+      "description": "TypeScript typecheck runs tsc --noEmit via execFileSync on every Edit to a .ts/.tsx file. execFileSync is synchronous inside the stdin end callback \u2014 it can block for 2-10 seconds on larger projects despite the 30s async timeout declared in hooks.json. The extension filter is inside the script, not the hook matcher, so every non-TS Edit also pays Node.js startup cost.",
+      "suggestion": "Convert execFileSync to spawn with explicit async resolution. Add a debounce: only run tsc if no tsc ran in the last 30 seconds per project. Moving the .ts extension check to hook matcher level (if supported) would eliminate startup cost for non-TS edits."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "performance_impact",
+      "hook": "PostToolUse Edit \u2014 post-edit-typecheck-rust.js",
+      "description": "cargo check runs on every Edit to a .rs file with a 60s timeout \u2014 the highest timeout in the system. cargo check on real Rust projects typically takes 10-60s. The extension check is inside the script, not the matcher, so every non-Rust Edit also pays Node.js startup cost.",
+      "suggestion": "Reduce timeout to 15-20s maximum. Add a debounce: only run cargo check if no run occurred in the last 30 seconds. Consider cargo check --message-format=short with an early kill at 10s hard limit."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "false_positive_risk",
+      "hook": "PreToolUse Write \u2014 pre-write-secret-scan.js",
+      "description": "Fires on every Write call including binary files, generated code, and test fixtures that intentionally contain fake credentials matching secret patterns (e.g., AKIA-prefixed test AWS keys in fixture files). No file-extension allowlist guard before invoking scanForSecrets on up to 512KB of content.",
+      "suggestion": "Add early-exit for known safe extensions (.png, .jpg, .svg, .wasm, .lock, .sum) before running regex scan. For test fixtures with fake credentials, document the use of git commit --no-verify or a clarc exemption comment pattern."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "interaction_conflicts",
+      "hook": "PostToolUse Edit|Write \u2014 console.log double-detection",
+      "description": "console.log detection occurs in two places: inline warnConsoleLogs() in post-edit-format-dispatch.js (after each JS/TS Edit/Write) AND in the Stop hook via check-console-log.js (git-modified files scan after each response). This produces duplicate warnings for the same file within a single response cycle.",
+      "suggestion": "Remove the inline warnConsoleLogs() call from post-edit-format-dispatch.js. check-console-log.js already provides a more complete git-based scan at Stop hook time. One detection location is sufficient."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "performance_impact",
+      "hook": "PostToolUse Edit|Write \u2014 concurrent hook volume",
+      "description": "A single Edit to a .ts or .rs file triggers up to 7 PostToolUse hooks concurrently: auto-checkpoint (sync git ops), post-edit-format-dispatch (spawns formatter subprocess), system-health-check (disk reads), post-edit-workflow-nudge (async), post-edit-typecheck or post-edit-typecheck-rust (heavy compiler), observe.sh (shell spawn), plus agent-tracker for Agent calls. This creates significant I/O contention in active edit sessions.",
+      "suggestion": "Consolidate post-edit-typecheck and post-edit-typecheck-rust into post-edit-format-dispatch (which already routes by extension) to reduce Node.js process spawns per edit event."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "false_positive_risk",
+      "hook": "PreToolUse Edit|Write \u2014 suggest-compact.js counter race",
+      "description": "The session tool-call counter uses fd-based read+write to reduce race window between concurrent hook invocations, but the race is acknowledged in code comments and not fully eliminated. In sessions with high parallelism, the counter may undercount tool calls. Advisory-only so impact is minimal.",
+      "suggestion": "Acknowledged in code. No immediate action required. Consider atomic counter via a lock file pattern for correctness in high-concurrency scenarios."
+    }
+  ],
+  "dead_hooks": [],
+  "missing_critical_hooks": [],
+  "performance_risks": [
+    "post-edit-typecheck.js: execFileSync(tsc --noEmit) effectively synchronous up to 30s, fires on all .ts/.tsx Edit calls \u2014 primary risk in TypeScript projects",
+    "post-edit-typecheck-rust.js: execFileSync(cargo check) effectively synchronous up to 60s, fires on all .rs Edit calls \u2014 highest timeout in system",
+    "auto-checkpoint.js: 5 spawnSync git subprocess calls per Edit when active, rate-limited to 1/60s",
+    "PostToolUse Edit|Write: 6-7 concurrent hook processes spawn per edit to a typed language file"
+  ],
+  "summary": "The clarc hook system is well-architected with 20 hook entries across 7 event types covering all critical Claude Code lifecycle events. All 18 referenced scripts exist and all scripts use defensive error handling (try/catch + exit 0 for unexpected errors, exit 2 for intentional security blocks). Secret-guard coverage is thorough with defense-in-depth: pre-write scan blocks secrets before they reach disk, pre-bash scan blocks secrets before git commit, and auto-checkpoint scans staged diffs before creating git history. The main risks are performance-related: TypeScript and Rust type-check hooks run heavy compilers (tsc --noEmit, cargo check) on every respective file edit with timeouts up to 60s, and the volume of 6-7 concurrent PostToolUse hooks per Edit event creates I/O contention in active sessions. A minor duplication exists in console.log detection between post-edit-format-dispatch and the Stop check-console-log hook. No dead references, no blocking interaction conflicts, and no missing critical hooks detected. Overall score: 8.2/10 \u2014 production-ready with targeted performance improvements recommended for the two type-check hooks."
+}

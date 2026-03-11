@@ -172,5 +172,5 @@ Fix: ...
 
 ## After This
 
-- `/security-review` — full DevSecOps scan if access token or secret exposure is found
-- `/slo` — define WebRTC SLOs (ICE success rate, call quality p95 latency)
+- `/resilience-review` — validate ICE failure fallback and reconnection strategy
+- `/security-review` — audit DTLS configuration and TURN server authentication

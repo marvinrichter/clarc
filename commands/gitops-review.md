@@ -153,6 +153,5 @@ Provide a structured report:
 
 ## After This
 
-- `/iac-review` — review Terraform/Kubernetes manifests
-- `/security-review` — full DevSecOps scan
-- `/zero-trust-review` — if NetworkPolicy or PeerAuthentication gaps found
+- `/security-review` — scan manifests for secret leakage and RBAC over-permission
+- `/resilience-review` — validate readiness/liveness probe coverage

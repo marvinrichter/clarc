@@ -14,6 +14,14 @@ description: Full dependency audit — vulnerability scanning, license complianc
 
 Run a full dependency audit: $ARGUMENTS
 
+## Scope
+
+| In scope | Out of scope |
+|----------|-------------|
+| Dependency graph and version analysis | CVE/vulnerability scanning (→ `/sbom`) |
+| License compliance and compatibility | Code-level injection or auth issues (→ `/security-review`) |
+| Outdated packages and update recommendations | SBOM generation (→ `/sbom`) |
+
 ## Your Task
 
 Perform a comprehensive three-phase dependency audit covering vulnerabilities, license compliance, and supply chain risks. Produce a prioritized remediation report.

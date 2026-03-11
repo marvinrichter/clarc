@@ -1,7 +1,7 @@
 ---
 name: feedback-analyst
 description: Analyzes qualitative user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify pain points, cluster themes, and generate structured idea seeds. Use when given raw user feedback data to extract product insights.
-tools: ["Read", "Write", "Glob", "WebSearch"]
+tools: ["Read", "Write", "Glob", "Grep", "WebSearch"]
 model: sonnet
 uses_skills:
   - analytics-workflow

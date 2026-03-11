@@ -2,6 +2,8 @@
 description: Resilience audit — failure mode analysis, missing circuit breakers, unprotected external calls, retry anti-patterns, and distributed system resilience gaps. Invokes the resilience-reviewer agent.
 ---
 
+> Note: this command replaces /resilience-audit (removed due to overlap)
+
 # Resilience Review
 
 Systematically identify how your service fails under realistic production conditions before they cause incidents.
@@ -20,12 +22,47 @@ Pass `$ARGUMENTS` as the focus area. Without arguments, all dimensions are revie
 
 ## What This Command Does
 
-1. **Failure Mode Analysis** — What happens when each external dependency is slow, returns errors, or times out?
-2. **Circuit Breaker Audit** — Are circuit breakers in place for all external HTTP calls, DB queries, queue operations?
-3. **Retry Pattern Review** — Are retries idempotent? Is exponential backoff with jitter used? Are retry storms possible?
-4. **Timeout Coverage** — Does every external call have an explicit timeout? Are they at the right layer?
-5. **Bulkhead / Isolation** — Can one slow dependency starve thread pools and take down unrelated functionality?
-6. **Graceful Degradation** — Does the system degrade gracefully or fail completely when a dependency is unavailable?
+1. **Dependency Inventory** — Scan the codebase to find all HTTP clients, DB connections, queues, and config dependencies
+2. **Failure Mode Analysis** — What happens when each external dependency is slow, returns errors, or times out?
+3. **Circuit Breaker Audit** — Are circuit breakers in place for all external HTTP calls, DB queries, queue operations?
+4. **Retry Pattern Review** — Are retries idempotent? Is exponential backoff with jitter used? Are retry storms possible?
+5. **Timeout Coverage** — Does every external call have an explicit timeout? Are they at the right layer?
+6. **Bulkhead / Isolation** — Can one slow dependency starve thread pools and take down unrelated functionality?
+7. **Graceful Degradation** — Does the system degrade gracefully or fail completely when a dependency is unavailable?
+8. **Health Check Review** — Are liveness/readiness/startup probes correctly separated and fast enough?
+
+## Scan Phase
+
+Before reviewing code manually, run these scans to inventory all external dependencies:
+
+```bash
+# Find HTTP clients
+grep -rn "fetch\|axios\|got\|httpx\|requests\.\|http\.Get\|HttpClient\|RestTemplate" \
+  --include="*.ts" --include="*.py" --include="*.go" --include="*.java" .
+
+# Find database connections
+grep -rn "pg\|mysql\|mongodb\|redis\|dynamodb\|pool\|createConnection" \
+  --include="*.ts" --include="*.js" .
+
+# Find queue/event connections
+grep -rn "kafka\|rabbitmq\|sqs\|pubsub\|amqp" \
+  --include="*.ts" --include="*.py" --include="*.go" -i .
+
+# Find config/service discovery
+grep -rn "consul\|etcd\|zookeeper\|configserver" \
+  --include="*.ts" --include="*.yaml" --include="*.go" -i .
+
+# Find health endpoints
+grep -rn "livenessProbe\|readinessProbe\|startupProbe" \
+  --include="*.yaml" --include="*.yml" .
+```
+
+For each dependency found, build an inventory table:
+
+| Dependency | Type | Has Timeout? | Has Retry? | Has Circuit Breaker? | Has Fallback? | Health Check? |
+|------------|------|-------------|-----------|---------------------|--------------|--------------|
+| PostgreSQL | DB | ? | ? | ? | ? | ? |
+| Stripe API | HTTP | ? | ? | ? | ? | ? |
 
 ## When to Use
 
@@ -61,8 +98,55 @@ Pass `$ARGUMENTS` as the focus area. Without arguments, all dimensions are revie
 | Full security review | `/security-review` |
 | This command: resilience and failure modes | `/resilience-review` |
 
+## Report Format
+
+The agent produces a structured report:
+
+```markdown
+# Resilience Review Report
+
+**Service:** [name]
+**Date:** [YYYY-MM-DD]
+**Scope:** [files/modules reviewed]
+
+## Dependency Inventory
+
+| Dependency | Type | Timeout | Retry | CB | Fallback | Health |
+|------------|------|---------|-------|----|----------|--------|
+| [name] | [type] | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
+
+## CRITICAL — Fix Before Next Production Incident
+...
+
+## HIGH — Fix This Sprint
+...
+
+## MEDIUM — Fix Next Sprint
+...
+
+## Single Points of Failure
+
+| SPOF | Impact | Mitigation |
+|------|--------|-----------|
+| [name] | [what breaks] | [recommended fix] |
+
+## Positive Patterns Observed
+- [What's already implemented well]
+
+## Recommended Chaos Experiments
+
+Based on this audit, high-value chaos experiments to validate fixes:
+1. [Experiment]: [what it validates]
+
+## Metrics to Set Up
+
+To measure steady state before chaos experiments:
+- [Metric]: [how to instrument]
+```
+
 ## After This
 
 - `/chaos-experiment` — validate resilience findings with real fault injection
 - `/slo` — define SLOs (error rate, latency p99) that reflect resilience requirements
 - `/add-observability` — add circuit breaker metrics and retry counters to dashboards
+- `observability` skill — setting up metrics to measure resilience in steady state

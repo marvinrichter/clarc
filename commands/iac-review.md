@@ -242,6 +242,5 @@ checkov -f /tmp/cfn.json --framework cloudformation
 
 ## After This
 
-- `/gitops-review` — validate GitOps workflow after IaC changes
-- `/tdd` — add Terratest or policy tests
-- `/security-review` — full scan if misconfiguration found
+- `/gitops-review` — verify all manifests are in Git and sync is configured
+- `/security-review` — scan for hardcoded secrets and overly permissive IAM

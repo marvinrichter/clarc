@@ -1,0 +1,174 @@
+{
+  "reviewed_at": "2026-03-11",
+  "total_commands": 172,
+  "overall_score": 8.0,
+  "dimension_scores": {
+    "naming_consistency": 8.5,
+    "builtin_conflicts": 9.5,
+    "overlap_detection": 6.5,
+    "missing_commands": 9.0,
+    "argument_design": 8.0,
+    "feedback_loop": 6.5,
+    "step_count": 7.5,
+    "agent_invocation": 8.5
+  },
+  "issues": [
+    {
+      "severity": "HIGH",
+      "dimension": "overlap_detection",
+      "command": "resilience-review",
+      "description": "resilience-review and resilience-audit cover the same domain (~85% overlap). resilience-review delegates to the resilience-reviewer agent; resilience-audit performs inline grep-based analysis with no agent delegation. Users cannot easily determine which to use.",
+      "suggestion": "Merge into resilience-review. Fold the inline grep analysis from resilience-audit into the resilience-reviewer agent as a scan step. Delete commands/resilience-audit.md."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "feedback_loop",
+      "command": null,
+      "description": "66% of commands (approx 115/172) lack an 'After This' section or equivalent next-step guidance. Users complete a command and receive no suggestion on where to go next.",
+      "suggestion": "Establish a mandatory 'After This' section as a command authoring standard. Commands with natural successors should list 1-3 follow-on commands."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "step_count",
+      "command": "guide",
+      "description": "guide.md contains 18+ task categories each with 4-5 steps, creating a flat structure of approximately 88 effective steps. This is not a command — it is an encyclopedia.",
+      "suggestion": "Refactor guide.md into a routing table: each category maps to the correct command to invoke. Remove inline instructions and delegate to the appropriate specialist commands instead."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "step_count",
+      "command": "multi-execute",
+      "description": "multi-execute.md contains 40 numbered steps across 5 phases. The external codeagent-wrapper binary dependency is not signaled in the command description frontmatter.",
+      "suggestion": "Add a prerequisite check as Step 1 that verifies codeagent-wrapper is installed. Collapse internal implementation phases to 5-6 user-visible steps."
+    },
+    {
+      "severity": "HIGH",
+      "dimension": "overlap_detection",
+      "command": "dep-audit",
+      "description": "dep-audit, dep-update, sbom, and security-review form a 4-way overlap cluster. dep-audit performs vulnerability scanning that duplicates sbom and overlaps security-review.",
+      "suggestion": "Define non-overlapping scope boundaries: dep-audit = dependency graph + license compliance only; sbom = SBOM generation and attestation; security-review = code-level security."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "tdd",
+      "description": "tdd.md nominally has 5 steps but the Red-Green-Refactor cycle is enumerated twice, creating 15 effective numbered items.",
+      "suggestion": "Collapse to a single Red-Green-Refactor enumeration."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "step_count",
+      "command": "system-review",
+      "description": "system-review.md exposes 25 internal implementation steps describing how the agent-system-reviewer orchestrates sub-agents.",
+      "suggestion": "Collapse to 5-6 user-facing steps. Move internal orchestration detail to the agent file."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "missing_commands",
+      "command": null,
+      "description": "/deploy is documented as a gap in workflow-check.md J1 journey. Skills exist (deployment-patterns, ci-cd-patterns) but no command or agent.",
+      "suggestion": "Add commands/deploy.md or document that deployment is intentionally out of scope."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "overlap_detection",
+      "command": "multi-plan",
+      "description": "multi-plan.md contains 23 steps and requires codeagent-wrapper with no graceful degradation path for users without the binary.",
+      "suggestion": "Add a preflight check step. Document the fallback: use /plan + /overnight instead."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "agent_invocation",
+      "command": "swift-build",
+      "description": "swift-build.md references the 'architect' agent for build error escalation. The correct agent is 'build-error-resolver'.",
+      "suggestion": "Replace architect reference with build-error-resolver in swift-build.md."
+    },
+    {
+      "severity": "MEDIUM",
+      "dimension": "argument_design",
+      "command": "claw",
+      "description": "claw.md uses environment variables ($CLAW_HOST, $CLAW_PORT) instead of $ARGUMENTS. The name 'claw' is opaque.",
+      "suggestion": "Add clear subtitle in description. Document env vars in Prerequisites section. Add After This section."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "eda-review",
+      "description": "eda-review lacks an After This section.",
+      "suggestion": "Add: After This: /resilience-review — validate event bus failure modes; /add-observability — add consumer lag and dead-letter metrics."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "edge-review",
+      "description": "edge-review lacks an After This section.",
+      "suggestion": "Add: After This: /performance-review; /security-review for edge authentication and TLS."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "iac-review",
+      "description": "iac-review lacks an After This section.",
+      "suggestion": "Add: After This: /gitops-review; /security-review for hardcoded secrets."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "wasm-review",
+      "description": "wasm-review lacks an After This section.",
+      "suggestion": "Add: After This: /performance-review — profile WASM bundle size and execution time."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "webrtc-review",
+      "description": "webrtc-review lacks an After This section.",
+      "suggestion": "Add: After This: /resilience-review for ICE failure modes; /security-review for DTLS."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "feedback_loop",
+      "command": "gitops-review",
+      "description": "gitops-review lacks an After This section.",
+      "suggestion": "Add: After This: /security-review — scan manifests for secret leakage; /resilience-review — validate probe coverage."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "naming_consistency",
+      "command": "claw",
+      "description": "'claw' is an opaque single-word name with no verb-noun structure.",
+      "suggestion": "Consider renaming to 'repl-connect' or add a description alias that explains the name."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "naming_consistency",
+      "command": "cfp",
+      "description": "'cfp' is an unexplained domain-specific acronym (Call For Papers).",
+      "suggestion": "Expand the description frontmatter to read: 'cfp — write a conference talk proposal (Call For Papers abstract)'."
+    },
+    {
+      "severity": "LOW",
+      "dimension": "missing_commands",
+      "command": null,
+      "description": "The doc-updater agent covers CONTRIBUTING.md, architecture tours, and changelogs but the /doc-update command only surfaces README and codemap workflows.",
+      "suggestion": "Expand commands/doc-update.md to document $ARGUMENTS variants (contributing, tour, changelog) or add separate commands."
+    }
+  ],
+  "naming_violations": [
+    {"command": "claw", "issue": "Single opaque word, no verb-noun structure", "severity": "LOW"},
+    {"command": "cfp", "issue": "Unexplained domain-specific acronym", "severity": "INFO"}
+  ],
+  "overlap_pairs": [
+    {"commands": ["resilience-review", "resilience-audit"], "overlap_percent": 85, "severity": "HIGH"},
+    {"commands": ["dep-audit", "dep-update"], "overlap_percent": 60, "severity": "HIGH"},
+    {"commands": ["dep-audit", "sbom", "security-review"], "overlap_percent": 40, "severity": "HIGH"},
+    {"commands": ["code-review", "typescript-review", "go-review", "python-review"], "overlap_percent": 30, "severity": "MEDIUM"},
+    {"commands": ["storybook-audit", "design-system-review"], "overlap_percent": 30, "severity": "LOW"}
+  ],
+  "missing_commands": [
+    {"command": "/deploy", "severity": "MEDIUM"},
+    {"command": "doc-update (expanded scope)", "severity": "LOW"}
+  ],
+  "builtin_conflicts": [],
+  "summary": "172 commands audited. Overall score: 8.0/10. Strong naming consistency (all lowercase-hyphen, zero violations), zero built-in conflicts, all 61 agents have command coverage. HIGH issues: resilience-review/resilience-audit 85% overlap; 66% of commands lack After This section; guide.md has ~88 steps; dep-audit/sbom/security-review triple overlap on vulnerability scanning."
+}
