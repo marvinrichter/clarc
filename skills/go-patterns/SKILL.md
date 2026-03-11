@@ -267,28 +267,17 @@ func FetchAll(ctx context.Context, urls []string) ([][]byte, error) {
 
 ### Avoiding Goroutine Leaks
 
-```go
-// Bad: Goroutine leak if context is cancelled
-func leakyFetch(ctx context.Context, url string) <-chan []byte {
-    ch := make(chan []byte)
-    go func() {
-        data, _ := fetch(url)
-        ch <- data // Blocks forever if no receiver
-    }()
-    return ch
-}
+Use a buffered channel and `select` with `ctx.Done()` so the goroutine can exit even if no receiver picks up the result:
 
-// Good: Properly handles cancellation
+```go
 func safeFetch(ctx context.Context, url string) <-chan []byte {
-    ch := make(chan []byte, 1) // Buffered channel
+    ch := make(chan []byte, 1) // Buffered — goroutine won't block
     go func() {
         data, err := fetch(url)
-        if err != nil {
-            return
-        }
+        if err != nil { return }
         select {
         case ch <- data:
-        case <-ctx.Done():
+        case <-ctx.Done(): // Exit if caller cancelled
         }
     }()
     return ch
@@ -302,23 +291,11 @@ func safeFetch(ctx context.Context, url string) <-chan []byte {
 
 ### Returning Interfaces Instead of Concrete Types
 
-**Wrong:**
-```go
-// Locks callers to the interface, hides the concrete type unnecessarily
-func NewUserService() UserServiceInterface {
-    return &userServiceImpl{}
-}
-```
+**Wrong:** `func NewUserService() UserServiceInterface { return &userServiceImpl{} }`
 
-**Correct:**
-```go
-// Return the concrete type; callers define interfaces they need
-func NewUserService(store UserStore) *UserService {
-    return &UserService{store: store}
-}
-```
+**Correct:** `func NewUserService(store UserStore) *UserService { return &UserService{store: store} }`
 
-**Why:** Returning interfaces forces a specific abstraction on callers and prevents them from accessing concrete methods; accept interfaces, return structs.
+**Why:** Returning interfaces forces a specific abstraction on callers; accept interfaces, return structs. Callers define the interfaces they need.
 
 ### Using init() for Side Effects and Dependency Setup
 
@@ -365,32 +342,6 @@ if errors.Is(err, sql.ErrNoRows) {
 ```
 
 **Why:** The `==` operator only matches the exact error value and silently fails when the error has been wrapped with `fmt.Errorf("...: %w", err)`.
-
-### Defining Large Interfaces in the Provider Package
-
-**Wrong:**
-```go
-// package repository
-type UserRepository interface {
-    FindByID(id string) (*User, error)
-    FindAll() ([]*User, error)
-    Save(user *User) error
-    Delete(id string) error
-    // ... 10 more methods
-}
-```
-
-**Correct:**
-```go
-// package service — define only what this service needs
-type UserFinder interface {
-    FindByID(id string) (*User, error)
-}
-
-type UserService struct { finder UserFinder }
-```
-
-**Why:** Large interfaces defined by the provider couple all consumers to every method; define small, consumer-side interfaces containing only the methods each caller actually uses.
 
 ### Forgetting to Cancel a Context
 
