@@ -212,6 +212,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/response-dashboard.js\""
+          }
+        ],
+        "description": "Response dashboard: shows tools used, agents invoked, and estimated cost after each response. Disable: CLARC_RESPONSE_DASHBOARD=false or .clarc/hooks-config.json {response_dashboard: false}"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/check-console-log.js\""
           }
         ],
