@@ -37,7 +37,7 @@ Expected output:
 ✅ ~/.claude/ exists
 ✅ Agents: 61 installed
 ✅ Skills: 228 installed
-✅ Commands: 160 installed
+✅ Commands: 168 installed
 ✅ Hooks: active
 ✅ clarc version: 0.9.0
 

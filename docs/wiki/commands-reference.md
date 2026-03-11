@@ -63,7 +63,8 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 |---------|-------------|
 | `/security-review` | Full DevSecOps scan |
 | `/privacy-audit` | PII scan, retention, RTBF, consent |
-| `/sbom` | Generate Software Bill of Materials |
+| `/sbom` | Generate Software Bill of Materials + attestation |
+| `/supply-chain-audit` | CI/CD pinning, unsigned artifacts, SLSA compliance |
 | `/zero-trust-review` | Service mesh + mTLS review |
 | `/gitops-review` | GitOps config — sync, secrets, drift |
 | `/finops-audit` | Cloud cost audit |
@@ -81,6 +82,7 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/chart-review` | Review data visualizations — chart type, WCAG, responsive |
 | `/visual-test` | Set up visual regression testing (Chromatic/Playwright/Percy) |
 | `/storybook-audit` | Audit Storybook — coverage, CSF, accessibility, Chromatic integration |
+| `/design-system-review` | Full design system audit — tokens, dark mode, icons, a11y, design-code consistency |
 | `/slide-deck` | Generate slide deck structure (Reveal.js or Marp) |
 | `/talk-outline` | Structured talk outline with time allocation and speaker notes |
 
@@ -112,4 +114,4 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 ## Full List
 
 Run `/find-skill` in Claude Code to search all commands by topic.
-View all 160 commands in the `commands/` directory of the clarc repository.
+View all 168 commands in the `commands/` directory of the clarc repository.
