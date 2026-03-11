@@ -168,19 +168,19 @@ Status: READY FOR REVIEW
 
 ### Pre-Implementation
 ```
-/eval define feature-name
+/llm-eval define feature-name
 ```
 Creates eval definition file at `.claude/evals/feature-name.md`
 
 ### During Implementation
 ```
-/eval check feature-name
+/llm-eval check feature-name
 ```
 Runs current evals and reports status
 
 ### Post-Implementation
 ```
-/eval report feature-name
+/llm-eval report feature-name
 ```
 Generates full eval report
 
@@ -429,7 +429,7 @@ Regression Evals:
 [Write code]
 
 ### Phase 3: Evaluate
-Run: /eval check add-authentication
+Run: /llm-eval check add-authentication
 
 ### Phase 4: Report
 EVAL REPORT: add-authentication

@@ -13,6 +13,15 @@ description: "[Requires codeagent-wrapper] Frontend-focused multi-model workflow
 > *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` + `/tdd` instead for a native Claude workflow."*
 > Do **not** attempt to execute any subsequent phases without this binary present.
 
+## When to Use This vs /plan + /tdd
+
+| Use `/multi-frontend` when | Use `/plan` + `/tdd` instead when |
+|----------------------------|-----------------------------------|
+| `codeagent-wrapper` is installed and configured | You don't have `codeagent-wrapper` |
+| You want Gemini-led UI/UX analysis + planning | Native Claude reasoning is sufficient |
+| Tasks involve complex visual design or animations | Straightforward component or logic work |
+| You need Gemini session IDs for multi-model review | You prefer a single-model workflow |
+
 Frontend-focused workflow (Research → Ideation → Plan → Execute → Optimize → Review), Gemini-led.
 
 ## Usage

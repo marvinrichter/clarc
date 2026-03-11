@@ -2,7 +2,7 @@
 description: Dependency audit and upgrade workflow — check for outdated packages, security vulnerabilities, and safely upgrade dependencies with verification. Supports npm, pnpm, yarn, bun, pip, poetry, go mod, and cargo.
 ---
 
-# deps
+# dep-update
 
 Audit and upgrade project dependencies safely. Check outdated → check security → upgrade with verification.
 

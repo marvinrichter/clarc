@@ -4,7 +4,6 @@
 
 | Roadmap | Goal |
 |---------|------|
-| [command-namespace-cleanup](command-namespace-cleanup.md) | Fix eval/evaluate collision, multi-* disambiguation, missing commands for 2 agents, P2 naming drift |
 | [agent-skill-completeness](agent-skill-completeness.md) | Close agent wiring gaps, lift process skill actionability, fix RFC 7807 inconsistency, P2 agent quality |
 
 ---
@@ -30,10 +29,11 @@ New roadmap template:
 
 ---
 
-## Done (17)
+## Done (18)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [command-namespace-cleanup](done/command-namespace-cleanup.md) | eval→llm-eval, multi-* disambiguation, orchestrator-design + sdk-design commands, promote/deps/security renames, instinct-* step depth | #29 |
 | [hook-reliability](done/hook-reliability.md) | Typecheck timeouts, checkpoint staging scope, async race, format-dispatch spawn, pre-write secret scan | #28 |
 | [pre-launch-hardening](done/pre-launch-hardening.md) | Hook security, stale config paths, skill cleanup, agent examples (54×2nd example), command naming | #27 |
 | [skill-content-depth](done/skill-content-depth.md) | Anti-Patterns (27 skills), When-to expansion (127 skills), agent disambiguation (4 pairs) | #24–#26 |

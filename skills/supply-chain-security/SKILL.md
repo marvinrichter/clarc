@@ -438,4 +438,4 @@ cosign attest --yes --predicate sbom.json --type cyclonedx ghcr.io/myorg/myimage
 
 - `/sbom` — SBOM generation and attestation workflow
 - `/dep-audit` — Full dependency vulnerability and license audit
-- `/security` — Broader application security review
+- `/security-review` — Broader application security review

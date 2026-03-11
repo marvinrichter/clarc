@@ -13,6 +13,15 @@ description: "[Requires codeagent-wrapper] Multi-model collaborative execution �
 > *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` + `/tdd` instead for a native Claude workflow."*
 > Do **not** attempt to execute any subsequent phases without this binary present.
 
+## When to Use This vs /tdd
+
+| Use `/multi-execute` when | Use `/tdd` instead when |
+|---------------------------|--------------------------|
+| `codeagent-wrapper` is installed and configured | You don't have `codeagent-wrapper` |
+| You have a `/multi-plan` output with SESSION_IDs | You're starting fresh without a prior plan |
+| You want Codex/Gemini prototypes refactored by Claude | Native TDD is sufficient for the task |
+| Multi-model audit (Codex + Gemini review) is desired | Single reviewer or speed matters more |
+
 Multi-model collaborative execution - Get prototype from plan → Claude refactors and implements → Multi-model audit and delivery.
 
 $ARGUMENTS

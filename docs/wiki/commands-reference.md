@@ -22,7 +22,7 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/plan` | 1 | Implementation plan, waits for confirmation |
 | `/tdd` | 2 | Enforce test-first development |
 | `/code-review` | 3 | Language-specific quality review |
-| `/security` | 3 | DevSecOps scan (OWASP, secrets, injection) |
+| `/security-review` | 3 | DevSecOps scan (OWASP, secrets, injection) |
 | `/commit` | 4 | Conventional commit message |
 | `/commit-push-pr` | 4 | Commit + push + open PR in one step |
 
@@ -61,7 +61,7 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 
 | Command | What it does |
 |---------|-------------|
-| `/security` | Full DevSecOps scan |
+| `/security-review` | Full DevSecOps scan |
 | `/privacy-audit` | PII scan, retention, RTBF, consent |
 | `/sbom` | Generate Software Bill of Materials |
 | `/zero-trust-review` | Service mesh + mTLS review |

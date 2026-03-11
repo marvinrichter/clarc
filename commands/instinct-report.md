@@ -29,7 +29,14 @@ Then parse the JSON output and render the ranked report in the format below.
 
 Or load instincts directly from `~/.claude/homunculus/` using the YAML-like format.
 
-## What to Do
+## Preconditions
+
+Before running, verify:
+- `~/.claude/homunculus/` exists — if not, instruct user to run `install.sh --enable-learning`
+- At least one instinct exists — if none, suggest running sessions with `/learn-eval` first
+- `outcomes.jsonl` may not exist (new install) — trend indicators will show `→` for all instincts in that case
+
+## Execution
 
 1. Detect the current project context (same as `/instinct-status`)
 2. Load all instincts (project + global) with their full schema fields
@@ -92,6 +99,14 @@ const trend = avgDelta > 0.03 ? '↑' : avgDelta < -0.03 ? '↓' : '→';
 Use block characters to render a 12-cell bar:
 - Filled cells: `Math.round(confidence * 12)`
 - Use `█` for filled, `░` for empty
+
+## Output Interpretation
+
+- **TOP CONFIDENCE list**: high-confidence instincts are actively shaping Claude's behavior — review for accuracy
+- **Trend ↑**: instinct is gaining evidence recently — consider `/instinct-promote` if confidence ≥ 80% and usage ≥ 5
+- **Trend ↓**: instinct is losing reliability — record outcomes with `/instinct-outcome` or let it decay naturally
+- **LOW CONFIDENCE / DECAY**: flagged instincts are candidates for removal — run `/instinct-outcome <id> bad` or archive manually
+- **After review**: run `/evolve` to cluster high-confidence instincts into reusable skills or commands
 
 ## Notes
 

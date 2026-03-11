@@ -121,7 +121,7 @@ Session Activity (in a git repo)
 |   * grep-before-edit.yaml (0.6) [global]     |
 +---------------------------------------------+
       |
-      | /evolve clusters + /promote
+      | /evolve clusters + /instinct-promote
       v
 +---------------------------------------------+
 |  projects/<hash>/evolved/ (project-scoped)   |
@@ -230,7 +230,7 @@ mkdir -p ~/.claude/homunculus/{instincts/{personal,inherited},evolved/{agents,sk
 /evolve              # Cluster related instincts into skills/commands
 /instinct-export     # Export instincts to file
 /instinct-import     # Import instincts from others
-/promote             # Promote project instincts to global scope
+/instinct-promote    # Promote project instincts to global scope
 /projects            # List all known projects and their instinct counts
 ```
 
@@ -242,7 +242,7 @@ mkdir -p ~/.claude/homunculus/{instincts/{personal,inherited},evolved/{agents,sk
 | `/evolve` | Cluster related instincts into skills/commands, suggest promotions |
 | `/instinct-export` | Export instincts (filterable by scope/domain) |
 | `/instinct-import <file>` | Import instincts with scope control |
-| `/promote [id]` | Promote project instincts to global scope |
+| `/instinct-promote [id]` | Promote project instincts to global scope |
 | `/projects` | List all known projects and their instinct counts |
 
 ## Configuration

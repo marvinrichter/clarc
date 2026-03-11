@@ -28,13 +28,27 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py status
 /instinct-status
 ```
 
-## What to Do
+## Preconditions
+
+Before running, verify:
+- `~/.claude/homunculus/` exists — if not, instruct user to run `install.sh --enable-learning`
+- `instinct-cli.py` is accessible at `${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/instinct-cli.py`
+- Current directory is inside a git repository (required for project context detection)
+
+## Execution
 
 1. Detect current project context (git remote/path hash)
 2. Read project instincts from `~/.claude/homunculus/projects/<project-id>/instincts/`
 3. Read global instincts from `~/.claude/homunculus/instincts/`
 4. Merge with precedence rules (project overrides global when IDs collide)
 5. Display grouped by domain with confidence bars and observation stats
+
+## Output Interpretation
+
+- **No instincts shown**: normal for new projects — instincts accumulate over sessions via `/learn-eval`
+- **Conflicts shown**: run `/evolve` to cluster and resolve contradictions
+- **Low-confidence instincts** (< 50%): consider running `/instinct-outcome <id> bad` if they caused issues
+- **After reviewing**: use `/instinct-report` for a ranked confidence view or `/instinct-promote` for global promotion
 
 ## Conflict Detection
 

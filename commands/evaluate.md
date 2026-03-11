@@ -2,6 +2,8 @@
 description: Evaluate a product idea before committing to build it. Delegates to the product-evaluator agent to assess problem clarity, user fit, feasibility, alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation.
 ---
 
+> See also: `/llm-eval` — eval-driven development workflow (define/check/report evals for a feature).
+
 # Evaluate
 
 Evaluate a captured product idea and produce a Go / No-Go / Modify recommendation.

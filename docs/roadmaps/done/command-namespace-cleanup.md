@@ -1,6 +1,6 @@
 # Command Namespace Cleanup
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-11
 **Goal:** Fix the two HIGH naming collisions (eval/evaluate, multi-* disambiguation), add missing commands for two agents, and clean up the P2 naming drift (promote, deps, security).
 
@@ -34,11 +34,11 @@ The command system (162 commands, 7.2/10) grew organically without enforced nami
 
 | ID | Item | Status |
 |----|------|--------|
-| P1-E1 | eval → llm-eval rename + cross-refs | 📋 |
-| P1-M1 | multi-* disambiguation sections | 📋 |
-| P1-C1 | commands/orchestrator-design.md | 📋 |
-| P1-C2 | commands/sdk-design.md | 📋 |
-| P2-N1 | promote → instinct-promote | 📋 |
-| P2-N2 | deps → dep-update | 📋 |
-| P2-N3 | security → security-review | 📋 |
-| P2-I1 | instinct-* wrapper step depth | 📋 |
+| P1-E1 | eval → llm-eval rename + cross-refs | ✅ |
+| P1-M1 | multi-* disambiguation sections | ✅ |
+| P1-C1 | commands/orchestrator-design.md | ✅ |
+| P1-C2 | commands/sdk-design.md | ✅ |
+| P2-N1 | promote → instinct-promote | ✅ |
+| P2-N2 | deps → dep-update | ✅ |
+| P2-N3 | security → security-review | ✅ |
+| P2-I1 | instinct-* wrapper step depth | ✅ |

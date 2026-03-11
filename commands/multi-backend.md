@@ -13,6 +13,15 @@ description: "[Requires codeagent-wrapper] Backend-focused multi-model workflow 
 > *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` + `/tdd` instead for a native Claude workflow."*
 > Do **not** attempt to execute any subsequent phases without this binary present.
 
+## When to Use This vs /plan + /tdd
+
+| Use `/multi-backend` when | Use `/plan` + `/tdd` instead when |
+|---------------------------|-----------------------------------|
+| `codeagent-wrapper` is installed and configured | You don't have `codeagent-wrapper` |
+| You want Codex-led backend analysis + planning | Native Claude reasoning is sufficient |
+| Tasks involve complex algorithms or API design | Straightforward CRUD or feature work |
+| You need Codex session IDs for multi-model review | You prefer a single-model workflow |
+
 Backend-focused workflow (Research → Ideation → Plan → Execute → Optimize → Review), Codex-led.
 
 ## Usage
