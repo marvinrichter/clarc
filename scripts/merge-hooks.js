@@ -30,8 +30,14 @@ const CLAUDE_HOOKS_DEST =
 
 // --- Load source ---
 if (!fs.existsSync(CLARC_HOOKS_SOURCE)) {
-  console.error(`  Error: clarc hooks not found: ${CLARC_HOOKS_SOURCE}`);
-  process.exit(1);
+  // Not an error during install — clarc may not be set up yet in this HOME
+  if (process.env.CLARC_HOOKS_SOURCE) {
+    // Explicit path provided (e.g. in tests) — treat as error
+    console.error(`  Error: clarc hooks not found: ${CLARC_HOOKS_SOURCE}`);
+    process.exit(1);
+  }
+  console.log(`  Hooks: source not found (${CLARC_HOOKS_SOURCE}), skipping`);
+  process.exit(0);
 }
 
 const clarc = JSON.parse(fs.readFileSync(CLARC_HOOKS_SOURCE, 'utf8'));
