@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "date": "2026-03-10",
+    "total_commands": 162,
+    "overall_score": 7.2
+  },
+  "dimensions": {
+    "naming_consistency": { "score": 7, "weight": 0.20 },
+    "builtin_conflicts":  { "score": 9, "weight": 0.10 },
+    "overlap_detection":  { "score": 6, "weight": 0.15 },
+    "missing_commands":   { "score": 7, "weight": 0.15 },
+    "argument_design":    { "score": 7, "weight": 0.15 },
+    "feedback_loop":      { "score": 8, "weight": 0.10 },
+    "step_count":         { "score": 7, "weight": 0.10 },
+    "agent_invocation":   { "score": 8, "weight": 0.05 }
+  },
+  "critical_issues": [],
+  "high_issues": [
+    {
+      "id": "C-H1",
+      "dimension": "overlap_detection",
+      "commands": ["eval", "evaluate"],
+      "detail": "eval and evaluate serve entirely different purposes but are name-adjacent. Users typing /eval get eval-driven development, not product idea evaluation.",
+      "fix": "Rename eval → llm-eval or eval-driven. Add cross-reference in both files."
+    },
+    {
+      "id": "C-H2",
+      "dimension": "overlap_detection",
+      "commands": ["multi-plan", "multi-execute", "multi-backend", "multi-frontend", "multi-workflow"],
+      "detail": "multi-* family (5 commands) replicates plan/build-fix/tdd/e2e/orchestrate via external codeagent-wrapper binary with no user-facing disambiguation.",
+      "fix": "Add 'When to use this vs /plan' section to every multi-* command."
+    }
+  ],
+  "medium_issues": [
+    {
+      "id": "C-M1",
+      "dimension": "naming_consistency",
+      "command": "promote",
+      "detail": "Belongs to the instinct family but lacks instinct- prefix. All siblings are instinct-*.",
+      "fix": "Rename to instinct-promote."
+    },
+    {
+      "id": "C-M2",
+      "dimension": "naming_consistency",
+      "command": "deps",
+      "detail": "Truncated plural noun while peer is dep-audit (noun-verb). Scope boundary unclear.",
+      "fix": "Rename to dep-update. Add mutual cross-references."
+    },
+    {
+      "id": "C-M3",
+      "dimension": "naming_consistency",
+      "command": "security",
+      "detail": "Bare noun; peer commands use verb-noun pattern (privacy-audit, zero-trust-review).",
+      "fix": "Rename to security-review."
+    },
+    {
+      "id": "C-M4",
+      "dimension": "missing_commands",
+      "detail": "orchestrator-designer agent exists but has no command. /orchestrate covers runtime use, not design.",
+      "fix": "Add commands/orchestrator-design.md."
+    },
+    {
+      "id": "C-M5",
+      "dimension": "missing_commands",
+      "detail": "sdk-architect agent exists but has no /sdk-design command.",
+      "fix": "Add commands/sdk-design.md."
+    },
+    {
+      "id": "C-M6",
+      "dimension": "missing_commands",
+      "detail": "/deploy is missing from the command system.",
+      "fix": "Add commands/deploy.md."
+    },
+    {
+      "id": "C-M7",
+      "dimension": "overlap_detection",
+      "commands": ["deps", "dep-audit"],
+      "detail": "Share ~40% scope with no cross-reference in deps.md.",
+      "fix": "Add reciprocal cross-reference to deps.md (dep-audit already has the note)."
+    }
+  ],
+  "low_issues": [
+    { "id": "C-L1", "command": "instinct-status/import/export/outcome/report/projects", "detail": "6 instinct-* wrappers have 1 step each — below the 3-step minimum.", "fix": "Add precondition, execution, and output steps." },
+    { "id": "C-L2", "command": "onboard", "detail": "9 steps exceeds ideal 6-step maximum.", "fix": "Restructure to 4 top-level steps with sub-task Usage variants." },
+    { "id": "C-L3", "commands": ["security", "gitops-review", "finops-audit", "a11y-audit"], "detail": "Missing argument format documentation.", "fix": "Add Usage sections with format and examples." },
+    { "id": "C-L4", "command": "code-review", "detail": "Routes to language reviewers implicitly; no routing table in command file.", "fix": "Add extension→agent routing table." },
+    { "id": "C-L5", "command": "claw", "detail": "Acronym with no hyphen — only command of this form.", "fix": "Add disambiguation in description or document as intentional exception." }
+  ]
+}

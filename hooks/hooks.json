@@ -23,6 +23,16 @@
         "description": "Doc file warning: warn about non-standard documentation files (exit code 0; warns only)"
       },
       {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/pre-write-secret-scan.js\""
+          }
+        ],
+        "description": "Pre-write secret scan: blocks Write if tool_input.content contains secrets (AWS keys, GH tokens, PEM headers, Slack tokens, api_key/token=). Exit 2 to abort."
+      },
+      {
         "matcher": "Edit|Write",
         "hooks": [
           {
@@ -88,11 +98,10 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/auto-checkpoint.js\"",
-            "async": true,
             "timeout": 15
           }
         ],
-        "description": "Auto-checkpoint: create a lightweight git checkpoint after every Edit/Write for /undo support"
+        "description": "Auto-checkpoint: create a lightweight git checkpoint after every Edit/Write for /undo support. Runs synchronously before format-dispatch to avoid async race."
       },
       {
         "matcher": "Bash",
@@ -156,10 +165,11 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck.js\"",
-            "async": true
+            "async": true,
+            "timeout": 30
           }
         ],
-        "description": "TypeScript check after editing .ts/.tsx files"
+        "description": "TypeScript check after editing .ts/.tsx files (timeout: 30s)"
       },
       {
         "matcher": "Edit",
@@ -167,10 +177,11 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck-rust.js\"",
-            "async": true
+            "async": true,
+            "timeout": 60
           }
         ],
-        "description": "Rust cargo check after editing .rs files"
+        "description": "Rust cargo check after editing .rs files (timeout: 60s)"
       },
       {
         "matcher": "Edit|Write|Bash",

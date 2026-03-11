@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "date": "2026-03-10",
+    "total_hooks": 20,
+    "scripts_referenced": 19,
+    "scripts_in_dir": 36,
+    "overall_score": 7.75
+  },
+  "dimensions": {
+    "event_coverage": {
+      "score": 9,
+      "weight": 0.20,
+      "issues": [
+        { "severity": "LOW", "detail": "No PreToolUse Write content secret scan — secrets sit unguarded on disk until git commit time" }
+      ]
+    },
+    "false_positive_risk": {
+      "score": 6,
+      "weight": 0.15,
+      "issues": [
+        { "severity": "MEDIUM", "hook": "post-edit-format-dispatch.js", "detail": "No exclusion for node_modules/, vendor/, dist/ — subprocess spawned per Edit even for generated files" },
+        { "severity": "MEDIUM", "hook": "auto-checkpoint.js", "detail": "Uses git add -A — stages all working tree changes, not just edited file. Unrelated dirty files enter checkpoint commits." },
+        { "severity": "LOW", "hook": "doc-file-warning.js", "detail": "No exclusion for node_modules/ or vendor/. Could warn on legitimate vendor .md files." }
+      ]
+    },
+    "performance_impact": {
+      "score": 6,
+      "weight": 0.15,
+      "issues": [
+        { "severity": "HIGH", "hook": "post-edit-typecheck.js", "detail": "No timeout in hooks.json. tsc --noEmit can stall session 5-30s on every .ts/.tsx Edit. Suggest: add timeout:30, async:true." },
+        { "severity": "HIGH", "hook": "post-edit-typecheck-rust.js", "detail": "No timeout in hooks.json. cargo check can stall 30-60s on every .rs Edit with cold cache. Suggest: add timeout:60, async:true." },
+        { "severity": "MEDIUM", "hook": "post-edit-format-dispatch.js", "detail": "Uses execFileSync (synchronous) internally despite async:true declaration. Formatter latency (200ms-2s) blocks Node event loop." },
+        { "severity": "LOW", "hook": "post-edit-typecheck.js + post-edit-typecheck-rust.js", "detail": "Both start a Node process per Edit in all projects, even non-TS/non-Rust ones. Pure startup overhead. Suggest: merge dispatch into format-dispatch.js." }
+      ]
+    },
+    "error_handling": {
+      "score": 8,
+      "weight": 0.15,
+      "issues": [
+        { "severity": "LOW", "hook": "auto-checkpoint.js", "detail": "git commit --no-verify silently bypasses project lint-staged/husky hooks on every checkpoint. Suggest: add checkpoint_bypass_hooks config flag." },
+        { "severity": "LOW", "hook": "session-end.js", "detail": "logSessionCost uses summary.toolsUsed.length (max 20 unique tool names) not actual tool call count. Cost estimate systematically low." }
+      ]
+    },
+    "dead_references": {
+      "score": 10,
+      "weight": 0.10,
+      "issues": []
+    },
+    "dead_hooks": {
+      "score": 8,
+      "weight": 0.10,
+      "issues": [
+        { "severity": "LOW", "hook": "post-edit-typecheck.js + post-edit-typecheck-rust.js", "detail": "Fire on every Edit in non-TS/non-Rust projects, immediately exit after extension check. Unnecessary process spawn per Edit." }
+      ]
+    },
+    "missing_critical_hooks": {
+      "score": 8,
+      "weight": 0.10,
+      "issues": [
+        { "severity": "MEDIUM", "detail": "No PreToolUse Write hook scanning tool_input.content via scanForSecrets(). Secrets written by Write tool bypass guard until git commit time." }
+      ]
+    },
+    "interaction_conflicts": {
+      "score": 7,
+      "weight": 0.05,
+      "issues": [
+        { "severity": "MEDIUM", "detail": "async:true race between auto-checkpoint.js and post-edit-format-dispatch.js on same PostToolUse Edit|Write event. Checkpoint may capture pre- or post-formatted code non-deterministically." },
+        { "severity": "LOW", "detail": "console.log warnings emitted twice: inline in post-edit-format-dispatch and again at Stop by check-console-log.js." }
+      ]
+    }
+  },
+  "critical_issues": [],
+  "high_issues": [
+    { "id": "H-P1", "hook": "post-edit-typecheck.js", "detail": "No timeout in hooks.json — tsc --noEmit can stall session 5-30s per .ts/.tsx Edit", "fix": "Add timeout:30 and async:true to hooks.json entry" },
+    { "id": "H-P2", "hook": "post-edit-typecheck-rust.js", "detail": "No timeout in hooks.json — cargo check can stall 30-60s per .rs Edit", "fix": "Add timeout:60 and async:true to hooks.json entry" }
+  ],
+  "medium_issues": [
+    { "id": "H-M1", "hook": "post-edit-format-dispatch.js", "detail": "No node_modules/vendor/dist exclusion", "fix": "Skip files whose path includes /node_modules/, /vendor/, /dist/" },
+    { "id": "H-M2", "hook": "auto-checkpoint.js", "detail": "git add -A stages unrelated dirty files", "fix": "Stage only tool_input.file_path" },
+    { "id": "H-M3", "hook": "post-edit-format-dispatch.js", "detail": "execFileSync is blocking despite async:true", "fix": "Replace with spawn + promise" },
+    { "id": "H-M4", "hook": "PreToolUse Write (missing)", "detail": "No pre-write content secret scan", "fix": "Add PreToolUse Write hook using scanForSecrets() on tool_input.content" },
+    { "id": "H-M5", "detail": "async race: auto-checkpoint vs format-dispatch on same event", "fix": "Remove async:true from auto-checkpoint.js to enforce ordering" }
+  ]
+}

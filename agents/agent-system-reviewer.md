@@ -1,7 +1,7 @@
 ---
 name: agent-system-reviewer
 description: Orchestrates a full clarc system review by synthesizing results from all component analyzers (agent-quality-reviewer, skill-depth-analyzer, command-auditor, hook-auditor), cross-component validators, and systemic effectiveness tools into a unified Priority Matrix with P0/P1/P2 classification. Uses Opus for deep architectural reasoning. Called by /system-review full.
-tools: ["Read", "Grep", "Glob", "Bash"]
+tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 model: opus
 ---
 
@@ -272,7 +272,7 @@ Broken references: 0
 ### Pattern B: Coverage Asymmetry
 Rust has a reviewer agent and skill but no rules directory. Swift has rules but no `swift-testing` skill.
 Affects: rules/swift/, skills/, agents/rust-reviewer.md
-Recommendation: Add rules/rust/ and skills/swift-testing/ in the next sprint
+Recommendation: Add `rules/rust/` and `skills/swift-testing/` in the next sprint
 
 ### Pattern C: Model Miscalibration
 4 agents use `opus` for tasks (single-file review, format dispatch) where `sonnet` is sufficient.
