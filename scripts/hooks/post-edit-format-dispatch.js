@@ -191,7 +191,7 @@ process.stdin.on('end', async () => {
     }
   } catch {
     // Invalid input — pass through
-    exitCode = 1;
+    exitCode = 0;
   }
 
   logHook('post-edit-format-dispatch', 'Edit', filePath, exitCode, Date.now() - start);
