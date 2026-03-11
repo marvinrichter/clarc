@@ -48,7 +48,7 @@ process.stdin.on('end', async () => {
     const input = JSON.parse(data);
     const filePath = input.tool_input?.file_path;
 
-    if (!filePath || !filePath.endsWith('.rs')) process.exit(0);
+    if (!filePath || !filePath.endsWith('.rs')) { process.stdout.write(data); process.exit(0); }
 
     if (filePath && /\.rs$/.test(filePath)) {
       const resolvedPath = path.resolve(filePath);
