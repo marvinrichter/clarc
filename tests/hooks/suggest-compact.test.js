@@ -155,8 +155,8 @@ function runTests() {
     cleanupCounter();
     // Write counter to 49, next run will be 50 = default threshold
     fs.writeFileSync(counterFile, '49');
-    const result = runCompact({ CLAUDE_SESSION_ID: testSession });
-    // Remove COMPACT_THRESHOLD from env
+    // Explicitly unset COMPACT_THRESHOLD so inherited shell env does not override the default
+    const result = runCompact({ CLAUDE_SESSION_ID: testSession, COMPACT_THRESHOLD: undefined });
     assert.ok(
       result.stderr.includes('50 tool calls reached'),
       `Should use default threshold of 50. Got stderr: ${result.stderr}`
