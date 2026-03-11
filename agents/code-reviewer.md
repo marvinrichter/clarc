@@ -20,7 +20,8 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.go` | **go-reviewer** |
 | `.py` | **python-reviewer** |
 | `.java` | **java-reviewer** |
-| `.kt`, `.kts` | **kotlin-reviewer** |
+| `.kt`, `.kts` (Android project: `AndroidManifest.xml` present OR `build.gradle.kts` contains `com.android`) | **android-reviewer** |
+| `.kt`, `.kts` (pure Kotlin — server-side, CLI, non-Android) | **kotlin-reviewer** |
 | `.swift` | **swift-reviewer** |
 | `.rs` | **rust-reviewer** |
 | `.c` | **c-reviewer** |
@@ -35,6 +36,17 @@ Run `git diff --staged --name-only` (and `git diff --name-only` for unstaged). C
 | `.sh`, `.bash`, `.zsh` | **bash-reviewer** |
 | `.dart` | **flutter-reviewer** |
 | `prompts/`, `*.prompt.md`, `*.prompt.txt` | **prompt-reviewer** |
+| `.tf`, `.hcl` (Terraform/OpenTofu) | suggest **devsecops-reviewer** |
+| `Dockerfile`, `.dockerfile`, `docker-compose*.yml` | suggest **devsecops-reviewer** |
+| `.github/workflows/*.yml`, `.github/workflows/*.yaml` (GitHub Actions) | suggest **devsecops-reviewer** |
+| `*.xml` in `res/layout/`, `res/drawable/`, `res/values/` (Android resources) | suggest **android-reviewer** |
+
+**Android detection:** Before routing `.kt`/`.kts` files, check:
+```bash
+ls AndroidManifest.xml app/src/main/AndroidManifest.xml 2>/dev/null | head -1
+grep -l "com\.android\|com\.google\.android" build.gradle.kts app/build.gradle.kts 2>/dev/null | head -1
+```
+If either check returns a result, route to `android-reviewer`. Otherwise use `kotlin-reviewer`.
 
 If changed files span multiple languages, invoke each relevant specialist in parallel.
 

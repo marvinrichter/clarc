@@ -172,4 +172,9 @@ planner and tdd-guide both scoped the feature to a single NotificationService wi
 
 ### Recommendations
 Feature plan approved. Tests written and passing. CRITICAL: Validate all template variables against allowlist before render (security-reviewer finding).
+
+## Not This Agent
+
+- **To design a multi-agent architecture** (document the system, define agent roles, select patterns) → use `orchestrator-designer`
+- **To break down a task into an implementation plan** → use `planner`
 ```

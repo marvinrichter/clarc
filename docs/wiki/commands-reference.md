@@ -46,6 +46,9 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/deps` | Dependency audit and upgrade planner |
 | `/migrate` | Database migration workflow |
 | `/slo` | Define SLIs, SLOs, and error budget alerts |
+| `/resilience-review` | Failure mode analysis — circuit breakers, retries, timeouts, bulkheads |
+| `/docs-strategy` | Documentation platform selection, Divio framework, CI pipeline design |
+| `/contract-review` | API break detection — BREAKING/NON-BREAKING/ADDITIVE classification |
 
 ## Engineering Operations
 
@@ -85,6 +88,7 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/design-system-review` | Full design system audit — tokens, dark mode, icons, a11y, design-code consistency |
 | `/slide-deck` | Generate slide deck structure (Reveal.js or Marp) |
 | `/talk-outline` | Structured talk outline with time allocation and speaker notes |
+| `/talk-review` | Presentation feedback — structure, timing, audience fit, narrative flow |
 
 ## Review Commands
 
@@ -114,4 +118,4 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 ## Full List
 
 Run `/find-skill` in Claude Code to search all commands by topic.
-View all 168 commands in the `commands/` directory of the clarc repository.
+View all 176 commands in the `commands/` directory of the clarc repository.

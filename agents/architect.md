@@ -246,3 +246,7 @@ Next steps: `/arc42 section-5` to update building blocks, then run `/explore not
 - **Recommendation:** Strangler Fig over Branch-by-Abstraction because the monolith is HTTP-accessible; no shared-library seam needed. Delete Django modules as each service reaches 100% traffic.
 
 Next steps: `/arc42 section-3` to update the system context diagram, then `/explore auth-service-extraction` to generate the ADR.
+
+## Completion Criteria
+
+Done when: ADR written with problem statement, options, trade-offs, and recommendation; C4/arc42 diagram described or generated; concrete next steps listed (which commands to run, which files to update). Stop here — do not begin implementation.

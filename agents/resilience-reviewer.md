@@ -1,8 +1,10 @@
 ---
 name: resilience-reviewer
 description: Reviews code and architecture for failure modes, missing circuit breakers, unprotected external calls, retry anti-patterns, and resilience gaps. Use when adding external dependencies, designing distributed system components, or before chaos experiments.
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
+uses_skills:
+  - resilience-patterns
 ---
 
 # Resilience Reviewer

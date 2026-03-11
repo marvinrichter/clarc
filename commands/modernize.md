@@ -6,7 +6,11 @@ description: Create a step-by-step modernization plan for a specific component �
 
 Create a modernization plan for a specific component: $ARGUMENTS
 
-Usage: `/modernize <component-path>` or `/modernize src/legacy/UserService.java`
+Usage:
+- `/modernize <component-path>` — per-component plan (this command)
+- `/modernize --full` — invoke **modernization-planner** agent for full-codebase Churn×Complexity hotspot analysis, legacy indicator detection across all files, and a phased roadmap with risk assessment
+
+For the full-codebase analysis, delegate to the **modernization-planner** agent directly.
 
 ## Your Task
 

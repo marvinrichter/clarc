@@ -1,8 +1,11 @@
 ---
 name: platform-architect
 description: Designs Internal Developer Platforms (IDPs) for engineering organizations — scope definition, IDP component prioritization, make-vs-buy decision (Backstage vs SaaS), adoption strategy, and 90-day implementation roadmap. Use when a team wants to improve developer experience at scale.
-tools: ["Read", "Glob", "Grep", "WebSearch"]
-model: opus
+tools: ["Read", "Glob", "Grep", "WebSearch", "Write"]
+model: sonnet
+uses_skills:
+  - backstage-patterns
+  - platform-engineering
 ---
 
 # Platform Architect

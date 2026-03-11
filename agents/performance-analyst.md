@@ -1,8 +1,11 @@
 ---
 name: performance-analyst
 description: Analyzes profiling output and code for performance hotspots. Interprets pprof output, flamegraphs, Lighthouse reports, and identifies N+1 queries, unnecessary allocations, blocking I/O, and missing indexes. Provides concrete, prioritized optimization recommendations with expected impact estimates.
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
+uses_skills:
+  - performance-profiling
+  - web-performance
 ---
 
 # Performance Analyst

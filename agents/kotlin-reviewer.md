@@ -84,6 +84,15 @@ Then:
 `kotlin-patterns` — sealed classes, coroutines, Flow, DSL, extension functions
 `kotlin-testing` — JUnit 5, Kotest, MockK, coroutine test utilities
 
+## Not This Agent
+
+- **Android/Compose projects** (project has `AndroidManifest.xml` or Android Gradle plugin) → use `android-reviewer` instead. It covers Compose recomposition, Hilt scoping, Room migrations, ViewModel/UiState, and Android Dispatcher correctness.
+- **Build failures** → use `build-error-resolver`.
+
+## Completion Criteria
+
+Done when: all 6 review dimensions assessed; CRITICAL/HIGH/MEDIUM/LOW findings listed with file:line references and concrete fixes; Top Issues summary output; verdict (Approve / Warning / Block) stated.
+
 ## Examples
 
 **Input:** 3 modified `.kt` files after implementing a payment processing feature with coroutines and a repository layer.

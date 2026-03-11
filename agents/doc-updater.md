@@ -3,6 +3,8 @@ name: doc-updater
 description: Documentation and codemap specialist. Use PROACTIVELY after structural changes, before releases, or when codemaps are stale. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
+uses_skills:
+  - technical-debt
 ---
 
 # Documentation & Codemap Specialist
@@ -48,6 +50,19 @@ docs/CODEMAPS/
 ├── integrations.md   # External services
 └── workers.md        # Background jobs
 ```
+
+### 3.5 Dry-Run Preview (mandatory before writing)
+
+Before creating or overwriting any file, announce the planned changes:
+
+```
+Planned updates:
+- docs/CODEMAPS/backend.md — update authenticateUser signature at line 42
+- docs/CODEMAPS/integrations.md — add @aws-sdk/client-s3 entry
+Applying now...
+```
+
+If updating more than 3 files, list all of them before applying any.
 
 ### 4. Codemap Format
 
@@ -153,3 +168,7 @@ Steps taken:
 ---
 
 **Remember**: Documentation that doesn't match reality is worse than no documentation. Always generate from the source of truth.
+
+## Completion Criteria
+
+Done when: summary table of all modified files output (path, change type, timestamp updated); all file paths in docs verified to exist in the codebase; freshness timestamps updated on every modified codemap; no obsolete references remain in modified files.
