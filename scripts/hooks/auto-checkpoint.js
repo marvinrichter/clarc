@@ -14,7 +14,7 @@
  * Log: ~/.clarc/checkpoints.log (append-only, capped at 50 entries)
  */
 
-import { spawnSync } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
@@ -30,21 +30,35 @@ function log(msg) {
 }
 
 function git(args, cwd) {
-  return spawnSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout: 10_000 });
+  return new Promise((resolve) => {
+    const child = spawn('git', args, { cwd, stdio: 'pipe' });
+    let stdout = '';
+    let stderr = '';
+    const timer = setTimeout(() => {
+      child.kill();
+      resolve({ status: null, stdout, stderr });
+    }, 10_000);
+    child.stdout.on('data', chunk => { stdout += chunk; });
+    child.stderr.on('data', chunk => { stderr += chunk; });
+    child.on('close', code => {
+      clearTimeout(timer);
+      resolve({ status: code, stdout, stderr });
+    });
+  });
 }
 
-function isGitRepo(cwd) {
-  const r = git(['rev-parse', '--git-dir'], cwd);
+async function isGitRepo(cwd) {
+  const r = await git(['rev-parse', '--git-dir'], cwd);
   return r.status === 0;
 }
 
-function hasInitialCommit(cwd) {
-  const r = git(['rev-parse', 'HEAD'], cwd);
+async function hasInitialCommit(cwd) {
+  const r = await git(['rev-parse', 'HEAD'], cwd);
   return r.status === 0;
 }
 
-function hasUnstagedChanges(cwd) {
-  const r = git(['status', '--porcelain'], cwd);
+async function hasUnstagedChanges(cwd) {
+  const r = await git(['status', '--porcelain'], cwd);
   return r.status === 0 && r.stdout.trim().length > 0;
 }
 
@@ -112,12 +126,12 @@ async function main() {
 
   const cwd = process.cwd();
 
-  if (!isGitRepo(cwd)) {
+  if (!await isGitRepo(cwd)) {
     log('Not a git repo — skipping checkpoint');
     process.exit(0);
   }
 
-  if (!hasUnstagedChanges(cwd)) {
+  if (!await hasUnstagedChanges(cwd)) {
     log('No changes to checkpoint');
     process.exit(0);
   }
@@ -130,10 +144,10 @@ async function main() {
   const timestamp = new Date().toISOString();
   const filePath = toolInput.file_path || toolInput.path || 'unknown';
 
-  if (!hasInitialCommit(cwd)) {
+  if (!await hasInitialCommit(cwd)) {
     // Strategy: git stash
     const stashMsg = `clarc-checkpoint-${timestamp}`;
-    const r = git(['stash', 'push', '--include-untracked', '--message', stashMsg], cwd);
+    const r = await git(['stash', 'push', '--include-untracked', '--message', stashMsg], cwd);
     if (r.status !== 0) {
       log(`Stash failed: ${r.stderr}`);
       process.exit(0);
@@ -147,16 +161,16 @@ async function main() {
     // Stage only the edited file to avoid capturing unrelated dirty files.
     // Fall back to -A only when filePath is unknown (shouldn't happen for Edit/Write).
     if (filePath && filePath !== 'unknown') {
-      git(['add', filePath], cwd);
+      await git(['add', filePath], cwd);
     } else {
-      git(['add', '-A'], cwd);
+      await git(['add', '-A'], cwd);
     }
 
     // Secret guard: scan staged diff before committing.
     // auto-checkpoint uses --no-verify (bypasses pre-commit hooks), so we
     // must scan here directly. We abort the checkpoint (not the Edit) on
     // detection — the file is already saved, only the git history entry is skipped.
-    const diffResult = git(['diff', '--staged', '--unified=0'], cwd);
+    const diffResult = await git(['diff', '--staged', '--unified=0'], cwd);
     if (diffResult.status === 0 && diffResult.stdout) {
       const secrets = scanForSecrets(diffResult.stdout);
       if (secrets.length > 0) {
@@ -165,17 +179,17 @@ async function main() {
           log(`  ${type}: ${snippet}`);
         }
         log('Remove the secret and use an environment variable instead.');
-        git(['reset', 'HEAD'], cwd); // unstage
+        await git(['reset', 'HEAD'], cwd); // unstage
         process.exit(0);
       }
     }
 
-    const r = git(['commit', '--no-verify', '-m', commitMsg], cwd);
+    const r = await git(['commit', '--no-verify', '-m', commitMsg], cwd);
     if (r.status !== 0) {
       log(`Commit failed: ${r.stderr}`);
       process.exit(0);
     }
-    const hashResult = git(['rev-parse', '--short', 'HEAD'], cwd);
+    const hashResult = await git(['rev-parse', '--short', 'HEAD'], cwd);
     const hash = hashResult.stdout.trim();
     const entry = { timestamp, strategy: 'commit', commitHash: hash, file: filePath, cwd };
     appendLogEntry(entry);

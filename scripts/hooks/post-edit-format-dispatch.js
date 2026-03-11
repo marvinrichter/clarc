@@ -9,6 +9,7 @@
  */
 
 import { spawn } from 'child_process';
+import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { logHook } from './hook-logger.js';
@@ -61,6 +62,20 @@ const EXT_MAP = {
   '.razor': 'post-edit-format-csharp.js',
   '.dart': 'post-edit-format-dart.js'
 };
+
+// Startup validation: warn about missing formatter scripts (non-blocking)
+{
+  const pluginRoot = process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude');
+  const seen = new Set();
+  for (const script of Object.values(EXT_MAP)) {
+    if (seen.has(script)) continue;
+    seen.add(script);
+    const scriptPath = path.join(pluginRoot, 'scripts', 'hooks', script);
+    if (!fs.existsSync(scriptPath)) {
+      process.stderr.write(`[post-edit-format-dispatch] WARNING: formatter script not found: ${scriptPath}\n`);
+    }
+  }
+}
 
 /** Run a formatter script non-blocking via spawn and return a promise. */
 function runFormatter(scriptPath, input) {

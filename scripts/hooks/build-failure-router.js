@@ -24,7 +24,7 @@ const BUILD_ERRORS = [
   { lang: 'Rust',       pattern: /\berror\[E\d+\]:|^error: /m },
   { lang: 'Java',       pattern: /\berror: (cannot find symbol|incompatible types|package .+ does not exist)/ },
   { lang: 'npm/node',   pattern: /\bERROR in |Module not found:|Cannot find module / },
-  { lang: 'Generic',    pattern: /\bbuild failed\b|\bcompilation failed\b|\bexited with code [1-9]/i },
+  { lang: 'Generic',    pattern: /\bbuild failed\b|\bcompilation failed\b|\bfailed to compile\b|\bfailed to build\b/i },
 ];
 
 // ─── Config helpers ─────────────────────────────────────────────────────────

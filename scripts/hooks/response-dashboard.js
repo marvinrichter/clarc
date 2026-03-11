@@ -98,10 +98,21 @@ function isHumanMessage(entry) {
  * Parse transcript JSONL and return tool usage stats for the last response.
  * "Last response" = all assistant turns after the last human user message.
  */
+const MAX_READ_BYTES = 50 * 1024; // 50kB
+
 function parseLastResponse(transcriptPath) {
   let raw;
   try {
-    raw = fs.readFileSync(transcriptPath, 'utf8');
+    const stat = fs.statSync(transcriptPath);
+    if (stat.size > 5 * 1024 * 1024) { // >5MB: read only last MAX_READ_BYTES
+      const fd = fs.openSync(transcriptPath, 'r');
+      const buf = Buffer.alloc(MAX_READ_BYTES);
+      fs.readSync(fd, buf, 0, MAX_READ_BYTES, stat.size - MAX_READ_BYTES);
+      fs.closeSync(fd);
+      raw = buf.toString('utf8');
+    } else {
+      raw = fs.readFileSync(transcriptPath, 'utf8');
+    }
   } catch { return null; }
 
   const lines = raw.split('\n').filter(Boolean);

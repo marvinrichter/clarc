@@ -183,7 +183,10 @@ process.stdin.on('end', () => {
     }
 
     // 4. TDD sequence guard (Write only, source files, no test file)
-    if (!isDisabled(cfg, 'tdd-sequence-guard') && isWrite && isSource && !isTest) {
+    // Skip infra, migration, generated, and script paths — TDD doesn't apply there.
+    const SKIP_PATHS = ['infra/', 'migrations/', 'scripts/', 'generated/', '__generated__/', '.clarc/'];
+    const shouldSkipTdd = SKIP_PATHS.some(p => filePath.includes(p));
+    if (!isDisabled(cfg, 'tdd-sequence-guard') && isWrite && isSource && !isTest && !shouldSkipTdd) {
       if (!hasTestCounterpart(filePath)) {
         const rel = path.relative(process.cwd(), filePath);
         console.error(`[tdd-guard] No test file found for ${rel}`);

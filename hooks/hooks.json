@@ -170,7 +170,7 @@
         "description": "Build failure router: detects compile/type errors in Bash output and suggests build-error-resolver agent"
       },
       {
-        "matcher": "Edit",
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -179,7 +179,7 @@
             "timeout": 30
           }
         ],
-        "description": "TypeScript check after editing .ts/.tsx files (timeout: 30s)"
+        "description": "TypeScript check after editing or writing .ts/.tsx files (timeout: 30s)"
       },
       {
         "matcher": "Edit",

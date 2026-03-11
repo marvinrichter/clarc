@@ -13,6 +13,7 @@
  */
 
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { log } from '../lib/utils.js';
 
@@ -133,7 +134,7 @@ process.stdin.on('end', () => {
     }
 
     // Weekly digest on Mondays
-    const claudeDir = process.env.CLAUDE_PLUGIN_ROOT || path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude');
+    const claudeDir = process.env.CLAUDE_PLUGIN_ROOT || path.join(os.homedir(), '.claude');
     const digest = buildWeeklyDigest(claudeDir);
     if (digest) {
       process.stdout.write(JSON.stringify({ type: 'assistant', content: digest }) + '\n');
