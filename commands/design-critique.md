@@ -44,3 +44,8 @@ Get a structured critique of a visual design.
 - `typography-design` — typeface pairing, scale, spacing
 - `visual-identity` — color palette, WCAG contrast, brand voice
 - `creative-direction` — icon consistency, motion, cross-touchpoint coherence
+
+## After This
+
+- `/wireframe` — revise the wireframe based on critique feedback
+- `/brand-identity` — develop brand guidelines if visual identity gaps found

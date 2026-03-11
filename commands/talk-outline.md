@@ -86,3 +86,8 @@ Create a structured talk outline from a topic or draft notes.
 
 - `talk-preparation` — time boxing, outline structure, Q&A preparation, speaker note format
 - `presentation-design` — narrative arc selection, opening hooks, closing patterns
+
+## After This
+
+- `/slide-deck` — build the slide deck from the completed outline
+- `/cfp` — write a CFP abstract based on the outline

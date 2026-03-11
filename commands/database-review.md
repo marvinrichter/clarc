@@ -79,3 +79,8 @@ psql -c "SELECT schemaname, tablename, indexname FROM pg_stat_user_indexes WHERE
 - Agent: `agents/database-reviewer.md`
 - Skills: `skills/postgres-patterns/`, `skills/database-migrations/`
 - Use `/security-review` for application-level security review
+
+## After This
+
+- `/tdd` — add tests for flagged query issues
+- `/security-review` — full scan if SQL injection risks are found

@@ -239,3 +239,9 @@ checkov -f /tmp/cfn.json --framework cloudformation
 - Skill: `skills/terraform-patterns/` — Terraform (when to use vs Pulumi/CDK)
 - Skill: `skills/devsecops-patterns/` — Checkov, Trivy, OPA in IaC CI pipeline
 - Command: `/dep-audit` — vulnerability scanning for IaC dependencies
+
+## After This
+
+- `/gitops-review` — validate GitOps workflow after IaC changes
+- `/tdd` — add Terratest or policy tests
+- `/security-review` — full scan if misconfiguration found

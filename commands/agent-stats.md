@@ -54,3 +54,8 @@ Sorted by success rate ascending — quickly spots unreliable agents.
 ---
 
 **Related:** `/hooks-stats` for hook-level metrics, `/sessions` for session history.
+
+## After This
+
+- `/system-review components` — deep review of frequently invoked agents
+- `/hooks-stats` — view hook-level invocation metrics

@@ -157,3 +157,8 @@ Next steps:
 - `minor` — force MINOR bump
 - `major` — force MAJOR bump
 - `1.5.0` — use exact version
+
+## After This
+
+- `/tdd` — ensure all tests pass before publishing
+- `/mobile-release` — run mobile release workflow if this is a mobile app

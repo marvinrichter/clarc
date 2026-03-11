@@ -171,3 +171,8 @@ grep -rn "waitUntil\|passThroughOnException" src/ --include="*.ts"
 
 - `edge-patterns` — Cloudflare Workers, Vercel Edge, Deno Deploy
 - `serverless-patterns` — Lambda-specific patterns (cold starts, event sources)
+
+## After This
+
+- `/build-fix` — fix edge function errors flagged in review
+- `/security-review` — full scan if origin bypass or secret exposure found

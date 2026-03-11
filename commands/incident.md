@@ -153,3 +153,8 @@ Generate a runbook at `docs/runbooks/<service>/<failure>.md` with:
 - `P0 no users can log in` → open P0 incident
 - `post-mortem docs/incidents/2026-03-06-checkout.md` → write post-mortem
 - `runbook order-service db-connection-pool` → generate runbook
+
+## After This
+
+- `/tdd` — add regression tests to prevent recurrence
+- `/slo` — update SLOs based on incident impact

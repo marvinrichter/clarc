@@ -178,3 +178,8 @@ Integrate review feedback, execute optimization after user confirmation.
 2. **Gemini backend opinions for reference only**
 3. External models have **zero filesystem write access**
 4. Claude handles all code writes and file operations
+
+## After This
+
+- `/tdd` — add integration tests for the multi-backend workflow
+- `/code-review` — review backend implementation

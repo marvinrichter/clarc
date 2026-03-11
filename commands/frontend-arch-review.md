@@ -223,3 +223,9 @@ grep -r "S3_BUCKET\|CDN_URL\|DEPLOY_TARGET" .github/workflows/checkout.yml
 - Agent: `agents/frontend-architect.md` — design new MFE architecture from scratch
 - Skill: `skills/typescript-monorepo-patterns/` — monorepo tooling for MFE projects
 - Skill: `skills/e2e-testing/` — Playwright E2E for MFE full-composition testing
+
+## After This
+
+- `/arch-design` — design improved architecture based on review findings
+- `/tdd` — add tests for identified gaps
+- `/code-review` — review implementation after architectural changes

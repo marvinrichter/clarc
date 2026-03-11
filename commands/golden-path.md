@@ -318,3 +318,8 @@ cat /tmp/golden-path-output/catalog-info.yaml
 
 - `backstage-patterns` — Scaffolder template syntax, actions, catalog YAML
 - `platform-engineering` — Golden Path strategy and adoption
+
+## After This
+
+- `/tdd` — add tests for Golden Path templates
+- `/setup-dev` — verify the Golden Path setup script works

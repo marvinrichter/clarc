@@ -2,9 +2,7 @@
 
 ## Active
 
-| Roadmap | Goal | Status |
-|---------|------|--------|
-| [command-ux-completeness](command-ux-completeness.md) | Zero audit findings — After This for 149 commands, 2 new commands, overlap disambiguation, step restructuring | 📋 Planned |
+_No active roadmaps. Run `/system-review components` to identify the next one._
 
 ---
 
@@ -29,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (20)
+## Done (21)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [command-ux-completeness](done/command-ux-completeness.md) | 168/168 commands with After This, 2 new commands, P0 structural fixes, escalation ladders | #32 |
 | [command-structure-depth](done/command-structure-depth.md) | Command UX 6.2→8.0: step structure, arg docs, next-steps, delegation wiring, 16 review disambiguations, 2 new commands | #31 |
 | [agent-skill-completeness](done/agent-skill-completeness.md) | Agent tool gaps, process skill workflows, RFC 7807 fix, P2 agent quality, skill size extraction | #30 |
 | [command-namespace-cleanup](done/command-namespace-cleanup.md) | eval→llm-eval, multi-* disambiguation, orchestrator-design + sdk-design commands, promote/deps/security renames, instinct-* step depth | #29 |

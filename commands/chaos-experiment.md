@@ -190,3 +190,8 @@ After the experiment completes:
 - `chaos-engineering` — tool reference, experiment types, maturity model
 - `resilience-patterns` — implementing circuit breakers, retries, fallbacks
 - `observability` — setting up the metrics needed to measure steady state
+
+## After This
+
+- `/resilience-audit` — audit resilience after experiment findings
+- `/slo` — update SLOs based on experiment results

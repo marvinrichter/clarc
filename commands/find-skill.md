@@ -53,3 +53,8 @@ echo "To load a skill: mention its name in your next message, e.g. 'Use the jpa-
 ```
 
 If no results found, try a broader keyword or check `/instinct-status` for learned project-specific patterns.
+
+## After This
+
+- Read the matched skill file to understand the pattern in detail
+- `/guide <topic>` — get a workflow plan using the matched skill

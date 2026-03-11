@@ -111,3 +111,8 @@ After instrumenting, report:
 ## Verify
 Open [analytics tool] → Live Events and create a project to confirm.
 ```
+
+## After This
+
+- `/slo` — define SLOs using the new instrumentation
+- `/tdd` — add tests for instrumentation code

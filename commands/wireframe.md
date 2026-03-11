@@ -104,3 +104,8 @@ End every output with a brief summary:
 - Handoff summary
 
 All output should be directly usable in a PR description, issue, or design document — no tool installation required.
+
+## After This
+
+- `/design-critique` — get structured feedback on the wireframe
+- `/slide-deck` — present wireframe in a stakeholder slide deck

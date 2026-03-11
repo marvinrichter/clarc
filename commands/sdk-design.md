@@ -71,3 +71,9 @@ Next: implement the SDK using the recommended strategy, then run /setup-ci for t
 
 - Skill `api-design` — REST API design patterns and contract-first approach (use before designing the SDK)
 - `/setup-ci` — set up CI/CD for the SDK release pipeline
+
+## After This
+
+- `/plan` — create SDK implementation plan
+- `/tdd` — write SDK tests first
+- `/sdk-review` — review the implemented SDK

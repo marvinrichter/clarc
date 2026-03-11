@@ -128,3 +128,8 @@ Use: each phase depends on the previous output
 
 **See also:** Skill `multi-agent-coordination` for full pattern specifications.
 **Conflict resolution:** Skill `agent-conflict-resolution` for priority hierarchy and decision trees.
+
+## After This
+
+- `/tdd` — add integration tests for the orchestrated workflow
+- `/code-review` — review orchestration implementation

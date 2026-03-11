@@ -68,3 +68,7 @@ GLOBAL INSTINCTS: 4
 - **Many events, few instincts**: the quality gate in `/learn-eval` is filtering out low-confidence patterns — this is normal
 - **Stale project** (last seen > 30 days): instincts for that project may have decayed — run `/instinct-report` from within it to check
 - **Missing project**: not registered yet — open a session from within that project's git root to register it automatically
+
+## After This
+
+- `/instinct-status` — check instinct scores for the listed projects

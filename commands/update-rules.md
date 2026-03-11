@@ -65,3 +65,8 @@ Available: v0.9.0
 - Command: `/rules-diff` — preview changes without applying
 - Command: `/doctor` — check rules age and available updates
 - Script: `scripts/update-rules.js` — underlying implementation
+
+## After This
+
+- `/doctor` — verify clarc health after rules update
+- `/system-review quick` — validate wiring after rule changes

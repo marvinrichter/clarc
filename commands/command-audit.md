@@ -76,3 +76,8 @@ Results saved to `docs/system-review/command-audit-<date>.json`.
 3. **Per-command table**: Show all commands with their step count, agent, and any issues
 4. **Save results**: Write to `docs/system-review/command-audit-YYYY-MM-DD.json`
 5. **Suggest fixes**: For each HIGH issue, provide concrete remediation
+
+## After This
+
+- `/system-review components` — full component review after command fixes
+- `/prompt-audit` — review prompt quality of fixed commands

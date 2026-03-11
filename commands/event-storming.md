@@ -186,3 +186,8 @@ Based on the model:
 - `cqrs-event-sourcing` — CQRS, Event Sourcing, Outbox Pattern, Saga
 - `event-driven-patterns` — Kafka, EventBridge, pub/sub, CloudEvents
 - `multi-agent-patterns` — if agents model the domain actors
+
+## After This
+
+- `/plan` — create implementation plan from the event storming model
+- `/breakdown` — decompose bounded contexts into tasks

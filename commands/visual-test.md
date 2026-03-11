@@ -282,3 +282,8 @@ Show what was configured:
 - `visual-testing` — tool comparison, flakiness strategies, baseline management
 - `storybook-patterns` — Chromatic integration, CSF3 stories
 - `e2e-testing` — Playwright functional tests (complement to visual tests)
+
+## After This
+
+- `/code-review` — review visual test implementation
+- `/tdd` — add unit tests alongside visual regression tests

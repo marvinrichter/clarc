@@ -79,3 +79,8 @@ Produce a complete document in this format:
 ### Dashboard query
 [query to track budget remaining]
 ```
+
+## After This
+
+- `/instrument` — add instrumentation to measure the defined SLOs
+- `/engineering-review` — include SLO progress in the monthly review

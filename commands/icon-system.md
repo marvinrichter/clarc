@@ -100,3 +100,8 @@ Deliver as a markdown document that can be saved to `docs/icon-system.md`:
 - Icon component code
 - Accessibility rules
 - (In audit mode) finding list with severity
+
+## After This
+
+- `/design-system-review` — verify icons integrate correctly with the design system
+- `/code-review` — review icon component implementation

@@ -1,5 +1,5 @@
 ---
-description: Start the NanoClaw agent REPL — a persistent, session-aware AI assistant powered by the claude CLI.
+description: Start an interactive Claude REPL session (NanoClaw) — persistent conversation history, named sessions, and optional skill context loading via the claude CLI.
 ---
 
 # Claw Command
@@ -77,3 +77,7 @@ CLAW_SESSION=my-project node scripts/claw.js
 # With skill context
 CLAW_SKILLS=tdd-workflow,security-review node scripts/claw.js
 ```
+
+## After This
+
+- `/sessions` — manage and resume Claude Code sessions

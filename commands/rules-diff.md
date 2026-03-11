@@ -55,3 +55,7 @@ Run /update-rules to apply these changes.
 
 - Command: `/update-rules` — apply the changes shown by this command
 - Command: `/doctor` — full health check including rules staleness
+
+## After This
+
+- `/update-rules` — apply the changes shown by this command

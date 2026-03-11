@@ -452,3 +452,8 @@ Next steps:
 - `developer-onboarding` — code archaeology, setup script design, CONTRIBUTING.md patterns, onboarding metrics
 - `arc42-c4` — architecture documentation with C4 diagrams
 - `adr-writing` — Architecture Decision Records
+
+## After This
+
+- `/tdd` — validate the setup script works on a clean environment
+- `/setup-dev` — run the generated setup script

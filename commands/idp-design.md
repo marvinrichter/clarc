@@ -141,3 +141,8 @@ Cost comparison (for [N] engineers):
 
 - `platform-engineering` — IDP strategy, Team Topologies, maturity model
 - `backstage-patterns` — catalog YAML, Scaffolder templates, plugins
+
+## After This
+
+- `/plan` — create implementation plan for the IDP
+- `/golden-path` — implement Golden Path templates based on the design

@@ -89,3 +89,8 @@ node scripts/agent-evolution.js remove typescript-reviewer "Always flag direct D
 - Skill: `continuous-learning-v2` — instinct capture and management
 - Command: `/instinct-outcome` — record whether an instinct worked or not
 - Command: `/evolve` — cluster instincts into new skills/commands/agents
+
+## After This
+
+- `/instinct-status` — verify instinct scores after evolution
+- `/skill-create` — create skills from evolved patterns

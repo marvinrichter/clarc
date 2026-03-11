@@ -1,6 +1,6 @@
 # Command UX Completeness
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Date:** 2026-03-11
 **Goal:** Zero open findings in the command system audit — every command has an "After This" section, overlaps are disambiguated, step counts are navigable, and all missing commands exist.
 
@@ -220,29 +220,29 @@ All share the same fix pattern: add `## After This` with `/tdd` (if test gaps fl
 
 | ID | Item | Status |
 |----|------|--------|
-| P0-G | guide.md: dispatch table (88→≤15 steps) | 📋 |
-| P0-ME | multi-execute.md: Phase grouping (40→phases) | 📋 |
-| P1-N1 | Add commands/design-system-review.md | 📋 |
-| P1-N2 | Add commands/supply-chain-audit.md | 📋 |
-| P1-O1 | dep-audit + dep-update scope boundary | 📋 |
-| P1-O2 | security-review + sbom + dep-audit escalation ladder | 📋 |
-| P1-O3 | code-review routing guidance vs *-review | 📋 |
-| P1-O4 | storybook-audit cross-ref to design-system-review | 📋 |
-| P1-S1 | tdd: consolidate duplicate Red-Green-Refactor | 📋 |
-| P1-S2 | system-review: 25→5 user-facing steps | 📋 |
-| P1-S3 | multi-plan: group into phases | 📋 |
-| P1-S4 | docs-review: 39 steps → 7 H2 sections | 📋 |
-| P1-S5 | checkpoint: group into Create/Verify/Restore | 📋 |
-| P1-A1 | swift-build: architect → build-error-resolver | 📋 |
-| P1-A2 | sbom: add supply-chain-audit cross-ref | 📋 |
-| P1-NC1 | claw: update description for discoverability | 📋 |
-| P1-NC2 | webrtc-review: add Usage section for $ARGUMENTS | 📋 |
-| AT-R1–R16 | 16× language *-review: After This | 📋 |
-| AT-A1–A13 | 13× *-audit: After This | 📋 |
-| AT-B1–B7 | 7× *-build: After This | 📋 |
-| AT-T1–T4 | 4× test commands: After This | 📋 |
-| AT-D1–D9 | 9× design/arch: After This | 📋 |
-| AT-W1–W12 | 12× workflow: After This | 📋 |
-| AT-L1–L8 | 8× learning: After This | 📋 |
-| AT-S1–S8 | 8× setup: After This | 📋 |
-| AT-M1–M60 | 60× remaining: After This | 📋 |
+| P0-G | guide.md: dispatch table (88→≤15 steps) | ✅ |
+| P0-ME | multi-execute.md: Phase grouping (40→phases) | ✅ |
+| P1-N1 | Add commands/design-system-review.md | ✅ |
+| P1-N2 | Add commands/supply-chain-audit.md | ✅ |
+| P1-O1 | dep-audit + dep-update scope boundary | ✅ |
+| P1-O2 | security-review + sbom + dep-audit escalation ladder | ✅ |
+| P1-O3 | code-review routing guidance vs *-review | ✅ |
+| P1-O4 | storybook-audit cross-ref to design-system-review | ✅ |
+| P1-S1 | tdd: consolidate duplicate Red-Green-Refactor | ✅ |
+| P1-S2 | system-review: 25→5 user-facing steps | ✅ |
+| P1-S3 | multi-plan: group into phases | ✅ |
+| P1-S4 | docs-review: 39 steps → 7 H2 sections | ✅ |
+| P1-S5 | checkpoint: group into Create/Verify/Restore | ✅ |
+| P1-A1 | swift-build: architect → build-error-resolver | ✅ |
+| P1-A2 | sbom: add supply-chain-audit cross-ref | ✅ |
+| P1-NC1 | claw: update description for discoverability | ✅ |
+| P1-NC2 | webrtc-review: add Usage section for $ARGUMENTS | ✅ |
+| AT-R1–R16 | 16× language *-review: After This | ✅ |
+| AT-A1–A13 | 13× *-audit: After This | ✅ |
+| AT-B1–B7 | 7× *-build: After This | ✅ |
+| AT-T1–T4 | 4× test commands: After This | ✅ |
+| AT-D1–D9 | 9× design/arch: After This | ✅ |
+| AT-W1–W12 | 12× workflow: After This | ✅ |
+| AT-L1–L8 | 8× learning: After This | ✅ |
+| AT-S1–S8 | 8× setup: After This | ✅ |
+| AT-M1–M60 | 60× remaining: After This | ✅ |

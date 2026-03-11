@@ -26,6 +26,17 @@ Multi-model collaborative planning - Context retrieval + Dual-model analysis →
 
 $ARGUMENTS
 
+## Phases at a Glance
+
+| Phase | Name | What Happens |
+|-------|------|-------------|
+| 1 | Context Retrieval | Enhance prompt via MCP, retrieve relevant code context |
+| 2 | Multi-Model Analysis | Parallel Codex (backend) + Gemini (frontend) analysis |
+| 2.3 | Plan Draft | Optional dual-model plan drafts for completeness |
+| 2.4 | Synthesize | Claude generates final plan, saves to `.claude/plan/` |
+
+> Plan delivery ends here — execution is `/multi-execute`'s responsibility. See [Reference](#reference) for call syntax.
+
 ---
 
 ## Core Protocols
@@ -35,51 +46,6 @@ $ARGUMENTS
 - **Code Sovereignty**: External models have **zero filesystem write access**, all modifications by Claude
 - **Stop-Loss Mechanism**: Do not proceed to next phase until current phase output is validated
 - **Planning Only**: This command allows reading context and writing to `.claude/plan/*` plan files, but **NEVER modify production code**
-
----
-
-## Multi-Model Call Specification
-
-**Call Syntax** (parallel: use `run_in_background: true`):
-
-```
-Bash({
-  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}- \"$PWD\" <<'EOF'
-ROLE_FILE: <role prompt path>
-<TASK>
-Requirement: <enhanced requirement>
-Context: <retrieved project context>
-</TASK>
-OUTPUT: Step-by-step implementation plan with pseudo-code. DO NOT modify any files.
-EOF",
-  run_in_background: true,
-  timeout: 3600000,
-  description: "Brief description"
-})
-```
-
-**Model Parameter Notes**:
-- `{{GEMINI_MODEL_FLAG}}`: When using `--backend gemini`, replace with `--gemini-model gemini-3-pro-preview` (note trailing space); use empty string for codex
-
-**Role Prompts**:
-
-| Phase | Codex | Gemini |
-|-------|-------|--------|
-| Analysis | `~/.claude/.ccg/prompts/codex/analyzer.md` | `~/.claude/.ccg/prompts/gemini/analyzer.md` |
-| Planning | `~/.claude/.ccg/prompts/codex/architect.md` | `~/.claude/.ccg/prompts/gemini/architect.md` |
-
-**Session Reuse**: Each call returns `SESSION_ID: xxx` (typically output by wrapper), **MUST save** for subsequent `/ccg:execute` use.
-
-**Wait for Background Tasks** (max timeout 600000ms = 10 minutes):
-
-```
-TaskOutput({ task_id: "<task_id>", block: true, timeout: 600000 })
-```
-
-**IMPORTANT**:
-- Must specify `timeout: 600000`, otherwise default 30 seconds will cause premature timeout
-- If still incomplete after 10 minutes, continue polling with `TaskOutput`, **NEVER kill the process**
-- If waiting is skipped due to timeout, **MUST call `AskUserQuestion` to ask user whether to continue waiting or kill task**
 
 ---
 
@@ -280,4 +246,42 @@ After user approves, **manually** execute:
 2. **No Y/N prompts** – Only present plan, let user decide next steps
 3. **Trust Rules** – Backend follows Codex, Frontend follows Gemini
 4. External models have **zero filesystem write access**
-5. **SESSION_ID Handoff** – Plan must include `CODEX_SESSION` / `GEMINI_SESSION` at end (for `/ccg:execute resume <SESSION_ID>` use)
+5. **SESSION_ID Handoff** – Plan must include `CODEX_SESSION` / `GEMINI_SESSION` at end (for `/multi-execute resume <SESSION_ID>` use)
+
+## After This
+
+- `/multi-execute <plan-file>` — execute the saved plan with multi-model collaboration
+- `/tdd` — if implementing with native Claude instead of multi-execute
+- `/breakdown` — decompose the plan into atomic tasks if the plan is large
+
+---
+
+## Reference
+
+> Technical call syntax — consult when debugging or customising model invocations.
+
+**Planning call** (`run_in_background: true`):
+```
+Bash({
+  command: "~/.claude/bin/codeagent-wrapper {{LITE_MODE_FLAG}}--backend <codex|gemini> {{GEMINI_MODEL_FLAG}}- \"$PWD\" <<'EOF'
+ROLE_FILE: <role prompt path>
+<TASK>
+Requirement: <enhanced requirement>
+Context: <retrieved context>
+</TASK>
+OUTPUT: Step-by-step implementation plan with pseudo-code. DO NOT modify any files.
+EOF",
+  run_in_background: true, timeout: 3600000
+})
+```
+
+**Model flags**: `{{GEMINI_MODEL_FLAG}}` = `--gemini-model gemini-3-pro-preview` (trailing space) for Gemini; empty for Codex.
+
+**Wait**: `TaskOutput({ task_id: "<id>", block: true, timeout: 600000 })` — never kill; poll if timeout.
+
+**Role prompts**:
+
+| Phase | Codex | Gemini |
+|-------|-------|--------|
+| Analysis | `~/.claude/.ccg/prompts/codex/analyzer.md` | `~/.claude/.ccg/prompts/gemini/analyzer.md` |
+| Planning | `~/.claude/.ccg/prompts/codex/architect.md` | `~/.claude/.ccg/prompts/gemini/architect.md` |

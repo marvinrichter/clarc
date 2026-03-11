@@ -166,3 +166,8 @@ grep -rn "#\[wasm_bindgen_test\]\|wasm_bindgen_test_configure" . --include="*.rs
 - `wasm-patterns` — wasm-bindgen, WASI, Component Model
 - `wasm-performance` — size optimization, SIMD, memory management
 - `rust-patterns` — Rust idioms (error handling, ownership)
+
+## After This
+
+- `/wasm-build` — fix build issues flagged in review
+- `/security-review` — full scan for unsafe blocks

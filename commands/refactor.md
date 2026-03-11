@@ -86,3 +86,9 @@ All tests passing ✅
 - **One deletion at a time** — Atomic changes make rollback easy
 - **Skip if uncertain** — Better to keep dead code than break production
 - **Don't refactor while cleaning** — Separate concerns (clean first, refactor later)
+
+## After This
+
+- `/tdd` — add or update tests after refactoring
+- `/code-review` — review refactored code
+- `/verify` — confirm build + tests pass after refactor

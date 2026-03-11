@@ -130,3 +130,8 @@ Next: Set SENTRY_DSN in your deployment environment
 - `metrics` — add Prometheus metrics only
 - `health` — add health check endpoints only
 - `sentry` — add Sentry error tracking only
+
+## After This
+
+- `/tdd` — add tests for observability instrumentation
+- `/slo` — define SLIs and SLOs for the instrumented service

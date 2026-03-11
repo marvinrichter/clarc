@@ -180,3 +180,8 @@ eas submit --platform all --profile production
 - `mobile-cicd-patterns` — code signing, Fastlane setup, build automation
 - `flutter-patterns` — Flutter-specific CI/CD with EAS + Fastlane
 - `deployment-patterns` — Canary, staged rollout strategy
+
+## After This
+
+- `/tdd` — add regression tests before the next release
+- `/release` — cut the release after mobile build passes

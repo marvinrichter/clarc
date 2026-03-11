@@ -74,3 +74,8 @@ Write a summary to `.reports/codemap-diff.txt`:
 - Keep each codemap under **1000 tokens** for efficient context loading
 - Use ASCII diagrams for data flow instead of verbose descriptions
 - Run after major feature additions or refactoring sessions
+
+## After This
+
+- `/update-docs` — update documentation after codemap refresh
+- `/update-docs` — full documentation sync (use after codemaps are refreshed)

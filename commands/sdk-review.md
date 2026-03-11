@@ -249,3 +249,8 @@ Recommendation: Fix HIGH issue before publishing. MEDIUM issues in next MINOR re
 - Skill: `skills/api-contract/` — OpenAPI spec authoring
 - Skill: `skills/contract-testing/` — Pact and OpenAPI contract tests
 - Command: `/code-review` — review the underlying API before reviewing the SDK
+
+## After This
+
+- `/tdd` — add tests for SDK gaps flagged in review
+- `/code-review` — review SDK fixes

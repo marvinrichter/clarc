@@ -92,3 +92,8 @@ your-project/
 - Cursor reads `.cursor/rules/*.md` automatically for files matching the `paths:` frontmatter
 - `.cursorrules` provides global project context to Cursor
 - Add `.cursor/` and `.cursorrules` to your `.gitignore` or commit them for team sharing
+
+## After This
+
+- `/doctor` — verify clarc installation health
+- `/quickstart` — run interactive onboarding

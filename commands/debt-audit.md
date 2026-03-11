@@ -226,3 +226,8 @@ Track these to demonstrate improvement:
 - `technical-debt` — debt taxonomy, interest rate calculation, stakeholder communication
 - `legacy-modernization` — patterns for implementing the fixes (Strangler Fig, Branch-by-Abstraction)
 - `engineering-metrics` — DORA metrics to measure impact of debt reduction
+
+## After This
+
+- `/refactor` — tackle the highest-priority technical debt items
+- `/modernize` — create a modernization roadmap for legacy code

@@ -228,3 +228,8 @@ See `dora-implementation` skill for detailed setup of each option.
 
 - `engineering-metrics` — DORA theory, SPACE framework, Goodhart's Law
 - `dora-implementation` — technical setup for ongoing tracking
+
+## After This
+
+- `/slo` — define SLOs aligned with DORA metrics
+- `/engineering-review` — monthly review of DORA metric progress

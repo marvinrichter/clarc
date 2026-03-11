@@ -118,3 +118,8 @@ Next:
 - `why is software deployment still hard` — pain-first framing
 - `b2b saas onboarding trends` — trend-focused
 - (empty) — asks for the domain
+
+## After This
+
+- `/brainstorm` — generate ideas from discovered opportunities
+- `/idea` — capture the best discovery as a structured idea

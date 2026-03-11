@@ -98,3 +98,8 @@ Commands: `/gitops-review`, `/iac-review`, `/finops-audit`
 Always relevant: `tdd-workflow`, `git-workflow`, `api-design`, `security-review`
 Always useful agents: `planner`, `code-reviewer`, `tdd-guide`
 Always useful commands: `/plan`, `/tdd`, `/code-review`, `/security-review`
+
+## After This
+
+- `/plan` — create implementation plan using the discovered context
+- `/breakdown` — decompose the task based on context

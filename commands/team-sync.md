@@ -61,3 +61,8 @@ After `/team-sync`:
 - Skill `team-foundation` — full team setup guide
 - `install.sh --team-mode` — initial team installation
 - `/doctor` — verify clarc health after sync
+
+## After This
+
+- `/doctor` — verify clarc health after syncing
+- `/update-rules` — apply latest rules after sync

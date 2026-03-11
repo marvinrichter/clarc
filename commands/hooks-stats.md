@@ -61,3 +61,8 @@ session-start                   1    23ms    23ms    0%
 ```
 
 Hooks exceeding 3000ms are flagged with a ⚠ warning.
+
+## After This
+
+- `/hook-audit` — deep audit of hooks that show high failure rates
+- `/agent-stats` — view agent-level invocation statistics

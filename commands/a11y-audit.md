@@ -271,3 +271,8 @@ Document findings from manual screen reader testing:
 - `accessibility-patterns` — WCAG 2.2, ARIA, keyboard navigation, screen reader testing, axe-core
 - `storybook-patterns` — addon-a11y integration for component-level checks
 - `e2e-testing` — add axe to Playwright E2E tests
+
+## After This
+
+- `/tdd` — add accessibility unit tests for flagged violations
+- `/code-review` — review accessibility fixes before committing

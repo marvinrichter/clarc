@@ -231,3 +231,8 @@ The #1 reason DevEx surveys fail: **management reads them and does nothing.**
 - `team-process` — sprint planning and retrospective formats
 - `/dora-baseline` — complement DevEx with objective delivery metrics
 - `/engineering-review` — monthly review that uses both DORA + DevEx data
+
+## After This
+
+- `/golden-path` — create Golden Path templates based on survey findings
+- `/setup-dev` — improve the setup script based on developer pain points

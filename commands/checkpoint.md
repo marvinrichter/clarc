@@ -10,7 +10,16 @@ Create or verify a checkpoint in your workflow. Integrates with `.clarc/context.
 
 `/checkpoint [create|verify|list|restore] [name]`
 
-## Create Checkpoint
+| Action | When | Example |
+|--------|------|---------|
+| `create` | Before context compaction, after a milestone | `/checkpoint create core-done` |
+| `verify` | After compaction, to confirm state vs. checkpoint | `/checkpoint verify core-done` |
+| `restore` | After compaction, to recover context | `/checkpoint restore` |
+| `list` | See all checkpoints with SHA + status | `/checkpoint list` |
+
+---
+
+## Phase 1 — Create Checkpoint
 
 When creating a checkpoint:
 
@@ -42,7 +51,7 @@ EOF
 
 6. Report checkpoint created
 
-## Verify Checkpoint
+## Phase 2 — Verify Checkpoint
 
 When verifying against a checkpoint:
 
@@ -63,7 +72,7 @@ Coverage: +X% / -Y%
 Build: [PASS/FAIL]
 ```
 
-## Restore from Checkpoint
+## Phase 3 — Restore from Checkpoint
 
 When recovering after context compaction:
 
@@ -120,3 +129,8 @@ $ARGUMENTS:
 - `restore` — Restore context from latest checkpoint + `.clarc/context.md`
 - `list` — Show all checkpoints
 - `clear` — Remove old checkpoints (keeps last 5)
+
+## After This
+
+- `/verify` — run full build + tests to confirm the checkpointed state is clean
+- `/undo` — if the checkpoint reveals the last changes were wrong, undo to previous state

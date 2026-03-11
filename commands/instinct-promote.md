@@ -39,3 +39,7 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py promote 
    - Appear in at least 2 projects
    - Meet confidence threshold
 4. Write promoted instincts to `~/.claude/homunculus/instincts/personal/` with `scope: global`
+
+## After This
+
+- `/skill-create` — create a skill from the promoted instinct pattern

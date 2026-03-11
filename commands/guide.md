@@ -6,7 +6,26 @@ description: "Get a step-by-step workflow plan for a specific task using clarc c
 
 Given a task description, return an ordered workflow plan using the right clarc skills, agents, and commands.
 
-## What to Do
+## Instructions
+
+1. Parse `$ARGUMENTS` (the task description after `/guide`)
+2. Match to the closest task type in the dispatch table below
+3. Output the focused 3–5 step workflow — no more, no less
+4. If no match found, use the **unknown task** fallback at the bottom
+
+## Output Format
+
+```
+## Workflow: <task name>
+
+**Step 1 — <phase>**: <action>
+**Step 2 — <phase>**: <action>
+...
+
+Effort: S | M | L   Key risks: <list>
+```
+
+## Task Type Dispatch Table
 
 Parse the task the user described and match it to the closest task type below. Output:
 
@@ -159,3 +178,9 @@ If the task doesn't match a category above:
 1. Start with `/plan` — let the planner agent create a structured approach
 2. `/context` — check what clarc components are relevant for this project
 3. Ask: "What type of task is this?" to help narrow the category
+
+## After This
+
+- `/plan` — for deeper implementation planning on any selected workflow
+- `/breakdown` — decompose the planned workflow into atomic tasks
+- `/clarc-way` — interactive walkthrough if the task type is still unclear

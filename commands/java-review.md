@@ -124,3 +124,9 @@ Both invoke the same specialist. Use `/code-review` when changes span multiple l
 
 - Agent: `agents/java-reviewer.md`
 - Skills: `skills/java-patterns/`, `skills/springboot-patterns/`, `skills/hexagonal-java/`, `skills/ddd-java/`, `skills/jpa-patterns/`
+
+## After This
+
+- `/tdd` — add tests for Java code that failed review
+- `/build-fix` — fix compilation or dependency errors
+- `/security-review` — full scan if security or injection issues found

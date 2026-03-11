@@ -122,3 +122,8 @@ Create `docs/brand-guidelines.md` as a structured skeleton with headers and plac
 
 - `visual-identity` — palette construction, WCAG validation, logo brief, mood board
 - `typography-design` — typeface selection, pairing rules, modular scale
+
+## After This
+
+- `/design-critique` — get critique on the developed brand identity
+- `/visual-test` — add visual regression tests for brand token implementation

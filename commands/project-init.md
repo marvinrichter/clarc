@@ -55,3 +55,8 @@ Load the `starter-packs` skill and follow the Bootstrap Protocol:
 - `/init` is a reserved Claude Code command — this is `/project-init`
 - For team setups with shared rules, combine with `install.sh --team-mode`
 - See skill `starter-packs` for full pack specifications
+
+## After This
+
+- `/tdd` — start building with test-driven development
+- `/setup-ci` — configure CI/CD pipeline

@@ -54,3 +54,8 @@ prettier --check "src/**/*.{ts,tsx,js,jsx}" 2>/dev/null || true
 - Agent: `agents/typescript-reviewer.md`
 - Skills: `skills/typescript-patterns/`, `skills/nodejs-backend-patterns/`
 - Use `/typescript-review` for a full code quality review
+
+## After This
+
+- `/typescript-review` — review code quality after type errors are fixed
+- `/tdd` — add tests to prevent regression

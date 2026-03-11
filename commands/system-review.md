@@ -109,3 +109,9 @@ Every report includes:
 - Coverage gaps
 - Priority Matrix
 - Recommended next roadmap items
+
+## After This
+
+- Create a new roadmap from the P0/P1 findings in `docs/roadmaps/`
+- `/command-audit` — re-run command ergonomics check if command issues dominate
+- `/competitive-review` — deeper competitive analysis if market gaps are flagged

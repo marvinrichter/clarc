@@ -65,3 +65,8 @@ Overlay for typescript-reviewer:
 - Command: `/agent-evolution` — promote instincts to agent overlays
 - Skill: `agent-evolution-patterns` — full workflow guide
 - Skill: `continuous-learning-v2` — how instincts are captured
+
+## After This
+
+- `/evolve` — trigger evolution if instincts have accumulated enough outcomes
+- `/instinct-status` — check current instinct scores

@@ -130,3 +130,7 @@ Next: run /evaluate <name> to assess whether it's worth building.
 - `let users export their data as CSV`
 - `OAuth2 login with GitHub and Google`
 - (empty — will ask for the idea)
+
+## After This
+
+- `/evaluate` — evaluate the captured idea for Go/No-Go

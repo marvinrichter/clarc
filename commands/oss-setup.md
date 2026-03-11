@@ -111,3 +111,8 @@ Remind the user to:
 3. Run the label creation commands printed above
 4. Apply branch protection rules in GitHub Settings
 5. Add a release-please workflow if using automated CHANGELOG (see `open-source-governance` skill)
+
+## After This
+
+- `/setup-ci` — configure CI/CD for the open source project
+- `/tdd` — add tests before the first public release

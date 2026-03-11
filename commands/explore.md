@@ -68,3 +68,8 @@ Next: /prd <name> — write the Product Requirements Document from this decision
 - `order-push-notifications`
 - `push notifications`
 - (empty — lists all evaluated ideas and asks)
+
+## After This
+
+- `/prd` — generate a PRD from the selected solution
+- `/plan` — create implementation plan for the chosen approach

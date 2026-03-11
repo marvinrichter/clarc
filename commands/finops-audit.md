@@ -295,3 +295,8 @@ Auditor: Claude FinOps Audit
 
 **Reference:** See `finops-patterns` skill for implementation details.
 **Agent:** Use `finops-advisor` for automated cost analysis and recommendations.
+
+## After This
+
+- `/plan` — create cost reduction task list from audit findings
+- `/iac-review` — review Terraform for the flagged resources

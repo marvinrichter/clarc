@@ -84,3 +84,8 @@ After updating, confirm with a summary:
   disabled: [tdd-sequence-guard]
   code_review_cooldown_minutes: 10
 ```
+
+## After This
+
+- `/hook-audit` — audit the full hook system after configuration changes
+- `/doctor` — verify clarc health after hook changes

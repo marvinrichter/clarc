@@ -63,3 +63,8 @@ cargo verify-project 2>/dev/null || true
 - Skills: `skills/rust-patterns/`, `skills/rust-testing/`
 - Use `/rust-review` for a full code quality review
 - Use `/rust-test` to run the full test suite
+
+## After This
+
+- `/rust-review` — review code quality after the build is green
+- `/tdd` — add tests to prevent regression

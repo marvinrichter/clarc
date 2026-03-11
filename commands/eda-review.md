@@ -223,3 +223,8 @@ grep -rn "logger\.\|log\." src/ --include="*.ts" | grep -v "test\|spec" | head -
 - `event-driven-patterns` — Kafka, EventBridge, pub/sub, CloudEvents, DLQ
 - `cqrs-event-sourcing` — CQRS, Event Sourcing, Outbox Pattern, Saga
 - `observability` — tracing, metrics, structured logging
+
+## After This
+
+- `/code-review` — review event handler implementation
+- `/tdd` — add idempotency and DLQ tests for flagged handlers

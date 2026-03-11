@@ -157,3 +157,8 @@ Produce a concise design document:
 - `multi-agent-patterns` — orchestration vs. choreography, handoffs, parallelization
 - `agent-reliability` — retry, timeouts, circuit breaker, cost control
 - `observability` — tracing across agent boundaries
+
+## After This
+
+- `/tdd` — add tests for the designed agent's behavior
+- `/orchestrate` — orchestrate the agent in a multi-agent workflow

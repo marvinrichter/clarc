@@ -300,3 +300,8 @@ curl -X POST http://localhost:7007/api/catalog/locations \
 
 - `backstage-patterns` — catalog YAML, Scaffolder templates, custom plugins
 - `platform-engineering` — IDP strategy, component prioritization
+
+## After This
+
+- `/golden-path` — create Golden Path templates in the configured Backstage
+- `/tdd` — add tests for custom Backstage plugins

@@ -161,3 +161,8 @@ To measure steady state before chaos experiments:
 - `resilience-patterns` — implementation examples for each pattern
 - `chaos-engineering` — validating that fixes work under fault injection
 - `observability` — setting up the metrics to measure resilience
+
+## After This
+
+- `/tdd` — add chaos and failure scenario tests
+- `/chaos-experiment` — run structured chaos experiments for flagged failure modes

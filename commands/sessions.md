@@ -307,3 +307,7 @@ $ARGUMENTS:
 - Aliases are stored in `~/.claude/session-aliases.json`
 - Session IDs can be shortened (first 4-8 characters usually unique enough)
 - Use aliases for frequently referenced sessions
+
+## After This
+
+- `/session-cost` — view cost estimates for the current or listed sessions

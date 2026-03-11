@@ -93,3 +93,7 @@ If `~/.claude/homunculus/conflicts.json` exists and has unresolved conflicts, sh
     █████████░  85%  validate-user-input [global]
               trigger: when handling user input
 ```
+
+## After This
+
+- `/evolve` — trigger instinct evolution if enough outcomes are collected

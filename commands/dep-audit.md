@@ -4,6 +4,14 @@ description: Full dependency audit — vulnerability scanning, license complianc
 
 # Dependency Audit Command
 
+<!-- SCOPE: audit-only, no upgrades. To upgrade after auditing, run /dep-update next.
+     ESCALATION LADDER:
+       dev-time check → /dep-audit (this command)
+       interactive upgrade → /dep-update (run dep-audit first)
+       release gate + attestation → /sbom
+       full DevSecOps pipeline scan → /security-review
+-->
+
 Run a full dependency audit: $ARGUMENTS
 
 ## Your Task
@@ -262,3 +270,9 @@ pipdeptree 2>/dev/null || pip install pipdeptree && pipdeptree
 - `/sbom` — generate and attach SBOM
 
 > Not covered here: outdated package upgrades and interactive version bumps — use `/dep-update` for those.
+
+## After This
+
+- `/dep-update` — interactive upgrade workflow (run this command first to scope what to upgrade)
+- `/sbom` — generate SBOM for release attestation
+- `/security-review` — full DevSecOps pipeline scan if CRITICAL vulnerabilities found

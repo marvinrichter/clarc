@@ -201,3 +201,8 @@ To get started:
 - `env` — only .env.example
 - `devcontainer` — only .devcontainer/
 - `readme` — only README Getting Started section
+
+## After This
+
+- `/doctor` — verify the development environment is healthy
+- `/tdd` — start development with test-driven development

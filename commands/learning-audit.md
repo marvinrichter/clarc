@@ -122,3 +122,8 @@ Coverage Gaps:
 ```
 
 Save to: `docs/system-review/learning-audit-YYYY-MM-DD.md`
+
+## After This
+
+- `/evolve` — fix learning gaps found in the audit
+- `/system-review components` — full system review if audit finds systemic issues

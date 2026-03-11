@@ -71,3 +71,8 @@ Overall:               67%     84%  ✅
 - Utility functions used across the codebase
 - API endpoint handlers (request → response flow)
 - Edge cases: null, undefined, empty string, empty array, zero, negative numbers
+
+## After This
+
+- `/tdd` — write tests for uncovered code paths
+- `/code-review` — review added tests for quality

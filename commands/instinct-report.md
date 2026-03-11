@@ -114,3 +114,8 @@ Use block characters to render a 12-cell bar:
 - Instincts below 20% confidence should be surfaced for manual review
 - Never auto-delete — only surface for user decision
 - Link to `/instinct-outcome` for recording new outcomes
+
+## After This
+
+- `/evolve` — trigger instinct evolution from high-confidence patterns
+- `/instinct-promote` — promote the highest-rated instincts

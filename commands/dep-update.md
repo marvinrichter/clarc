@@ -4,6 +4,15 @@ description: Dependency audit and upgrade workflow — check for outdated packag
 
 # dep-update
 
+<!-- SCOPE: interactive upgrade workflow — always run /dep-audit first to identify what needs upgrading.
+     ESCALATION LADDER:
+       dev-time check → /dep-audit (run first)
+       interactive upgrade → /dep-update (this command)
+       release gate + attestation → /sbom
+       full DevSecOps pipeline scan → /security-review
+     See also: /dep-audit for audit-only, /sbom for SBOM generation.
+-->
+
 Audit and upgrade project dependencies safely. Check outdated → check security → upgrade with verification.
 
 ## Instructions
@@ -241,3 +250,8 @@ Commit: git add package.json pnpm-lock.yaml && git commit -m "chore: update depe
 - `outdated` → list what's outdated without changing anything
 
 > Not covered here: license compliance, supply chain risk, and SBOM generation — use `/dep-audit` for those.
+
+## After This
+
+- \`/dep-audit\` — audit-only check after upgrading to confirm no new vulnerabilities
+- \`/verify\` — run full build + tests after upgrades to confirm nothing broke

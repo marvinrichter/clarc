@@ -80,3 +80,8 @@ Next steps:
 - `feedback/nps.csv top 10` — generate 10 idea seeds
 - `feedback/tickets.csv churned` — focus on churned users
 - (empty) — auto-detect feedback files
+
+## After This
+
+- `/brainstorm` — generate ideas from clustered feedback themes
+- `/idea` — capture the highest-priority idea
