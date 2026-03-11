@@ -28,14 +28,14 @@ mkdir -p ~/.company/private-rules ~/.company/private-skills
 
 # Install for all team members via shared command
 ./install.sh --team-mode \
-             --company-prefix acme \
+             --company-prefix yourco \        # replace with your company/team prefix
              --private-rules ~/.company/private-rules \
              --private-skills ~/.company/private-skills \
              typescript
 
 # Each developer runs the same command
-# → ~/.claude/rules/acme/ (private rules)
-# → ~/.claude/skills/acme/ (private skills)
+# → ~/.claude/rules/yourco/ (private rules)
+# → ~/.claude/skills/yourco/ (private skills)
 ```
 
 ### Distribution via Git
@@ -65,7 +65,7 @@ if [[ ! -d "$CLARC_DIR" ]]; then
 fi
 bash "$CLARC_DIR/install.sh" \
   --team-mode \
-  --company-prefix acme \
+  --company-prefix yourco \
   --private-rules "$SCRIPT_DIR/private-rules" \
   --private-skills "$SCRIPT_DIR/private-skills" \
   "$@"
@@ -73,7 +73,7 @@ bash "$CLARC_DIR/install.sh" \
 
 New developer onboarding:
 ```bash
-git clone git@github.com:acme/company-clarc.git
+git clone git@github.com:yourco/company-clarc.git
 cd company-clarc && ./install-team.sh typescript
 ```
 
@@ -127,7 +127,7 @@ Add to the project `CLAUDE.md`:
 This project uses company-clarc. Install with:
   cd ~/company-clarc && ./install-team.sh typescript
 
-Team rules are in `~/.claude/rules/acme/`:
+Team rules are in `~/.claude/rules/yourco/`:
 - api-standards.md — REST API conventions
 - security-policy.md — security requirements
 
@@ -136,7 +136,7 @@ Private skills available: /deploy-flow, /pr-process
 
 ### Preventing Rule Conflicts
 
-- Company prefix isolates private rules: `~/.claude/rules/acme/`
+- Company prefix isolates private rules: `~/.claude/rules/yourco/`
 - Private rules never overwrite clarc common rules
 - Developers can still override any rule with their own version
 
@@ -145,7 +145,7 @@ Private skills available: /deploy-flow, /pr-process
 ```
 [ ] Clone company-clarc
 [ ] Run ./install-team.sh <language>
-[ ] Verify: ls ~/.claude/rules/acme/
+[ ] Verify: ls ~/.claude/rules/yourco/
 [ ] Verify: ls ~/.claude/agents/ (should list 50+ agents)
 [ ] Read CLAUDE.md in the project repository
 [ ] Enable Memory Bank: mkdir .clarc (in project root)

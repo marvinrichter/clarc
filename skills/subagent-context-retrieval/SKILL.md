@@ -205,5 +205,5 @@ When retrieving context for this task:
 
 ## Related
 
-- `continuous-learning` skill - For patterns that improve over time
+- `continuous-learning-v2` skill - For patterns that improve over time
 - Agent definitions in `~/.claude/agents/`

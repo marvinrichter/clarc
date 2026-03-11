@@ -3,7 +3,9 @@ name: i18n-frameworks
 description: "Framework-specific i18n implementation: i18next + react-i18next (React/Next.js), next-intl (Next.js App Router), Django's i18n (gettext/makemessages), Rails I18n (YAML-based), Localizable.strings + SwiftUI (iOS), Android string resources, and Flutter's ARB format. Concrete setup and usage patterns for each."
 ---
 
-# i18n Frameworks Skill
+# i18n Frameworks
+
+> **vs `i18n-patterns`:** This skill covers framework-specific setup code (react-i18next, next-intl, Django/Rails i18n, SwiftUI, Flutter ARB). Use `i18n-patterns` when you need language-agnostic architecture decisions (locale detection strategy, key naming conventions, RTL layout, pluralization rules).
 
 ## When to Activate
 

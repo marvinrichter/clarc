@@ -87,3 +87,47 @@ async function verifyTransaction(transaction: Transaction) {
 | Amount overflow | Integer overflow in token math | Use `BN.js` or `BigInt` for all amounts |
 | Reentrancy (EVM) | Callback executes before state update | Update state before external calls |
 | Front-running | Transaction ordering manipulation | Use commit-reveal schemes |
+
+## Reentrancy: Vulnerable vs. Safe Pattern
+
+### Vulnerable (Classic Reentrancy)
+```solidity
+contract VulnerableVault {
+    mapping(address => uint256) public balances;
+
+    function withdraw(uint256 amount) external {
+        require(balances[msg.sender] >= amount, "Insufficient");
+        // ❌ External call BEFORE state update — attacker can re-enter here
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed");
+        balances[msg.sender] -= amount;  // State updated AFTER call
+    }
+}
+```
+
+**Attack vector:** Malicious contract's `receive()` calls `withdraw()` again before `balances` is decremented. Attacker can drain the vault.
+
+### Safe (Checks-Effects-Interactions)
+```solidity
+contract SafeVault {
+    mapping(address => uint256) public balances;
+
+    function withdraw(uint256 amount) external {
+        // ✅ 1. Checks
+        require(balances[msg.sender] >= amount, "Insufficient");
+        // ✅ 2. Effects (state update BEFORE external call)
+        balances[msg.sender] -= amount;
+        // ✅ 3. Interactions (external call LAST)
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed");
+    }
+}
+```
+
+**Rule:** Always follow Checks → Effects → Interactions order. For complex cases, add `ReentrancyGuard` from OpenZeppelin:
+```solidity
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+contract SafeVault is ReentrancyGuard {
+    function withdraw(uint256 amount) external nonReentrant { ... }
+}
+```

@@ -449,4 +449,4 @@ if got != want {
 
 **Why:** `t.Log` only records output without failing the test; use `t.Errorf` (continues) or `t.Fatalf` (stops immediately) to actually mark a test as failed.
 
-> For advanced testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage tools, HTTP handler testing with httptest, CLI reference, best practices, and CI/CD integration — see skill: `golang-testing-advanced`.
+> For advanced testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage tools, HTTP handler testing with httptest, CLI reference, best practices, and CI/CD integration — see skill: `go-testing-advanced`.

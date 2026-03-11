@@ -1,8 +1,8 @@
 ---
 name: mlops-patterns
-description: Skill: MLOps Patterns
+description: "MLOps lifecycle patterns — experiment tracking (MLflow/W&B), model registry, FastAPI serving with canary deployments, drift detection, fine-tuning workflows, retraining pipelines, DVC data versioning, and GPU autoscaling on Kubernetes."
 ---
-# Skill: MLOps Patterns
+# MLOps Patterns
 
 ## When to Activate
 
@@ -72,29 +72,12 @@ with mlflow.start_run(run_name="xgboost-baseline"):
 
 ```python
 import wandb
-
-wandb.init(
-    project="text-classifier",
-    config={
-        "model": "bert-base-uncased",
-        "epochs": 10,
-        "batch_size": 32,
-        "lr": 2e-5,
-    }
-)
+wandb.init(project="text-classifier", config={"model": "bert-base-uncased", "epochs": 10, "lr": 2e-5})
 
 for epoch in range(epochs):
-    train_loss = train_one_epoch(model, loader)
-    val_metrics = evaluate(model, val_loader)
+    wandb.log({"epoch": epoch, "train/loss": train_one_epoch(model, loader),
+               **evaluate(model, val_loader)})
 
-    wandb.log({
-        "epoch": epoch,
-        "train/loss": train_loss,
-        "val/accuracy": val_metrics["accuracy"],
-        "val/f1": val_metrics["f1"],
-    })
-
-# Log model artifact
 artifact = wandb.Artifact("text-classifier", type="model")
 artifact.add_file("model.bin")
 wandb.log_artifact(artifact)
@@ -142,21 +125,7 @@ Use semantic versioning for models:
 - `MINOR`: same architecture, retrained on new data
 - `PATCH`: hyperparameter tuning, same data
 
-Lineage metadata to capture:
-```python
-client.set_model_version_tag(
-    name="fraud-detector",
-    version="3",
-    key="training_dataset",
-    value="s3://ml-data/fraud/v2024-12/train.parquet"
-)
-client.set_model_version_tag(
-    name="fraud-detector",
-    version="3",
-    key="training_run_id",
-    value=run_id
-)
-```
+Lineage metadata: use `client.set_model_version_tag(name, version, key, value)` to record `training_dataset` (S3 URI), `training_run_id`, and `git_commit_sha` on each registered version.
 
 ---
 
@@ -164,182 +133,57 @@ client.set_model_version_tag(
 
 ### vLLM — High-Throughput LLM Serving
 
-vLLM uses **PagedAttention** for efficient KV-cache memory management, enabling continuous batching with high GPU utilization.
+vLLM uses **PagedAttention** for efficient KV-cache memory management with continuous batching.
 
 ```bash
-# Start vLLM server (OpenAI-compatible API)
-vllm serve meta-llama/Llama-3.1-8B-Instruct \
-  --tensor-parallel-size 2 \
-  --gpu-memory-utilization 0.9 \
-  --max-model-len 8192 \
-  --served-model-name "llama3-8b" \
-  --port 8000
-
-# Multi-GPU with pipeline parallelism for large models
-vllm serve meta-llama/Llama-3.1-70B-Instruct \
-  --tensor-parallel-size 4 \
-  --pipeline-parallel-size 2
-
-# With quantization for memory savings (GPTQ / AWQ)
-vllm serve TheBloke/Llama-2-13B-GPTQ \
-  --quantization gptq \
-  --dtype float16
+# Single-GPU (OpenAI-compatible API on :8000)
+vllm serve meta-llama/Llama-3.1-8B-Instruct --tensor-parallel-size 1 --served-model-name llama3-8b
+# Multi-GPU / pipeline parallelism
+vllm serve meta-llama/Llama-3.1-70B-Instruct --tensor-parallel-size 4 --pipeline-parallel-size 2
+# 4-bit quantization (GPTQ/AWQ)
+vllm serve TheBloke/Llama-2-13B-GPTQ --quantization gptq --dtype float16
 ```
 
-```python
-from openai import OpenAI
+Client: vLLM exposes an OpenAI-compatible API — use `openai.OpenAI(base_url="http://vllm-server:8000/v1", api_key="none")`.
 
-# vLLM is OpenAI-API-compatible
-client = OpenAI(base_url="http://vllm-server:8000/v1", api_key="none")
-
-response = client.chat.completions.create(
-    model="llama3-8b",
-    messages=[{"role": "user", "content": "Summarize this text: ..."}],
-    temperature=0.1,
-    max_tokens=512,
-)
-```
-
-**Kubernetes deployment for vLLM:**
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vllm-server
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: vllm
-  template:
-    spec:
-      containers:
-        - name: vllm
-          image: vllm/vllm-openai:latest
-          args:
-            - "--model=meta-llama/Llama-3.1-8B-Instruct"
-            - "--tensor-parallel-size=1"
-            - "--served-model-name=llama3-8b"
-          resources:
-            limits:
-              nvidia.com/gpu: 1
-          env:
-            - name: HF_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: huggingface-token
-                  key: token
-```
+**Kubernetes**: deploy as a `Deployment` with `resources.limits.nvidia.com/gpu: 1`, mount `HF_TOKEN` from a Secret, and pair with the HPA in the GPU Autoscaling section below.
 
 ### Triton Inference Server
 
-NVIDIA Triton supports PyTorch, TensorFlow, ONNX, and TensorRT with server-side dynamic batching.
-
-**Model Repository structure:**
-```
-model_repository/
-├── text_classifier/
-│   ├── config.pbtxt
-│   └── 1/
-│       └── model.onnx
-└── ensemble_pipeline/
-    ├── config.pbtxt       # preprocessing + model + postprocessing
-    └── 1/
-        └── (no artifact — ensemble only)
-```
-
-```protobuf
-# config.pbtxt for text_classifier
-name: "text_classifier"
-platform: "onnxruntime_onnx"
-max_batch_size: 64
-
-input [
-  { name: "input_ids"      data_type: TYPE_INT64  dims: [-1] },
-  { name: "attention_mask" data_type: TYPE_INT64  dims: [-1] }
-]
-output [
-  { name: "logits" data_type: TYPE_FP32 dims: [2] }
-]
-
-dynamic_batching {
-  preferred_batch_size: [32, 64]
-  max_queue_delay_microseconds: 5000
-}
-```
+NVIDIA Triton supports PyTorch, TensorFlow, ONNX, and TensorRT with server-side dynamic batching. Define `config.pbtxt` per model specifying `platform`, `max_batch_size`, input/output shapes, and `dynamic_batching`. Start with:
 
 ```bash
-# Start Triton
-docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
-  -v /path/to/model_repository:/models \
-  nvcr.io/nvidia/tritonserver:24.01-py3 \
-  tritonserver --model-repository=/models
-
-# Check health
-curl http://localhost:8000/v2/health/ready
+docker run --gpus all -p 8000:8000 -v /path/to/model_repository:/models \
+  nvcr.io/nvidia/tritonserver:24.01-py3 tritonserver --model-repository=/models
 ```
 
 ### Ollama — Local / Private Deployment
 
 ```bash
-# Run a model
-ollama run llama3.2
-
-# Pull a specific model
-ollama pull nomic-embed-text
-
-# REST API
-curl http://localhost:11434/api/chat -d '{
-  "model": "llama3.2",
-  "messages": [{"role": "user", "content": "Hello"}],
-  "stream": false
-}'
-```
-
-**Custom Modelfile** for fine-tuned behavior:
-```
-FROM llama3.2
-
-SYSTEM """
-You are a helpful customer support agent for AcmeCorp.
-Respond concisely. Never discuss competitors.
-"""
-
-PARAMETER temperature 0.3
-PARAMETER num_ctx 4096
-```
-
-```bash
+ollama run llama3.2                  # interactive
+ollama pull nomic-embed-text         # pull only
+# Custom behavior via Modelfile: FROM llama3.2 + SYSTEM prompt + PARAMETER temperature 0.3
 ollama create acmecorp-support -f Modelfile
-ollama run acmecorp-support
 ```
+
+REST API: `POST http://localhost:11434/api/chat` with `{"model": "llama3.2", "messages": [...], "stream": false}`.
 
 ### BentoML — Framework-Agnostic Serving
 
 ```python
-import bentoml
-import numpy as np
+import bentoml, numpy as np
 
-# Save a model to BentoML store
 bentoml.sklearn.save_model("fraud_classifier", trained_model)
 
-@bentoml.service(
-    resources={"cpu": "2", "memory": "2Gi"},
-    traffic={"timeout": 10},
-)
+@bentoml.service(resources={"cpu": "2", "memory": "2Gi"}, traffic={"timeout": 10})
 class FraudDetectionService:
     model_ref = bentoml.models.get("fraud_classifier:latest")
-
-    def __init__(self):
-        self.model = self.model_ref.load_model()
+    def __init__(self): self.model = self.model_ref.load_model()
 
     @bentoml.api
     def predict(self, features: np.ndarray) -> dict:
         score = self.model.predict_proba(features)[0][1]
         return {"fraud_probability": float(score), "is_fraud": score > 0.5}
-
-# Build and containerize
 # bentoml build && bentoml containerize fraud-detection:latest
 ```
 
@@ -400,31 +244,7 @@ async def predict_with_shadow(payload: dict) -> dict:
     return champion_resp.json()
 ```
 
-### Statistical Significance
-
-```python
-from scipy import stats
-
-def check_significance(control_conversions, control_total,
-                       treatment_conversions, treatment_total,
-                       alpha=0.05):
-    """Two-proportion z-test for A/B result significance."""
-    control_rate = control_conversions / control_total
-    treatment_rate = treatment_conversions / treatment_total
-
-    pooled = (control_conversions + treatment_conversions) / (control_total + treatment_total)
-    se = (pooled * (1 - pooled) * (1/control_total + 1/treatment_total)) ** 0.5
-    z = (treatment_rate - control_rate) / se
-    p_value = 2 * (1 - stats.norm.cdf(abs(z)))
-
-    return {
-        "control_rate": control_rate,
-        "treatment_rate": treatment_rate,
-        "lift": (treatment_rate - control_rate) / control_rate,
-        "p_value": p_value,
-        "significant": p_value < alpha,
-    }
-```
+Statistical significance: use a two-proportion z-test (`scipy.stats.norm`) comparing conversion rates. Require p < 0.05 before promoting the challenger. See skill `experiment-design` for the full implementation.
 
 ---
 
@@ -479,22 +299,7 @@ async def predict(request: PredictRequest):
     return result
 ```
 
-**Grafana Dashboard Alert** for accuracy degradation:
-
-```json
-{
-  "alert": {
-    "name": "Model Accuracy Degradation",
-    "conditions": [
-      {
-        "query": "model_accuracy_current",
-        "threshold": { "below": 0.85 }
-      }
-    ],
-    "notifications": ["slack-ml-ops"]
-  }
-}
-```
+Grafana alert: set threshold rule on `model_accuracy_current < 0.85`, notify `slack-ml-ops`.
 
 ### Drift Types
 
@@ -542,83 +347,35 @@ model.print_trainable_parameters()
 # trainable params: 6,815,744 || all params: 8,037,601,280 || trainable%: 0.0848
 
 trainer = SFTTrainer(
-    model=model,
-    tokenizer=tokenizer,
-    train_dataset=dataset,
-    args=SFTConfig(
-        output_dir="./fine-tuned",
-        num_train_epochs=3,
-        per_device_train_batch_size=4,
-        gradient_accumulation_steps=4,
-        learning_rate=2e-4,
-        fp16=True,
-        logging_steps=10,
-        save_steps=100,
-    ),
+    model=model, tokenizer=tokenizer, train_dataset=dataset,
+    args=SFTConfig(output_dir="./fine-tuned", num_train_epochs=3,
+                   per_device_train_batch_size=4, gradient_accumulation_steps=4,
+                   learning_rate=2e-4, fp16=True),
 )
 trainer.train()
-
-# Save only the LoRA adapter (small — typically < 100MB)
-model.save_pretrained("./lora-adapter")
+model.save_pretrained("./lora-adapter")  # only adapter — typically < 100MB
 ```
 
 ### DPO — Direct Preference Optimization
 
-Simpler alternative to RLHF for alignment:
+Simpler alternative to RLHF for alignment. Dataset format: `{"prompt": ..., "chosen": ..., "rejected": ...}`.
 
 ```python
 from trl import DPOTrainer, DPOConfig
-
-# Dataset format: {"prompt": ..., "chosen": ..., "rejected": ...}
 dpo_trainer = DPOTrainer(
-    model=model,
-    ref_model=ref_model,   # frozen copy of base model
-    tokenizer=tokenizer,
-    train_dataset=preference_dataset,
-    args=DPOConfig(
-        beta=0.1,            # KL divergence penalty
-        max_length=1024,
-        num_train_epochs=1,
-        per_device_train_batch_size=2,
-    ),
+    model=model, ref_model=ref_model,  # ref_model = frozen base copy
+    tokenizer=tokenizer, train_dataset=preference_dataset,
+    args=DPOConfig(beta=0.1, max_length=1024, num_train_epochs=1),
 )
 dpo_trainer.train()
 ```
 
 ### Dataset Curation
 
-Quality > Quantity — 10k high-quality samples often outperform 1M noisy ones.
-
-```python
-# Deduplication with MinHash
-from datasketch import MinHash, MinHashLSH
-
-def minhash_dedup(texts, threshold=0.85):
-    lsh = MinHashLSH(threshold=threshold, num_perm=128)
-    unique = []
-    for i, text in enumerate(texts):
-        m = MinHash(num_perm=128)
-        for word in text.split():
-            m.update(word.encode("utf8"))
-        if not lsh.query(m):
-            lsh.insert(str(i), m)
-            unique.append(text)
-    return unique
-
-# Quality filtering
-def quality_filter(sample):
-    text = sample["text"]
-    return (
-        len(text.split()) > 50           # minimum length
-        and len(text.split()) < 2000     # maximum length
-        and text.count("\n") / len(text) < 0.1   # not mostly newlines
-        and is_language(text, "en")      # correct language
-    )
-
-clean_dataset = raw_dataset.filter(quality_filter).map(
-    lambda x: {"text": x["text"].strip()}
-)
-```
+Quality > Quantity — 10k high-quality samples often outperform 1M noisy ones. Key steps:
+- **Deduplication**: MinHash LSH (`datasketch`) with ~0.85 similarity threshold
+- **Quality filters**: min/max token length, language detection, newline-density check
+- **Decontamination**: remove benchmark test sets from training data
 
 ---
 
@@ -630,28 +387,18 @@ clean_dataset = raw_dataset.filter(quality_filter).map(
 from kfp import dsl, compiler
 
 @dsl.component(base_image="python:3.11", packages_to_install=["scikit-learn", "mlflow"])
-def train_component(data_path: str, model_name: str) -> str:
-    import mlflow
-    # ... training logic
-    return registered_version
+def train_component(data_path: str, model_name: str) -> str: ...  # returns registered_version
 
 @dsl.component(base_image="python:3.11")
-def evaluate_component(model_version: str, threshold: float) -> bool:
-    # evaluate against held-out test set
-    return accuracy >= threshold
+def evaluate_component(model_version: str, threshold: float) -> bool: ...  # accuracy >= threshold
 
 @dsl.component(base_image="python:3.11")
-def promote_component(model_version: str, stage: str):
-    # promote to Production in MLflow registry
-    pass
+def promote_component(model_version: str, stage: str): ...  # MLflow registry → Production
 
 @dsl.pipeline(name="fraud-retraining-pipeline")
 def retraining_pipeline(data_path: str, accuracy_threshold: float = 0.90):
     train_task = train_component(data_path=data_path, model_name="fraud-detector")
-    eval_task = evaluate_component(
-        model_version=train_task.output,
-        threshold=accuracy_threshold
-    )
+    eval_task = evaluate_component(model_version=train_task.output, threshold=accuracy_threshold)
     with dsl.Condition(eval_task.output == True):
         promote_component(model_version=train_task.output, stage="Production")
 
@@ -667,37 +414,19 @@ compiler.Compiler().compile(retraining_pipeline, "retraining_pipeline.yaml")
 | **Data threshold** | N new labeled samples → pipeline | Active learning |
 | **Accuracy SLO** | Prometheus alert → trigger | Production monitoring |
 
-```python
-# Trigger via webhook from drift detection
-@app.post("/webhook/drift-detected")
-async def handle_drift(payload: DriftPayload):
-    kfp_client = kfp.Client(host="http://kubeflow-pipelines-api")
-    kfp_client.create_run_from_pipeline_package(
-        "retraining_pipeline.yaml",
-        arguments={"data_path": payload.new_data_path},
-        run_name=f"drift-triggered-{datetime.now().isoformat()}"
-    )
-```
+Drift webhook: `POST /webhook/drift-detected` → `kfp.Client.create_run_from_pipeline_package("retraining_pipeline.yaml", arguments={"data_path": payload.new_data_path})`.
 
 ---
 
 ## Data Versioning with DVC
 
 ```bash
-# Initialize DVC in a git repo
 dvc init
-
-# Track a large dataset (stored remotely, pointer in git)
-dvc add data/train.parquet
-git add data/train.parquet.dvc .gitignore
-git commit -m "chore: add training dataset v1"
-
-# Configure remote storage
+dvc add data/train.parquet                         # pointer tracked in git
+git add data/train.parquet.dvc .gitignore && git commit -m "chore: add training dataset v1"
 dvc remote add -d s3remote s3://ml-data/dvc-cache
-dvc push
-
-# On another machine or in CI
-dvc pull   # download the actual data
+dvc push   # upload data to S3
+dvc pull   # restore on another machine or in CI
 ```
 
 DVC pipelines for reproducible training:

@@ -181,3 +181,94 @@ Use these maxima unless the user explicitly asks for denser slides and readabili
 - animation is meaningful, not noisy
 - reduced motion is respected
 - file paths and customization points are explained at handoff
+
+## Complete Single-Slide HTML Example
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide: API Latency Fix</title>
+  <style>
+    /* Viewport-safe: fills exactly one screen, no scroll */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;           /* No scroll — this is a slide */
+      font-family: system-ui, sans-serif;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;  /* header / content / footer */
+      padding: 4vh 5vw;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    .slide__title {
+      font-size: clamp(1.5rem, 4vw, 3rem);  /* Scales with viewport */
+      font-weight: 700;
+      line-height: 1.2;
+      color: #38bdf8;
+    }
+
+    .slide__body {
+      display: flex;
+      align-items: center;
+      gap: 4vw;
+    }
+
+    .stat {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
+      color: #34d399;
+    }
+
+    .stat__label {
+      font-size: clamp(0.9rem, 2vw, 1.5rem);
+      color: #94a3b8;
+      margin-top: 0.5em;
+    }
+
+    .slide__footer {
+      font-size: clamp(0.75rem, 1.5vw, 1rem);
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <h1 class="slide__title">API Latency — Before vs After</h1>
+
+    <div class="slide__body">
+      <div>
+        <div class="stat">800ms</div>
+        <div class="stat__label">Before (SEA users)</div>
+      </div>
+      <div style="font-size: clamp(2rem, 5vw, 4rem); color: #64748b;">→</div>
+      <div>
+        <div class="stat" style="color: #f59e0b;">240ms</div>
+        <div class="stat__label">After edge caching</div>
+      </div>
+    </div>
+
+    <footer class="slide__footer">
+      Engineering All-Hands · March 2026
+    </footer>
+  </div>
+</body>
+</html>
+```
+
+**Key CSS patterns used:**
+- `overflow: hidden` on html/body — prevents any scroll, enforces single-slide
+- `clamp(min, preferred, max)` — scales all text and stats with viewport size
+- `grid-template-rows: auto 1fr auto` — header/footer fixed, content fills middle
+- No fixed pixel values — everything relative to `vh`/`vw` or `clamp()`

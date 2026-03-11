@@ -577,4 +577,22 @@ const classification = await claude.messages.create({
 
 **Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
 
----
+## Pattern Quick-Selection & Token Budget
+
+| Task Type | Pattern | Agents | Context per agent |
+|-----------|---------|--------|-------------------|
+| Multi-file review | Fan-Out → Fan-In | 3–10 | Minimal (target-specific) |
+| Architecture decision | Split-Role | 2–4 | Full task context |
+| Unknown codebase research | Explorer + Validator | 2 | Explorer: broad; Validator: targeted |
+| Parallel feature development | Worktree Isolation | 2–5 | Feature-specific only |
+| Full feature TDD cycle | Sequential Pipeline | 3–7 | Output of previous stage |
+| Security + quality + tests | Parallel Fan-Out | 3 | Specialist context only |
+
+## Failure Handling & Result Synthesis
+
+| Scenario | Action |
+|----------|--------|
+| Agent timeout | Retry with reduced scope; split task into smaller chunks |
+| Conflicting results | Pass both to a tiebreaker agent; apply: security > quality > style |
+| Partial failures | Complete successful agents; re-run failed with error context |
+| Context overflow | Summarize intermediate results before passing to next stage |

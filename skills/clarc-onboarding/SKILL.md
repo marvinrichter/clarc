@@ -102,7 +102,7 @@ Unlock the full workflow OS. Add these:
 
 ### Frontend Developer
 Start with: `/context` → `/e2e` → `/a11y-audit` → `/web-perf`
-Key skills: `frontend-patterns`, `state-management`, `accessibility`, `e2e-testing`
+Key skills: `frontend-patterns`, `state-management`, `accessibility-patterns`, `e2e-testing`
 
 ### Backend Developer
 Start with: `/context` → `/tdd` → `/database-review` → `/security-review`
@@ -142,3 +142,42 @@ Build broken?      → say "fix the build" (build-error-resolver auto-triggers)
 Performance issue? → /profile
 Stuck?             → /clarc-way
 ```
+
+---
+
+## Example: First Session Transcript
+
+A new developer joining a Python/FastAPI project:
+
+```
+# Day 1 — first 30 minutes
+
+User: /quickstart
+clarc: Detected Python project (FastAPI). Installing rules/python/ and core skills.
+       Nudge hooks enabled. Run `/context` next to see what matters for this codebase.
+
+User: /context
+clarc: Found 3 relevant skills for this project:
+       - fastapi-patterns (FastAPI routing, dependency injection, Pydantic v2)
+       - python-patterns (PEP 8, type hints, dataclasses)
+       - postgres-patterns (async SQLAlchemy, migrations)
+       Run /plan before implementing, /tdd to write tests first.
+
+User: /plan add user authentication with JWT
+clarc: [planner agent] Breaking down: JWT token generation, login endpoint,
+       dependency for protected routes, refresh token flow...
+       Task list created in TODO.md.
+
+User: /tdd implement the login endpoint
+clarc: [tdd-guide agent] Writing test first:
+       test_login_returns_jwt_on_valid_credentials
+       test_login_returns_401_on_wrong_password
+       RED: tests fail. Now implement login_router.py...
+
+User: /code-review
+clarc: [python-reviewer agent] Found 2 issues:
+       HIGH: Password compared without constant-time comparison (timing attack)
+       MEDIUM: JWT secret read directly from os.environ — use pydantic Settings instead.
+```
+
+**What happened:** 30 minutes, one real feature shipped, two security issues caught before PR.

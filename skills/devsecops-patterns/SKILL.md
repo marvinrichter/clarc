@@ -1,6 +1,6 @@
 ---
 name: devsecops-patterns
-description: Skill: DevSecOps & Security Automation
+description: "DevSecOps patterns — shift-left security, SAST (semgrep/CodeQL), secrets detection (gitleaks/trufflehog), dependency scanning (trivy/grype), DAST, OPA/Falco policy-as-code, container security, and security gates per CI stage."
 ---
 # Skill: DevSecOps & Security Automation
 
@@ -44,17 +44,8 @@ One engineer per product team acts as the Security Champion:
 ### Semgrep (Primary SAST Tool)
 
 ```bash
-# Install
-brew install semgrep
-pip install semgrep
-
 # Run with auto-selected rules (best for most projects)
 semgrep --config=auto .
-
-# Run with specific ruleset
-semgrep --config=p/owasp-top-ten .
-semgrep --config=p/secrets .
-semgrep --config=p/javascript .
 
 # Run only on changed files (fast for pre-commit)
 git diff --name-only HEAD | xargs semgrep --config=auto
@@ -88,39 +79,24 @@ rules:
 
 ```yaml
 # .github/workflows/sast.yml
-name: SAST
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
 jobs:
   semgrep:
-    name: Semgrep SAST
     runs-on: ubuntu-latest
     container:
       image: semgrep/semgrep
     steps:
       - uses: actions/checkout@v4
-      - name: Run Semgrep
+      - run: |
+          semgrep ci --config=auto --severity ERROR --error \
+            --sarif-output=semgrep-results.sarif
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-        run: |
-          semgrep ci \
-            --config=auto \
-            --severity ERROR \
-            --error \
-            --sarif-output=semgrep-results.sarif
-
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: semgrep-results.sarif
 
   codeql:
-    name: CodeQL
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -128,7 +104,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: github/codeql-action/init@v3
         with:
-          languages: javascript, python   # Adjust to your languages
+          languages: javascript, python
       - uses: github/codeql-action/autobuild@v3
       - uses: github/codeql-action/analyze@v3
 ```
@@ -142,7 +118,6 @@ jobs:
 | Ruby | Brakeman | `brakeman -q -w2 .` |
 | JavaScript | ESLint security | `eslint --plugin security src/` |
 | Java | SpotBugs + FindSecBugs | `mvn spotbugs:check` |
-| PHP | PHPCS + PHPStan | `phpstan analyse --level=8 src/` |
 
 ---
 
@@ -151,12 +126,6 @@ jobs:
 ### Gitleaks — Pre-Commit + CI
 
 ```bash
-# Install
-brew install gitleaks
-
-# Scan current directory (including history)
-gitleaks detect --source=. --verbose
-
 # Scan only staged files (fast pre-commit check)
 gitleaks protect --staged
 
@@ -173,56 +142,30 @@ repos:
     rev: v8.18.0
     hooks:
       - id: gitleaks
-        name: Detect secrets (gitleaks)
-        description: Detect hardcoded secrets before commit
-        language: golang
         entry: gitleaks protect --staged -v
         pass_filenames: false
-```
-
-```bash
-# Install pre-commit and activate hooks
-pip install pre-commit
-pre-commit install
-pre-commit run --all-files   # Run once on all files
 ```
 
 ### Gitleaks Configuration
 
 ```toml
 # .gitleaks.toml
-title = "Gitleaks config"
-
 [extend]
-useDefault = true   # Extend the default ruleset
+useDefault = true
 
 [[rules]]
 description = "Internal API Key"
 id = "internal-api-key"
 regex = '''MYAPP_[A-Z0-9]{32}'''
-tags = ["key", "internal"]
 
 [allowlist]
-description = "Allowlist for known false positives"
-regexTarget = "match"
-regexes = [
-  # Test fixtures with fake credentials
-  "test-api-key-12345",
-  "example.com/fake-token",
-]
-paths = [
-  ".git",
-  "tests/fixtures/",
-  "*.test.ts",
-]
+regexes = ["test-api-key-12345"]
+paths = [".git", "tests/fixtures/", "*.test.ts"]
 ```
 
 ### TruffleHog — Deep History Scan
 
 ```bash
-# Install
-pip install trufflehog3
-
 # Scan entire git history
 trufflehog git file://. --since-commit HEAD~100 --only-verified
 
@@ -234,14 +177,9 @@ trufflehog github --org=myorg --token=$GITHUB_TOKEN
 
 When a secret is discovered in Git:
 
-1. **Immediately revoke** the secret at the provider (AWS IAM, GitHub PAT, Stripe dashboard)
-2. **Generate a new secret** and store it in the secret manager (not in code)
-3. **Remove from Git history:**
-   ```bash
-   # BFG Repo Cleaner (faster than git filter-branch)
-   java -jar bfg.jar --replace-text secrets-to-remove.txt
-   git push --force-with-lease
-   ```
+1. **Immediately revoke** at the provider (AWS IAM, GitHub PAT, Stripe)
+2. **Generate a new secret** and store in the secret manager
+3. **Remove from Git history** with BFG Repo Cleaner, then `git push --force-with-lease`
 4. **Notify** affected parties (if the secret had production access)
 5. **Audit** the secret's usage in access logs for the past 30 days
 
@@ -252,45 +190,27 @@ When a secret is discovered in Git:
 ### Trivy — All-in-One Scanner
 
 ```bash
-# Install
-brew install trivy
-
 # Scan filesystem (dependencies + IaC misconfigurations)
 trivy fs . --severity HIGH,CRITICAL
 
-# Scan container image
-trivy image myorg/my-app:latest --severity HIGH,CRITICAL
-
-# Scan Kubernetes cluster (live)
-trivy k8s --report summary cluster
+# Scan container image, fail on CRITICAL (for CI gate)
+trivy image myorg/my-app:latest --severity CRITICAL --exit-code 1
 
 # Generate SBOM
 trivy fs . --format spdx-json --output sbom.json
-
-# Exit 1 if CRITICAL vulnerabilities found (for CI gate)
-trivy image myorg/my-app:latest \
-  --severity CRITICAL \
-  --exit-code 1 \
-  --no-progress
 ```
 
 ### GitHub Actions — Trivy Container Scan
 
 ```yaml
-- name: Build Docker image
-  run: docker build -t myorg/my-app:${{ github.sha }} .
-
-- name: Scan with Trivy
-  uses: aquasecurity/trivy-action@master
+- uses: aquasecurity/trivy-action@master
   with:
     image-ref: myorg/my-app:${{ github.sha }}
     format: sarif
     output: trivy-results.sarif
     severity: HIGH,CRITICAL
-    exit-code: '1'     # Fail the build on CRITICAL
-
-- name: Upload Trivy SARIF
-  uses: github/codeql-action/upload-sarif@v3
+    exit-code: '1'
+- uses: github/codeql-action/upload-sarif@v3
   if: always()
   with:
     sarif_file: trivy-results.sarif
@@ -299,23 +219,11 @@ trivy image myorg/my-app:latest \
 ### Language-Native Scanners
 
 ```bash
-# npm / Node.js
-npm audit --audit-level=high
-
-# Python
-pip-audit --requirement requirements.txt
-
-# Go
-govulncheck ./...
-
-# Rust
-cargo audit
-
-# Ruby
-bundle exec bundle-audit check --update
-
-# Java (Maven)
-mvn org.owasp:dependency-check-maven:check
+npm audit --audit-level=high    # Node.js
+pip-audit -r requirements.txt   # Python
+govulncheck ./...                # Go
+cargo audit                      # Rust
+bundle exec bundle-audit check   # Ruby
 ```
 
 ---
@@ -327,7 +235,6 @@ mvn org.owasp:dependency-check-maven:check
 The Baseline Scan only performs **passive** scanning — it does not modify data. Safe to run against any environment.
 
 ```bash
-# Run ZAP baseline scan against a running app
 docker run --rm \
   -v $(pwd):/zap/wrk \
   ghcr.io/zaproxy/zaproxy:stable \
@@ -345,19 +252,17 @@ docker run --rm \
   run: docker compose up -d
 
 - name: Wait for app to be ready
-  run: |
-    timeout 60 bash -c 'until curl -sf http://localhost:8080/health; do sleep 2; done'
+  run: timeout 60 bash -c 'until curl -sf http://localhost:8080/health; do sleep 2; done'
 
 - name: OWASP ZAP Baseline Scan
   uses: zaproxy/action-baseline@v0.12.0
   with:
     target: 'http://localhost:8080'
-    rules_file_name: '.zap/rules.tsv'   # Optional: tune alert levels
-    cmd_options: '-I'   # Ignore warnings (don't fail on them)
-    fail_action: false   # Don't fail CI — report only
+    rules_file_name: '.zap/rules.tsv'
+    cmd_options: '-I'
+    fail_action: false
 
-- name: Upload ZAP Report
-  uses: actions/upload-artifact@v4
+- uses: actions/upload-artifact@v4
   with:
     name: zap-report
     path: report_html.html
@@ -382,12 +287,6 @@ docker run --rm \
 
 ### OPA + Gatekeeper (Kubernetes Admission Controller)
 
-```bash
-# Install Gatekeeper
-kubectl apply -f \
-  https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
-```
-
 ```yaml
 # ConstraintTemplate — define the policy
 apiVersion: templates.gatekeeper.sh/v1
@@ -399,19 +298,10 @@ spec:
     spec:
       names:
         kind: RequireLabels
-      validation:
-        openAPIV3Schema:
-          type: object
-          properties:
-            labels:
-              type: array
-              items:
-                type: string
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
         package requirelabels
-
         violation[{"msg": msg}] {
           required := {label | label := input.parameters.labels[_]}
           provided := {label | input.review.object.metadata.labels[label]}
@@ -419,18 +309,15 @@ spec:
           count(missing) > 0
           msg := sprintf("Missing required labels: %v", [missing])
         }
-
 ---
-# Constraint — apply the policy to namespaces
+# Constraint — apply the policy
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: RequireLabels
 metadata:
   name: require-pod-labels
 spec:
   match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["Pod"]
+    kinds: [{apiGroups: [""], kinds: ["Pod"]}]
     namespaces: ["production", "staging"]
   parameters:
     labels: ["app", "team", "version"]
@@ -439,78 +326,46 @@ spec:
 ### Conftest — Test Policies Locally
 
 ```bash
-# Install
-brew install conftest
-
 # Write a Rego policy
 cat > policy/no-root.rego << 'EOF'
 package main
-
 deny[msg] {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
   not container.securityContext.runAsNonRoot
   msg := sprintf("Container '%s' must set runAsNonRoot: true", [container.name])
 }
-
-deny[msg] {
-  input.kind == "Deployment"
-  container := input.spec.template.spec.containers[_]
-  container.securityContext.privileged
-  msg := sprintf("Container '%s' must not run as privileged", [container.name])
-}
 EOF
 
-# Test against Kubernetes manifests
 conftest test k8s/ --policy policy/
 ```
 
-### Kyverno (Simpler Kubernetes Policies)
+### Falco — Runtime Threat Detection
 
 ```yaml
-# ClusterPolicy — require non-root containers
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: require-non-root
-spec:
-  validationFailureAction: enforce   # Blocks deployment if violated
-  rules:
-    - name: check-non-root
-      match:
-        resources:
-          kinds: [Pod]
-          namespaces: [production, staging]
-      validate:
-        message: "Containers must run as non-root user"
-        pattern:
-          spec:
-            containers:
-              - securityContext:
-                  runAsNonRoot: true
-                  allowPrivilegeEscalation: false
+# /etc/falco/rules.d/custom-rules.yaml
+- rule: Suspicious shell in container
+  desc: Detect shell spawned in a container
+  condition: >
+    spawned_process and container
+    and proc.name in (shell_binaries)
+    and not proc.pname in (known_shell_spawn_binaries)
+  output: >
+    Shell spawned in container (user=%user.name container=%container.name
+    image=%container.image.repository proc=%proc.name parent=%proc.pname)
+  priority: WARNING
+  tags: [container, shell, T1059]
 
----
-# ClusterPolicy — auto-generate NetworkPolicy for new namespaces
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: generate-networkpolicy
-spec:
-  rules:
-    - name: generate-default-deny
-      match:
-        resources:
-          kinds: [Namespace]
-      generate:
-        apiVersion: networking.k8s.io/v1
-        kind: NetworkPolicy
-        name: default-deny-all
-        namespace: "{{request.object.metadata.name}}"
-        data:
-          spec:
-            podSelector: {}
-            policyTypes: [Ingress, Egress]
+- rule: Write to sensitive directory
+  desc: Detect writes to /etc or /usr in containers
+  condition: >
+    open_write and container
+    and (fd.directory startswith /etc or fd.directory startswith /usr/bin)
+  output: >
+    Sensitive file write (user=%user.name file=%fd.name
+    container=%container.name image=%container.image.repository)
+  priority: ERROR
+  tags: [container, filesystem, T1222]
 ```
 
 ---
@@ -520,45 +375,30 @@ spec:
 ### Secure Dockerfile Patterns
 
 ```dockerfile
-# Use distroless or minimal base image
-FROM gcr.io/distroless/java21-debian12:nonroot
-# or
-FROM node:22-alpine AS base
-
 # Multi-stage build — don't ship build tools
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json .
 RUN npm ci --only=production
 
+# Use distroless for minimal attack surface
 FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-# No shell, no package manager — minimal attack surface
-
-# Run as non-root user (required by Kyverno policy above)
+# No shell, no package manager
 USER nonroot:nonroot
-
-# Read-only root filesystem
-# (set via securityContext in Kubernetes, not Dockerfile)
+# Read-only root filesystem set via securityContext in Kubernetes
 ```
 
 ### Image Signing with Sigstore/cosign
 
 ```bash
-# Install cosign
-brew install cosign
-
 # Sign image after push (in CI)
-cosign sign \
-  --key cosign.key \
-  myorg/my-app:${{ github.sha }}
+cosign sign --key cosign.key myorg/my-app:${{ github.sha }}
 
-# Verify image signature before deployment (in admission webhook)
-cosign verify \
-  --key cosign.pub \
-  myorg/my-app:latest
+# Verify image signature before deployment
+cosign verify --key cosign.pub myorg/my-app:latest
 ```
 
 ```yaml
@@ -647,5 +487,5 @@ curl -X POST https://defectdojo.myorg.com/api/v2/import-scan/ \
 | **Level 0** | No security automation |
 | **Level 1** | Gitleaks pre-commit + npm audit in CI |
 | **Level 2** | Semgrep + Trivy in PR gate, blocks on CRITICAL |
-| **Level 3** | ZAP DAST + Policy-as-Code (OPA/Kyverno) |
+| **Level 3** | ZAP DAST + Policy-as-Code (OPA/Kyverno) + Falco runtime |
 | **Level 4** | Full pipeline with signing, SBOM, centralized findings dashboard |

@@ -163,3 +163,46 @@ Approximate token budget guidance (128k context window):
 | **Available for new work** | **~30k** | After 90 min session |
 
 When available budget drops below ~20k: checkpoint + compact.
+
+## Token-Efficient vs Token-Heavy Tool Usage
+
+### Before: Token-Heavy Pattern
+
+Reading entire files on every step wastes context budget rapidly.
+
+```
+Turn 1: Read src/auth/jwt.ts         (800 tokens)
+Turn 2: Read src/auth/jwt.ts again   (800 tokens — forgot it was already loaded)
+Turn 3: Read src/middleware/index.ts  (1,200 tokens)
+Turn 4: Read src/middleware/index.ts  (1,200 tokens — re-loaded for reference)
+Turn 5: Read src/auth/jwt.ts         (800 tokens — needed one function again)
+Total wasted re-reads: ~3,800 tokens
+```
+
+Compounded across a 50-file refactor, re-reads alone consume 20–30k tokens.
+
+### After: Token-Efficient Pattern
+
+```
+Turn 1: Read src/auth/jwt.ts
+        → Write working note: "jwt.ts exports: verifyToken(token), signToken(payload, opts)"
+
+Turn 2: Read src/middleware/index.ts
+        → Append to working note: "middleware/index.ts mounts: auth (jwt), rateLimit, cors"
+
+Turn 3: (work continues using the working note — never re-read jwt.ts)
+
+# Working note stays under 200 tokens; replaces thousands of re-read tokens
+```
+
+**Rule of thumb:** After reading a file, extract the 3–5 facts you need from it into a working note. Use the note for the rest of the session; re-read the file only if you need the exact text (e.g., before an edit).
+
+### Recognising Re-Read Waste in Practice
+
+These patterns signal you are re-reading unnecessarily:
+
+- Same file appears twice in recent tool calls with no edit between them
+- You read a file "just to check" something you noted earlier
+- Each sub-task starts by re-reading the same config or schema file
+
+When you notice this: stop, write a one-paragraph working summary, and continue from the summary.

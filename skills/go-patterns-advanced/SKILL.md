@@ -1,11 +1,11 @@
 ---
 name: go-patterns-advanced
-description: Advanced Go patterns — hexagonal architecture with full working examples, struct design (functional options, embedding), memory optimization, Go tooling (golangci-lint), Go 1.21+ slices/maps stdlib, and anti-patterns. Extends golang-patterns.
+description: Advanced Go patterns — hexagonal architecture with full working examples, struct design (functional options, embedding), memory optimization, Go tooling (golangci-lint), Go 1.21+ slices/maps stdlib, and anti-patterns. Extends go-patterns.
 ---
 
 # Go Advanced Patterns
 
-> This skill extends [golang-patterns](../golang-patterns/SKILL.md) with architecture, struct design, memory optimization, and tooling.
+> This skill extends [go-patterns](../go-patterns/SKILL.md) with architecture, struct design, memory optimization, and tooling.
 
 ## When to Activate
 

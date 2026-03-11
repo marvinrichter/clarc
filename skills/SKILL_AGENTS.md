@@ -234,7 +234,6 @@ Decision framework for resolving conflicts between clarc agents — priority hie
 
 These skills exist but are not declared in any agent's `uses_skills`. Consider adding references or checking if they are obsolete.
 
-- `accessibility`
 - `accessibility-patterns`
 - `adr-writing`
 - `agent-evolution-patterns`
@@ -267,7 +266,6 @@ These skills exist but are not declared in any agent's `uses_skills`. Consider a
 - `content-engine`
 - `content-hash-cache-patterns`
 - `context-management`
-- `continuous-learning`
 - `continuous-learning-v2`
 - `contract-testing`
 - `cost-aware-llm-pipeline`
@@ -348,7 +346,6 @@ These skills exist but are not declared in any agent's `uses_skills`. Consider a
 - `mlops-patterns`
 - `mobile-cicd-patterns`
 - `motion-animation`
-- `multi-agent-coordination`
 - `multi-tenancy`
 - `nodejs-backend-patterns`
 - `nosql-patterns`

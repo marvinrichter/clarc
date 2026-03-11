@@ -3,9 +3,11 @@ name: security-review
 description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
 ---
 
-# Security Review Skill
+# Security Review
 
 This skill ensures all code follows security best practices and identifies potential vulnerabilities.
+
+> **vs `security-scan`:** This skill audits **code patterns** — authentication, input validation, secrets handling, SQL injection, XSS, CSRF, OWASP Top 10. Use `security-scan` when you need to audit your **Claude Code configuration** (`.claude/settings.json`, hooks, MCP configs, CLAUDE.md) for injection risks.
 
 ## When to Activate
 

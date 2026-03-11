@@ -7,6 +7,8 @@ description: Domain-Driven Design tactical patterns for TypeScript. Value Object
 
 Tactical DDD patterns for rich, behavior-driven domain models in TypeScript.
 
+> **vs `hexagonal-typescript`:** This skill focuses on **domain modeling** — Value Objects, Entities, Aggregates, Domain Events, and Ubiquitous Language. Use `hexagonal-typescript` when you need **package structure and dependency direction** — how to organize ports, adapters, and use case classes.
+
 ## When to Activate
 
 - Modeling a new domain concept (entity or value object?)

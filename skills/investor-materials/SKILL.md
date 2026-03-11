@@ -96,3 +96,35 @@ Before delivering:
 - assumptions are visible, not buried
 - the story is clear without hype language
 - the final asset is defensible in a partner meeting
+
+## Example: One-Pager Structure
+
+**Format:** Single page, two columns, ~400 words. Designed for a VC to scan in 90 seconds.
+
+```
+[LOGO]                                    [TAGLINE — one line]
+
+THE PROBLEM                               THE SOLUTION
+[2 sentences. A specific person           [2 sentences. What you built,
+loses X hours/dollars doing Y.]           not how it works.]
+
+WHY NOW                                   TRACTION
+[Market shift or regulatory change        [3 metrics in this order:
+that makes this urgent today.]            1. ARR or active users
+                                          2. Growth rate (MoM or YoY)
+                                          3. One "wow" metric — e.g.,
+                                             "NPS: 72", "0 churn in 18mo"]
+
+MARKET                                    TEAM
+TAM: $XB (source)                         [Name] — [1 credential]
+SAM: $XM (serviceable today)              [Name] — [1 credential]
+
+THE ASK
+Raising $[X]M seed to [3 specific things you'll do with the money].
+Contact: [email]
+```
+
+**Common mistakes:**
+- Using $XB TAM without a SAM — investors know you won't capture the whole market
+- Team section with 5 people — lead with your 2 strongest credentials
+- "The Ask" without a specific use-of-funds — vague asks signal unclear strategy

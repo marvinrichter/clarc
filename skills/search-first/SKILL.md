@@ -3,7 +3,7 @@ name: search-first
 description: Research-before-coding workflow. Search for existing tools, libraries, and patterns before writing custom code. Invokes the researcher agent.
 ---
 
-# /search-first — Research Before You Code
+# Search First — Research Before You Code
 
 Systematizes the "search for existing solutions before implementing" workflow.
 

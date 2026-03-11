@@ -3,9 +3,11 @@ name: security-scan
 description: Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and injection risks using AgentShield. Checks CLAUDE.md, settings.json, MCP servers, hooks, and agent definitions.
 ---
 
-# Security Scan Skill
+# Security Scan
 
 Audit your Claude Code configuration for security issues using [AgentShield](https://github.com/affaan-m/agentshield) or manual review patterns.
+
+> **vs `security-review`:** This skill audits your **Claude Code configuration** (`.claude/` directory, hooks, MCP configs, CLAUDE.md) for injection risks and misconfigurations. Use `security-review` when you need to audit **application code** — authentication, input validation, OWASP Top 10.
 
 ## When to Activate
 

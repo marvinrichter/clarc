@@ -1,8 +1,8 @@
 ---
 name: mobile-cicd-patterns
-description: Skill: Mobile CI/CD Patterns
+description: "Mobile CI/CD patterns — iOS/Android builds in CI (GitHub Actions/Fastlane), code signing for TestFlight/App Store, automated versioning, screenshot testing, Firebase App Distribution, staged rollouts, and crash-rate gates."
 ---
-# Skill: Mobile CI/CD Patterns
+# Mobile CI/CD Patterns
 
 ## When to Activate
 

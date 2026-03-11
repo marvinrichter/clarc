@@ -1,8 +1,8 @@
 ---
 name: webrtc-patterns
-description: Skill: WebRTC Patterns
+description: "WebRTC patterns — peer connection setup, ICE/STUN/TURN configuration, signaling server design, SFU vs mesh topology, screen sharing, media track management, and reconnect/ICE restart handling."
 ---
-# Skill: WebRTC Patterns
+# WebRTC Patterns
 
 ## When to Activate
 

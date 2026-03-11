@@ -1,8 +1,8 @@
 ---
 name: android-patterns
-description: Skill: Android Patterns (Jetpack Compose)
+description: "Android/Jetpack Compose patterns — state hoisting, UDF with ViewModel/UiState, side effects (LaunchedEffect/rememberUpdatedState), Material Design 3 components, type-safe Navigation, Hilt DI, Room database, and Compose performance (derivedStateOf, key)."
 ---
-# Skill: Android Patterns (Jetpack Compose)
+# Android Patterns (Jetpack Compose)
 
 ## When to Activate
 

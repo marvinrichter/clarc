@@ -1,6 +1,6 @@
 ---
 name: autonomous-loops
-description: "Patterns and architectures for autonomous Claude Code loops — from simple sequential pipelines to RFC-driven multi-agent DAG systems."
+description: "Autonomous loop patterns for Claude — sequential pipelines, NanoClaw REPL, infinite agentic loops, continuous PR loops, De-Sloppify, and Ralphinho RFC-driven DAG orchestration. Pattern selection matrix and anti-patterns."
 ---
 
 # Autonomous Loops Skill
@@ -137,37 +137,11 @@ See the `/claw` command documentation for full details.
 
 **A two-prompt system** that orchestrates parallel sub-agents for specification-driven generation. Developed by disler (credit: @disler).
 
-### Architecture: Two-Prompt System
-
-```plantuml
-@startuml
-package "Prompt 1 — Orchestrator" {
-  [Parse spec file]
-  [Scan output dir]
-  [Plan iteration]
-  [Assign creative dirs]
-  [Manage waves]
-}
-package "Prompt 2 — Sub-Agents (×N)" {
-  [Receive full context]
-  [Read assigned number]
-  [Follow spec exactly]
-  [Generate unique output]
-  [Save to output dir]
-}
-[Manage waves] -right-> [Receive full context] : deploys N agents
-@enduml
-```
-
 ### The Pattern
 
-1. **Spec Analysis** — Orchestrator reads a specification file (Markdown) defining what to generate
+1. **Spec Analysis** — Orchestrator reads a Markdown spec defining what to generate
 2. **Directory Recon** — Scans existing output to find the highest iteration number
-3. **Parallel Deployment** — Launches N sub-agents, each with:
-   - The full spec
-   - A unique creative direction
-   - A specific iteration number (no conflicts)
-   - A snapshot of existing iterations (for uniqueness)
+3. **Parallel Deployment** — Launches N sub-agents, each with the full spec, a unique creative direction, a specific iteration number, and a snapshot of existing iterations
 4. **Wave Management** — For infinite mode, deploys waves of 3-5 agents until context is exhausted
 
 ### Implementation via Claude Code Commands
@@ -175,19 +149,13 @@ package "Prompt 2 — Sub-Agents (×N)" {
 Create `.claude/commands/infinite.md`:
 
 ```markdown
-Parse the following arguments from $ARGUMENTS:
-1. spec_file — path to the specification markdown
-2. output_dir — where iterations are saved
-3. count — integer 1-N or "infinite"
+Parse from $ARGUMENTS: spec_file, output_dir, count (integer or "infinite")
 
 PHASE 1: Read and deeply understand the specification.
 PHASE 2: List output_dir, find highest iteration number. Start at N+1.
 PHASE 3: Plan creative directions — each agent gets a DIFFERENT theme/approach.
-PHASE 4: Deploy sub-agents in parallel (Task tool). Each receives:
-  - Full spec text
-  - Current directory snapshot
-  - Their assigned iteration number
-  - Their unique creative direction
+PHASE 4: Deploy sub-agents in parallel (Task tool). Each receives full spec,
+  directory snapshot, assigned iteration number, and unique creative direction.
 PHASE 5 (infinite mode): Loop in waves of 3-5 until context is low.
 ```
 
@@ -196,14 +164,6 @@ PHASE 5 (infinite mode): Loop in waves of 3-5 until context is low.
 /project:infinite specs/component-spec.md src/ 5
 /project:infinite specs/component-spec.md src/ infinite
 ```
-
-### Batching Strategy
-
-| Count | Strategy |
-|-------|----------|
-| 1-5 | All agents simultaneously |
-| 6-20 | Batches of 5 |
-| infinite | Waves of 3-5, progressive sophistication |
 
 ### Key Insight: Uniqueness via Assignment
 
@@ -331,22 +291,12 @@ Three consecutive iterations signaling completion stops the loop, preventing was
 
 ### The Problem
 
-When you ask an LLM to implement with TDD, it takes "write tests" too literally:
-- Tests that verify TypeScript's type system works (testing `typeof x === 'string'`)
-- Overly defensive runtime checks for things the type system already guarantees
-- Tests for framework behavior rather than business logic
-- Excessive error handling that obscures the actual code
+When you ask an LLM to implement with TDD, it over-generates:
+- Tests that verify TypeScript's type system rather than business logic
+- Overly defensive runtime checks the type system already guarantees
+- Excessive error handling that obscures actual code
 
-### Why Not Negative Instructions?
-
-Adding "don't test type systems" or "don't add unnecessary checks" to the Implementer prompt has downstream effects:
-- The model becomes hesitant about ALL testing
-- It skips legitimate edge case tests
-- Quality degrades unpredictably
-
-### The Solution: Separate Pass
-
-Instead of constraining the Implementer, let it be thorough. Then add a focused cleanup agent:
+Adding negative instructions ("don't test type systems") makes the model hesitant about ALL testing, degrading quality unpredictably. Instead, let the Implementer be thorough, then add a focused cleanup agent:
 
 ```bash
 # Step 1: Implement (let it be thorough)
@@ -357,33 +307,14 @@ claude -p "Review all changes in the working tree. Remove:
 - Tests that verify language/framework behavior rather than business logic
 - Redundant type checks that the type system already enforces
 - Over-defensive error handling for impossible states
-- Console.log statements
-- Commented-out code
+- Console.log statements and commented-out code
 
-Keep all business logic tests. Run the test suite after cleanup to ensure nothing breaks."
-```
-
-### In a Loop Context
-
-```bash
-for feature in "${features[@]}"; do
-  # Implement
-  claude -p "Implement $feature with TDD."
-
-  # De-sloppify
-  claude -p "Cleanup pass: review changes, remove test/code slop, run tests."
-
-  # Verify
-  claude -p "Run build + lint + tests. Fix any failures."
-
-  # Commit
-  claude -p "Commit with message: feat: add $feature"
-done
+Keep all business logic tests. Run the test suite after cleanup."
 ```
 
 ### Key Insight
 
-> Rather than adding negative instructions which have downstream quality effects, add a separate de-sloppify pass. Two focused agents outperform one constrained agent.
+> Two focused agents (Implementer + De-Sloppify) outperform one constrained agent with negative instructions.
 
 ---
 
@@ -391,24 +322,7 @@ done
 
 **The most sophisticated pattern.** An RFC-driven, multi-agent pipeline that decomposes a spec into a dependency DAG, runs each unit through a tiered quality pipeline, and lands them via an agent-driven merge queue. Created by enitrat (credit: @enitrat).
 
-### Architecture Overview
-
-```plantuml
-@startuml
-start
-:RFC/PRD Document;
-:Decomposition (AI)\nBreak into work units + dependency DAG;
-partition "Ralph Loop (up to 3 passes)" {
-  partition "Quality Pipelines — parallel per unit, each in own worktree" {
-    :Research → Plan → Implement → Test → Review\n(depth varies by complexity tier);
-  }
-  partition "Merge Queue" {
-    :Rebase onto main → Run tests → Land or evict\nEvicted units re-enter with conflict context;
-  }
-}
-stop
-@enduml
-```
+**Flow:** RFC/PRD → AI decomposition into work units + dependency DAG → parallel quality pipelines per unit (each in own worktree) → merge queue (rebase → test → land or evict with context).
 
 ### RFC Decomposition
 
@@ -471,74 +385,21 @@ Each stage runs in its own agent process with its own context window:
 
 ### Merge Queue with Eviction
 
-After quality pipelines complete, units enter the merge queue:
+After quality pipelines complete, each unit branch: rebases onto main → runs build + tests → if clean, fast-forward merges; if conflict or test failure, **evicts** with full context (diffs, test output) fed back to the implementer on the next Ralph pass.
 
-```plantuml
-@startuml
-start
-:Unit Branch;
-:Rebase onto main;
-if (Conflict?) then (yes)
-  :EVICT — capture conflict context;
-  stop
-else (no)
-  :Run build + tests;
-  if (Fail?) then (yes)
-    :EVICT — capture test output;
-    stop
-  else (no)
-    :Fast-forward main\npush, delete branch;
-    stop
-  endif
-endif
-@enduml
-```
-
-**File Overlap Intelligence:**
-- Non-overlapping units land speculatively in parallel
-- Overlapping units land one-by-one, rebasing each time
-
-**Eviction Recovery:**
-When evicted, full context is captured (conflicting files, diffs, test output) and fed back to the implementer on the next Ralph pass:
-
-```markdown
-## MERGE CONFLICT — RESOLVE BEFORE NEXT LANDING
-
-Your previous implementation conflicted with another unit that landed first.
-Restructure your changes to avoid the conflicting files/lines below.
-
-{full eviction context with diffs}
-```
-
-### Data Flow Between Stages
-
-```
-research.contextFilePath ──────────────────→ plan
-plan.implementationSteps ──────────────────→ implement
-implement.{filesCreated, whatWasDone} ─────→ test, reviews
-test.failingSummary ───────────────────────→ reviews, implement (next pass)
-reviews.{feedback, issues} ────────────────→ review-fix → implement (next pass)
-final-review.reasoning ────────────────────→ implement (next pass)
-evictionContext ───────────────────────────→ implement (after merge conflict)
-```
+**File Overlap Intelligence:** Non-overlapping units land speculatively in parallel; overlapping units land one-by-one, rebasing each time.
 
 ### Worktree Isolation
 
-Every unit runs in an isolated worktree (uses jj/Jujutsu, not git):
-```
-/tmp/workflow-wt-{unit-id}/
-```
-
-Pipeline stages for the same unit **share** a worktree, preserving state (context files, plan files, code changes) across research → plan → implement → test → review.
+Every unit runs in an isolated worktree (`/tmp/workflow-wt-{unit-id}/`). Stages for the same unit share a worktree, preserving context files, plan files, and code changes across research → plan → implement → test → review.
 
 ### Key Design Principles
 
 1. **Deterministic execution** — Upfront decomposition locks in parallelism and ordering
-2. **Human review at leverage points** — The work plan is the single highest-leverage intervention point
-3. **Separate concerns** — Each stage in a separate context window with a separate agent
-4. **Conflict recovery with context** — Full eviction context enables intelligent re-runs, not blind retries
-5. **Tier-driven depth** — Trivial changes skip research/review; large changes get maximum scrutiny
-6. **Resumable workflows** — Full state persisted to SQLite; resume from any point
+2. **Separate concerns** — Each stage in its own context window; the reviewer never wrote the code
+3. **Conflict recovery with context** — Full eviction context enables intelligent re-runs, not blind retries
+4. **Tier-driven depth** — Trivial changes skip research/review; large changes get maximum scrutiny
+5. **Resumable workflows** — Full state persisted to SQLite; resume from any point
 
 ### When to Use Ralphinho vs Simpler Patterns
 

@@ -31,7 +31,7 @@ rm -rf /tmp/clarc
 git clone https://github.com/marvinrichter/clarc.git /tmp/clarc
 ```
 
-Set `ECC_ROOT=/tmp/everything-claude-code` as the source for all subsequent copy operations.
+Set `ECC_ROOT=/tmp/clarc` as the source for all subsequent copy operations.
 
 If the clone fails (network issues, etc.), use `AskUserQuestion` to ask the user to provide a local path to an existing ECC clone.
 
@@ -42,7 +42,7 @@ If the clone fails (network issues, etc.), use `AskUserQuestion` to ask the user
 Use `AskUserQuestion` to ask the user where to install:
 
 ```
-Question: "Where should ECC components be installed?"
+Question: "Where should clarc components be installed?"
 Options:
   - "User-level (~/.claude/)" — "Applies to all your Claude Code projects"
   - "Project-level (.claude/)" — "Applies only to the current project"
@@ -108,8 +108,8 @@ For each selected category, print the full list of skills below and ask the user
 | `django-verification` | Django verification loop: migrations, linting, tests, security scans |
 | `frontend-patterns` | React, Next.js, state management, performance, UI patterns |
 | `html-slides` | Zero-dependency HTML presentations, style previews, and PPTX-to-web conversion |
-| `golang-patterns` | Idiomatic Go patterns, conventions for robust Go applications |
-| `golang-testing` | Go testing: table-driven tests, subtests, benchmarks, fuzzing |
+| `go-patterns` | Idiomatic Go patterns, conventions for robust Go applications |
+| `go-testing` | Go testing: table-driven tests, subtests, benchmarks, fuzzing |
 | `java-coding-standards` | Java coding standards for Spring Boot: naming, immutability, Optional, streams |
 | `python-patterns` | Pythonic idioms, PEP 8, type hints, best practices |
 | `python-testing` | Python testing with pytest, TDD, fixtures, mocking, parametrization |
@@ -130,7 +130,6 @@ For each selected category, print the full list of skills below and ask the user
 
 | Skill | Description |
 |-------|-------------|
-| `continuous-learning` | Auto-extract reusable patterns from sessions as learned skills |
 | `continuous-learning-v2` | Instinct-based learning with confidence scoring, evolves into skills/commands/agents |
 | `eval-harness` | Formal evaluation framework for eval-driven development (EDD) |
 | `iterative-retrieval` | Progressive context refinement for subagent context problem |
@@ -162,7 +161,7 @@ For each selected skill, copy the entire skill directory:
 cp -r $ECC_ROOT/skills/<skill-name> $TARGET/skills/
 ```
 
-Note: `continuous-learning` and `continuous-learning-v2` have extra files (config.json, hooks, scripts) — ensure the entire directory is copied, not just SKILL.md.
+Note: `continuous-learning-v2` has extra files (config.json, hooks, scripts) — ensure the entire directory is copied, not just SKILL.md.
 
 ---
 
@@ -187,7 +186,7 @@ cp -r $ECC_ROOT/rules/common/* $TARGET/rules/
 # Language-specific rules (flat copy into rules/)
 cp -r $ECC_ROOT/rules/typescript/* $TARGET/rules/   # if selected
 cp -r $ECC_ROOT/rules/python/* $TARGET/rules/        # if selected
-cp -r $ECC_ROOT/rules/golang/* $TARGET/rules/        # if selected
+cp -r $ECC_ROOT/rules/go/* $TARGET/rules/            # if selected
 ```
 
 **Important**: If the user selects any language-specific rules but NOT common rules, warn them:
@@ -228,7 +227,7 @@ Some skills reference others. Verify these dependencies:
 - `springboot-tdd` may reference `springboot-patterns`
 - `continuous-learning-v2` references `~/.claude/homunculus/` directory
 - `python-testing` may reference `python-patterns`
-- `golang-testing` may reference `golang-patterns`
+- `go-testing` may reference `go-patterns`
 - Language-specific rules reference `common/` counterparts
 
 ### 4d: Report Issues
@@ -270,7 +269,7 @@ Options:
    - Security requirements
 3. Edit the rule files in-place at the installation target
 
-**Critical**: Only modify files in the installation target (`$TARGET/`), NEVER modify files in the source ECC repository (`$ECC_ROOT/`).
+**Critical**: Only modify files in the installation target (`$TARGET/`), NEVER modify files in the source clarc repository (`$ECC_ROOT/`).
 
 ---
 
@@ -279,13 +278,13 @@ Options:
 Clean up the cloned repository from `/tmp`:
 
 ```bash
-rm -rf /tmp/everything-claude-code
+rm -rf /tmp/clarc
 ```
 
 Then print a summary report:
 
 ```
-## ECC Installation Complete
+## clarc Installation Complete
 
 ### Installation Target
 - Level: [user-level / project-level / both]

@@ -88,3 +88,51 @@ Before delivering:
 - no generic hype language
 - no duplicated copy across platforms unless requested
 - the CTA matches the content and audience
+
+## Example: Repurposing a Blog Post
+
+**Source asset:** "How we reduced our API response time by 70% using edge caching"
+
+### X Thread (12 posts)
+```
+1/ We cut API response time by 70% in 2 weeks without rewriting anything.
+   Here's exactly what we did (and what didn't work): 🧵
+
+2/ The problem: users in Southeast Asia were getting 800ms responses.
+   US users got 120ms. Same API. 6x difference.
+
+3/ Our first attempt: moved to a bigger server.
+   Result: US got 100ms. SEA still got 750ms.
+   We were solving the wrong problem.
+
+4/ The actual problem: our server was in Virginia.
+   Every SEA request had to travel 9,000 miles.
+
+[...continue with the discovery, solution, results, and a CTA to the full post]
+
+12/ Full write-up with the exact Cloudflare Workers config we used:
+    [link]
+```
+
+### LinkedIn Post (single post)
+```
+We reduced API latency by 70% without touching our codebase.
+
+The surprising part: the fix took 2 hours. The diagnosis took 2 weeks.
+
+Here's what we learned about why geography is often the real bottleneck —
+and the exact edge caching setup that fixed it for our Southeast Asia users.
+
+[Link to full post in comments]
+
+---
+What's the biggest "obvious in hindsight" performance fix you've shipped?
+```
+
+### Key differences by platform
+
+| Platform | Hook | Length | CTA |
+|---|---|---|---|
+| X thread | Surprising stat in post 1 | 12-15 posts, ~280 chars each | Link in last post |
+| LinkedIn | Story-driven, professional | 150-300 words | Link in comment |
+| Newsletter | Context + depth | 500-1500 words | Multiple inline links |

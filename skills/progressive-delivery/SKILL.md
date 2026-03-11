@@ -119,3 +119,46 @@ spec:
               }[2m])
             )
 ```
+
+## Manual Promotion: Canary → Stable
+
+```bash
+# Argo Rollouts: promote canary manually after validating metrics
+kubectl argo rollouts promote my-app
+
+# Check current status before promoting
+kubectl argo rollouts status my-app
+# → "Paused at step 2 (weight: 20%)"
+# → "SuccessfulSteps: 1/3, ErrorRate: 0.2%, Latency p99: 145ms"
+
+# Abort and rollback if metrics are bad
+kubectl argo rollouts abort my-app
+```
+
+## Rollback Scenario
+
+Traffic pattern shows p99 latency spike after canary reaches 20%:
+
+```bash
+# 1. Detect: alert fires for p99 > 500ms on canary pods
+# 2. Abort canary (routes 100% back to stable)
+kubectl argo rollouts abort my-app
+
+# 3. Verify rollback completed
+kubectl argo rollouts status my-app
+# → "Healthy (stable)"
+
+# 4. Investigate: compare canary pod logs vs stable
+kubectl logs -l app=my-app,rollout-pod-template-hash=<canary-hash> --tail=100
+```
+
+**Why this matters:** An aborted rollout is not a failed deploy — it's the safety system working. P99 spikes during canary often indicate N+1 queries or memory pressure that only manifests under real traffic.
+
+## Decision: When to Use Each Pattern
+
+| Pattern | Use when | Rollback speed | Risk |
+|---------|---------|----------------|------|
+| Canary | New API logic, DB queries | Fast (abort in seconds) | Low |
+| Blue/Green | Config changes, dependency upgrades | Instant (DNS/LB switch) | Medium |
+| Feature flag | UI changes, A/B experiments | Instant (toggle off) | Very low |
+| Rolling update | Stateless services, no schema change | Medium | Low |

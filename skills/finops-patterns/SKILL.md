@@ -1,8 +1,8 @@
 ---
 name: finops-patterns
-description: Skill: FinOps & Cloud Cost Engineering
+description: "FinOps and cloud cost engineering — visibility and attribution (tagging taxonomy), Infracost in CI/CD, OpenCost for Kubernetes, rightsizing recommendations, storage/network cost optimization, anomaly detection, and FinOps maturity model."
 ---
-# Skill: FinOps & Cloud Cost Engineering
+# FinOps & Cloud Cost Engineering
 
 FinOps is the practice of bringing financial accountability to cloud spending. Engineering, Finance, and Business collaborate to understand and optimize cloud costs without sacrificing performance or speed.
 

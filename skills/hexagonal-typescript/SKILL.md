@@ -7,6 +7,8 @@ description: Hexagonal architecture (ports & adapters) for TypeScript Node.js ba
 
 Ports & Adapters architecture for testable, framework-independent TypeScript backend services.
 
+> **vs `ddd-typescript`:** This skill focuses on **package structure and dependency direction** — ports (interfaces), adapters (infrastructure), use cases, and DI wiring. Use `ddd-typescript` when you need **domain modeling** — how to design Value Objects, Entities, Aggregates, and Domain Events.
+
 ## When to Activate
 
 - Structuring a new TypeScript backend service from scratch
