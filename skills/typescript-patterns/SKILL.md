@@ -101,28 +101,12 @@ type OrderEvent =
 // Literal types for enumerating values
 type Direction = 'north' | 'south' | 'east' | 'west';
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-type StatusCode = 200 | 201 | 400 | 401 | 403 | 404 | 500;
 
 // const assertion — preserves literal types
-const ROUTES = {
-  home: '/',
-  users: '/users',
-  products: '/products',
-} as const;
-
+const ROUTES = { home: '/', users: '/users', products: '/products' } as const;
 type Route = typeof ROUTES[keyof typeof ROUTES];  // '/' | '/users' | '/products'
 
-// Enum alternative — const object is more flexible than enum
-const OrderStatus = {
-  DRAFT:     'DRAFT',
-  PENDING:   'PENDING',
-  CONFIRMED: 'CONFIRMED',
-  SHIPPED:   'SHIPPED',
-  DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED',
-} as const;
-
-type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
+// Prefer const objects over enum — see Anti-Pattern below
 ```
 
 ### Generics
@@ -210,30 +194,12 @@ type Result<T, E = Error> =
 const Ok  = <T>(value: T): Result<T, never>  => ({ ok: true,  value });
 const Err = <E>(error: E): Result<never, E>  => ({ ok: false, error });
 
-// Usage
-interface ParseError {
-  code: 'INVALID_JSON' | 'MISSING_FIELD' | 'TYPE_ERROR';
-  message: string;
-  field?: string;
-}
-
-function parseUserInput(raw: unknown): Result<User, ParseError> {
-  if (typeof raw !== 'object' || raw === null) {
-    return Err({ code: 'TYPE_ERROR', message: 'Expected object' });
-  }
-  const obj = raw as Record<string, unknown>;
-  if (typeof obj['name'] !== 'string') {
-    return Err({ code: 'MISSING_FIELD', message: 'name is required', field: 'name' });
-  }
-  return Ok({ id: crypto.randomUUID(), name: obj['name'] as string, ...} as User);
-}
-
-// Consuming
-const result = parseUserInput(body);
+// Usage — narrowed by discriminant
+const result = parseUserInput(body);  // Result<User, ParseError>
 if (!result.ok) {
   return res.status(400).json({ error: result.error.message });
 }
-const user = result.value;  // Narrowed to User
+const user = result.value;  // TypeScript knows this is User here
 ```
 
 ### Async Result
