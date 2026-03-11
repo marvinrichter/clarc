@@ -144,7 +144,13 @@ async function main() {
   } else {
     // Strategy: fixup commit
     const commitMsg = `chore: clarc-checkpoint [skip ci]`;
-    git(['add', '-A'], cwd);
+    // Stage only the edited file to avoid capturing unrelated dirty files.
+    // Fall back to -A only when filePath is unknown (shouldn't happen for Edit/Write).
+    if (filePath && filePath !== 'unknown') {
+      git(['add', filePath], cwd);
+    } else {
+      git(['add', '-A'], cwd);
+    }
 
     // Secret guard: scan staged diff before committing.
     // auto-checkpoint uses --no-verify (bypasses pre-commit hooks), so we
