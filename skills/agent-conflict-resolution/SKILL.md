@@ -21,6 +21,51 @@ Use this skill when:
 
 Do not use this skill for single-agent sessions with no conflict — standard agent instructions apply.
 
+## Quick Resolution Checklist
+
+When two agents disagree, work through this in order — stop at the first rule that applies:
+
+```
+1. Is one recommendation about SECURITY (secrets, injection, auth, validation)?
+   → Security (P1) wins unconditionally. No exceptions. Document it.
+
+2. Is one recommendation about ARCHITECTURE (extract, separate concerns, design)?
+   → Is this greenfield or a production incident?
+     - Greenfield: Architect wins.
+     - Production incident: Pragmatic wins — extract later, add ADR.
+
+3. Is this about writing tests vs. fixing urgently?
+   → Is production down or data loss occurring?
+     - Yes: Fix first, tests follow.
+     - No: TDD wins (tests first).
+
+4. Is one recommendation about PERFORMANCE vs. CORRECTNESS?
+   → Is there profiling evidence (flamegraph, benchmark)?
+     - Yes: Performance wins — document TTL/eviction strategy.
+     - No: Correctness wins. Theoretical concern is insufficient.
+
+5. Is this STYLE vs. CONSISTENCY (rename, reformat, reorganize)?
+   → Existing code: Consistency wins.
+   → Net-new code: Clarity wins.
+
+6. None of the above?
+   → Escalate to user: show both recommendations, explain the trade-off.
+```
+
+## Escalation Protocol
+
+Escalate to the user when:
+- Conflict doesn't fit any of the 5 classes above
+- Both agents are the same priority level (P3 vs P3) with no tiebreaker
+- A lower-priority agent raises a concern that could invalidate the higher-priority recommendation
+- The conflict involves a business or product decision (not a technical one)
+
+When escalating:
+1. Show both recommendations clearly
+2. State the conflict class (or "unclassified")
+3. State what information would resolve the conflict (e.g., "does your team prioritize deployment speed or consistency here?")
+4. Do NOT silently pick one — ask explicitly
+
 ## Priority Hierarchy (Quick Reference)
 
 ```

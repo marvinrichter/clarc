@@ -2,9 +2,7 @@
 
 ## Active
 
-| Roadmap | Goal |
-|---------|------|
-| [agent-skill-completeness](agent-skill-completeness.md) | Close agent wiring gaps, lift process skill actionability, fix RFC 7807 inconsistency, P2 agent quality |
+_No active roadmaps._
 
 ---
 
@@ -29,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (18)
+## Done (19)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [agent-skill-completeness](done/agent-skill-completeness.md) | Agent tool gaps, process skill workflows, RFC 7807 fix, P2 agent quality, skill size extraction | #30 |
 | [command-namespace-cleanup](done/command-namespace-cleanup.md) | eval→llm-eval, multi-* disambiguation, orchestrator-design + sdk-design commands, promote/deps/security renames, instinct-* step depth | #29 |
 | [hook-reliability](done/hook-reliability.md) | Typecheck timeouts, checkpoint staging scope, async race, format-dispatch spawn, pre-write secret scan | #28 |
 | [pre-launch-hardening](done/pre-launch-hardening.md) | Hook security, stale config paths, skill cleanup, agent examples (54×2nd example), command naming | #27 |

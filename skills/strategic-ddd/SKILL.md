@@ -18,6 +18,51 @@ Strategic DDD answers **what** to build and **where** to invest — before tacti
 
 ---
 
+## Step-by-Step Discovery Process
+
+Use this sequence when starting strategic DDD on a codebase or new product area:
+
+### 1. Run Event Storming (2–4 hours with domain experts)
+
+- List domain events on sticky notes (past tense): "Order Placed", "Payment Received", "Inventory Updated"
+- Group events by time — events that always happen together suggest the same subdomain
+- Mark **hot spots** (red sticky) where experts disagree or the process is unclear
+- Commands trigger events: "Place Order" → "Order Placed" → "Inventory Reserved"
+
+Output: timeline of events grouped into rough subdomain clusters.
+
+### 2. Classify Subdomains (Step 1 below)
+
+For each cluster: Core / Supporting / Generic? If you can't agree, it's probably Supporting.
+
+### 3. Draw Bounded Contexts
+
+One context = one consistent ubiquitous language. Ask for each cluster:
+- Do domain experts in different departments use the same word differently? If yes → separate contexts.
+- Does this cluster change at a different rate than its neighbors? If yes → separate contexts.
+- Could this be replaced by a SaaS product? If yes → it's Generic, wrap it.
+
+Output: Bounded Context diagram with explicit names and owners.
+
+### 4. Map Relationships (Step 3 below)
+
+For every pair of contexts that communicate:
+- Who is upstream (supplier)? Who is downstream (consumer)?
+- Is the relationship Partnership / Customer-Supplier / Conformist / ACL / Open Host / Published Language / Separate Ways?
+
+### 5. Decide Service Topology
+
+| If... | Then... |
+|-------|---------|
+| New product, small team | Monolith with Bounded Context packages |
+| Team > 8 engineers or independent deploy needed | Extract Core Domains to own services |
+| Core Domain changes daily | Own service + own DB (no shared DB) |
+| Supporting Domain, low change rate | Stay in monolith, own package |
+
+**Stop here before coding.** The diagram is the deliverable, not the code.
+
+---
+
 ## Step 1: Subdomain Classification
 
 Not all parts of the system deserve the same investment. Classify every subdomain before modeling it.

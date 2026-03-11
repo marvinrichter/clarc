@@ -20,6 +20,36 @@ The complete workflow from "I have an idea" to "code is shipped." Ensures that e
 
 ---
 
+## Quick Decision Flow
+
+**Right now, which stage are you in?**
+
+```
+1. Have a raw idea or feature request?
+   → /idea "<description>"       (produces docs/ideas/<name>.md)
+
+2. Idea documented but not evaluated?
+   → /evaluate <name>            (Go / No-Go / Modify from product-evaluator agent)
+   → If No-Go: STOP. Document why. Do not build.
+
+3. Got a Go or Modify? Need to pick an approach?
+   → /explore <name>             (2-4 options + ADR from solution-designer agent)
+
+4. Approach chosen? Need a spec?
+   → /prd <name>                 (PRD with user stories + acceptance criteria)
+
+5. PRD ready? Time to implement?
+   → /overnight <name>           (autonomous pipeline, reads PRD)
+   → /plan <name>                (step-by-step plan, then /tdd)
+
+6. Implementation done?
+   → /code-review + /verify + commit + PR
+```
+
+**Skip a stage only if:** you already have its output (e.g., the team already wrote a PRD). Don't skip evaluation — it's the only gate that prevents building the wrong thing.
+
+---
+
 ## The Full Lifecycle
 
 ```plantuml

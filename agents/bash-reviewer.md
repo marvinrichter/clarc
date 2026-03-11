@@ -1,7 +1,7 @@
 ---
 name: bash-reviewer
 description: Reviews Bash/shell scripts for correctness, safety, idiomatic style, and portability. Checks set -euo pipefail, quoting, shellcheck issues, security (no eval, mktemp, path quoting), BATS test coverage, and formatting via shfmt. Invoked by code-reviewer for .sh/.bash/.zsh files.
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
 ---
 

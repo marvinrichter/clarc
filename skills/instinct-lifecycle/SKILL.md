@@ -24,6 +24,43 @@ Capture → Score → Validate → Decay (if stale) → Promote (if high-confide
 
 ---
 
+## Lifecycle Step Sequence
+
+Follow this sequence to actively manage instincts — don't just let them accumulate passively:
+
+### Phase 1: Capture (automatic)
+- Sessions run → `/learn-eval` observes patterns → instincts created at `confidence: 0.60`
+- No action needed. Instincts appear in `~/.claude/homunculus/projects/<hash>/instincts/`
+
+### Phase 2: Score (manual, weekly)
+1. Run `/instinct-report` to see the ranked list with trend indicators (↑↓→)
+2. For each instinct that influenced your work this week, record an outcome:
+   - `/instinct-outcome <id> good` — it helped
+   - `/instinct-outcome <id> bad` — it caused problems
+   - `/instinct-outcome <id> neutral` — it was applied but had no clear effect
+
+### Phase 3: Validate (on conflict or confusion)
+1. Run `/instinct-status` to check for conflicts
+2. If conflicts shown: run `/evolve` to cluster and resolve them
+3. Contradictory instincts surface as pairs — pick one or merge them
+
+### Phase 4: Promote (when confidence ≥ 0.80 and usage ≥ 5)
+1. Run `/instinct-report` — top-confidence instincts are promotion candidates
+2. If an instinct appears in 2+ projects: run `/instinct-promote` to make it global
+3. Optional: run `/instinct-promote --auto --dry-run` to review all candidates at once
+4. Optional: run `/evolve` to cluster related high-confidence instincts into a skill or command
+
+### Phase 5: Retire (automatic + manual)
+- **Automatic**: unused 180+ days at < 0.50 confidence → auto-archived
+- **Manual**: run `/instinct-report` → look for LOW CONFIDENCE section → archive via `/instinct-outcome <id> bad` (speeds up decay) or delete YAML file directly
+
+**Cadence recommendation:**
+- Weekly: run `/instinct-report` + record outcomes for work done that week
+- Monthly: run `/evolve` to cluster and `/instinct-promote` to promote global patterns
+- Quarterly: review archived instincts, delete permanently if no longer relevant
+
+---
+
 ## Instinct Schema (v2)
 
 Every instinct YAML file has these fields:
