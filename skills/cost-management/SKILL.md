@@ -55,8 +55,8 @@ Each agent call = new context window = new cost.
 Vision inputs are input-token-heavy. One screenshot ≈ 1,000–5,000 tokens.
 
 ### 4. Long sessions without /compact
-Context accumulates. A 4-hour session without /compact may carry 200k+ tokens
-of prior context into every new tool call.
+Context accumulates. A 4-hour session without `/compact` may carry 200k+ tokens
+of prior context into every new tool call. (`/compact` is a built-in Claude Code command, not a clarc command.)
 
 ### 5. Wide glob patterns
 `Glob **/*` on a large repo returns thousands of paths — all as input tokens.
@@ -81,7 +81,7 @@ Haiku is ~8× cheaper than Sonnet. Use it for:
 - Writing boilerplate
 
 ### Use /compact proactively
-Run `/compact` when context > 60% full. The summary costs ~$0.01 and saves
+Run `/compact` (built-in Claude Code command) when context > 60% full. The summary costs ~$0.01 and saves
 much more in subsequent calls.
 
 ### Scope control

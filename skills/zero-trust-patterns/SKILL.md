@@ -1,8 +1,8 @@
 ---
 name: zero-trust-patterns
-description: Skill: Zero-Trust Patterns
+description: "Zero-Trust security patterns — mTLS between microservices (Istio/SPIFFE), SPIRE workload identity, OPA/Envoy authorization, NetworkPolicy default-deny-all, short-lived credentials, service mesh security, and Kubernetes RBAC hardening."
 ---
-# Skill: Zero-Trust Patterns
+# Zero-Trust Patterns
 
 ## When to Activate
 

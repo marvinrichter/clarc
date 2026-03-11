@@ -2,7 +2,7 @@
 
 ## Active
 
-_(none)_
+_(no active roadmaps)_
 
 ---
 
@@ -27,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (22)
+## Done (23)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [skill-quality-zero](done/skill-quality-zero.md) | 0 broken refs, 0 deprecated stubs, 0 oversized skills (≤500 lines), 0 lazy descriptions, 2 merges, 11 thin skills expanded, 4 disambiguation pairs | #34 |
 | [agent-quality-zero](done/agent-quality-zero.md) | All 61 agents: routing gaps fixed, guardrails added, orphans wired, model tiers optimized, uses_skills on all | #33 |
 | [command-ux-completeness](done/command-ux-completeness.md) | 168/168 commands with After This, 2 new commands, P0 structural fixes, escalation ladders | #32 |
 | [command-structure-depth](done/command-structure-depth.md) | Command UX 6.2→8.0: step structure, arg docs, next-steps, delegation wiring, 16 review disambiguations, 2 new commands | #31 |

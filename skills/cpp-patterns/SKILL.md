@@ -427,4 +427,4 @@ constexpr double PI = 3.14159265358979;
 constexpr int MAX_SENSORS = 256;
 ```
 
-> For advanced standards — concurrency & parallelism (CP.*), templates & generic programming with C++20 concepts (T.*), standard library rules (SL.*), enumerations (Enum.*), source files & naming conventions (SF.*, NL.*), performance guidelines (Per.*), and the complete quick-reference checklist — see skill: `cpp-coding-standards-advanced`.
+> For advanced standards — concurrency & parallelism (CP.*), templates & generic programming with C++20 concepts (T.*), standard library rules (SL.*), enumerations (Enum.*), source files & naming conventions (SF.*, NL.*), performance guidelines (Per.*), and the complete quick-reference checklist — see skill: `cpp-patterns-advanced`.

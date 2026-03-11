@@ -98,4 +98,4 @@ Understanding what persists helps you compact with confidence:
 ## Related
 
 - Memory persistence hooks — For state that survives compaction
-- `continuous-learning` skill — Extracts patterns before session ends
+- `continuous-learning-v2` skill — Extracts patterns before session ends

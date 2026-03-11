@@ -7,6 +7,8 @@ description: Domain-Driven Design tactical patterns for Java 25+. Value Objects,
 
 Tactical DDD patterns for rich, behavior-driven domain models.
 
+> **vs `hexagonal-java`:** This skill focuses on **domain modeling** — Value Objects, Entities, Aggregates, Domain Events, and Ubiquitous Language. Use `hexagonal-java` when you need **package structure and dependency direction** — how to organize ports, adapters, and use case classes in Spring Boot.
+
 ## When to Activate
 
 - Modeling a new domain concept (what is this thing? entity or value object?)

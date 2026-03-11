@@ -1,9 +1,7 @@
 ---
 name: data-mesh-patterns
-description: Skill: Data Mesh Architecture Patterns
+description: "Data Mesh architecture patterns — domain ownership, data products with SLOs, self-serve platform design, Delta Lake vs Iceberg, federated Trino queries, data contracts, OpenLineage, and migration from centralized data warehouse."
 ---
-# Skill: Data Mesh Architecture Patterns
-
 ## When to Activate
 
 - Organization has 5+ business domains each producing and consuming data
@@ -184,75 +182,17 @@ orders_stream \
 import great_expectations as gx
 
 context = gx.get_context()
-
-# Define expectations for the customer_orders data product
 suite = context.add_expectation_suite("customer_orders_suite")
 
-# Completeness: no null order_ids
-suite.add_expectation(
-    gx.expectations.ExpectColumnValuesToNotBeNull(column="order_id")
-)
-
-# Accuracy: amounts are positive
-suite.add_expectation(
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="total_amount",
-        min_value=0.01,
-        max_value=1_000_000,
-    )
-)
-
-# Freshness: most recent order should be within 2 hours
-suite.add_expectation(
-    gx.expectations.ExpectColumnMaxToBeBetween(
-        column="created_at",
-        min_value="now() - interval '2 hours'",
-    )
-)
-
-# Validity: status is a known value
-suite.add_expectation(
-    gx.expectations.ExpectColumnValuesToBeInSet(
-        column="status",
-        value_set=["pending", "confirmed", "shipped", "delivered", "cancelled"],
-    )
-)
-
-# Uniqueness: no duplicate orders
-suite.add_expectation(
-    gx.expectations.ExpectColumnValuesToBeUnique(column="order_id")
-)
-
-# Referential integrity: all customers exist
-suite.add_expectation(
-    gx.expectations.ExpectColumnValuesToMatchRegex(
-        column="customer_id",
-        regex=r"^cust-[a-f0-9]{8}$",  # UUID-based customer ID format
-    )
-)
-```
-
-### Great Expectations CI Integration
-
-```yaml
-# .github/workflows/data-quality.yml
-name: Data Quality Gate
-on:
-  push:
-    paths:
-      - "data-products/orders/**"
-
-jobs:
-  quality-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Great Expectations
-        run: |
-          pip install great-expectations
-          great_expectations checkpoint run customer_orders_checkpoint
-        env:
-          GE_DATASOURCE_URL: ${{ secrets.DELTA_LAKE_URL }}
+suite.add_expectation(gx.expectations.ExpectColumnValuesToNotBeNull(column="order_id"))
+suite.add_expectation(gx.expectations.ExpectColumnValuesToBeUnique(column="order_id"))
+suite.add_expectation(gx.expectations.ExpectColumnValuesToBeBetween(
+    column="total_amount", min_value=0.01, max_value=1_000_000))
+suite.add_expectation(gx.expectations.ExpectColumnValuesToBeInSet(
+    column="status",
+    value_set=["pending", "confirmed", "shipped", "delivered", "cancelled"]))
+suite.add_expectation(gx.expectations.ExpectColumnMaxToBeBetween(
+    column="created_at", min_value="now() - interval '2 hours'"))
 ```
 
 ---
@@ -414,8 +354,7 @@ WHERE
   AND o.status = 'delivered';
 ```
 
-```yaml
-# Trino catalog configuration
+```properties
 # etc/catalog/orders-delta.properties
 connector.name=delta_lake
 hive.metastore.uri=thrift://hive-metastore.orders.internal:9083
@@ -431,30 +370,15 @@ iceberg.rest-catalog.uri=http://iceberg-catalog.customers.internal
 
 ## Data Lineage with OpenLineage
 
-```python
-# Emit lineage events from Spark job (OpenLineage Spark integration)
-from openlineage.client import OpenLineageClient, set_producer
-
-# Configure in spark-defaults.conf:
-# spark.extraListeners=io.openlineage.spark.agent.OpenLineageSparkListener
-# spark.openlineage.transport.type=http
-# spark.openlineage.transport.url=http://marquez.internal:5000
-# spark.openlineage.namespace=orders
-
-# Lineage is emitted automatically for all Spark jobs:
-# - Input datasets (source tables, Kafka topics)
-# - Output datasets (target tables)
-# - Job metadata (duration, success/failure)
-# - Column-level lineage (which columns flow to which outputs)
+Configure in `spark-defaults.conf`:
+```properties
+spark.extraListeners=io.openlineage.spark.agent.OpenLineageSparkListener
+spark.openlineage.transport.type=http
+spark.openlineage.transport.url=http://marquez.internal:5000
+spark.openlineage.namespace=orders
 ```
 
-```bash
-# Query lineage via Marquez API
-curl http://marquez.internal:5000/api/v1/lineage?nodeId=dataset:orders:customer_orders
-
-# Visualize in Marquez UI
-open http://marquez.internal:3000
-```
+Lineage is emitted automatically for all Spark jobs: input datasets (tables, Kafka topics), output datasets, job metadata, and column-level lineage. Visualize in the Marquez UI at `http://marquez.internal:3000`.
 
 ---
 
@@ -464,48 +388,24 @@ open http://marquez.internal:3000
 # Register a data product in DataHub via Python SDK
 from datahub.emitter.mce_builder import make_dataset_urn
 from datahub.emitter.rest_emitter import DatahubRestEmitter
-from datahub.metadata.schema_classes import (
-    DatasetPropertiesClass,
-    OwnershipClass,
-    OwnerClass,
-    OwnershipTypeClass,
-)
+from datahub.metadata.schema_classes import DatasetPropertiesClass, OwnershipClass, OwnerClass, OwnershipTypeClass
 
 emitter = DatahubRestEmitter(gms_server="http://datahub.internal:8080")
+dataset_urn = make_dataset_urn(platform="delta-lake", name="orders.customer_orders", env="PROD")
 
-dataset_urn = make_dataset_urn(
-    platform="delta-lake",
-    name="orders.customer_orders",
-    env="PROD",
-)
-
-# Set ownership
-emitter.emit_mce(
-    MetadataChangeEventClass(
-        proposedSnapshot=DatasetSnapshotClass(
-            urn=dataset_urn,
-            aspects=[
-                OwnershipClass(
-                    owners=[
-                        OwnerClass(
-                            owner="urn:li:corpuser:orders-team",
-                            type=OwnershipTypeClass.DATAOWNER,
-                        )
-                    ]
-                ),
-                DatasetPropertiesClass(
-                    description="All completed customer orders since 2020. Refreshed hourly.",
-                    customProperties={
-                        "domain": "orders",
-                        "slo_freshness": "1h",
-                        "contains_pii": "true",
-                        "data_product_spec": "https://github.com/company/data-products/blob/main/orders/customer-orders.yaml",
-                    },
-                ),
-            ],
-        )
+# Emit ownership + properties in one MCE
+emitter.emit_mce(MetadataChangeEventClass(
+    proposedSnapshot=DatasetSnapshotClass(
+        urn=dataset_urn,
+        aspects=[
+            OwnershipClass(owners=[OwnerClass(owner="urn:li:corpuser:orders-team", type=OwnershipTypeClass.DATAOWNER)]),
+            DatasetPropertiesClass(
+                description="All completed customer orders since 2020. Refreshed hourly.",
+                customProperties={"domain": "orders", "slo_freshness": "1h", "contains_pii": "true"},
+            ),
+        ],
     )
-)
+))
 ```
 
 ---
@@ -565,63 +465,26 @@ terms:
 
 ### Schema Evolution Rules
 
-```
-BACKWARD COMPATIBLE (no version bump required):
-- Adding a new NULLABLE column
-- Adding new values to an ENUM that doesn't have exhaustive validation
-- Adding a new output port
+**Backward compatible** (no version bump): adding a nullable column, adding enum values, adding an output port.
 
-BREAKING CHANGE (require v2/ new version):
-- Removing a column
-- Renaming a column
-- Changing a column type
-- Removing enum values
-- Changing SLO to stricter value (e.g., freshness 1h → 30min)
-```
+**Breaking change** (requires `v2/` new version): removing or renaming a column, changing a column type, removing enum values, tightening an SLO (e.g., freshness 1h → 30min).
 
 ---
 
 ## Migration: Monolith → Data Mesh (Strangler Fig)
 
-```
-Phase 1: Identify domains
-  - Map data assets to business domains
-  - Identify highest-value + highest-pain data products first
-  - Assign ownership (which team is accountable for which data?)
-
-Phase 2: Extract first domain (e.g., Orders)
-  - Orders team takes ownership of their data product
-  - Set up Delta Lake table, Great Expectations checks, DataHub registration
-  - Central team remains available as consultant (not owner)
-  - Validate: other teams can access Orders data via Trino without calling Orders team
-
-Phase 3: Expand
-  - Repeat for each domain (Customers, Payments, Catalog, etc.)
-  - Central team shifts from data owner to platform owner
-  - Platform provides: storage, compute, catalog, monitoring templates
-
-Phase 4: Platform Self-Serve
-  - Domain teams provision new data products via IaC templates without platform team involvement
-  - Quality checks and lineage are automated in CI/CD
-```
+1. **Identify domains** — map data assets to business domains; assign ownership; pick highest-pain data products first
+2. **Extract first domain** — domain team takes ownership, sets up Delta Lake + quality checks + catalog registration; central team becomes consultant
+3. **Expand** — repeat per domain; central team shifts from data owner to platform owner
+4. **Self-serve** — domain teams provision new data products via IaC templates; quality checks and lineage automated in CI/CD
 
 ---
 
 ## When to Use Data Mesh (and When Not To)
 
-### Use When
+**Use when:** 5+ domains each producing significant data; central data team has 2+ week backlog; data quality issues blamed across team boundaries; moving toward domain-driven microservices.
 
-- 5+ business domains each producing significant data
-- Central data team has a 2+ week backlog for new dataset requests
-- Data quality issues are chronic and blamed across team boundaries
-- Organization is moving toward domain-driven microservices architecture
-
-### Do NOT Use When
-
-- Small org (< 5 data domains) — centralized approach is simpler and cheaper
-- Data team can scale to meet demand — unnecessary architectural complexity
-- Data products don't have clear domain ownership — mesh becomes ungoverned chaos
-- No budget for platform engineering — self-serve infrastructure requires investment
+**Do NOT use when:** small org (< 5 domains); data team can scale to meet demand; no clear domain ownership (mesh becomes ungoverned chaos); no budget for platform engineering.
 
 ---
 

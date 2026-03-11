@@ -85,3 +85,29 @@ Before delivering:
 - confirm the voice matches the supplied examples
 - ensure every section adds new information
 - check formatting for the intended platform
+
+## Example: Rewriting a Weak Opening
+
+### Before (weak)
+```
+In this article, I will discuss the important topic of database connection pooling,
+which is a critical concept for anyone building scalable web applications today.
+Connection pooling has been around for many years and has become increasingly important.
+```
+
+**Problems:** Announces intent instead of delivering. "Important" and "critical" without evidence. Passive framing.
+
+### After (strong)
+```
+Last month, a production database fell over at 3 AM because 847 API servers each opened
+their own connection. The fix took 4 minutes. The postmortem took 3 days.
+Here's what connection pooling actually is and why the default settings will eventually burn you.
+```
+
+**Why it works:** Opens with a scene (conflict + stakes). "Actually is" signals "the explanation you haven't gotten before." Ends with a promise that's specific to the reader's fear.
+
+### Pattern
+1. Start in a scene or with a specific, surprising number
+2. Create a tension (expectation vs. reality, before vs. after)
+3. Make an implicit or explicit promise: "here's what you'll understand after this"
+4. Never use: "In this article...", "It is important to...", "Today we will discuss..."

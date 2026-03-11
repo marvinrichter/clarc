@@ -7,6 +7,8 @@ description: Hexagonal architecture (ports & adapters) for Java Spring Boot. Pac
 
 Ports & Adapters architecture for testable, framework-independent Java services.
 
+> **vs `ddd-java`:** This skill focuses on **package structure and dependency direction** — ports (interfaces), adapters (infrastructure), use cases, and DI wiring with Spring. Use `ddd-java` when you need **domain modeling** — how to design Value Objects, Entities, Aggregates, and Domain Events.
+
 ## When to Activate
 
 - Structuring a new Java/Spring Boot service from scratch

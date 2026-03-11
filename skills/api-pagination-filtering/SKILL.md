@@ -112,3 +112,50 @@ GET /api/v1/users?email=alice
 GET /api/v1/users?fields=id,name,email
 GET /api/v1/orders?fields=id,total,status&include=customer.name
 ```
+
+## Cursor Pagination Handler (Express / Fastify)
+
+```typescript
+// Works with both Express and Fastify — adapts req/reply shape as needed
+import { encodeBase64, decodeBase64 } from './utils';
+
+interface CursorPayload { id: string; createdAt: string }
+
+// GET /api/v1/posts?cursor=<token>&limit=20
+async function listPostsHandler(req, reply) {
+  const limit = Math.min(Number(req.query.limit) || 20, 100);
+  const rawCursor = req.query.cursor as string | undefined;
+
+  // Decode opaque cursor → { id, createdAt }
+  const after: CursorPayload | null = rawCursor
+    ? JSON.parse(decodeBase64(rawCursor))
+    : null;
+
+  const rows = await db('posts')
+    .where(function () {
+      if (after) {
+        // Tie-break sort: (createdAt, id) to handle same-timestamp rows
+        this.where('created_at', '<', after.createdAt)
+          .orWhere('created_at', '=', after.createdAt)
+          .andWhere('id', '<', after.id);
+      }
+    })
+    .orderBy([{ column: 'created_at', order: 'desc' }, { column: 'id', order: 'desc' }])
+    .limit(limit + 1);   // fetch one extra to detect has_next
+
+  const hasNext = rows.length > limit;
+  const data = hasNext ? rows.slice(0, limit) : rows;
+
+  const lastRow = data.at(-1);
+  const nextCursor = hasNext && lastRow
+    ? encodeBase64(JSON.stringify({ id: lastRow.id, createdAt: lastRow.created_at }))
+    : null;
+
+  return reply.send({
+    data,
+    meta: { has_next: hasNext, next_cursor: nextCursor },
+  });
+}
+```
+
+**Why tie-break on `(createdAt, id)`:** Sorting by timestamp alone causes rows with identical timestamps to appear in arbitrary order across pages. Adding `id` as a secondary sort key makes the cursor deterministic even under bulk inserts.

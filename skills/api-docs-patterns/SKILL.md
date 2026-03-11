@@ -1,8 +1,8 @@
 ---
 name: api-docs-patterns
-description: Skill: API Documentation Patterns
+description: "API documentation best practices — OpenAPI spec (paths, components, examples, x-webhooks), docs-as-code CI/CD, platform selection (Mintlify/Redoc/Scalar), interactive playgrounds, changelog automation with conventional commits."
 ---
-# Skill: API Documentation Patterns
+# API Documentation Patterns
 
 Engineering great API documentation — from OpenAPI descriptions to interactive playgrounds, changelog automation, and prose quality checks. API documentation is a product, not an afterthought.
 
@@ -218,220 +218,14 @@ webhooks:
 
 ## Documentation Platforms
 
-### Mintlify — best for developer-focused SaaS APIs
+| Platform | Best for | Key trait |
+|----------|----------|-----------|
+| **Mintlify** | SaaS / external developers | GitHub PR previews, MDX components, zero infra |
+| **Docusaurus** | Open-source / complex sites | Algolia search free, blog/changelog, React customization |
+| **Redoc** | Pure API reference only | Classic 3-panel layout, fast render, embeddable |
+| **Scalar** | Interactive playground | Modern UI, OAuth PKCE, dark mode, ~200 kB bundle |
 
-```json
-// mint.json
-{
-  "name": "Example API",
-  "logo": { "light": "/logo/light.svg", "dark": "/logo/dark.svg" },
-  "favicon": "/favicon.svg",
-  "colors": { "primary": "#0D9373", "light": "#07C983" },
-  "topbarLinks": [
-    { "name": "Dashboard", "url": "https://app.example.com" }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "authentication"]
-    },
-    {
-      "group": "Guides",
-      "pages": ["guides/webhooks", "guides/pagination", "guides/errors"]
-    },
-    {
-      "group": "API Reference",
-      "pages": ["api-reference/users", "api-reference/orders"]
-    }
-  ],
-  "api": {
-    "baseUrl": "https://api.example.com",
-    "auth": { "method": "bearer" }
-  },
-  "openapi": "api/v1/openapi.yaml"
-}
-```
-
-**Mintlify MDX components:**
-
-```mdx
----
-title: 'Create an Order'
-description: 'Place a new order for a customer'
----
-
-<Steps>
-  <Step title="Authenticate">
-    Obtain an API key from the [Dashboard](https://app.example.com/settings/api-keys).
-  </Step>
-  <Step title="Create the order">
-    <CodeGroup>
-    ```typescript TypeScript
-    const order = await client.orders.create({
-      customerId: "cust_abc123",
-      items: [{ productId: "prod_xyz", quantity: 2 }],
-    });
-    ```
-    ```python Python
-    order = client.orders.create(
-        customer_id="cust_abc123",
-        items=[{"product_id": "prod_xyz", "quantity": 2}],
-    )
-    ```
-    ```go Go
-    order, err := client.Orders.Create(ctx, &orders.CreateRequest{
-        CustomerID: "cust_abc123",
-        Items: []orders.LineItem{{ProductID: "prod_xyz", Quantity: 2}},
-    })
-    ```
-    ```bash curl
-    curl -X POST https://api.example.com/v1/orders \
-      -H "Authorization: Bearer $API_KEY" \
-      -d '{"customer_id":"cust_abc123","items":[{"product_id":"prod_xyz","quantity":2}]}'
-    ```
-    </CodeGroup>
-  </Step>
-  <Step title="Handle the response">
-    Store the returned `order.id` — you will need it to track fulfillment.
-  </Step>
-</Steps>
-
-<Callout type="warning">
-  Orders cannot be modified after they reach `processing` status. Cancel and recreate instead.
-</Callout>
-```
-
-**When to choose Mintlify:**
-- SaaS product with external developers as primary audience
-- Want GitHub-native PR previews with zero infra
-- Need a polished, branded look out of the box
-- Team is small and wants minimal config
-
-### Docusaurus — best for open-source or complex docs sites
-
-```js
-// docusaurus.config.js
-module.exports = {
-  title: 'Example API Docs',
-  tagline: 'Build powerful integrations',
-  url: 'https://docs.example.com',
-  themeConfig: {
-    navbar: {
-      items: [
-        { to: '/docs/guides', label: 'Guides', position: 'left' },
-        { to: '/docs/api', label: 'API Reference', position: 'left' },
-        { to: '/blog', label: 'Changelog', position: 'left' },
-      ],
-    },
-    algolia: {
-      appId: 'YOUR_APP_ID',
-      apiKey: 'YOUR_SEARCH_API_KEY',
-      indexName: 'example-api',
-    },
-  },
-  plugins: [
-    [
-      'docusaurus-plugin-openapi-docs',
-      {
-        id: 'api',
-        docsPluginId: 'classic',
-        config: {
-          example: {
-            specPath: 'api/v1/openapi.yaml',
-            outputDir: 'docs/api',
-            sidebarOptions: { groupPathsBy: 'tag' },
-          },
-        },
-      },
-    ],
-  ],
-};
-```
-
-**When to choose Docusaurus:**
-- Open-source project (Algolia DocSearch is free)
-- Need blog/changelog as first-class citizen
-- Complex sidebar with many nested sections
-- React-based customization required
-
-### Redoc — best for pure API reference
-
-```bash
-# Static build
-npx @redocly/cli build-docs api/v1/openapi.yaml -o docs/index.html
-
-# Lint before build
-npx @redocly/cli lint api/v1/openapi.yaml
-
-# Bundle multiple spec files
-npx @redocly/cli bundle api/v1/openapi.yaml -o api/v1/bundled.yaml
-
-# Join multiple partial specs
-npx @redocly/cli join api/v1/users.yaml api/v1/orders.yaml -o api/v1/openapi.yaml
-```
-
-**Redocly config (`redocly.yaml`):**
-
-```yaml
-apis:
-  main:
-    root: api/v1/openapi.yaml
-rules:
-  no-unused-components: error
-  operation-description: warn
-  tag-description: warn
-  info-contact: warn
-theme:
-  openapi:
-    theme:
-      colors:
-        primary:
-          main: '#0D9373'
-      typography:
-        fontSize: '16px'
-        fontFamily: 'Inter, sans-serif'
-```
-
-**When to choose Redoc:**
-- The API reference is the only documentation needed
-- Want the classic 3-panel layout (nav / content / code examples)
-- Embedding API docs inside a larger product documentation site
-- Minimal JavaScript budget (Redoc renders fast)
-
-### Scalar — modern interactive playground
-
-```html
-<!-- Embed in any HTML page -->
-<script
-  id="api-reference"
-  data-url="https://api.example.com/openapi.yaml"
-  data-configuration='{"theme":"purple","layout":"modern"}'
-></script>
-<script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
-```
-
-```ts
-// Or in a Node.js/Express server
-import { apiReference } from '@scalar/express-api-reference'
-
-app.use('/docs', apiReference({
-  spec: { url: '/openapi.yaml' },
-  theme: 'purple',
-  authentication: {
-    preferredSecurityScheme: 'bearerAuth',
-  },
-}))
-```
-
-**Scalar vs Swagger UI:**
-
-| Feature | Scalar | Swagger UI |
-|---------|--------|------------|
-| Design quality | Modern, polished | Dated |
-| OAuth PKCE in browser | Yes | Partial |
-| Dark mode | Built-in | Manual |
-| Bundle size | ~200 kB | ~400 kB |
-| Customisation | Theme tokens | CSS overrides |
+> For detailed per-platform config examples, see skill `docs-strategy`. Scalar embeds with one `<script>` tag; Mintlify uses `mint.json`; Redoc builds with `npx @redocly/cli build-docs api/v1/openapi.yaml`.
 
 ---
 
@@ -531,14 +325,8 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Deprecated
 - `GET /v1/orders?format=legacy` — will be removed in v3.0. Use `format=standard`.
 
-## [2.3.0] — 2025-09-15
-
-### Security
-- Webhook signatures now use HMAC-SHA256; HMAC-SHA1 support ends 2026-03-01
-
 [Unreleased]: https://github.com/example/api/compare/v2.4.0...HEAD
 [2.4.0]: https://github.com/example/api/compare/v2.3.0...v2.4.0
-[2.3.0]: https://github.com/example/api/compare/v2.2.0...v2.3.0
 ```
 
 ### release-please (Google) — recommended for most teams
@@ -605,31 +393,7 @@ jobs:
 
 ### API-specific changelog entries
 
-For breaking changes, always include a **migration guide**:
-
-```markdown
-## [3.0.0] — 2026-01-15
-
-### Breaking Changes
-
-#### `GET /v1/users` — pagination now required
-
-Previously this endpoint returned all users when no pagination params were provided.
-Starting in v3, you must pass `limit` (max 100) and optionally `cursor`.
-
-**Before (v2):**
-```http
-GET /v1/users
-```
-
-**After (v3):**
-```http
-GET /v1/users?limit=50
-```
-
-**Migration:** Add `?limit=100` to your existing calls. If you need more than 100 users,
-implement cursor-based pagination using the `meta.next_cursor` field.
-```
+For breaking changes, always include a **migration guide** inline: show the before/after request shape and a one-paragraph migration note explaining what callers must change and why.
 
 ---
 
@@ -646,23 +410,7 @@ Structure every docs site into four distinct quadrants:
 | **Reference** | Information | Encyclopedia | "What is the signature of X?" |
 | **Explanation** | Understanding | Article | "Why does X work this way?" |
 
-**Mapping to API docs:**
-
-```
-docs/
-├── tutorials/
-│   └── quickstart.md            ← Tutorial: "Send your first request in 5 minutes"
-├── guides/
-│   ├── webhooks.md              ← How-to: "How to receive order events"
-│   ├── pagination.md            ← How-to: "How to page through large result sets"
-│   └── error-handling.md        ← How-to: "How to handle errors gracefully"
-├── reference/                   ← Reference: Auto-generated from OpenAPI
-│   ├── users.md
-│   └── orders.md
-└── explanation/
-    ├── authentication.md        ← Explanation: "Why we use API keys, not OAuth for M2M"
-    └── rate-limiting.md         ← Explanation: "How the sliding-window rate limiter works"
-```
+Map to directories: `docs/tutorials/` (quickstart), `docs/guides/` (webhooks, pagination, error-handling), `docs/reference/` (auto-generated from OpenAPI), `docs/explanation/` (auth rationale, rate-limiting internals).
 
 ### Vale — prose linter
 
@@ -670,73 +418,29 @@ docs/
 # .vale.ini
 StylesPath = .vale/styles
 MinAlertLevel = warning
-
 [*.md]
 BasedOnStyles = Vale, Google, write-good
-
-# Project-specific vocabulary
-[*.md]
 Vale.Avoid = [utilize, leverage, synergize, paradigm]
 Vale.Prefer = [use, improve, combine, pattern]
 ```
 
 ```bash
-# Install Vale
-brew install vale
-
-# Download style packages
-vale sync
-
-# Run on all docs
-vale docs/
-
-# Run in CI
-vale --output=line docs/ || exit 1
+brew install vale && vale sync
+vale --output=line docs/ || exit 1   # CI step
 ```
 
-**Custom rules for API docs:**
-
-```yaml
-# .vale/styles/APIDoc/avoid-passive.yml
-extends: existence
-message: "Prefer active voice: '%s'"
-level: warning
-tokens:
-  - 'is returned by'
-  - 'will be sent to'
-  - 'can be used to'
-```
+Custom rules extend `existence` type — add tokens like `'is returned by'` to enforce active voice.
 
 ### Broken link detection
 
 ```bash
 # lychee — fast Rust-based link checker
 brew install lychee
-
-# Check local docs
-lychee --offline docs/**/*.md
-
-# Check live links weekly in CI
-lychee --accept 200,429 docs/**/*.md https://docs.example.com/sitemap.xml
+lychee --offline docs/**/*.md                                           # local
+lychee --accept 200,429 docs/**/*.md https://docs.example.com/sitemap.xml  # CI weekly
 ```
 
-```yaml
-# .github/workflows/link-check.yml
-name: Link Check
-on:
-  schedule:
-    - cron: '0 4 * * 1'   # Weekly Monday 04:00 UTC
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1
-        with:
-          args: --offline docs/**/*.md
-          fail: true
-```
+Use `lycheeverse/lychee-action@v1` in a scheduled workflow (`cron: '0 4 * * 1'`) with `fail: true`.
 
 ### Staleness detection
 

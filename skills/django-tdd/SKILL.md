@@ -37,61 +37,24 @@ def test_user_creation():
 
 ## Setup
 
-### pytest Configuration
+### pytest.ini
 
 ```ini
-# pytest.ini
 [pytest]
 DJANGO_SETTINGS_MODULE = config.settings.test
 testpaths = tests
-python_files = test_*.py
-python_classes = Test*
-python_functions = test_*
-addopts =
-    --reuse-db
-    --nomigrations
-    --cov=apps
-    --cov-report=html
-    --cov-report=term-missing
-    --strict-markers
+addopts = --reuse-db --nomigrations --cov=apps --cov-report=term-missing --strict-markers
 markers =
     slow: marks tests as slow
     integration: marks tests as integration tests
 ```
 
-### Test Settings
+### config/settings/test.py (key overrides)
 
 ```python
-# config/settings/test.py
 from .base import *
-
-DEBUG = True
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
-}
-
-# Disable migrations for speed
-class DisableMigrations:
-    def __contains__(self, item):
-        return True
-
-    def __getitem__(self, item):
-        return None
-
-MIGRATION_MODULES = DisableMigrations()
-
-# Faster password hashing
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.MD5PasswordHasher',
-]
-
-# Email backend
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Celery always eager
+DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory:'}}
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
 ```
@@ -99,142 +62,69 @@ CELERY_TASK_EAGER_PROPAGATES = True
 ### conftest.py
 
 ```python
-# tests/conftest.py
 import pytest
-from django.utils import timezone
 from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 
 User = get_user_model()
 
-@pytest.fixture(autouse=True)
-def timezone_settings(settings):
-    """Ensure consistent timezone."""
-    settings.TIME_ZONE = 'UTC'
-
 @pytest.fixture
 def user(db):
-    """Create a test user."""
-    return User.objects.create_user(
-        email='test@example.com',
-        password='testpass123',
-        username='testuser'
-    )
-
-@pytest.fixture
-def admin_user(db):
-    """Create an admin user."""
-    return User.objects.create_superuser(
-        email='admin@example.com',
-        password='adminpass123',
-        username='admin'
-    )
+    return User.objects.create_user(email='test@example.com', password='testpass123', username='testuser')
 
 @pytest.fixture
 def authenticated_client(client, user):
-    """Return authenticated client."""
     client.force_login(user)
     return client
 
 @pytest.fixture
 def api_client():
-    """Return DRF API client."""
-    from rest_framework.test import APIClient
     return APIClient()
 
 @pytest.fixture
 def authenticated_api_client(api_client, user):
-    """Return authenticated API client."""
     api_client.force_authenticate(user=user)
     return api_client
 ```
 
 ## Factory Boy
 
-### Factory Setup
-
 ```python
 # tests/factories.py
 import factory
 from factory import fuzzy
-from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from apps.products.models import Product, Category
 
 User = get_user_model()
 
 class UserFactory(factory.django.DjangoModelFactory):
-    """Factory for User model."""
-
     class Meta:
         model = User
-
     email = factory.Sequence(lambda n: f"user{n}@example.com")
     username = factory.Sequence(lambda n: f"user{n}")
     password = factory.PostGenerationMethodCall('set_password', 'testpass123')
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
     is_active = True
 
-class CategoryFactory(factory.django.DjangoModelFactory):
-    """Factory for Category model."""
-
-    class Meta:
-        model = Category
-
-    name = factory.Faker('word')
-    slug = factory.LazyAttribute(lambda obj: obj.name.lower())
-    description = factory.Faker('text')
-
 class ProductFactory(factory.django.DjangoModelFactory):
-    """Factory for Product model."""
-
     class Meta:
         model = Product
-
     name = factory.Faker('sentence', nb_words=3)
     slug = factory.LazyAttribute(lambda obj: obj.name.lower().replace(' ', '-'))
-    description = factory.Faker('text')
     price = fuzzy.FuzzyDecimal(10.00, 1000.00, 2)
     stock = fuzzy.FuzzyInteger(0, 100)
     is_active = True
-    category = factory.SubFactory(CategoryFactory)
+    category = factory.SubFactory(lambda: CategoryFactory())
     created_by = factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def tags(self, create, extracted, **kwargs):
-        """Add tags to product."""
-        if not create:
-            return
-        if extracted:
+        if create and extracted:
             for tag in extracted:
                 self.tags.add(tag)
 ```
 
-### Using Factories
-
-```python
-# tests/test_models.py
-import pytest
-from tests.factories import ProductFactory, UserFactory
-
-def test_product_creation():
-    """Test product creation using factory."""
-    product = ProductFactory(price=100.00, stock=50)
-    assert product.price == 100.00
-    assert product.stock == 50
-    assert product.is_active is True
-
-def test_product_with_tags():
-    """Test product with tags."""
-    tags = [TagFactory(name='electronics'), TagFactory(name='new')]
-    product = ProductFactory(tags=tags)
-    assert product.tags.count() == 2
-
-def test_multiple_products():
-    """Test creating multiple products."""
-    products = ProductFactory.create_batch(10)
-    assert len(products) == 10
-```
+Key patterns: `ProductFactory(price=99)` overrides fields, `ProductFactory.create_batch(10)` for bulk, `ProductFactory(tags=[t1, t2])` for M2M via `@post_generation`.
 
 ## Model Testing
 
@@ -377,69 +267,15 @@ class TestProductViews:
 ### Serializer Testing
 
 ```python
-# tests/test_serializers.py
-import pytest
-from rest_framework.exceptions import ValidationError
-from apps.products.serializers import ProductSerializer
-from tests.factories import ProductFactory
+def test_serialize_product(self, db):
+    product = ProductFactory()
+    data = ProductSerializer(product).data
+    assert data['id'] == product.id and data['name'] == product.name
 
-class TestProductSerializer:
-    """Test ProductSerializer."""
-
-    def test_serialize_product(self, db):
-        """Test serializing a product."""
-        product = ProductFactory()
-        serializer = ProductSerializer(product)
-
-        data = serializer.data
-
-        assert data['id'] == product.id
-        assert data['name'] == product.name
-        assert data['price'] == str(product.price)
-
-    def test_deserialize_product(self, db):
-        """Test deserializing product data."""
-        data = {
-            'name': 'Test Product',
-            'description': 'Test description',
-            'price': '99.99',
-            'stock': 10,
-            'category': 1,
-        }
-
-        serializer = ProductSerializer(data=data)
-
-        assert serializer.is_valid()
-        product = serializer.save()
-
-        assert product.name == 'Test Product'
-        assert float(product.price) == 99.99
-
-    def test_price_validation(self, db):
-        """Test price validation."""
-        data = {
-            'name': 'Test Product',
-            'price': '-10.00',
-            'stock': 10,
-        }
-
-        serializer = ProductSerializer(data=data)
-
-        assert not serializer.is_valid()
-        assert 'price' in serializer.errors
-
-    def test_stock_validation(self, db):
-        """Test stock cannot be negative."""
-        data = {
-            'name': 'Test Product',
-            'price': '99.99',
-            'stock': -5,
-        }
-
-        serializer = ProductSerializer(data=data)
-
-        assert not serializer.is_valid()
-        assert 'stock' in serializer.errors
+def test_invalid_price(self, db):
+    serializer = ProductSerializer(data={'name': 'X', 'price': '-10', 'stock': 5})
+    assert not serializer.is_valid()
+    assert 'price' in serializer.errors
 ```
 
 ### API ViewSet Testing
@@ -447,104 +283,45 @@ class TestProductSerializer:
 ```python
 # tests/test_api.py
 import pytest
-from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
-from tests.factories import ProductFactory, UserFactory
+from tests.factories import ProductFactory
 
 class TestProductAPI:
-    """Test Product API endpoints."""
-
-    @pytest.fixture
-    def api_client(self):
-        """Return API client."""
-        return APIClient()
 
     def test_list_products(self, api_client, db):
-        """Test listing products."""
         ProductFactory.create_batch(10)
-
-        url = reverse('api:product-list')
-        response = api_client.get(url)
-
+        response = api_client.get(reverse('api:product-list'))
         assert response.status_code == status.HTTP_200_OK
         assert response.data['count'] == 10
 
-    def test_retrieve_product(self, api_client, db):
-        """Test retrieving a product."""
-        product = ProductFactory()
-
-        url = reverse('api:product-detail', kwargs={'pk': product.id})
-        response = api_client.get(url)
-
-        assert response.status_code == status.HTTP_200_OK
-        assert response.data['id'] == product.id
-
     def test_create_product_unauthorized(self, api_client, db):
-        """Test creating product without authentication."""
-        url = reverse('api:product-list')
-        data = {'name': 'Test Product', 'price': '99.99'}
-
-        response = api_client.post(url, data)
-
+        response = api_client.post(reverse('api:product-list'), {'name': 'X', 'price': '9.99'})
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_create_product_authorized(self, authenticated_api_client, db):
-        """Test creating product as authenticated user."""
-        url = reverse('api:product-list')
-        data = {
-            'name': 'Test Product',
-            'description': 'Test',
-            'price': '99.99',
-            'stock': 10,
-        }
-
-        response = authenticated_api_client.post(url, data)
-
+        data = {'name': 'Test Product', 'price': '99.99', 'stock': 10}
+        response = authenticated_api_client.post(reverse('api:product-list'), data)
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['name'] == 'Test Product'
 
     def test_update_product(self, authenticated_api_client, db):
-        """Test updating a product."""
         product = ProductFactory(created_by=authenticated_api_client.user)
-
-        url = reverse('api:product-detail', kwargs={'pk': product.id})
-        data = {'name': 'Updated Product'}
-
-        response = authenticated_api_client.patch(url, data)
-
+        response = authenticated_api_client.patch(
+            reverse('api:product-detail', kwargs={'pk': product.id}), {'name': 'Updated'}
+        )
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['name'] == 'Updated Product'
 
     def test_delete_product(self, authenticated_api_client, db):
-        """Test deleting a product."""
         product = ProductFactory(created_by=authenticated_api_client.user)
-
-        url = reverse('api:product-detail', kwargs={'pk': product.id})
-        response = authenticated_api_client.delete(url)
-
+        response = authenticated_api_client.delete(
+            reverse('api:product-detail', kwargs={'pk': product.id})
+        )
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    def test_filter_products_by_price(self, api_client, db):
-        """Test filtering products by price."""
-        ProductFactory(price=50)
-        ProductFactory(price=150)
-
-        url = reverse('api:product-list')
-        response = api_client.get(url, {'price_min': 100})
-
-        assert response.status_code == status.HTTP_200_OK
-        assert response.data['count'] == 1
-
-    def test_search_products(self, api_client, db):
-        """Test searching products."""
-        ProductFactory(name='Apple iPhone')
-        ProductFactory(name='Samsung Galaxy')
-
-        url = reverse('api:product-list')
-        response = api_client.get(url, {'search': 'Apple'})
-
-        assert response.status_code == status.HTTP_200_OK
+    def test_filter_by_price(self, api_client, db):
+        ProductFactory(price=50); ProductFactory(price=150)
+        response = api_client.get(reverse('api:product-list'), {'price_min': 100})
         assert response.data['count'] == 1
 ```
 
@@ -615,56 +392,22 @@ def test_order_confirmation_email(db, order):
 
 ### Full Flow Testing
 
+Integration tests exercise a complete user journey across multiple views. Use `client` (Django test client) and mock only external I/O (payment gateways, emails).
+
 ```python
-# tests/test_integration.py
-import pytest
-from django.urls import reverse
-from tests.factories import UserFactory, ProductFactory
+def test_guest_to_purchase_flow(self, client, db):
+    # Register → Login → Browse → Add to cart → Checkout
+    client.post(reverse('users:register'), {'email': 'test@example.com', 'password': 'testpass123', 'password_confirm': 'testpass123'})
+    client.post(reverse('users:login'), {'email': 'test@example.com', 'password': 'testpass123'})
+    product = ProductFactory(price=100)
+    client.post(reverse('cart:add'), {'product_id': product.id, 'quantity': 1})
+    response = client.get(reverse('checkout:review'))
+    assert product.name in response.content.decode()
 
-class TestCheckoutFlow:
-    """Test complete checkout flow."""
-
-    def test_guest_to_purchase_flow(self, client, db):
-        """Test complete flow from guest to purchase."""
-        # Step 1: Register
-        response = client.post(reverse('users:register'), {
-            'email': 'test@example.com',
-            'password': 'testpass123',
-            'password_confirm': 'testpass123',
-        })
-        assert response.status_code == 302
-
-        # Step 2: Login
-        response = client.post(reverse('users:login'), {
-            'email': 'test@example.com',
-            'password': 'testpass123',
-        })
-        assert response.status_code == 302
-
-        # Step 3: Browse products
-        product = ProductFactory(price=100)
-        response = client.get(reverse('products:detail', kwargs={'slug': product.slug}))
-        assert response.status_code == 200
-
-        # Step 4: Add to cart
-        response = client.post(reverse('cart:add'), {
-            'product_id': product.id,
-            'quantity': 1,
-        })
-        assert response.status_code == 302
-
-        # Step 5: Checkout
-        response = client.get(reverse('checkout:review'))
-        assert response.status_code == 200
-        assert product.name in response.content.decode()
-
-        # Step 6: Complete purchase
-        with patch('apps.checkout.services.process_payment') as mock_payment:
-            mock_payment.return_value = True
-            response = client.post(reverse('checkout:complete'))
-
-        assert response.status_code == 302
-        assert Order.objects.filter(user__email='test@example.com').exists()
+    with patch('apps.checkout.services.process_payment', return_value=True):
+        response = client.post(reverse('checkout:complete'))
+    assert response.status_code == 302
+    assert Order.objects.filter(user__email='test@example.com').exists()
 ```
 
 ## Testing Best Practices

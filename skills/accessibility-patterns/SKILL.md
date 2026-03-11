@@ -221,6 +221,69 @@ function useFocusTrap(isOpen: boolean, containerRef: RefObject<HTMLElement>) {
 }
 ```
 
+### Focus Management on Route Change (SPA)
+
+```tsx
+// Restore focus to page heading on every route change
+function RouterFocusManager() {
+  const pathname = usePathname();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [pathname]);
+
+  return <h1 ref={headingRef} tabIndex={-1}>{getPageTitle(pathname)}</h1>;
+}
+```
+
+### WAI-ARIA Menu Button (Dropdowns)
+
+```tsx
+// Full keyboard support: Enter/Space/ArrowDown opens, ArrowUp/Down/Home/End navigate, Escape closes
+function DropdownMenu({ trigger, items }: DropdownMenuProps) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!open) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setOpen(true);
+        setActiveIndex(0);
+      }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); setActiveIndex(i => Math.min(i + 1, items.length - 1)); break;
+      case 'ArrowUp':   e.preventDefault(); setActiveIndex(i => Math.max(i - 1, 0)); break;
+      case 'Home':      e.preventDefault(); setActiveIndex(0); break;
+      case 'End':       e.preventDefault(); setActiveIndex(items.length - 1); break;
+      case 'Escape':    setOpen(false); break;
+      case 'Tab':       setOpen(false); break;
+    }
+  };
+
+  return (
+    <div onKeyDown={handleKeyDown}>
+      <button aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+        Options
+      </button>
+      {open && (
+        <ul role="menu">
+          {items.map((item, i) => (
+            <li key={item.id} role="menuitem" tabIndex={activeIndex === i ? 0 : -1}
+                onClick={() => { item.onSelect(); setOpen(false); }}>
+              {item.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
 ### Roving tabindex (Radio Groups, Toolbars)
 
 ```typescript

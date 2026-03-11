@@ -1,8 +1,8 @@
 ---
 name: microfrontend-patterns
-description: Skill: Micro-Frontend Patterns
+description: "Micro-frontend patterns — team topology decisions, Module Federation (webpack/Vite), integration strategies (iframe/web components/JS orchestration), shared state minimization, design system integration, and migration from monolith."
 ---
-# Skill: Micro-Frontend Patterns
+# Micro-Frontend Patterns
 
 ## When to Activate
 

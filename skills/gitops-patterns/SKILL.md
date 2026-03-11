@@ -1,8 +1,8 @@
 ---
 name: gitops-patterns
-description: Skill: GitOps & Progressive Delivery
+description: "GitOps patterns — ArgoCD and Flux setup, Kustomize overlays per environment, SealedSecrets/ESO for secrets, multi-cluster topology, GitOps repository patterns (mono-repo vs poly-repo), and common pitfalls."
 ---
-# Skill: GitOps & Progressive Delivery
+# GitOps & Progressive Delivery
 
 GitOps treats Git as the single source of truth for infrastructure and application state. Controllers continuously reconcile the desired state (in Git) with the actual state (in the cluster), eliminating manual `kubectl apply` in production.
 

@@ -1,11 +1,11 @@
 ---
 name: go-testing-advanced
-description: Advanced Go testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage, HTTP handler testing with httptest, best practices, and CI/CD integration. Extends golang-testing.
+description: Advanced Go testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage, HTTP handler testing with httptest, best practices, and CI/CD integration. Extends go-testing.
 ---
 
 # Go Testing — Advanced Patterns
 
-> This skill extends [golang-testing](../golang-testing/SKILL.md) with mocking, benchmarks, fuzzing, HTTP testing, and CI/CD.
+> This skill extends [go-testing](../go-testing/SKILL.md) with mocking, benchmarks, fuzzing, HTTP testing, and CI/CD.
 
 ## When to Activate
 

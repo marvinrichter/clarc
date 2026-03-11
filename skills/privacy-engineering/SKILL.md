@@ -1,8 +1,8 @@
 ---
 name: privacy-engineering
-description: Skill: Privacy Engineering
+description: "Privacy engineering patterns — PII classification and inventory, GDPR consent flows, data minimization, right-to-erasure implementation, pseudonymization/encryption, privacy-by-design architecture, and DPIA checklist."
 ---
-# Skill: Privacy Engineering
+# Privacy Engineering
 
 ## When to Activate
 
@@ -263,103 +263,6 @@ PHONE_SALT = bytes.fromhex(os.environ["HASH_SALT_PHONE"])
 
 hashed_email = hash_pii("user@example.com", EMAIL_SALT)
 # "a3f8c2..." — same input always produces same hash, but irreversible
-```
-
----
-
-## Differential Privacy
-
-Mathematical guarantee that individual records cannot be identified from aggregate outputs.
-
-**Core concept:** Adding calibrated noise to query results so that including or excluding any single record changes the output by at most ε (epsilon — the privacy budget).
-
-### Laplace Mechanism for Numeric Queries
-
-```python
-import numpy as np
-
-def dp_count(true_count: int, epsilon: float) -> float:
-    """
-    Return a differentially private count.
-    Sensitivity of COUNT = 1 (adding/removing one record changes count by 1).
-    """
-    noise = np.random.laplace(loc=0, scale=1.0 / epsilon)
-    return max(0, true_count + noise)
-
-def dp_mean(values: list[float], epsilon: float, sensitivity: float) -> float:
-    """
-    Return a differentially private mean.
-    sensitivity = (max_value - min_value) / n
-    """
-    true_mean = np.mean(values)
-    noise = np.random.laplace(loc=0, scale=sensitivity / epsilon)
-    return true_mean + noise
-
-# Example: publish user count with ε=1.0 (moderate privacy)
-true_active_users = 15_423
-private_count = dp_count(true_active_users, epsilon=1.0)
-# Returns something like 15_421.3 — close to true but not exact
-```
-
-### Epsilon Budget Management
-
-```python
-class PrivacyBudget:
-    """
-    Track epsilon consumption across queries.
-    Once budget is exhausted, no more queries are allowed.
-    """
-
-    def __init__(self, total_epsilon: float = 10.0):
-        self.total = total_epsilon
-        self.used = 0.0
-        self.log: list[dict] = []
-
-    def consume(self, epsilon: float, query_name: str) -> bool:
-        if self.used + epsilon > self.total:
-            raise PrivacyBudgetExhausted(
-                f"Cannot run '{query_name}': would use ε={self.used + epsilon:.2f} of {self.total:.2f}"
-            )
-        self.used += epsilon
-        self.log.append({"query": query_name, "epsilon": epsilon, "cumulative": self.used})
-        return True
-
-budget = PrivacyBudget(total_epsilon=10.0)
-budget.consume(0.5, "weekly_active_users_count")
-budget.consume(1.0, "revenue_by_region")
-# Remaining: 8.5 ε
-```
-
-### DP in ML Training (DP-SGD)
-
-```python
-from opacus import PrivacyEngine
-from torch.utils.data import DataLoader
-
-# Wrap optimizer with differential privacy
-model = MyModel()
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-data_loader = DataLoader(dataset, batch_size=64)
-
-privacy_engine = PrivacyEngine()
-model, optimizer, data_loader = privacy_engine.make_private_with_epsilon(
-    module=model,
-    optimizer=optimizer,
-    data_loader=data_loader,
-    epochs=10,
-    target_epsilon=8.0,    # total privacy budget for training
-    target_delta=1e-5,     # probability of privacy failure
-    max_grad_norm=1.0,     # gradient clipping for sensitivity bound
-)
-
-# Training loop is unchanged — DP is handled transparently
-for batch in data_loader:
-    loss = model(batch)
-    loss.backward()
-    optimizer.step()
-
-epsilon_used = privacy_engine.get_epsilon(delta=1e-5)
-print(f"Training used ε={epsilon_used:.2f}")
 ```
 
 ---

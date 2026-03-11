@@ -578,3 +578,42 @@ const classification = await claude.messages.create({
 **Why:** Routing is a lightweight classification task; using a heavyweight model wastes cost and latency on a decision that requires no deep reasoning.
 
 ---
+
+## Pattern Quick-Selection
+
+| Task Type | Recommended Pattern |
+|-----------|-------------------|
+| Multi-file review | Fan-Out → Fan-In |
+| Architecture decision | Split-Role (3 roles) |
+| Unknown codebase research | Explorer + Validator |
+| Parallel feature development | Worktree Isolation |
+| Full feature TDD cycle | Sequential Pipeline |
+| Security + quality + tests | Parallel Fan-Out (3 specialist agents) |
+
+## Token Budget by Pattern
+
+| Pattern | Typical agent count | Context per agent |
+|---------|-------------------|------------------|
+| Fan-Out | 3–10 | Minimal (target-specific only) |
+| Split-Role | 2–4 | Full task context |
+| Explorer+Validator | 2 | Explorer: broad; Validator: targeted |
+| Worktree | 2–5 | Feature-specific only |
+| Pipeline | 3–7 | Output of previous stage |
+
+## Failure Handling
+
+- **Agent timeout:** Retry with reduced scope; split into smaller chunks if needed
+- **Conflicting results:** Use a tiebreaker agent with both results as context
+- **Partial failures:** Complete successful agents; re-run failed agents with error context
+- **Context overflow:** Summarize intermediate results before passing to next phase
+
+## Result Synthesis
+
+When combining agent results:
+1. Read all agent outputs
+2. Identify agreements (high confidence)
+3. Identify conflicts (need resolution)
+4. Apply domain priority: security > quality > style
+5. Produce unified recommendation
+
+---

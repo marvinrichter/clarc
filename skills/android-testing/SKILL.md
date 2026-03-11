@@ -1,8 +1,8 @@
 ---
 name: android-testing
-description: Skill: Android Testing
+description: "Android testing — Compose UI tests with semantic selectors, Hilt dependency injection in tests, Room in-memory database tests, Espresso, MockK, Coroutine test dispatcher, and screenshot testing."
 ---
-# Skill: Android Testing
+# Android Testing
 
 ## When to Activate
 

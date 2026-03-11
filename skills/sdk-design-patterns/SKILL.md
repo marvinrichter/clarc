@@ -1,6 +1,6 @@
 ---
 name: sdk-design-patterns
-description: Skill: SDK Design Patterns
+description: "SDK design patterns — API ergonomics, backward compatibility (semantic versioning, deprecation), multi-language SDK generation (openapi-generator vs Speakeasy), error hierarchy design, SDK testing strategies, and documentation as first-class SDK artifact."
 ---
 # Skill: SDK Design Patterns
 
@@ -48,19 +48,11 @@ result = client.users.create(
 
 ### 2. Pit of Success
 
-The default path must be the safe, correct path. Users should have to work harder to do the wrong thing.
+The default path must be the safe, correct path. Safe defaults are on; users opt out only when they have a reason.
 
 ```typescript
-// BAD: unsafe by default — user must opt in to safe behavior
-const client = new AcmeClient({ validateSSL: false, retryOnFailure: false });
-
-// GOOD: safe defaults — users opt out of them only when they have a reason
-const client = new AcmeClient({
-  apiKey: process.env.ACME_API_KEY,
-  // retries: 3 (default)
-  // timeout: 30_000 (default)
-  // baseURL: "https://api.acmecorp.com" (default)
-});
+// GOOD: retries=3, timeout=30s, SSL on by default — users only set what differs
+const client = new AcmeClient({ apiKey: process.env.ACME_API_KEY });
 ```
 
 ### 3. Discoverability — IDE is the Primary UI
@@ -85,24 +77,9 @@ type Event =
 Same concept, same name, same behavior — everywhere in the SDK.
 
 ```python
-# BAD: inconsistent naming
-client.users.list()        # lists users
-client.get_orders()        # lists orders — different pattern
-client.fetch_products()    # lists products — yet another pattern
-
-# GOOD: consistent resource.verb pattern
-client.users.list()
-client.orders.list()
-client.products.list()
-
-# BAD: inconsistent pagination
-users = client.users.list(page=1, page_size=20)    # page-based
-orders = client.orders.list(cursor=None, limit=20)  # cursor-based
-
-# GOOD: unified pagination interface
-users = client.users.list(limit=20)
-orders = client.orders.list(limit=20)
-# Both return: Page(items=[...], has_more=bool, next_cursor=str | None)
+# GOOD: consistent resource.verb pattern + unified pagination
+client.users.list(limit=20)   # → Page(items=[...], has_more=bool, next_cursor=str|None)
+client.orders.list(limit=20)  # same shape — not client.get_orders() or client.fetch_orders()
 ```
 
 ### 5. Minimal Surface Area
@@ -124,73 +101,38 @@ client.users.create(email=..., role="admin", send_invite=True)
 
 ## API Ergonomics
 
-### Named Parameters for Complex Operations
+### Named Parameters and Builder Pattern
+
+Use keyword args for complex operations (self-documenting). Use Builder in Java; object options in TypeScript/Python.
 
 ```python
-# BAD: positional args — what does True mean here?
-client.send_email("user@example.com", "Welcome!", True, False, 3)
-
 # GOOD: keyword args — self-documenting
-client.send_email(
-    to="user@example.com",
-    subject="Welcome!",
-    track_opens=True,
-    track_clicks=False,
-    retry_count=3,
-)
-```
+client.send_email(to="user@example.com", subject="Welcome!", track_opens=True, retry_count=3)
 
-### Builder Pattern for Complex Configuration
+# GOOD: sane defaults — users override only what they need
+class AcmeClient:
+    def __init__(self, api_key: str, base_url="https://api.acmecorp.com",
+                 timeout=30.0, max_retries=3, http_client=None): ...
+```
 
 ```java
-// Java — Builder for complex object construction
+// Java — Builder for complex configuration
 AcmeClient client = AcmeClient.builder()
     .apiKey(System.getenv("ACME_API_KEY"))
-    .baseUrl("https://api.acmecorp.com")
     .timeout(Duration.ofSeconds(30))
     .retryPolicy(RetryPolicy.exponentialBackoff(maxAttempts=3))
-    .httpClient(customHttpClient)    // optional injection
     .build();
-```
-
-```typescript
-// TypeScript — object options pattern (simpler than Builder for TS)
-const client = new AcmeClient({
-  apiKey: process.env.ACME_API_KEY!,
-  timeout: 30_000,
-  retries: 3,
-  baseURL: "https://api.acmecorp.com",
-});
 ```
 
 ### Fluent Interface for Queries
 
 ```python
-# Fluent query building — readable, chainable
 users = (
     client.users
-    .where(status="active")
-    .where(role="admin")
+    .where(status="active").where(role="admin")
     .order_by("created_at", direction="desc")
-    .limit(50)
-    .execute()
+    .limit(50).execute()
 )
-```
-
-### Sane Defaults — Users Override Only What They Need
-
-```python
-class AcmeClient:
-    def __init__(
-        self,
-        api_key: str,                          # required — no sensible default
-        base_url: str = "https://api.acmecorp.com",  # sane default
-        timeout: float = 30.0,                 # sane default
-        max_retries: int = 3,                  # sane default
-        retry_on_status: list[int] = None,     # None → use [429, 500, 502, 503, 504]
-        http_client: httpx.AsyncClient = None, # None → create internally
-    ):
-        ...
 ```
 
 ---
@@ -274,99 +216,46 @@ mvn revapi:check
 
 ## Multi-Language SDK Generation
 
-### OpenAPI Generator
+### openapi-generator vs Speakeasy
 
-Generate SDKs from a single OpenAPI spec — TypeScript, Python, Go, Java, C# from one source of truth.
+| Tool | Best for | DX quality |
+|------|----------|-----------|
+| `openapi-generator-cli` | Open-source, broad language support | Functional but raw |
+| Speakeasy / Stainless | Production-quality SDKs with better ergonomics | High |
 
 ```bash
-# Generate TypeScript SDK (axios-based)
-npx openapi-generator-cli generate \
-  -i openapi/v1/openapi.yaml \
-  -g typescript-axios \
-  -o sdks/typescript \
+# openapi-generator — TypeScript, Python, Go from one spec
+npx openapi-generator-cli generate -i openapi/v1/openapi.yaml \
+  -g typescript-axios -o sdks/typescript \
   --additional-properties=npmName=@acmecorp/sdk,npmVersion=2.1.0,supportsES6=true
 
-# Generate Python SDK
-npx openapi-generator-cli generate \
-  -i openapi/v1/openapi.yaml \
-  -g python \
-  -o sdks/python \
-  --additional-properties=packageName=acmecorp,projectName=acmecorp-sdk,packageVersion=2.1.0
-
-# Generate Go SDK
-npx openapi-generator-cli generate \
-  -i openapi/v1/openapi.yaml \
-  -g go \
-  -o sdks/go \
-  --additional-properties=packageName=acmecorp,moduleName=github.com/acmecorp/sdk-go
+# Speakeasy — generate all languages at once
+speakeasy generate sdk --schema openapi/v1/openapi.yaml --lang typescript,python,go
 ```
-
-**Custom templates** for consistent error handling:
-
-```mustache
-{{! templates/python/api_exception.mustache }}
-class {{classname}}Error(AcmeCorpError):
-    """{{description}}"""
-    status_code: int = {{statusCode}}
-
-    def __init__(self, message: str, request_id: str | None = None):
-        super().__init__(message)
-        self.request_id = request_id
-```
-
-### Speakeasy / Stainless — Commercial Generators
-
-For production-quality SDKs with better DX than openapi-generator:
 
 ```yaml
 # .speakeasy/gen.yaml
 generation:
   baseServerUrl: https://api.acmecorp.com
   sdkClassName: AcmeCorpSDK
-  tagNamespacingDisabled: false
 languages:
-  typescript:
-    version: 2.1.0
-    packageName: "@acmecorp/sdk"
-  python:
-    version: 2.1.0
-    packageName: acmecorp
-  go:
-    version: 2.1.0
-    packageName: acmecorp
-```
-
-```bash
-# Generate all languages
-speakeasy generate sdk --schema openapi/v1/openapi.yaml --lang typescript,python,go
+  typescript: { version: 2.1.0, packageName: "@acmecorp/sdk" }
+  python:     { version: 2.1.0, packageName: acmecorp }
+  go:         { version: 2.1.0, packageName: acmecorp }
 ```
 
 ### SDK Monorepo Structure
 
 ```
 sdk-monorepo/
-├── openapi/
-│   └── v1/
-│       └── openapi.yaml       # Single source of truth
+├── openapi/v1/openapi.yaml        # Single source of truth
 ├── sdks/
-│   ├── typescript/            # @acmecorp/sdk
-│   │   ├── src/
-│   │   ├── package.json
-│   │   └── CHANGELOG.md
-│   ├── python/                # acmecorp PyPI package
-│   │   ├── acmecorp/
-│   │   ├── pyproject.toml
-│   │   └── CHANGELOG.md
-│   └── go/                    # github.com/acmecorp/sdk-go
-│       ├── acmecorp/
-│       ├── go.mod
-│       └── CHANGELOG.md
-├── .github/
-│   └── workflows/
-│       ├── generate-sdks.yml  # On spec change: regenerate + PR
-│       └── publish-sdks.yml   # On tag: publish to npm/PyPI/pkg.go.dev
-└── scripts/
-    └── generate-all.sh
+│   ├── typescript/                # @acmecorp/sdk (npm)
+│   ├── python/                    # acmecorp (PyPI)
+│   └── go/                        # github.com/acmecorp/sdk-go
+└── .github/workflows/
+    ├── generate-sdks.yml          # On spec change: regenerate + PR
+    └── publish-sdks.yml           # On tag: publish to registries
 ```
 
 ---
@@ -375,86 +264,50 @@ sdk-monorepo/
 
 ### Typed Error Hierarchy
 
+Map HTTP status codes to specific error types. Users catch exact errors; IDEs show typed properties.
+
 ```python
-# Python error hierarchy
+# Python hierarchy: AcmeCorpError → APIError → specific subclasses
 class AcmeCorpError(Exception):
-    """Base error for all AcmeCorp SDK errors."""
     def __init__(self, message: str, request_id: str | None = None):
-        super().__init__(message)
-        self.request_id = request_id
+        super().__init__(message); self.request_id = request_id
 
 class APIError(AcmeCorpError):
-    """HTTP error returned by the AcmeCorp API."""
     def __init__(self, message: str, status_code: int, **kwargs):
-        super().__init__(message, **kwargs)
-        self.status_code = status_code
+        super().__init__(message, **kwargs); self.status_code = status_code
 
-class AuthenticationError(APIError):
-    """401 — Invalid or missing API key."""
-    def __init__(self, **kwargs):
-        super().__init__("Invalid API key. Check your ACME_API_KEY.", status_code=401, **kwargs)
-
-class PermissionDeniedError(APIError):
-    """403 — Authenticated but not authorized for this action."""
-    pass
-
-class NotFoundError(APIError):
-    """404 — Resource does not exist."""
-    pass
-
-class ValidationError(APIError):
-    """422 — Request body failed validation."""
-    def __init__(self, message: str, errors: list[dict], **kwargs):
-        super().__init__(message, status_code=422, **kwargs)
-        self.errors = errors   # [{"field": "email", "message": "is required"}]
-
-class RateLimitError(APIError):
-    """429 — Too many requests."""
-    def __init__(self, message: str, retry_after: int, **kwargs):
-        super().__init__(message, status_code=429, **kwargs)
-        self.retry_after = retry_after   # seconds until retry is safe
-
-class InternalServerError(APIError):
-    """5xx — Unexpected server error, safe to retry."""
-    pass
+class AuthenticationError(APIError):   # 401
+    def __init__(self, **kwargs): super().__init__("Invalid API key.", status_code=401, **kwargs)
+class PermissionDeniedError(APIError): pass  # 403
+class NotFoundError(APIError):         pass  # 404
+class ValidationError(APIError):             # 422 — carries field errors list
+    def __init__(self, message, errors, **kwargs):
+        super().__init__(message, status_code=422, **kwargs); self.errors = errors
+class RateLimitError(APIError):              # 429 — carries retry_after seconds
+    def __init__(self, message, retry_after, **kwargs):
+        super().__init__(message, status_code=429, **kwargs); self.retry_after = retry_after
+class InternalServerError(APIError): pass   # 5xx — safe to retry
 ```
 
 ```typescript
-// TypeScript error hierarchy
+// TypeScript — same hierarchy, fully typed
 export class AcmeCorpError extends Error {
-  constructor(
-    message: string,
-    public readonly requestId?: string,
-  ) {
-    super(message);
-    this.name = this.constructor.name;
+  constructor(message: string, public readonly requestId?: string) {
+    super(message); this.name = this.constructor.name;
   }
 }
-
 export class RateLimitError extends AcmeCorpError {
-  constructor(
-    message: string,
-    public readonly retryAfter: number,  // seconds
-    requestId?: string,
-  ) {
+  constructor(message: string, public readonly retryAfter: number, requestId?: string) {
     super(message, requestId);
   }
 }
-
-// Usage in user code — fully typed, IDE shows all properties
+// Usage — catch specific types, access typed properties
 try {
   await client.users.create({ email });
-} catch (error) {
-  if (error instanceof RateLimitError) {
-    await sleep(error.retryAfter * 1000);
-    // retry
-  } else if (error instanceof ValidationError) {
-    console.error("Invalid input:", error.errors);
-  } else if (error instanceof AcmeCorpError) {
-    throw error;  // propagate unknown SDK errors
-  } else {
-    throw error;  // propagate non-SDK errors unchanged
-  }
+} catch (e) {
+  if (e instanceof RateLimitError) await sleep(e.retryAfter * 1000);
+  else if (e instanceof ValidationError) console.error(e.errors);
+  else throw e;
 }
 ```
 
@@ -462,30 +315,20 @@ try {
 
 ```python
 def _parse_error(response: httpx.Response) -> APIError:
-    """Parse RFC 7807 Problem Details into typed SDK errors."""
     try:
         body = response.json()
         message = body.get("detail", body.get("title", "Unknown error"))
         request_id = response.headers.get("X-Request-ID")
     except Exception:
-        message = response.text or f"HTTP {response.status_code}"
-        request_id = None
-
-    kwargs = {"request_id": request_id}
+        message = response.text or f"HTTP {response.status_code}"; request_id = None
+    kw = {"request_id": request_id}
     match response.status_code:
-        case 401: return AuthenticationError(**kwargs)
-        case 403: return PermissionDeniedError(message, status_code=403, **kwargs)
-        case 404: return NotFoundError(message, status_code=404, **kwargs)
-        case 422: return ValidationError(message, errors=body.get("errors", []), **kwargs)
-        case 429: return RateLimitError(
-            message,
-            retry_after=int(response.headers.get("Retry-After", 60)),
-            **kwargs
-        )
-        case _ if response.status_code >= 500:
-            return InternalServerError(message, status_code=response.status_code, **kwargs)
-        case _:
-            return APIError(message, status_code=response.status_code, **kwargs)
+        case 401: return AuthenticationError(**kw)
+        case 422: return ValidationError(message, errors=body.get("errors", []), **kw)
+        case 429: return RateLimitError(message,
+            retry_after=int(response.headers.get("Retry-After", 60)), **kw)
+        case s if s >= 500: return InternalServerError(message, status_code=s, **kw)
+        case _:   return APIError(message, status_code=response.status_code, **kw)
 ```
 
 ---
@@ -494,87 +337,58 @@ def _parse_error(response: httpx.Response) -> APIError:
 
 ### VCR / HTTP Recording
 
-Record real HTTP interactions once and replay in tests — no mock drift, no network dependency.
+Record real HTTP interactions once, replay in tests — no mock drift, no network dependency.
 
 ```python
-# Python with pytest-recording (VCR.py)
-import pytest
-
-@pytest.mark.vcr           # records on first run, replays on subsequent runs
+@pytest.mark.vcr  # records on first run, replays thereafter
 def test_create_user(client):
-    user = client.users.create(email="test@example.com", name="Test User")
+    user = client.users.create(email="test@example.com")
     assert user.id.startswith("usr_")
-    assert user.email == "test@example.com"
 ```
 
 ```typescript
-// TypeScript with nock or jest-nock
-import nock from "nock";
-import { loadFixture } from "./helpers";
-
-beforeEach(() => {
-  // Replay recorded HTTP fixture
-  nock("https://api.acmecorp.com")
-    .post("/v1/users")
-    .reply(201, loadFixture("create_user_success.json"));
-});
-
+// TypeScript — nock replays recorded fixtures
+nock("https://api.acmecorp.com").post("/v1/users")
+  .reply(201, loadFixture("create_user_success.json"));
 test("creates a user", async () => {
   const user = await client.users.create({ email: "test@example.com" });
   expect(user.id).toMatch(/^usr_/);
 });
 ```
 
-### Language Matrix Testing
+### Language Matrix + Smoke Tests
 
 ```yaml
-# .github/workflows/test-matrix.yml
+# Test across all supported runtime versions
 strategy:
   matrix:
-    language:
-      - { name: typescript, node: "18" }
-      - { name: typescript, node: "20" }
-      - { name: typescript, node: "22" }
-      - { name: python, python: "3.9" }
-      - { name: python, python: "3.10" }
-      - { name: python, python: "3.11" }
-      - { name: python, python: "3.12" }
-      - { name: go, go: "1.21" }
-      - { name: go, go: "1.22" }
+    include:
+      - { lang: typescript, node: "20" }
+      - { lang: python,     python: "3.11" }
+      - { lang: go,         go: "1.22" }
 ```
 
-### Publish Smoke Test
-
-Test the actual published artifact — not just the source.
+After publishing, smoke-test the actual artifact (not just source):
 
 ```bash
-# TypeScript: pack and install in a fresh project
-cd sdks/typescript
-npm pack
-mkdir /tmp/sdk-smoke-test && cd /tmp/sdk-smoke-test
-npm init -y
-npm install /path/to/acmecorp-sdk-2.1.0.tgz
-node -e "const { AcmeCorpSDK } = require('@acmecorp/sdk'); console.log('OK', AcmeCorpSDK)"
+# TypeScript: pack + install in a fresh project
+npm pack && npm install /path/to/acmecorp-sdk-2.1.0.tgz
+node -e "const { AcmeCorpSDK } = require('@acmecorp/sdk'); console.log('OK')"
 
-# Python: build wheel and install in a fresh venv
-cd sdks/python
-python -m build
-python -m venv /tmp/sdk-smoke-venv
-/tmp/sdk-smoke-venv/bin/pip install dist/*.whl
-/tmp/sdk-smoke-venv/bin/python -c "import acmecorp; print('OK', acmecorp.__version__)"
+# Python: build wheel + install in fresh venv
+python -m build && pip install dist/*.whl
+python -c "import acmecorp; print('OK', acmecorp.__version__)"
 ```
 
 ### Contract Testing Against Staging
 
 ```python
-# Verify SDK generates requests that match the OpenAPI spec
 from schemathesis import from_path
-
 schema = from_path("openapi/v1/openapi.yaml", base_url="https://api-staging.acmecorp.com")
 
 @schema.parametrize()
 def test_api_contract(case):
-    response = case.call_and_validate()   # validates request AND response against spec
+    response = case.call_and_validate()  # validates request AND response against spec
     assert response.status_code != 500
 ```
 
@@ -614,28 +428,14 @@ def create(self, email: str, name: str | None = None, role: str = "member") -> U
 ```markdown
 # Changelog
 
-All notable changes to this project will be documented in this file.
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-
-## [Unreleased]
-
 ## [2.1.0] - 2026-03-08
 
 ### Added
 - `client.users.bulk_create()` for creating up to 100 users in one API call
-- `RateLimitError.retry_after` property — seconds until retry is safe
+- `RateLimitError.retry_after` — seconds until retry is safe
 
 ### Deprecated
-- `client.users.get_all_users()` — use `client.users.list()` instead. Will be removed in v3.0.
-
-## [2.0.0] - 2026-01-15
-
-### Breaking Changes
-- Renamed `client.create_user()` to `client.users.create()` (resource-namespaced API)
-- `ValidationError.message` renamed to `ValidationError.detail`
-
-### Migration Guide
-See [docs/migration/v2.md](https://docs.acmecorp.com/migration/v2)
+- `client.users.get_all_users()` — use `client.users.list()` instead. Removed in v3.0.
 ```
 
 ---

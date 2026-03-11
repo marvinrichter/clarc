@@ -3,7 +3,9 @@ name: i18n-patterns
 description: "Internationalization architecture: locale detection strategy, translation key organization (flat vs. namespaced), pluralization rules (CLDR), gender agreement, RTL layout (CSS logical properties), date/time/number/currency formatting (Intl API), and locale-aware sorting. Language-agnostic patterns applicable to any framework."
 ---
 
-# i18n Patterns Skill
+# i18n Patterns
+
+> **vs `i18n-frameworks`:** This skill covers language-agnostic architecture decisions (locale detection strategy, key organization, RTL support, Intl API). Use `i18n-frameworks` when you need framework-specific setup code (react-i18next, next-intl, Django i18n, Rails I18n, SwiftUI, Flutter ARB).
 
 ## When to Activate
 
