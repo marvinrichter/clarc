@@ -13,6 +13,15 @@ description: "[Requires codeagent-wrapper] Multi-model collaborative planning â€
 > *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` instead for a native Claude planning workflow."*
 > Do **not** attempt to execute any subsequent phases without this binary present.
 
+## When to Use This vs /plan
+
+| Use `/multi-plan` when | Use `/plan` instead when |
+|------------------------|--------------------------|
+| `codeagent-wrapper` is installed and configured | You don't have `codeagent-wrapper` |
+| You want multi-model analysis (Codex + Gemini) | Native Claude planning is sufficient |
+| Fullstack tasks need parallel frontend/backend plans | Single-domain or focused features |
+| You want Codex session IDs for later `/multi-execute` reuse | You'll implement with `/tdd` directly |
+
 Multi-model collaborative planning - Context retrieval + Dual-model analysis â†’ Generate step-by-step implementation plan.
 
 $ARGUMENTS

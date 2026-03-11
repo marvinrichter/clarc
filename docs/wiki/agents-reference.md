@@ -9,7 +9,7 @@ Agents are specialized subagents that clarc delegates work to. Most activate aut
 | `planner` | Complex features, refactoring | `/plan` |
 | `tdd-guide` | New features, bug fixes | `/tdd` |
 | `code-reviewer` | After writing or modifying code | `/code-review` |
-| `security-reviewer` | Code touches auth, input, APIs, secrets | `/security` |
+| `security-reviewer` | Code touches auth, input, APIs, secrets | `/security-review` |
 | `architect` | Architectural decisions | `/arc42` |
 | `build-error-resolver` | Build fails | `/build-fix` |
 | `e2e-runner` | Critical user flows need testing | `/e2e` |

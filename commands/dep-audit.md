@@ -261,4 +261,4 @@ pipdeptree 2>/dev/null || pip install pipdeptree && pipdeptree
 - `supply-chain-security` — SBOM, SLSA, cosign
 - `/sbom` — generate and attach SBOM
 
-> Not covered here: outdated package upgrades and interactive version bumps — use `/deps` for those.
+> Not covered here: outdated package upgrades and interactive version bumps — use `/dep-update` for those.

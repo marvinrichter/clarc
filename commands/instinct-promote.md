@@ -1,10 +1,10 @@
 ---
-name: promote
+name: instinct-promote
 description: Promote project-scoped instincts to global scope
 command: true
 ---
 
-# Promote Command
+# Instinct Promote Command
 
 Promote instincts from project scope to global scope in continuous-learning-v2.
 

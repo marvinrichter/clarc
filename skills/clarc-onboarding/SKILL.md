@@ -34,7 +34,7 @@ Integrate clarc into your daily workflow. Add these:
 | Command/Agent | When to use it |
 |--------------|---------------|
 | `/guide <task>` | Any time you start a new task — get the right workflow |
-| `/security` | Before every PR that touches auth, APIs, or user data |
+| `/security-review` | Before every PR that touches auth, APIs, or user data |
 | `/e2e` | For any feature with a critical user flow |
 | `code-reviewer` agent | After every significant code change (or use the nudge hook) |
 | `/doctor` | Weekly — verify clarc installation is healthy |
@@ -62,7 +62,7 @@ Unlock the full workflow OS. Add these:
 
 **Priority order:**
 1. `/plan` + `/tdd` + `/code-review` — your core loop
-2. `/security` — catch vulnerabilities before they reach production
+2. `/security-review` — catch vulnerabilities before they reach production
 3. `/guide <task>` — get the right tool for every job
 4. `/instinct-report` — review what clarc has learned after 30 sessions
 
@@ -91,7 +91,7 @@ Unlock the full workflow OS. Add these:
 | Command | Team value |
 |---------|-----------|
 | `/code-review` | Consistent review quality across all PRs |
-| `/security` | Security standards enforced on every PR |
+| `/security-review` | Security standards enforced on every PR |
 | `/e2e` | Shared E2E test suite that everyone runs |
 | `/onboard` | New hires set up independently in < 5 minutes |
 | `/agent-stats` | See which agents the team uses most |
@@ -105,7 +105,7 @@ Start with: `/context` → `/e2e` → `/a11y-audit` → `/web-perf`
 Key skills: `frontend-patterns`, `state-management`, `accessibility`, `e2e-testing`
 
 ### Backend Developer
-Start with: `/context` → `/tdd` → `/database-review` → `/security`
+Start with: `/context` → `/tdd` → `/database-review` → `/security-review`
 Key skills: `api-design`, `auth-patterns`, `database-migrations`, `observability`
 
 ### DevOps / Platform Engineer

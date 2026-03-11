@@ -62,7 +62,7 @@ Commands: `/typescript-review`, `/e2e`, `/a11y-audit`, `/web-perf`
 **TypeScript / NestJS / Express (backend):**
 Skills: `nodejs-backend-patterns`, `api-design`, `auth-patterns`, `database-migrations`, `observability`
 Agents: `typescript-reviewer`, `database-reviewer`, `security-reviewer`
-Commands: `/typescript-review`, `/database-review`, `/security`
+Commands: `/typescript-review`, `/database-review`, `/security-review`
 
 **Go:**
 Skills: `go-patterns`, `go-patterns-advanced`, `go-testing`, `go-testing-advanced`, `api-design`
@@ -72,7 +72,7 @@ Commands: `/go-review`, `/go-test`, `/go-build`
 **Python / FastAPI / Django:**
 Skills: `python-patterns`, `fastapi-patterns` or `django-patterns`, `python-testing`, `auth-patterns`
 Agents: `python-reviewer`, `database-reviewer`, `security-reviewer`
-Commands: `/python-review`, `/database-review`, `/security`
+Commands: `/python-review`, `/database-review`, `/security-review`
 
 **Rust:**
 Skills: `rust-patterns`, `rust-patterns-advanced`, `rust-testing`
@@ -97,4 +97,4 @@ Commands: `/gitops-review`, `/iac-review`, `/finops-audit`
 **Any project (universal):**
 Always relevant: `tdd-workflow`, `git-workflow`, `api-design`, `security-review`
 Always useful agents: `planner`, `code-reviewer`, `tdd-guide`
-Always useful commands: `/plan`, `/tdd`, `/code-review`, `/security`
+Always useful commands: `/plan`, `/tdd`, `/code-review`, `/security-review`

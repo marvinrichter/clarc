@@ -45,7 +45,14 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/instinct-outcome-tracker.js" --list
 | `bad`   | -0.10 (min 0.10) |
 | `neutral` | no change |
 
-## What to Do
+## Preconditions
+
+Before running, verify:
+- `~/.claude/homunculus/` exists — if not, instruct user to run `install.sh --enable-learning`
+- The instinct ID is valid — run `list` subcommand if unsure of the ID
+- Outcome is one of `good`, `bad`, or `neutral`
+
+## Execution
 
 1. Ask the user which instinct they want to record an outcome for (or use the `list` subcommand)
 2. Validate the outcome is `good`, `bad`, or `neutral`
@@ -60,6 +67,13 @@ Recorded good outcome for "test-first-workflow"
   Confidence: 0.70 ↑ 0.75
   Reason: TDD caught a regression before it hit staging
 ```
+
+## Output Interpretation
+
+- **Confidence increased**: instinct is gaining evidence — will appear higher in `/instinct-report`
+- **Confidence decreased**: if drops below 20%, it will be flagged in `/instinct-report` for removal review
+- **Run `/instinct-report` after recording**: to see the updated ranked list with trend indicators (↑↓→)
+- **Pattern**: if the same instinct consistently gets `bad` outcomes, consider using `/evolve` to revise it
 
 ## Notes
 

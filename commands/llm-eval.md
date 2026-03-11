@@ -2,17 +2,19 @@
 description: Manage eval-driven development workflow — define, run, check results, and list evals for a feature. Supports eval-first development where behaviour is specified before implementation.
 ---
 
-# Eval Command
+> See also: `/evaluate` — product idea evaluation (Go/No-Go recommendation before building).
+
+# LLM-Eval Command
 
 Manage eval-driven development workflow.
 
 ## Usage
 
-`/eval [define|check|report|list] [feature-name]`
+`/llm-eval [define|check|report|list] [feature-name]`
 
 ## Define Evals
 
-`/eval define feature-name`
+`/llm-eval define feature-name`
 
 Create a new eval definition:
 
@@ -39,7 +41,7 @@ Created: $(date)
 
 ## Check Evals
 
-`/eval check feature-name`
+`/llm-eval check feature-name`
 
 Run evals for a feature:
 
@@ -64,7 +66,7 @@ Status: IN PROGRESS / READY
 
 ## Report Evals
 
-`/eval report feature-name`
+`/llm-eval report feature-name`
 
 Generate comprehensive eval report:
 
@@ -102,7 +104,7 @@ RECOMMENDATION
 
 ## List Evals
 
-`/eval list`
+`/llm-eval list`
 
 Show all eval definitions:
 

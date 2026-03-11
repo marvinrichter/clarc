@@ -29,7 +29,7 @@ Expected coverage:
 - `/plan` → planner agent → task breakdown
 - `/tdd` → tdd-guide agent → implementation
 - `/code-review` → code-reviewer agent → quality
-- `/security` → security-reviewer agent → safety
+- `/security-review` → security-reviewer agent → safety
 - deployment → skills/deployment-patterns, skills/ci-cd-patterns
 
 ### J2: Bug Report → Fix → Release

@@ -95,9 +95,9 @@ Decay runs automatically at session end (SessionEnd hook, weekly gate).
 
 An instinct qualifies for global promotion when:
 - `confidence >= 0.80` AND `usage_count >= 5`
-- Appears in 2+ projects (via `/promote --auto`)
+- Appears in 2+ projects (via `/instinct-promote --auto`)
 
-Run `/promote` or `/promote --auto --dry-run` to review candidates.
+Run `/instinct-promote` or `/instinct-promote --auto --dry-run` to review candidates.
 
 ### Deletion / Archiving
 
@@ -149,7 +149,7 @@ During the week:
 
 Monthly:
   5. /evolve — cluster high-confidence instincts into skills/commands
-  6. /promote --auto --dry-run — review global promotion candidates
+  6. /instinct-promote --auto --dry-run — review global promotion candidates
   7. Remove archived instincts that are no longer relevant
 ```
 

@@ -21,7 +21,14 @@ Exports instincts to a shareable format. Perfect for:
 /instinct-export --scope project --output project-instincts.yaml
 ```
 
-## What to Do
+## Preconditions
+
+Before running, verify:
+- `~/.claude/homunculus/` exists — if not, instruct user to run `install.sh --enable-learning`
+- For `--scope project`: current directory must be inside a known project (check `homunculus/projects.json`)
+- At least one instinct exists to export — if none, suggest running a few sessions with `/learn-eval` first
+
+## Execution
 
 1. Detect current project context
 2. Load instincts by selected scope:
@@ -64,3 +71,10 @@ Use functional patterns over classes.
 - `--min-confidence <n>`: Minimum confidence threshold
 - `--output <file>`: Output file path (prints to stdout when omitted)
 - `--scope <project|global|all>`: Export scope (default: `all`)
+
+## Output Interpretation
+
+- **File written**: share the YAML file with teammates or commit it to the project repo
+- **Stdout output** (no `--output`): copy/paste directly or pipe to a file for review
+- **Next steps**: teammates can import with `/instinct-import <file>` to inherit the same patterns
+- Use `--min-confidence 0.7` to export only battle-tested instincts when sharing with others

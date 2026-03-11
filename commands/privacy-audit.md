@@ -310,5 +310,5 @@ Privacy Maturity: 4/7
 
 - Skill: `skills/privacy-engineering/` — implementation patterns for all techniques above
 - Skill: `skills/gdpr-privacy/` — GDPR compliance checklist and policy templates
-- Command: `/security` — security vulnerabilities alongside privacy issues
+- Command: `/security-review` — security vulnerabilities alongside privacy issues
 - Rule: `rules/common/security.md` — privacy obligations in the security checklist

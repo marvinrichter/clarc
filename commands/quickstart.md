@@ -94,7 +94,7 @@ For security-sensitive changes (auth, APIs, user input):
 | `/plan` | Plan before coding — breaks down the work, waits for your OK |
 | `/tdd` | Enforce test-first — no implementation before a failing test |
 | `/code-review` | Automatic language-specific code review |
-| `/security` | Security scan — OWASP, secrets, injection |
+| `/security-review` | Security scan — OWASP, secrets, injection |
 | `/verify` | Full quality loop — build + type-check + lint + test |
 | `/idea` | Capture a product idea |
 | `/evaluate` | Go/No-Go product evaluation |

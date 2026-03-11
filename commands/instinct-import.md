@@ -31,7 +31,14 @@ Import instincts from local file paths or HTTP(S) URLs.
 /instinct-import team-instincts.yaml --scope global --force
 ```
 
-## What to Do
+## Preconditions
+
+Before running, verify:
+- `~/.claude/homunculus/` exists — if not, instruct user to run `install.sh --enable-learning`
+- The import source (local file path or HTTPS URL) is accessible
+- If `--scope global`, user understands the instinct will apply to all projects
+
+## Execution
 
 1. Fetch the instinct file (local path or URL)
 2. Parse and validate the format
@@ -112,3 +119,10 @@ New instincts saved to: ~/.claude/homunculus/instincts/inherited/
 
 Run /instinct-status to see all instincts.
 ```
+
+## Output Interpretation
+
+- **Added N instincts**: new patterns now active for this project (or globally if `--scope global`)
+- **Updated N instinct**: a higher-confidence import replaced a lower-confidence local copy
+- **Skipped N instincts**: your local copies are already as confident or better — no action needed
+- After import, run `/instinct-status` to verify the new instincts and check for conflicts

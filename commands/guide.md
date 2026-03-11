@@ -32,7 +32,7 @@ Action: <specific instruction>
 2. `/plan` — generate implementation plan
 3. `/tdd` — write auth tests first (login, logout, token refresh, unauthorized access)
 4. Invoke `security-reviewer` after implementation
-5. `/security` — full security scan
+5. `/security-review` — full security scan
 
 ### testing / unit tests / integration tests / coverage
 1. Read skill `tdd-workflow`
@@ -82,7 +82,7 @@ Action: <specific instruction>
 5. `/database-review` if queries are slow
 
 ### security / vulnerability / OWASP / audit / pentest
-1. `/security` — full DevSecOps scan
+1. `/security-review` — full DevSecOps scan
 2. Invoke `security-reviewer` on affected files
 3. Read skill `auth-patterns` if auth-related
 4. Read skill `supply-chain-security` for dependency risks
@@ -103,7 +103,7 @@ Action: <specific instruction>
 ### code review / PR review / review changes
 1. `/code-review` — comprehensive review
 2. Language-specific: `/typescript-review`, `/go-review`, `/python-review`, etc.
-3. `/security` if touching auth/API
+3. `/security-review` if touching auth/API
 4. Invoke `pr-review-toolkit:review-pr` for full PR review
 
 ### documentation / docs / README / API docs
@@ -132,7 +132,7 @@ Action: <specific instruction>
 
 ### dependency / packages / npm / upgrade / audit
 1. `/dep-audit` — full dependency audit
-2. `/deps` — dependency upgrade workflow
+2. `/dep-update` — dependency upgrade workflow
 3. Read skill `supply-chain-security`
 
 ### accessibility / a11y / WCAG / screen reader
