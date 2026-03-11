@@ -103,6 +103,10 @@ Fix: Concrete code change to apply
 
 For Android architecture patterns, Compose examples, and Hilt scoping details, see skills: `android-patterns`, `android-testing`, `kotlin-patterns`, `kotlin-testing`.
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 coverage (injection, improper platform usage, insecure data storage) → also invoke `security-reviewer` in parallel. This agent focuses on Android architecture, Compose patterns, Hilt scoping, and Coroutine correctness, not application-layer security.
+
 ## Not This Agent
 
 - **Pure Kotlin (server-side, CLI, Ktor, Spring Boot)** → use `kotlin-reviewer` instead. This agent is only relevant when `AndroidManifest.xml` or the Android Gradle plugin is present.

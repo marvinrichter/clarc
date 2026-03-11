@@ -74,6 +74,12 @@ When invoked:
 1 critical, 2 high, 1 medium, 1 low. Block merge until CRITICAL and HIGH are resolved.
 ```
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 coverage beyond SQL injection and mass assignment (e.g., SSRF, broken access control, cryptographic failures) → also invoke `security-reviewer` in parallel. This agent focuses on C# 12/.NET 8 idioms, async correctness, and EF Core patterns.
+
+For pure Kotlin in non-.NET projects → use `kotlin-reviewer`.
+
 ## Reference Skills
 
 - C# patterns, MediatR, EF Core, Minimal API: `skills/csharp-patterns`

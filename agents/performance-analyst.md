@@ -200,6 +200,10 @@ Avoid generic advice:
 - ❌ "Optimize your database" — instead: identify the specific query and fix
 - ❌ "Reduce bundle size" — instead: identify specific modules and suggest replacements
 
+## Boundary
+
+For SQL query optimization and index design → use `database-reviewer`. This agent focuses on system-level profiling: pprof, Lighthouse, flamegraphs, N+1 detection in application code, and memory/CPU hotspot analysis.
+
 ## Reference Skills
 
 - `performance-profiling` — how to generate the profiling data for analysis

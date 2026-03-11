@@ -78,6 +78,14 @@ Choose one approach. The recommendation should:
 
 Architecture Decision Records capture not just what was decided, but why — and what was rejected and why. This is critical for future developers who need to understand the rationale.
 
+## Write Guardrail
+
+Before writing the ADR, announce the target path (typically `docs/decisions/<name>-adr.md`) and confirm with the user. Do not write until the user confirms.
+
+## Boundary Note
+
+This agent handles solution design for ideas that have passed through `product-evaluator`. For architectural decisions arising during implementation (not from product evaluation) → use `architect`.
+
 ## Output Format
 
 ```markdown

@@ -75,6 +75,10 @@ Based on the scores and research, give one of:
 
 **Modify** — Build a smaller or different version. Describe the modification clearly.
 
+## Write Guardrail
+
+Before writing the evaluation document, announce the target path (`docs/evals/{name}-eval.md`) and ask: "Proceed? [yes/no]" Do not write until the user confirms.
+
 ## Output Format
 
 ```markdown

@@ -96,6 +96,10 @@ Fix: What to change
 
 For detailed Swift patterns and DI examples, see skills: `swift-patterns`, `swift-patterns-advanced`, `swift-concurrency-6-2`, `swift-protocol-di-testing`, `swift-actor-persistence`, `swiftui-patterns`, `foundation-models-on-device`.
 
+## Security Boundary
+
+For server-side Swift OWASP patterns → also consider `security-reviewer`. This agent primarily covers iOS/macOS Swift, SwiftUI, and DDD.
+
 ## Examples
 
 **Input:** 3 modified `.swift` files after implementing a market publishing feature in a SwiftUI/hexagonal architecture app.

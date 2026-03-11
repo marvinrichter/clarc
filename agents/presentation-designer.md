@@ -67,6 +67,10 @@ For every slide, include speaker notes:
 - Transition sentence (written in full): the exact words bridging to the next slide
 - Demo steps in numbered list if applicable
 
+## Write Guardrail
+
+Before writing, confirm the target path with the user. Warn if the file already exists (e.g., "presentation.html already exists — overwrite? [yes/no]"). Do not write until the user confirms.
+
 ## Step 5 — Generate Output
 
 ### Reveal.js (reveal format)

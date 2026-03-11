@@ -1,7 +1,7 @@
 ---
 name: design-critic
 description: Reviews visual designs and gives structured critique covering composition, visual hierarchy, typography, color, brand coherence, and accessibility. Works from screenshots, wireframes, written descriptions, or code (HTML/CSS). Does not generate designs — evaluates existing ones.
-tools: ["Read", "Glob", "Grep", "Bash"]
+tools: ["Read", "Glob", "Grep"]
 model: sonnet
 uses_skills:
   - layout-composition

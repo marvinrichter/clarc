@@ -111,7 +111,7 @@ Create detailed steps with:
 
 ## Architectural Decision Escalation
 
-If the task involves choosing between architectural patterns (monolith vs. microservices, REST vs. GraphQL, DB engine), delegate the relevant decision to the `architect` agent and incorporate its ADR recommendation into the task list. Do not make architectural pattern selections unilaterally — surface the trade-offs via `architect` first.
+If the task involves choosing between architectural patterns (monolith vs. microservices, REST vs. GraphQL, DB engine), delegate the relevant decision to the `architect` agent and incorporate its ADR recommendation into the task list. Never select REST vs GraphQL, monolith vs microservices, or database engine unilaterally — delegate to `architect` first. Do not make architectural pattern selections without `architect`'s ADR recommendation.
 
 ## Best Practices
 

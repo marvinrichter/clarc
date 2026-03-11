@@ -100,6 +100,10 @@ Common causes: race conditions (use auto-wait locators), network timing (wait fo
 - Test duration < 10 minutes
 - Artifacts uploaded and accessible
 
+## Artifact Output
+
+Test artifacts (screenshots, videos, traces) will be written to `playwright-report/`. Confirm this directory exists before the first test run; if it does not, create it or adjust the Playwright config accordingly.
+
 ## Before Writing Files
 
 Before creating **new** test files (as opposed to updating existing ones), announce the planned file paths and the user flows or scenarios they will cover, then confirm with the user before writing. Updating an existing test file does not require confirmation — proceed directly after announcing the change in the dry-run preview.

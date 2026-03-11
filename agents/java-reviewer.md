@@ -111,6 +111,12 @@ Fix: What to change
 
 For detailed Java patterns and code examples, see skills: `ddd-java`, `hexagonal-java`, `java-patterns`, `springboot-patterns`, `jpa-patterns`, `springboot-security`.
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 → also invoke `security-reviewer` in parallel. This agent focuses on Java 25+, Spring Boot, JPA, hexagonal architecture, and DDD.
+
+For pure Kotlin projects → use `kotlin-reviewer`. For Java+Kotlin mixed Spring Boot → use `java-reviewer`.
+
 ## Examples
 
 **Input:** 3 modified `.java` files after implementing an order placement feature in a Spring Boot / hexagonal architecture project.

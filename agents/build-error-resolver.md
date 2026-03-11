@@ -38,14 +38,17 @@ npx eslint . --ext .ts,.tsx,.js,.jsx
 
 ### 2. Fix Strategy (MINIMAL CHANGES)
 
-**Before modifying any file**, announce the planned changes:
+**Before modifying any file**, announce the planned changes and ask for confirmation:
 
 ```
 Planned changes:
 - src/routes/orders.ts:42 — add null check for req.params.id
 - src/types/order.ts:15 — add customerId: string to Order interface
-Applying now...
+
+Apply these changes? [yes/no]
 ```
+
+Only proceed with Edit/Write calls after the user confirms.
 
 For each error:
 1. Read the error message carefully — understand expected vs actual

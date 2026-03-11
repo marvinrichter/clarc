@@ -127,6 +127,10 @@ Wait for confirmation before calling Write or Edit. This applies to both test fi
 
 For detailed mocking patterns and framework-specific examples, see `skill: tdd-workflow`.
 
+## Boundary
+
+For Playwright E2E tests → use `e2e-runner`. This agent handles unit tests, integration tests, and the Red-Green-Refactor workflow. It does not manage Playwright configuration, test artifacts, or browser automation.
+
 ## Conflict Signal Protocol
 
 You are **Priority 5 (CONTEXTUAL)** with task-phase dependent rules. The `methodology-vs-urgency` conflict class applies to you.

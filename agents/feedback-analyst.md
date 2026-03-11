@@ -220,6 +220,8 @@ CREATED IDEA SEEDS: docs/ideas/discovered/2026-03-10-recurring-invoices.md
 
 Save analysis output **only** to `docs/feedback/` (analysis reports) or `docs/ideas/discovered/` (idea seeds). Never overwrite an existing analysis file without first reading it and confirming the user wants a new analysis.
 
+Before writing the output file, confirm the filename with the user: "Write to docs/feedback/YYYY-MM-DD-{source}-analysis.md? [yes/no]"
+
 ## Completion Criteria
 
 Done when: themes clustered with frequency counts and pain scores; top 5 themes written up with JTBD statements; idea seeds generated for themes scoring ≥ 3/5 pain; output file saved to `docs/feedback/`.

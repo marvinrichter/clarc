@@ -222,7 +222,7 @@ Based on this review, the highest-value additions for the next roadmap are:
 
 ## Before Writing Files
 
-When invoked with `--recompute` (which overwrites existing reports), announce the files that will be overwritten along with their current modification dates, then confirm with the user before proceeding. Read-only analysis and report generation to new file paths do not require confirmation.
+When invoked with `--recompute` (which overwrites existing reports), announce the files that will be overwritten along with their current modification dates, then prompt: "These files will be overwritten. Apply changes? [yes/no]" before proceeding. If `--recompute` is not passed and a target report file already exists, stop and prompt the user before overwriting. Read-only analysis and report generation to new file paths do not require confirmation.
 
 Save to: `docs/system-review/YYYY-MM-DD-full-report.md`
 
@@ -231,7 +231,47 @@ Also update `docs/system-review/coverage-map.md` by running:
 node scripts/ci/generate-coverage-map.js
 ```
 
+## Partial Scope Note
+
+When invoked with a partial scope (e.g., `--agents-only` or a subset of components), note which components were skipped at the top of the report:
+
+```
+Note: Partial scope — skipped: skills, commands, hooks. Priority Matrix covers reviewed components only.
+```
+
+The overall health score is not stated for partial scopes to avoid misleading extrapolation.
+
+## Boundary
+
+For single-agent review → use `agent-quality-reviewer`. This agent orchestrates full system review across all components. It is not intended for reviewing individual agent files.
+
 ## Examples
+
+**Input:** Reviewing agents/, skills/, commands/, and hooks/ as inputs → Priority Matrix example:
+
+**Output:**
+```markdown
+## Priority Matrix
+
+### P0 — Critical (fix before next release)
+| Issue | Affected Component | Impact | Fix |
+|-------|-------------------|--------|-----|
+| Broken skill ref `kotlin-patterns` in kotlin-reviewer | agents/kotlin-reviewer.md | Agent fails to load skill context; routing silent error | Rename skill ref to match actual file path |
+| Orphan command `/database-review` — agent missing | commands/database-review.md | User-facing command fails silently | Create agents/database-reviewer.md or remove command |
+
+### P1 — High (next roadmap)
+| Issue | Affected Component | Impact | Estimated Effort |
+|-------|-------------------|--------|-----------------|
+| No command for `supply-chain-auditor` agent | commands/ | Agent is undiscoverable without direct invocation | Add commands/supply-chain-audit.md — 30 min |
+| hook-auditor scores 5.8 — no exit criteria | agents/hook-auditor.md | Review outputs inconsistent; no done signal | Add output format + completion criteria — 1 hr |
+| Swift language rules exist but no `swift-testing` skill | skills/ | Skill gap in highest-priority language coverage | Create skills/swift-testing/SKILL.md — 2 hrs |
+
+### P2 — Medium
+| Issue | Affected Component | Impact | Estimated Effort |
+|-------|-------------------|--------|-----------------|
+| 4 agents use `opus` for single-file review tasks | agents/ | ~3× cost per invocation, no quality benefit | Downgrade android-reviewer, bash-reviewer, c-reviewer, flutter-reviewer to sonnet — 15 min |
+| Inconsistent description style in 6 commands | commands/ | Minor UX friction for routing | Standardize to "verb + noun + scope" — 30 min |
+```
 
 **Input:** `/system-review full` — full clarc system review.
 

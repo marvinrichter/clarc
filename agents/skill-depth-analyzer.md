@@ -1,7 +1,7 @@
 ---
 name: skill-depth-analyzer
 description: Analyzes a clarc skill file for prompt-engineering quality across 7 dimensions — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Produces a scored report. Use via /skill-depth or called by agent-system-reviewer during full system review.
-tools: ["Read", "Grep", "Glob", "WebSearch", "Bash"]
+tools: ["Read", "Grep", "Glob", "WebSearch"]
 model: sonnet
 uses_skills:
   - prompt-engineering
@@ -164,6 +164,44 @@ Summary table format:
 |-------|-------|-------|---------------|--------|
 | debugging-workflow | 5.9 | 28 | 18% | HIGH: too thin |
 | typescript-patterns | 8.4 | 220 | 52% | — |
+```
+
+### --all Mode Example
+
+**Input:** `skill-depth-analyzer --all` — analyze all skills in `skills/`.
+
+**Output:**
+```
+## Skill Depth Analysis — 247 skills — 2026-03-12
+
+| Skill | Score | Lines | Actionability | Issues |
+|-------|-------|-------|---------------|--------|
+| debugging-workflow | 5.1 | 22 | 14% | HIGH: too thin; HIGH: no examples |
+| legacy-modernization | 5.8 | 28 | 18% | HIGH: too thin; MEDIUM: trigger vague |
+| cost-aware-llm-pipeline | 6.4 | 95 | 31% | MEDIUM: trigger imprecise |
+| typescript-patterns | 8.4 | 220 | 52% | — |
+| multi-agent-patterns | 9.1 | 285 | 55% | — |
+| ... | ... | ... | ... | ... |
+```
+
+Full JSON for skills scoring below 7:
+```json
+[
+  {
+    "skill": "debugging-workflow",
+    "file": "skills/debugging-workflow/SKILL.md",
+    "total_lines": 22,
+    "code_lines": 3,
+    "actionability_pct": 14,
+    "example_count": 0,
+    "overall_score": 5.1,
+    "issues": [
+      { "severity": "HIGH", "dimension": "actionability_ratio", "finding": "22 lines, 14% code — stub skill", "suggestion": "Expand to at least 100 lines with concrete debugging commands and examples" },
+      { "severity": "HIGH", "dimension": "example_completeness", "finding": "No examples provided", "suggestion": "Add at least 2 complete examples showing problem + debugging steps + resolution" }
+    ],
+    "verdict": "NEEDS WORK — 2 HIGH issues"
+  }
+]
 ```
 
 ## Examples

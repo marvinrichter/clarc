@@ -79,6 +79,10 @@ When invoked:
 - PHP patterns and architecture: `skills/php-patterns`
 - PHPUnit, Pest, Laravel/Symfony testing: `skills/php-testing`
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 → also invoke `security-reviewer`. This agent focuses on PHP 8.4+ idioms, Laravel/Symfony patterns, and PSR compliance.
+
 ## Examples
 
 **Input:** 3 modified `.php` files after adding a user registration endpoint in a Laravel application.

@@ -174,6 +174,48 @@ Top 3 competitive gaps:
 | File-pattern rule auto-activation | Cursor | MEDIUM | LOW | P0 |
 ```
 
+**Input:** `/competitive-review cursor` — focused comparison against Cursor only.
+
+**Output:**
+```markdown
+# clarc vs. Cursor — Competitive Analysis 2026-03-12
+
+## Capability Summary
+
+Cursor is a VS Code fork with deeply integrated AI assistance — it provides inline code generation, multi-file edits via Composer, and Background Agents that can run tasks while the developer is away. Its rule system (`.cursor/rules/`) supports per-file-pattern activation, making context injection automatic based on the file being edited. As of early 2026, Cursor added MCP server support, closing its tool-integration gap. Cursor's primary strength is IDE-native UX; its primary weakness is that all knowledge and rules stay within the IDE and do not travel to CI, terminals, or other editors.
+
+## Feature Matrix
+
+| Feature | clarc | Cursor |
+|---------|-------|--------|
+| Language-specific rules | ✅ `rules/<lang>/` auto-loaded | ✅ `.cursor/rules/` with glob activation |
+| Rule auto-activation by file pattern | ✅ session-start glob matching | ✅ Native, per-rule `globs:` field |
+| Specialized sub-agents | ✅ 62 agents (security, TDD, reviewer…) | 🟡 Composer + Background Agents (general purpose) |
+| On-demand skill library | ✅ 247 skills loaded per task | ❌ No equivalent — context must be added manually |
+| Continuous learning flywheel | ✅ /learn-eval → /evolve → instincts | ❌ No session learning or pattern extraction |
+| Hook system (pre/post-tool) | ✅ hooks.json with 8+ hooks | ❌ No hook system |
+| Self-review / quality audit | ✅ /system-review audits agents + hooks | ❌ No self-audit capability |
+| Product lifecycle (idea→PRD→plan) | ✅ /idea → /evaluate → /explore → /prd | ❌ Implementation only, no discovery phase |
+| MCP integration | ✅ mcp-configs/ for 6+ servers | ✅ Native MCP support (added 2025) |
+| Multi-IDE / terminal support | ✅ Works in any Claude Code terminal | ❌ VS Code fork only |
+| Background agents | 🟡 /overnight command (session-based) | ✅ Background Agents run while away |
+| Inline diff preview | ❌ CLI output only | ✅ Native inline diff UI |
+| CI integration (GitHub Actions) | ✅ clarc-review.js + clarc-security.js | ❌ IDE-only, no CI runner |
+| Team sharing of rules/agents | ✅ Git repo, install.sh, symlinks | 🟡 `.cursor/rules/` committed to repo |
+
+## Strategic Gaps
+
+- **No inline diff UI:** Cursor's in-editor diff preview is a meaningful UX advantage for reviewing multi-file changes; clarc shows diffs only in terminal output, which is harder to scan at a glance.
+- **Background agents (async tasks):** Cursor's Background Agents can execute while the developer is in a meeting or away; clarc requires an active session, which limits long-running tasks like full-codebase refactors or overnight migrations.
+- **IDE-native experience:** Cursor's AI is embedded in the editor — no context switching. clarc users must switch between editor and terminal, which adds friction for quick, exploratory edits.
+
+## Prioritized Action List
+
+1. **P0 — File-pattern rule activation parity:** Cursor's `globs:` field auto-loads rules per file type with zero configuration. clarc's session-start glob matching achieves the same result but requires a hook invocation at session start. Expose a `match_files:` field in agent/rule frontmatter to make this explicit and documented — LOW effort, HIGH user pain reduction.
+2. **P1 — /overnight async task runner:** Implement a mode where clarc can queue a task (e.g., full codebase refactor), run it via a background process, and notify on completion — bridging the gap with Cursor's Background Agents. MEDIUM effort, MEDIUM pain.
+3. **P2 — Diff summary command (/diff-review):** Add a command that renders a structured, color-coded summary of all pending changes before commit — partially addressing the lack of inline diff UI for CLI users. LOW effort, MEDIUM pain.
+```
+
 ## Not this agent — use `competitive-analyst` instead
 
 If you need to research **competitors outside the AI engineering tool space** (e.g., SaaS products, marketplaces, developer tools in general) — use `competitive-analyst`. This agent is scoped to clarc vs. Cursor, Copilot, Windsurf, Aider, Devin, and Continue.dev only.

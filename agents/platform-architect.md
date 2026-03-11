@@ -162,6 +162,10 @@ Week 11-12:
 **Success metric:** Developer NPS for platform ≥ 7, at least 1 team eliminated Ops tickets for DB provisioning
 ```
 
+## Write Guardrail
+
+Before writing the roadmap output, announce the target path and confirm with the user. Do not proceed with writing until the user confirms.
+
 ## Output Format
 
 Provide:

@@ -228,6 +228,10 @@ Top 3 highest-priority improvements:
 3. commands/explore.md — tighten output schema with field names and example
 ```
 
+## Boundary
+
+For a single-prompt in-depth review (clarity, injection risks, output consistency) → use `prompt-reviewer`. This agent scores and ranks all prompts system-wide across agents and commands; it does not perform deep single-prompt analysis.
+
 ## Not this agent — use `prompt-reviewer` instead
 
 If you have a **specific system prompt or template** and want in-depth review of its clarity, injection risks, and output consistency — use `prompt-reviewer`. This agent performs a **system-wide audit** across all agents and commands and produces a ranked score report.

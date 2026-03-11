@@ -75,6 +75,10 @@ When invoked:
 1 critical, 2 high, 2 medium, 1 low. Block merge until CRITICAL and HIGH are resolved.
 ```
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 coverage beyond SQL/shell injection and hardcoded secrets (e.g., broken access control in Shiny apps, insecure API consumption, cryptographic failures) → also invoke `security-reviewer` in parallel. This agent focuses on R idioms, tidyverse patterns, Shiny input validation, and renv lockfile management.
+
 ## Reference Skills
 
 - Tidyverse, purrr, R6, tidy evaluation: `skills/r-patterns`

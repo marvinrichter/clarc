@@ -70,8 +70,18 @@ Fix: Use `handleErrorWith { case _: CancellationException => IO.canceled; case e
 ## Approval Criteria
 
 - **Approve**: No CRITICAL or HIGH issues
-- **Warning**: HIGH issues only
-- **Block**: Any CRITICAL issue
+- **Warning**: MEDIUM issues only
+- **Block**: Any CRITICAL or HIGH issue
+
+## Mixed Effect System Note
+
+If a codebase mixes Cats Effect and ZIO (e.g., `import cats.effect._` and `import zio._` in different service files), flag this as a MEDIUM architectural concern:
+
+```
+[MEDIUM] Mixed effect systems
+Finding: Project imports both Cats Effect (cats.effect.IO) and ZIO (zio.ZIO) across service files — incompatible runtime models, mixed error handling conventions, and dual dependency overhead.
+Fix: Align on a single effect system. Prefer the one already dominant in the codebase.
+```
 
 ## Reference
 

@@ -100,6 +100,12 @@ govulncheck ./...
 
 For detailed Go code examples and anti-patterns, see `skill: go-patterns`.
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 coverage → also invoke `security-reviewer` in parallel. This agent focuses on code quality and architecture.
+
+For Go build/vet/lint errors → use `go-build-resolver`. This agent focuses on code quality and architecture.
+
 ## Examples
 
 **Input:** 3 modified `.go` files after adding a market publishing feature.

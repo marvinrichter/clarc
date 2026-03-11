@@ -191,6 +191,12 @@ grep -rn "Platform.isIOS\|Platform.isAndroid\|defaultTargetPlatform" --include="
 - All `Image.network` widgets have proper `semanticLabel`
 ```
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 coverage (injection, auth, insecure data storage) → also invoke `security-reviewer` in parallel. This agent focuses on Flutter/Dart-specific correctness and performance, not application-layer security.
+
+For native Android (Kotlin/Compose) → use `android-reviewer`. This agent covers Flutter/Dart cross-platform only.
+
 ## Reference Skills
 
 - `flutter-patterns` — BLoC, Riverpod, navigation, Isolates

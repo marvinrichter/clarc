@@ -184,6 +184,10 @@ cat ~/.npmrc 2>/dev/null | grep registry
 2. [...]
 ```
 
+## Boundary
+
+For CI/CD pipeline security (Dockerfile hardening, Terraform misconfigurations, Kubernetes RBAC, secrets in environment variables) → use `devsecops-reviewer`. This agent focuses on SBOM generation, artifact signing, dependency pinning, lockfile integrity, and install script analysis.
+
 ## Reference Skills
 
 - `supply-chain-security` — SLSA, cosign, SBOM, VEX

@@ -110,6 +110,10 @@ Fix: What to change
 
 For detailed Python patterns, security examples, and code samples, see skill: `python-patterns` (hexagonal FastAPI) and `django-patterns` (Django DDD).
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 in Python → also invoke `security-reviewer`. This agent focuses on PEP 8, Pythonic idioms, type hints, and framework patterns.
+
 ---
 
 Review with the mindset: "Would this code pass review at a top Python shop or open-source project?"

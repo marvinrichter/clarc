@@ -103,6 +103,10 @@ Fix: What to change
 
 For Elixir patterns and testing examples, see skills: `elixir-patterns`, `elixir-testing`, `elixir-patterns-advanced`.
 
+## Security Boundary
+
+For general OWASP beyond Sobelow → use `security-reviewer`. This agent covers OTP patterns, Ecto, and Sobelow.
+
 ---
 
 Review with the mindset: "Would this pass code review at a top Elixir/Phoenix shop?"

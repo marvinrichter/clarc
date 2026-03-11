@@ -114,6 +114,10 @@ Fix: What to change
 
 For Ruby patterns and testing examples, see skills: `ruby-patterns`, `ruby-testing`, `ruby-patterns-advanced`.
 
+## Security Boundary
+
+For general OWASP beyond Brakeman → use `security-reviewer`. This agent covers Rails idioms, N+1, and Brakeman patterns.
+
 ---
 
 Review with the mindset: "Would this pass code review at a top Rails shop?"

@@ -2,8 +2,7 @@
 name: agent-quality-reviewer
 description: Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-audit or called by agent-system-reviewer during full system review.
 tools: ["Read", "Grep", "Glob", "Bash"]
-model: sonnet
-model_note: Use opus when reviewing more than 20 agents (--all mode) for deeper reasoning quality; sonnet is sufficient for single-agent audits.
+model: opus
 uses_skills:
   - prompt-engineering
 ---
@@ -140,6 +139,54 @@ Summary table format:
 | hook-auditor | 6.1 | HIGH: no exit criteria |
 | code-reviewer | 9.2 | — |
 ```
+
+### --all Mode Example
+
+**Input:** `agent-quality-reviewer --all` — review all agents in `agents/`.
+
+**Output:**
+```
+## Agent Quality Review — 62 agents — 2026-03-12
+
+| Agent | Score | Issues |
+|-------|-------|--------|
+| hook-auditor | 5.8 | HIGH: no exit criteria; MEDIUM: Bash tool unused |
+| prompt-reviewer | 6.2 | MEDIUM: no --all mode example; LOW: trigger overlaps prompt-quality-scorer |
+| bash-reviewer | 6.9 | LOW: missing boundary note for shell scripts vs CI scripts |
+| code-reviewer | 9.2 | — |
+| tdd-guide | 9.4 | — |
+| ... | ... | ... |
+```
+
+Full JSON for agents scoring below 7:
+```json
+[
+  {
+    "agent": "hook-auditor",
+    "file": "agents/hook-auditor.md",
+    "overall_score": 5.8,
+    "issues": [
+      { "severity": "HIGH", "dimension": "exit_criteria", "finding": "No output format or done signal defined", "suggestion": "Add 'Output: JSON report saved to docs/system-review/hook-audit-YYYY-MM-DD.json'" },
+      { "severity": "MEDIUM", "dimension": "tool_coverage", "finding": "Bash listed in tools but no Bash commands in instructions", "suggestion": "Remove Bash from tools list — this is a read-only analysis agent" }
+    ],
+    "verdict": "NEEDS WORK — 1 HIGH, 1 MEDIUM issue"
+  },
+  {
+    "agent": "prompt-reviewer",
+    "file": "agents/prompt-reviewer.md",
+    "overall_score": 6.2,
+    "issues": [
+      { "severity": "MEDIUM", "dimension": "example_density", "finding": "Only 1 example; no --all mode shown", "suggestion": "Add --all mode example with summary table output" },
+      { "severity": "LOW", "dimension": "overlap_detection", "finding": "Description overlaps with prompt-quality-scorer", "suggestion": "Differentiate: prompt-reviewer for templates, prompt-quality-scorer for scoring" }
+    ],
+    "verdict": "NEEDS WORK — 1 MEDIUM, 1 LOW issue"
+  }
+]
+```
+
+## Boundary
+
+For full system review of all agents → use `agent-system-reviewer`. This agent reviews one agent at a time (or all via `--all`, but without cross-component systemic analysis).
 
 ## Examples
 

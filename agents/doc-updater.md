@@ -53,7 +53,9 @@ docs/CODEMAPS/
 
 ### 3.5 Dry-Run Preview (mandatory before writing)
 
-Before creating or overwriting any file, announce the planned changes:
+Before creating or overwriting any file, announce the planned changes.
+
+**Diff threshold for CODEMAPS:** If the planned diff exceeds 30% of the target file's current size, show the diff summary and confirm with the user before overwriting.
 
 ```
 Planned updates:

@@ -244,6 +244,33 @@ Overall system score: X.X / 10
 Score: 9.2 / 10 — GOOD. 1 minor issue.
 ```
 
+## Single-Command Mode Output Format
+
+When auditing a single command (e.g., `/command-audit tdd`), produce the 8-dimension scorecard for that command only. Dimensions that are system-level (naming consistency, built-in conflicts, overlap detection, missing commands) are evaluated in the context of the single command where possible, or marked "N/A — system-level dimension, run --all for full assessment."
+
+Format:
+```
+## Command Audit: commands/<name>.md
+Note: This is a single-command audit — overall system score is not calculated.
+
+### Dimension Scores
+| Dimension              | Score | Note |
+|------------------------|-------|------|
+| Naming Consistency     | N     | ...  |
+| Built-in Conflicts     | N     | ...  |
+| Overlap Detection      | N/A   | System-level — run --all |
+| Missing Commands       | N/A   | System-level — run --all |
+| Argument Design        | N     | ...  |
+| Feedback Loop          | N     | ...  |
+| Step Count             | N     | ...  |
+| Agent Invocation       | N     | ...  |
+
+### Issues
+[table]
+
+Score: X.X / 10 (per-command dimensions only) — [GOOD / NEEDS WORK]. N issues.
+```
+
 ## Partial Audit Exit Criteria
 
 A partial audit (--scope or single command) is complete when:

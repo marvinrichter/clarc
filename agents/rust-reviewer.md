@@ -96,6 +96,10 @@ Fix: What to change
 
 For Rust patterns, async architecture, and code examples, see skills: `rust-patterns`, `rust-testing`.
 
+## Security Boundary
+
+For application-level security (OWASP, SSRF, injection) → use `security-reviewer`. This agent covers ownership, lifetimes, unsafe usage, and async correctness.
+
 ## Examples
 
 **Input:** 3 modified `.rs` files after adding a market publishing feature to an Axum-based API.

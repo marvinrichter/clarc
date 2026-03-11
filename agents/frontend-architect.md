@@ -181,6 +181,12 @@ Step 5: Shell Extraction
 
 ---
 
+## Write Guardrail
+
+Before writing any architecture document, announce the target path and ask: "Write this file? [yes/no]"
+
+Do not proceed with writing until the user confirms.
+
 ## Architecture Document Format
 
 Produce an MFE Architecture Decision Record (ADR) with:

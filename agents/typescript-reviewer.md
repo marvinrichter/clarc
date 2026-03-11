@@ -121,6 +121,10 @@ Fix: What to change
 
 For detailed TypeScript patterns and code examples, see skills: `ddd-typescript`, `hexagonal-typescript`, `nodejs-backend-patterns`.
 
+## Security Boundary
+
+For comprehensive OWASP Top 10 → also invoke `security-reviewer` in parallel. This agent focuses on TypeScript idioms, hexagonal architecture, DDD, and type safety.
+
 ## Examples
 
 **Input:** 3 modified `.ts` files after implementing a market publishing feature in a Node.js hexagonal architecture project.
