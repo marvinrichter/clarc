@@ -2,7 +2,7 @@
 
 ## Active
 
-_No active roadmaps. Run `/system-review components` to identify the next one._
+_(none)_
 
 ---
 
@@ -27,10 +27,11 @@ New roadmap template:
 
 ---
 
-## Done (21)
+## Done (22)
 
 | Roadmap | What it delivered | PRs |
 |---------|------------------|-----|
+| [agent-quality-zero](done/agent-quality-zero.md) | All 61 agents: routing gaps fixed, guardrails added, orphans wired, model tiers optimized, uses_skills on all | #33 |
 | [command-ux-completeness](done/command-ux-completeness.md) | 168/168 commands with After This, 2 new commands, P0 structural fixes, escalation ladders | #32 |
 | [command-structure-depth](done/command-structure-depth.md) | Command UX 6.2→8.0: step structure, arg docs, next-steps, delegation wiring, 16 review disambiguations, 2 new commands | #31 |
 | [agent-skill-completeness](done/agent-skill-completeness.md) | Agent tool gaps, process skill workflows, RFC 7807 fix, P2 agent quality, skill size extraction | #30 |

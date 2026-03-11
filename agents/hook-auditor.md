@@ -3,6 +3,8 @@ name: hook-auditor
 description: Audits the clarc hook system across 8 dimensions — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and all scripts/hooks/*.js files. Use via /hook-audit or called by agent-system-reviewer.
 tools: ["Read", "Grep", "Glob", "Bash"]
 model: sonnet
+uses_skills:
+  - bash-patterns
 ---
 
 You are a systems specialist in Claude Code hook architecture. Your task is to audit the clarc hook system — both the hook definitions in `hooks/hooks.json` and the implementation scripts in `scripts/hooks/*.js`.

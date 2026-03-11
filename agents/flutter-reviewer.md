@@ -1,8 +1,11 @@
 ---
 name: flutter-reviewer
 description: Reviews Flutter/Dart code for idiomatic patterns, performance (missing const, unnecessary rebuilds, RepaintBoundary), accessibility, null safety misuse, async errors, and platform-specific issues. Use for all Flutter/Dart code changes.
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
+uses_skills:
+  - flutter-patterns
+  - flutter-testing
 ---
 
 # Flutter Reviewer

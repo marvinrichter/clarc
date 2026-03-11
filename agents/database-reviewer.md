@@ -1,7 +1,7 @@
 ---
 name: database-reviewer
 description: PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.
-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
+tools: ["Read", "Bash", "Grep", "Glob"]
 model: sonnet
 uses_skills:
   - sql-patterns
@@ -91,6 +91,8 @@ For detailed index patterns, schema design examples, connection management, conc
 ---
 
 **Remember**: Database issues are often the root cause of application performance problems. Optimize queries and schema design early. Use EXPLAIN ANALYZE to verify assumptions. Always index foreign keys and RLS policy columns.
+
+**Guardrail**: This agent reviews and recommends — it does **not** modify files directly. Output all fixes as concrete SQL or code snippets for the developer to apply. Never call Edit or Write.
 
 *Patterns adapted from Supabase Agent Skills (credit: Supabase team) under MIT license.*
 

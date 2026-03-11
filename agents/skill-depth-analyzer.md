@@ -3,6 +3,8 @@ name: skill-depth-analyzer
 description: Analyzes a clarc skill file for prompt-engineering quality across 7 dimensions — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Produces a scored report. Use via /skill-depth or called by agent-system-reviewer during full system review.
 tools: ["Read", "Grep", "Glob", "WebSearch", "Bash"]
 model: sonnet
+uses_skills:
+  - prompt-engineering
 ---
 
 You are a specialist in AI skill design and prompt engineering. Your task is to analyze a single clarc skill file and score it across 7 quality dimensions, with deeper analysis than `/skill-stocktake`.

@@ -3,6 +3,8 @@ name: supply-chain-auditor
 description: Analyzes repository structure for supply chain security risks — unpinned dependencies, missing SBOM, unsigned artifacts, suspicious install scripts, unverified GitHub Actions. Use before releases and when auditing security posture.
 tools: ["Read", "Glob", "Grep", "Bash"]
 model: sonnet
+uses_skills:
+  - supply-chain-security
 ---
 
 # Supply Chain Auditor
