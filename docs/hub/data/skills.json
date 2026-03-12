@@ -1,15 +1,5 @@
 [
   {
-    "name": "accessibility",
-    "description": "Web accessibility (a11y) patterns: WCAG 2.2 compliance, semantic HTML, ARIA roles and attributes, keyboard navigation, focus management, screen reader testing, color contrast, and accessible component patterns for forms, modals, and menus.",
-    "category": "General",
-    "whenToUse": "- Building any web interface - Adding modals, dropdowns, or custom interactive components - Building forms (error messages, validation)",
-    "usedByAgents": [],
-    "installCmd": "npx github:marvinrichter/clarc --install-skill accessibility",
-    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/accessibility/SKILL.md",
-    "dir": "accessibility"
-  },
-  {
     "name": "accessibility-patterns",
     "description": "Web Accessibility (WCAG 2.2): key success criteria (contrast, keyboard, focus, ARIA), ARIA patterns (aria-label/labelledby/describedby, roles, live regions, state attributes), keyboard navigation (focus trap, skip links, roving tabindex), screen reader testing (NVDA/VoiceOver/TalkBack), automated testing (axe-core, axe-playwright, jest-axe), and accessible component patterns (modals, tables, forms, data visualizations).",
     "category": "General",
@@ -20,11 +10,23 @@
     "dir": "accessibility-patterns"
   },
   {
+    "name": "accessibility-patterns-advanced",
+    "description": "Advanced accessibility patterns — screen reader testing (NVDA/VoiceOver/TalkBack checklists), automated testing (axe-core+Playwright, jest-axe, @axe-core/react dev warnings), and accessible component implementations (modal, table, form, data visualization).",
+    "category": "General",
+    "whenToUse": "- Running manual screen reader tests (NVDA, VoiceOver, TalkBack) - Setting up automated a11y testing with axe-core or jest-axe - Implementing accessible modal, table, form, or data visualization components",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill accessibility-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/accessibility-patterns-advanced/SKILL.md",
+    "dir": "accessibility-patterns-advanced"
+  },
+  {
     "name": "adr-writing",
     "description": "Architecture Decision Records (ADRs): when to write one, the standard template, how to document rejected alternatives with real reasoning, how to supersede outdated ADRs, and how to maintain a living ADR index. The reference for technical documentation that actually gets read.",
     "category": "General",
     "whenToUse": "- Making a significant architectural choice (database, framework, pattern) - Choosing between multiple reasonable technical options - Adding a new third-party dependency that's hard to replace later",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "solution-designer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill adr-writing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/adr-writing/SKILL.md",
     "dir": "adr-writing"
@@ -64,18 +66,30 @@
     "dir": "agent-reliability"
   },
   {
+    "name": "agent-reliability-advanced",
+    "description": "Agent reliability anti-patterns — retrying non-retryable errors, fixed sleep vs exponential backoff with jitter, single timeout for all call stack levels, aggressive circuit breaker thresholds, using Opus for every call regardless of complexity.",
+    "category": "AI / Agents",
+    "whenToUse": "- Retry logic catches authentication or validation errors (not just transient ones) - All agent calls use the same fixed sleep delay on failure - A single global timeout governs tool calls, agent calls, and entire workflows",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill agent-reliability-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/agent-reliability-advanced/SKILL.md",
+    "dir": "agent-reliability-advanced"
+  },
+  {
     "name": "analytics-workflow",
     "description": "Data & product analytics workflow: event taxonomy design, instrumentation (Segment, PostHog, Mixpanel, Amplitude, GA4), analytics pipelines, funnel and retention analysis, and dashboard design. Complements observability (infrastructure metrics) with product/user behavior tracking.",
     "category": "General",
     "whenToUse": "- Adding event tracking to a new feature - Designing an analytics event taxonomy from scratch - Integrating Segment, PostHog, Mixpanel, Amplitude, or GA4",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "feedback-analyst"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill analytics-workflow",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/analytics-workflow/SKILL.md",
     "dir": "analytics-workflow"
   },
   {
     "name": "android-patterns",
-    "description": "Skill: Android Patterns (Jetpack Compose)",
+    "description": "Android/Jetpack Compose patterns — state hoisting, UDF with ViewModel/UiState, side effects (LaunchedEffect/rememberUpdatedState), Material Design 3 components, type-safe Navigation, Hilt DI, Room database, and Compose performance (derivedStateOf, key).",
     "category": "Java / JVM",
     "whenToUse": "- Designing architecture for a new Android feature or app - Choosing between Compose patterns (state hoisting, side effects) - Setting up Hilt dependency injection and scoping",
     "usedByAgents": [],
@@ -84,8 +98,18 @@
     "dir": "android-patterns"
   },
   {
+    "name": "android-patterns-advanced",
+    "description": "Advanced Android/Jetpack Compose patterns — Compose performance optimization (@Stable/@Immutable, derivedStateOf, key in LazyColumn, lambda capture hoisting), Coroutines with injectable dispatchers, and reference rules/skills.",
+    "category": "Java / JVM",
+    "whenToUse": "- Debugging unnecessary recomposition in Compose - Optimizing LazyColumn with large data sets - Implementing offline-first Repository with injectable dispatchers",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill android-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/android-patterns-advanced/SKILL.md",
+    "dir": "android-patterns-advanced"
+  },
+  {
     "name": "android-testing",
-    "description": "Skill: Android Testing",
+    "description": "Android testing — Compose UI tests with semantic selectors, Hilt dependency injection in tests, Room in-memory database tests, Espresso, MockK, Coroutine test dispatcher, and screenshot testing.",
     "category": "Testing",
     "whenToUse": "- Writing Compose UI tests with semantic selectors - Testing ViewModels with StateFlow and coroutines - Mocking Kotlin classes with MockK",
     "usedByAgents": [],
@@ -104,27 +128,60 @@
     "dir": "api-contract"
   },
   {
+    "name": "api-contract-advanced",
+    "description": "Advanced API contract patterns — AsyncAPI 3.0 for event-driven systems and Consumer-Driven Contract Testing with Pact. Use after the core Contract-First workflow in api-contract.",
+    "category": "API Design",
+    "whenToUse": "- Adding Kafka, NATS, SNS/SQS, or WebSocket interfaces (AsyncAPI) - Multiple services consume the same API and need independent contract verification (Pact) - Setting up can-i-deploy gates in CI",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill api-contract-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/api-contract-advanced/SKILL.md",
+    "dir": "api-contract-advanced"
+  },
+  {
     "name": "api-design",
     "description": "REST API design patterns including resource naming, status codes, pagination, filtering, error responses, versioning, and rate limiting for production APIs.",
     "category": "Architecture",
     "whenToUse": "- Before writing any implementation — design the contract first, code second - Designing new API endpoints or changing existing ones - Reviewing existing API contracts for consistency",
     "usedByAgents": [
       "architect",
-      "planner"
+      "contract-reviewer",
+      "docs-architect",
+      "planner",
+      "sdk-architect"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill api-design",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/api-design/SKILL.md",
     "dir": "api-design"
   },
   {
+    "name": "api-design-advanced",
+    "description": "Advanced API design — per-language implementation patterns (TypeScript/Next.js, Go/net-http), anti-patterns (200 for everything, 500 for validation, contract breaking), and full pre-ship checklist.",
+    "category": "Architecture",
+    "whenToUse": "- Implementing API handlers in TypeScript (Next.js) or Go - Reviewing code for common API anti-patterns - Applying the full pre-ship checklist to a new endpoint",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill api-design-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/api-design-advanced/SKILL.md",
+    "dir": "api-design-advanced"
+  },
+  {
     "name": "api-docs-patterns",
-    "description": "Skill: API Documentation Patterns",
+    "description": "API documentation best practices — OpenAPI spec (paths, components, examples, x-webhooks), docs-as-code CI/CD, platform selection (Mintlify/Redoc/Scalar), interactive playgrounds, changelog automation with conventional commits.",
     "category": "Documentation",
     "whenToUse": "- Building or overhauling API documentation for any team or public audience - Choosing a documentation platform (Mintlify, Docusaurus, Redoc, Scalar) - Implementing changelog automation with semantic-release or release-please",
     "usedByAgents": [],
     "installCmd": "npx github:marvinrichter/clarc --install-skill api-docs-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/api-docs-patterns/SKILL.md",
     "dir": "api-docs-patterns"
+  },
+  {
+    "name": "api-pagination-filtering",
+    "description": "Cursor and offset pagination, filtering operators, multi-field sorting, full-text search, and sparse fieldsets for REST APIs.",
+    "category": "API Design",
+    "whenToUse": "- Adding pagination to a list endpoint (choosing offset vs cursor) - Implementing filtering with operators (gte, lte, in, after) - Designing multi-field sort parameters",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill api-pagination-filtering",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/api-pagination-filtering/SKILL.md",
+    "dir": "api-pagination-filtering"
   },
   {
     "name": "arc42-c4",
@@ -173,7 +230,7 @@
   },
   {
     "name": "autonomous-loops",
-    "description": "Patterns and architectures for autonomous Claude Code loops — from simple sequential pipelines to RFC-driven multi-agent DAG systems.",
+    "description": "Autonomous loop patterns for Claude — sequential pipelines, NanoClaw REPL, infinite agentic loops, continuous PR loops, De-Sloppify, and Ralphinho RFC-driven DAG orchestration. Pattern selection matrix and anti-patterns.",
     "category": "General",
     "whenToUse": "- Setting up autonomous development workflows that run without human intervention - Choosing the right loop architecture for your problem (simple vs complex) - Building CI/CD-style continuous development pipelines",
     "usedByAgents": [],
@@ -186,7 +243,9 @@
     "description": "Backstage patterns: Software Catalog (catalog-info.yaml, kinds, relations, lifecycle), TechDocs (MkDocs, techdocs-cli), Scaffolder templates (CSF3, steps, fetch:template, publish:github), custom plugins (frontend React, backend Express), GitHub App integration, and Chromatic CI.",
     "category": "General",
     "whenToUse": "- Creating or updating catalog-info.yaml for a service - Writing Backstage Scaffolder templates (Golden Paths) - Building a custom Backstage plugin",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "platform-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill backstage-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/backstage-patterns/SKILL.md",
     "dir": "backstage-patterns"
@@ -196,7 +255,10 @@
     "description": "Idiomatic Bash scripting patterns: script structure, argument parsing, error handling, logging, temp files, parallel execution, and portability. Use when writing or reviewing shell scripts.",
     "category": "General",
     "whenToUse": "- Writing a new shell script from scratch - Reviewing an existing script for correctness or safety - Debugging unexpected script behavior",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "bash-reviewer",
+      "hook-auditor"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill bash-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/bash-patterns/SKILL.md",
     "dir": "bash-patterns"
@@ -206,7 +268,9 @@
     "description": "Bash script testing with BATS (Bash Automated Testing System): test structure, assertions, setup/teardown, mocking external commands, CI integration, and coverage strategies.",
     "category": "Testing",
     "whenToUse": "- Writing tests for a new shell script - Adding tests to an untested script - Setting up BATS in a project",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "bash-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill bash-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/bash-testing/SKILL.md",
     "dir": "bash-testing"
@@ -216,7 +280,9 @@
     "description": "C programming patterns (C11/C17): opaque pointer encapsulation, error handling via return codes and out-parameters, resource cleanup with goto, memory management discipline (malloc/free pairing, double-free prevention), safe string functions (snprintf, fgets, strncpy), Makefile patterns with auto-dependencies, bit manipulation, and AddressSanitizer/Valgrind integration. Use when writing or reviewing C code.",
     "category": "General",
     "whenToUse": "- Writing C source files (.c, .h) - Designing C module APIs (opaque pointers, error codes) - Reviewing C code for memory safety",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "c-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill c-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/c-patterns/SKILL.md",
     "dir": "c-patterns"
@@ -226,7 +292,9 @@
     "description": "C testing patterns: Unity framework (TEST_ASSERT_*), CMocka mocking with __wrap_ and linker flag, Valgrind leak checking, AddressSanitizer, CMake CTest integration, test organization, and running tests with sanitizers. Use when writing or reviewing C tests.",
     "category": "Testing",
     "whenToUse": "- Writing C unit tests with Unity or CMocka - Setting up CMake CTest integration - Running tests with AddressSanitizer or Valgrind",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "c-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill c-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/c-testing/SKILL.md",
     "dir": "c-testing"
@@ -316,7 +384,9 @@
     "description": "CLI user experience patterns: error messages that guide (not just report), help text design, autocomplete setup, config file hierarchy (~/.config/<tool>), environment variable conventions, --json/--quiet/--verbose flags, and progress indication. The difference between a tool people tolerate and one they recommend.",
     "category": "General",
     "whenToUse": "- Writing error messages for a CLI tool - Designing --help output or man pages - Adding config file support or env-var overrides",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "command-auditor"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill cli-ux",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/cli-ux/SKILL.md",
     "dir": "cli-ux"
@@ -392,18 +462,8 @@
     "dir": "context-management"
   },
   {
-    "name": "continuous-learning",
-    "description": "[DEPRECATED — use continuous-learning-v2] v1 session-end holistic pattern extraction. Superseded by the instinct-based continuous-learning-v2 system with per-tool capture, confidence scoring, and project-scoped instincts.",
-    "category": "General",
-    "whenToUse": "",
-    "usedByAgents": [],
-    "installCmd": "npx github:marvinrichter/clarc --install-skill continuous-learning",
-    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/continuous-learning/SKILL.md",
-    "dir": "continuous-learning"
-  },
-  {
     "name": "continuous-learning-v2",
-    "description": "Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.1 adds project-scoped instincts to prevent cross-project contamination.",
+    "description": "Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.2 adds project-scoped instincts to prevent cross-project contamination.",
     "category": "General",
     "whenToUse": "- Setting up automatic learning from Claude Code sessions - Configuring instinct-based behavior extraction via hooks - Tuning confidence thresholds for learned behaviors",
     "usedByAgents": [],
@@ -416,7 +476,9 @@
     "description": "Contract Testing: Consumer-Driven Contract Testing with Pact (REST, messaging, Pact Broker, can-i-deploy), OpenAPI contract testing with Prism mock server and dredd, schema compatibility (ajv, Protobuf wire rules, Avro + Schema Registry), and breaking change detection with oasdiff in CI.",
     "category": "Testing",
     "whenToUse": "- Setting up Pact consumer-driven contract tests for REST or message-based APIs - Validating OpenAPI specs with Prism mock server or dredd - Checking schema compatibility (JSON Schema, Protobuf, Avro)",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "contract-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill contract-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/contract-testing/SKILL.md",
     "dir": "contract-testing"
@@ -474,6 +536,16 @@
     "dir": "cpp-testing"
   },
   {
+    "name": "cpp-testing-advanced",
+    "description": "Advanced C++ testing patterns — parameterized tests, death tests, advanced gmock, matchers, test data factories, async/concurrent testing, CI/CD integration, Catch2, and anti-patterns. Use after mastering the basics in cpp-testing.",
+    "category": "Testing",
+    "whenToUse": "- Parameterized or type-parameterized tests across many inputs - Advanced mock expectations (InSequence, DoAll, SaveArg, Throw) - Async or concurrent code verification",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill cpp-testing-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/cpp-testing-advanced/SKILL.md",
+    "dir": "cpp-testing-advanced"
+  },
+  {
     "name": "cqrs-event-sourcing",
     "description": "CQRS and Event Sourcing: command/query separation with read model projections, Event Sourcing (append-only event log, aggregate reconstruction, snapshots), Outbox Pattern for atomic DB + event publishing, Saga Pattern (choreography and orchestration with compensating transactions), and temporal queries.",
     "category": "CI / CD",
@@ -488,7 +560,9 @@
     "description": "Creative direction for digital products: defining visual language, writing illustration style briefs, icon style guidelines, photography/image direction, motion language definition, and maintaining creative consistency across touchpoints. Use when defining what a product should look and feel like.",
     "category": "General",
     "whenToUse": "- Defining the overall look and feel of a new product or feature - Briefing a designer, illustrator, or motion designer - Reviewing creative work for brand consistency",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-critic"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill creative-direction",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/creative-direction/SKILL.md",
     "dir": "creative-direction"
@@ -498,7 +572,9 @@
     "description": "C# 12 / .NET 8 patterns: records, primary constructors, pattern matching, repository + CQRS with MediatR, value objects, Result<T> pattern, Minimal API, ASP.NET Core middleware, Entity Framework Core, nullable reference types, async/await with CancellationToken, Roslyn analyzers. Use when writing or reviewing C# code.",
     "category": "General",
     "whenToUse": "- Writing C# 12 / .NET 8+ source files (.cs, .razor) - Designing domain models with records and value objects - Building ASP.NET Core Web APIs with MediatR",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "csharp-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill csharp-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/csharp-patterns/SKILL.md",
     "dir": "csharp-patterns"
@@ -508,7 +584,9 @@
     "description": "C# testing patterns: xUnit with [Fact]/[Theory], FluentAssertions, Moq mocking, NSubstitute, WebApplicationFactory integration tests, Testcontainers for real DB, Bogus fake data generation, Respawn DB reset, Coverlet coverage. Use when writing or reviewing C# tests.",
     "category": "Testing",
     "whenToUse": "- Writing C# unit or integration tests with xUnit - Setting up FluentAssertions and Moq - Writing WebApplicationFactory integration tests",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "csharp-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill csharp-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/csharp-testing/SKILL.md",
     "dir": "csharp-testing"
@@ -518,7 +596,9 @@
     "description": "CSS architecture for modern web apps: Tailwind conventions and when to break them, CSS Modules for complex components, responsive design system with container queries, fluid typography, and avoiding the most common Tailwind pitfalls.",
     "category": "Architecture",
     "whenToUse": "- Setting up styling strategy for a new project - Tailwind classes growing out of control (50+ classes per element) - Responsive design is inconsistent across breakpoints",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-system-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill css-architecture",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/css-architecture/SKILL.md",
     "dir": "css-architecture"
@@ -548,14 +628,16 @@
     "description": "Data engineering patterns: dbt for SQL transformation (models, tests, incremental), Dagster for orchestration (assets, jobs, sensors), data quality checks, warehouse patterns (BigQuery/Snowflake/Redshift), and modern data stack setup. Covers the ELT pipeline from raw ingestion to analytics-ready models.",
     "category": "General",
     "whenToUse": "- Building an ELT pipeline (Extract → Load → Transform) - Writing dbt models or tests - Setting up Dagster assets, jobs, or sensors",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "data-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill data-engineering",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/data-engineering/SKILL.md",
     "dir": "data-engineering"
   },
   {
     "name": "data-mesh-patterns",
-    "description": "Skill: Data Mesh Architecture Patterns",
+    "description": "Data Mesh architecture patterns — domain ownership, data products with SLOs, self-serve platform design, Delta Lake vs Iceberg, federated Trino queries, data contracts, OpenLineage, and migration from centralized data warehouse.",
     "category": "General",
     "whenToUse": "- Organization has 5+ business domains each producing and consuming data - Central data team is a bottleneck (teams wait weeks for new datasets) - Data quality issues are blamed on central platform, not producing teams",
     "usedByAgents": [],
@@ -643,8 +725,11 @@
     "name": "deployment-patterns",
     "description": "Deployment workflows, CI/CD pipeline patterns, Docker containerization, health checks, rollback strategies, and production readiness checklists for web applications.",
     "category": "CI / CD",
-    "whenToUse": "- Setting up CI/CD pipelines - Dockerizing an application - Planning deployment strategy (blue-green, canary, rolling)",
-    "usedByAgents": [],
+    "whenToUse": "See instead: - Container configuration → docker-patterns - CI pipeline setup → ci-cd-patterns",
+    "usedByAgents": [
+      "gitops-architect",
+      "mlops-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill deployment-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/deployment-patterns/SKILL.md",
     "dir": "deployment-patterns"
@@ -664,7 +749,9 @@
     "description": "Design system architecture: design tokens (color, spacing, typography, radius), component library layers (Primitive → Composite → Pattern), theming with CSS Custom Properties and Tailwind, Storybook documentation, and dark mode. The foundation for consistent UI across an entire product.",
     "category": "Architecture",
     "whenToUse": "- Starting a new product UI from scratch - UI feels inconsistent across pages (colors, spacing, typography vary) - Multiple developers building UI components independently",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-system-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill design-system",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/design-system/SKILL.md",
     "dir": "design-system"
@@ -690,8 +777,18 @@
     "dir": "developer-onboarding"
   },
   {
+    "name": "developer-onboarding-advanced",
+    "description": "Advanced developer onboarding — Architecture Tour (codebase walkthrough by request), anchor files, domain glossary, GitHub Issue onboarding checklist template, knowledge sharing patterns (pair programming, ADRs, Loom), and onboarding metrics (Time to First PR).",
+    "category": "Documentation",
+    "whenToUse": "- Creating an Architecture Tour document for a complex codebase - Building a domain glossary so new hires understand the business domain - Setting up a GitHub Issue template for new hire onboarding checklists",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill developer-onboarding-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/developer-onboarding-advanced/SKILL.md",
+    "dir": "developer-onboarding-advanced"
+  },
+  {
     "name": "devsecops-patterns",
-    "description": "Skill: DevSecOps & Security Automation",
+    "description": "DevSecOps patterns — shift-left security, SAST (semgrep/CodeQL), secrets detection (gitleaks/trufflehog), dependency scanning (trivy/grype), DAST, OPA/Falco policy-as-code, container security, and security gates per CI stage.",
     "category": "General",
     "whenToUse": "- Setting up SAST (Semgrep, CodeQL) in CI pipelines - Configuring secrets detection (Gitleaks) as pre-commit hooks - Implementing dependency vulnerability scanning (Trivy, Snyk)",
     "usedByAgents": [],
@@ -728,6 +825,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill django-security",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/django-security/SKILL.md",
     "dir": "django-security"
+  },
+  {
+    "name": "django-security-advanced",
+    "description": "Advanced Django security — file upload validation (extension/size/storage), DRF API security (rate limiting throttles, JWT), Content Security Policy middleware, django-environ secrets management, security event logging, and production deployment checklist.",
+    "category": "Security",
+    "whenToUse": "- Validating file uploads (size, extension, storage path) - Configuring DRF rate limiting or JWT authentication - Setting Content Security Policy headers",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill django-security-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/django-security-advanced/SKILL.md",
+    "dir": "django-security-advanced"
   },
   {
     "name": "django-tdd",
@@ -792,6 +899,16 @@
     "dir": "e2e-testing"
   },
   {
+    "name": "e2e-testing-web3",
+    "description": "Playwright E2E test patterns for Web3 and blockchain features — mocking wallet providers (MetaMask, Phantom), testing wallet connection flows, and handling async blockchain confirmations.",
+    "category": "Testing",
+    "whenToUse": "- Writing E2E tests for wallet connection flows (MetaMask, Phantom, WalletConnect) - Testing DeFi features that trigger on-chain transactions - Mocking browser wallet providers (window.ethereum, window.solana) in tests",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill e2e-testing-web3",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/e2e-testing-web3/SKILL.md",
+    "dir": "e2e-testing-web3"
+  },
+  {
     "name": "edge-patterns",
     "description": "Edge Computing patterns: Cloudflare Workers (Durable Objects, KV, D1, R2, Wrangler), Vercel Edge Middleware (geo-routing, A/B testing, Edge Config), Deno Deploy, edge runtime constraints (no fs/child_process, bundle limits), streaming responses, edge caching (Cache API, stale-while-revalidate), and testing with Miniflare.",
     "category": "General",
@@ -800,6 +917,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill edge-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/edge-patterns/SKILL.md",
     "dir": "edge-patterns"
+  },
+  {
+    "name": "edge-patterns-advanced",
+    "description": "Advanced Edge Computing patterns — streaming responses (TransformStream, Server-Sent Events), edge caching (Cache API, stale-while-revalidate), Miniflare testing, and common edge runtime mistakes (Node.js APIs, large npm packages, synchronous computation).",
+    "category": "General",
+    "whenToUse": "- Streaming large responses through a Cloudflare Worker - Implementing edge caching with stale-while-revalidate - Testing Workers locally with Miniflare",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill edge-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/edge-patterns-advanced/SKILL.md",
+    "dir": "edge-patterns-advanced"
   },
   {
     "name": "elixir-patterns",
@@ -927,7 +1054,7 @@
   },
   {
     "name": "finops-patterns",
-    "description": "Skill: FinOps & Cloud Cost Engineering",
+    "description": "FinOps and cloud cost engineering — visibility and attribution (tagging taxonomy), Infracost in CI/CD, OpenCost for Kubernetes, rightsizing recommendations, storage/network cost optimization, anomaly detection, and FinOps maturity model.",
     "category": "General",
     "whenToUse": "- Cloud costs are growing faster than engineering output - No visibility into which team/service/feature drives cost - Setting up Infracost in CI/CD pipelines for Terraform cost diffs",
     "usedByAgents": [],
@@ -940,7 +1067,9 @@
     "description": "Flutter architecture patterns: BLoC vs. Riverpod decision framework, Widget composition (Composition over Inheritance, CustomPainter, Implicit/Explicit Animations), go_router navigation, Platform Channels, Isolates for background work, Flutter DevTools profiling, performance patterns (const widgets, RepaintBoundary, ListView.builder, Slivers).",
     "category": "General",
     "whenToUse": "- Designing state management for a new Flutter feature - Setting up navigation with deep linking - Calling native platform code from Flutter",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "flutter-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill flutter-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/flutter-patterns/SKILL.md",
     "dir": "flutter-patterns"
@@ -950,7 +1079,9 @@
     "description": "Flutter testing: Widget Tests (testWidgets, WidgetTester, pump, pumpAndSettle, finders), Integration Tests (flutter_test driver), mocking with mocktail, Golden File Tests (visual regression, --update-goldens), BLoC testing (bloc_test package), coverage measurement and CI integration.",
     "category": "Testing",
     "whenToUse": "- Writing tests for a new Flutter widget or feature - Setting up visual regression testing with golden files - Testing BLoC state machines",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "flutter-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill flutter-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/flutter-testing/SKILL.md",
     "dir": "flutter-testing"
@@ -967,10 +1098,12 @@
   },
   {
     "name": "frontend-patterns",
-    "description": "Frontend development patterns for React, Next.js, state management, performance optimization, and UI best practices.",
+    "description": "Frontend patterns — React component composition, state management (useState/useReducer/Zustand/Jotai), Next.js App Router, performance optimization (memo/useMemo/lazy), form handling, error boundaries, and TypeScript patterns.",
     "category": "TypeScript / Frontend",
     "whenToUse": "- Building React components (composition, props, rendering) - Managing state (useState, useReducer, Zustand, Context) - Implementing data fetching (SWR, React Query, server components)",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "frontend-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill frontend-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/frontend-patterns/SKILL.md",
     "dir": "frontend-patterns"
@@ -999,9 +1132,9 @@
   },
   {
     "name": "gitops-patterns",
-    "description": "Skill: GitOps & Progressive Delivery",
+    "description": "GitOps patterns — ArgoCD and Flux setup, Kustomize overlays per environment, SealedSecrets/ESO for secrets, multi-cluster topology, GitOps repository patterns (mono-repo vs poly-repo), and common pitfalls.",
     "category": "Infrastructure",
-    "whenToUse": "- Setting up ArgoCD or Flux for Kubernetes deployments - Designing GitOps repository structure (mono-repo vs. config-repo) - Implementing Canary or Blue/Green progressive delivery with Argo Rollouts",
+    "whenToUse": "- Setting up ArgoCD or Flux for Kubernetes deployments - Designing GitOps repository structure (mono-repo vs. config-repo) - Configuring multi-cluster GitOps with ApplicationSets",
     "usedByAgents": [],
     "installCmd": "npx github:marvinrichter/clarc --install-skill gitops-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/gitops-patterns/SKILL.md",
@@ -1011,8 +1144,9 @@
     "name": "go-patterns",
     "description": "Idiomatic Go patterns, best practices, and conventions for building robust, efficient, and maintainable Go applications.",
     "category": "Go",
-    "whenToUse": "- Writing new Go code - Reviewing Go code - Refactoring existing Go code",
+    "whenToUse": "- Designing Go package boundaries and module structure - Choosing an error handling strategy (sentinel errors, error wrapping, custom types) - Structuring a service with hexagonal architecture or clean architecture in Go",
     "usedByAgents": [
+      "go-build-resolver",
       "go-reviewer"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill go-patterns",
@@ -1021,9 +1155,9 @@
   },
   {
     "name": "go-patterns-advanced",
-    "description": "Advanced Go patterns — hexagonal architecture with full working examples, struct design (functional options, embedding), memory optimization, Go tooling (golangci-lint), Go 1.21+ slices/maps stdlib, and anti-patterns. Extends golang-patterns.",
+    "description": "Advanced Go patterns — hexagonal architecture with full working examples, struct design (functional options, embedding), memory optimization, Go tooling (golangci-lint), Go 1.21+ slices/maps stdlib, and anti-patterns. Extends go-patterns.",
     "category": "Go",
-    "whenToUse": "- Designing hexagonal/clean architecture in Go - Optimizing memory or performance - Configuring Go tooling (golangci-lint, etc.)",
+    "whenToUse": "- Designing interface hierarchies or choosing between small and large interfaces - Organizing packages for a Go service (hexagonal layout, naming, dependency direction) - Designing hexagonal/clean architecture in Go",
     "usedByAgents": [],
     "installCmd": "npx github:marvinrichter/clarc --install-skill go-patterns-advanced",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/go-patterns-advanced/SKILL.md",
@@ -1044,7 +1178,7 @@
   },
   {
     "name": "go-testing-advanced",
-    "description": "Advanced Go testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage, HTTP handler testing with httptest, best practices, and CI/CD integration. Extends golang-testing.",
+    "description": "Advanced Go testing — interface-based mocking, benchmarks (basic, size-parametrized, allocation), fuzzing (Go 1.18+), test coverage, HTTP handler testing with httptest, best practices, and CI/CD integration. Extends go-testing.",
     "category": "Testing",
     "whenToUse": "- Writing interface-based mocks without external libraries - Benchmarking performance-critical code - Using Go 1.18+ fuzzing for input validation",
     "usedByAgents": [],
@@ -1096,6 +1230,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill hexagonal-typescript",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/hexagonal-typescript/SKILL.md",
     "dir": "hexagonal-typescript"
+  },
+  {
+    "name": "hexagonal-typescript-advanced",
+    "description": "Advanced Hexagonal Architecture anti-patterns for TypeScript — domain importing framework dependencies, use cases depending on concrete adapters, HTTP handlers bypassing use cases, Zod validation inside the domain model. Each anti-pattern includes wrong/correct comparison with explanation.",
+    "category": "TypeScript / Frontend",
+    "whenToUse": "- Reviewing code where domain classes import typeorm, @nestjs/common, or other framework packages - Use case constructors receive concrete adapter classes instead of port interfaces - HTTP handlers call repositories directly, skipping the use case layer",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill hexagonal-typescript-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/hexagonal-typescript-advanced/SKILL.md",
+    "dir": "hexagonal-typescript-advanced"
   },
   {
     "name": "html-slides",
@@ -1248,6 +1392,7 @@
     "category": "Java / JVM",
     "whenToUse": "- Writing new Kotlin classes or functions - Reviewing Kotlin code for idiomatic style - Modeling domain objects in Kotlin",
     "usedByAgents": [
+      "android-reviewer",
       "kotlin-reviewer"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill kotlin-patterns",
@@ -1260,6 +1405,7 @@
     "category": "Testing",
     "whenToUse": "- Writing tests for new Kotlin code - Setting up a test framework in a Kotlin project - Testing coroutines and Flow",
     "usedByAgents": [
+      "android-reviewer",
       "kotlin-reviewer"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill kotlin-testing",
@@ -1271,7 +1417,9 @@
     "description": "Production Kubernetes patterns: Deployments, Services, Ingress, HPA, resource limits, health probes, ConfigMap/Secret management, Helm charts, namespaces, and IaC with Terraform/Pulumi. Prevents the most common k8s production failures.",
     "category": "Infrastructure",
     "whenToUse": "- Deploying any containerized application to production - Setting up a new k8s cluster or namespace - Writing Helm charts for a service",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "gitops-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill kubernetes-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/kubernetes-patterns/SKILL.md",
     "dir": "kubernetes-patterns"
@@ -1281,7 +1429,9 @@
     "description": "Visual layout and composition principles: grid systems (column, baseline, modular), Gestalt principles (proximity, alignment, contrast, repetition, enclosure), whitespace as an active design element, visual hierarchy construction, and focal point design. Use when making layout decisions, not just implementing them.",
     "category": "General",
     "whenToUse": "- Making layout decisions for a new screen or component - Diagnosing why a layout feels crowded, inconsistent, or confusing - Choosing a grid system for a design system",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-critic"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill layout-composition",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/layout-composition/SKILL.md",
     "dir": "layout-composition"
@@ -1291,7 +1441,9 @@
     "description": "Legacy code modernization: Strangler Fig Pattern, Anti-Corruption Layer, Branch-by-Abstraction, Module Strangling, inkrementeller Rewrite vs. Big Bang (Entscheidungsframework), Seams für Testbarkeit, Database Migration Strategy (Dual-Write, Read Shadow).",
     "category": "General",
     "whenToUse": "- Planning a rewrite or major architectural migration - A module is too risky to change without breaking things - Legacy code lacks tests and has accumulated years of hidden behavior",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "modernization-planner"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill legacy-modernization",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/legacy-modernization/SKILL.md",
     "dir": "legacy-modernization"
@@ -1331,7 +1483,10 @@
     "description": "Conduct market research, competitive analysis, investor due diligence, and industry intelligence with source attribution and decision-oriented summaries. Use when the user wants market sizing, competitor comparisons, fund research, technology scans, or research that informs business decisions.",
     "category": "General",
     "whenToUse": "- researching a market, category, company, investor, or technology trend - building TAM/SAM/SOM estimates - comparing competitors or adjacent products",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "competitive-analyst",
+      "workflow-os-competitor-analyst"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill market-research",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/market-research/SKILL.md",
     "dir": "market-research"
@@ -1358,7 +1513,7 @@
   },
   {
     "name": "microfrontend-patterns",
-    "description": "Skill: Micro-Frontend Patterns",
+    "description": "Micro-frontend patterns — team topology decisions, Module Federation (webpack/Vite), integration strategies (iframe/web components/JS orchestration), shared state minimization, design system integration, and migration from monolith.",
     "category": "TypeScript / Frontend",
     "whenToUse": "- More than 3 teams working on a single frontend application - Teams need to deploy UI changes independently without coordinating releases - Migrating a frontend monolith to a multi-team architecture",
     "usedByAgents": [],
@@ -1367,8 +1522,18 @@
     "dir": "microfrontend-patterns"
   },
   {
+    "name": "microfrontend-patterns-advanced",
+    "description": "Advanced Micro-Frontend patterns — testing strategy (unit per-remote, integration with mocked remotes, E2E full composition via Playwright), CI/CD independent deployments per remote, ErrorBoundary resilience, and monolith-to-MFE strangler-fig migration.",
+    "category": "TypeScript / Frontend",
+    "whenToUse": "- Writing tests for Module Federation remotes or the shell - Setting up independent CI/CD pipelines per remote - Adding ErrorBoundary resilience so one failing remote doesn't crash the shell",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill microfrontend-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/microfrontend-patterns-advanced/SKILL.md",
+    "dir": "microfrontend-patterns-advanced"
+  },
+  {
     "name": "mlops-patterns",
-    "description": "Skill: MLOps Patterns",
+    "description": "MLOps lifecycle patterns — experiment tracking (MLflow/W&B), model registry, FastAPI serving with canary deployments, drift detection, fine-tuning workflows, retraining pipelines, DVC data versioning, and GPU autoscaling on Kubernetes.",
     "category": "General",
     "whenToUse": "- Deploying ML models to production (vLLM, Triton, Ollama, BentoML) - Setting up experiment tracking (MLflow, Weights & Biases) - Implementing A/B testing or shadow deployments for models",
     "usedByAgents": [],
@@ -1378,7 +1543,7 @@
   },
   {
     "name": "mobile-cicd-patterns",
-    "description": "Skill: Mobile CI/CD Patterns",
+    "description": "Mobile CI/CD patterns — iOS/Android builds in CI (GitHub Actions/Fastlane), code signing for TestFlight/App Store, automated versioning, screenshot testing, Firebase App Distribution, staged rollouts, and crash-rate gates.",
     "category": "CI / CD",
     "whenToUse": "- Setting up automated iOS or Android builds in CI - Configuring code signing for TestFlight or App Store submission - Implementing beta distribution via TestFlight or Firebase App Distribution",
     "usedByAgents": [],
@@ -1397,26 +1562,28 @@
     "dir": "motion-animation"
   },
   {
-    "name": "multi-agent-coordination",
-    "description": "Native multi-agent coordination patterns — fan-out, split-role, explorer+validator, worktree isolation. Covers pattern selection, context hygiene, failure handling, and result synthesis.",
-    "category": "AI / Agents",
-    "whenToUse": "- Task requires 3+ independent parallel workstreams - User runs /orchestrate <task> - Complex feature implementation spanning multiple domains",
-    "usedByAgents": [],
-    "installCmd": "npx github:marvinrichter/clarc --install-skill multi-agent-coordination",
-    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/multi-agent-coordination/SKILL.md",
-    "dir": "multi-agent-coordination"
-  },
-  {
     "name": "multi-agent-patterns",
     "description": "Multi-Agent Systems: orchestration vs choreography, tool routing, state management, agent handoffs, parallelization (fan-out/fan-in), error handling in multi-agent workflows, Claude SDK patterns (Agent/Tool/Handoff), and observability with OpenTelemetry.",
     "category": "AI / Agents",
     "whenToUse": "- Designing a system where multiple Claude agents collaborate - Implementing task decomposition with parallel sub-agents - Routing tasks between specialized agents (router/dispatcher patterns)",
     "usedByAgents": [
-      "orchestrator"
+      "agent-system-reviewer",
+      "orchestrator",
+      "orchestrator-designer"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill multi-agent-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/multi-agent-patterns/SKILL.md",
     "dir": "multi-agent-patterns"
+  },
+  {
+    "name": "multi-agent-patterns-advanced",
+    "description": "Advanced multi-agent patterns — capability registry, durable state (Redis/DynamoDB), task decomposition, testing multi-agent systems, pattern quick-selection guide, failure handling, cost management, and worktree isolation. Extends multi-agent-patterns.",
+    "category": "AI / Agents",
+    "whenToUse": "- Building a capability registry for dynamic agent dispatch - Implementing durable cross-agent state (Redis, DynamoDB event log) - Decomposing complex goals into parallel and sequential sub-tasks",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill multi-agent-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/multi-agent-patterns-advanced/SKILL.md",
+    "dir": "multi-agent-patterns-advanced"
   },
   {
     "name": "multi-tenancy",
@@ -1463,7 +1630,9 @@
     "description": "Production observability: structured logging, metrics (Prometheus/OpenTelemetry), distributed tracing, error tracking (Sentry), health checks, and alerting. Covers TypeScript, Python, and Go with code examples.",
     "category": "Observability",
     "whenToUse": "- Setting up a new service for production - Debugging production issues without enough information - Adding monitoring or alerting to an existing service",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "mlops-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill observability",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/observability/SKILL.md",
     "dir": "observability"
@@ -1493,7 +1662,9 @@
     "description": "Performance profiling workflows: CPU profiling (pprof, py-spy, async-profiler, 0x), memory profiling (heap analysis, leak detection), flamegraph interpretation, latency analysis (P50/P99/P99.9), and profiling anti-patterns per language (Go, Python, JVM, Node.js).",
     "category": "Performance",
     "whenToUse": "- A service is slower than its SLO and the cause is unknown - Post-load-test: numbers are bad, now find the bottleneck - Reviewing a pull request that touches hot code paths",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "performance-analyst"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill performance-profiling",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/performance-profiling/SKILL.md",
     "dir": "performance-profiling"
@@ -1503,7 +1674,9 @@
     "description": "PHP 8.4+ patterns: readonly classes/properties, enums, named arguments, match expressions, value objects, repository pattern, service layer with command/handler, Laravel controller/FormRequest, Symfony service wiring, Doctrine QueryBuilder, Fiber async. Use when writing or reviewing PHP code.",
     "category": "PHP",
     "whenToUse": "- Writing PHP 8.4+ source files (.php) - Designing service/repository layers - Reviewing PHP code for idiomatic patterns",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "php-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill php-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/php-patterns/SKILL.md",
     "dir": "php-patterns"
@@ -1513,7 +1686,9 @@
     "description": "PHP testing patterns: PHPUnit 11 with mocks and data providers, Pest v3 with expectations and datasets, Laravel feature/HTTP tests with RefreshDatabase, Symfony WebTestCase, PHPStan static analysis, Infection mutation testing. Use when writing or reviewing PHP tests.",
     "category": "Testing",
     "whenToUse": "- Writing PHP tests with PHPUnit or Pest - Setting up Laravel/Symfony test suites - Configuring PHPStan for static analysis",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "php-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill php-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/php-testing/SKILL.md",
     "dir": "php-testing"
@@ -1533,7 +1708,9 @@
     "description": "Platform Engineering: Internal Developer Platforms (IDP), CNCF Platform definition, Team Topologies, IDP components (Service Catalog, Self-Service Infra, Golden Paths, Developer Portal), platform maturity model, make-vs-buy (Backstage vs Port vs Cortex), adoption strategy, DORA correlation.",
     "category": "General",
     "whenToUse": "- Defining an IDP strategy for an engineering organization - Deciding between Backstage and SaaS alternatives - Designing a Golden Path for a standard service type",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "platform-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill platform-engineering",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/platform-engineering/SKILL.md",
     "dir": "platform-engineering"
@@ -1553,7 +1730,10 @@
     "description": "Presentation structure, narrative design, and slide layout principles. Covers the problem-solution-evidence arc, slide density rules (one idea per slide), slide type catalogue, opening hooks, and closing patterns. Use when structuring any slide deck — conference talk, demo, investor pitch, or team update.",
     "category": "Architecture",
     "whenToUse": "- Structuring a slide deck from scratch - Reviewing a presentation for narrative clarity - Choosing between narrative frameworks (technical talk, executive update, investor pitch)",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "presentation-designer",
+      "talk-coach"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill presentation-design",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/presentation-design/SKILL.md",
     "dir": "presentation-design"
@@ -1570,7 +1750,7 @@
   },
   {
     "name": "privacy-engineering",
-    "description": "Skill: Privacy Engineering",
+    "description": "Privacy engineering patterns — PII classification and inventory, GDPR consent flows, data minimization, right-to-erasure implementation, pseudonymization/encryption, privacy-by-design architecture, and DPIA checklist.",
     "category": "General",
     "whenToUse": "- Building features that collect or process user data (name, email, location, health, etc.) - Implementing GDPR / CCPA / HIPAA compliance requirements - Designing database schemas with personal data fields",
     "usedByAgents": [],
@@ -1582,7 +1762,7 @@
     "name": "problem-details",
     "description": "RFC 7807 / RFC 9457 Problem Details for HTTP APIs — standard error response format, Content-Type application/problem+json, extension fields, and per-language implementation patterns.",
     "category": "General",
-    "whenToUse": "Use this skill whenever you need to implement HTTP error responses. Apply it to every REST/HTTP API regardless of language or framework.",
+    "whenToUse": "Use this skill whenever you need to implement HTTP error responses. Apply it to every REST/HTTP API regardless of language or framework.  - Adding or reviewing error handling in any REST or HTTP API endpoint",
     "usedByAgents": [],
     "installCmd": "npx github:marvinrichter/clarc --install-skill problem-details",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/problem-details/SKILL.md",
@@ -1593,10 +1773,23 @@
     "description": "Full product development lifecycle from raw idea to shipped implementation. Covers idea capture, evaluation (Go/No-Go), solution design (ADR), PRD writing, and handoff to the implementation pipeline. Prevents building the wrong thing.",
     "category": "Product",
     "whenToUse": "- User mentions a product idea, feature request, or \"we should build X\" - User invokes /idea, /evaluate, /explore, or /prd - User asks \"is this worth building?\" or \"what's the best approach for X?\"",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "product-evaluator",
+      "solution-designer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill product-lifecycle",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/product-lifecycle/SKILL.md",
     "dir": "product-lifecycle"
+  },
+  {
+    "name": "progressive-delivery",
+    "description": "Argo Rollouts patterns for canary and blue/green deployments — traffic splitting, automated analysis with Prometheus metrics, rollback triggers, and GitOps integration.",
+    "category": "General",
+    "whenToUse": "- Deploying a new version of a service with traffic splitting (canary or blue/green) - Configuring automated rollback based on error rate or latency metrics - Integrating Argo Rollouts with an existing ArgoCD/Flux setup",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill progressive-delivery",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/progressive-delivery/SKILL.md",
+    "dir": "progressive-delivery"
   },
   {
     "name": "project-local-skills",
@@ -1613,7 +1806,12 @@
     "description": "System prompt architecture, few-shot design, chain-of-thought, structured output (JSON mode, response_format), tool use patterns, prompt versioning, and regression testing. Use when writing, reviewing, or debugging any LLM prompt — system prompts, user templates, or tool descriptions.",
     "category": "General",
     "whenToUse": "- Writing or refining system prompts for LLM-powered features - Reviewing a prompt that returns inconsistent or wrong outputs - Designing tool/function definitions for tool use",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "agent-quality-reviewer",
+      "prompt-quality-scorer",
+      "prompt-reviewer",
+      "skill-depth-analyzer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill prompt-engineering",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/prompt-engineering/SKILL.md",
     "dir": "prompt-engineering"
@@ -1622,7 +1820,7 @@
     "name": "python-patterns",
     "description": "Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications.",
     "category": "Python",
-    "whenToUse": "- Writing new Python code - Reviewing Python code - Refactoring existing Python code",
+    "whenToUse": "- Designing Python package structure and module boundaries - Choosing between dataclasses, Pydantic models, and TypedDicts for a data structure - Applying idiomatic Python (list comprehensions, generators, context managers, decorators)",
     "usedByAgents": [
       "python-reviewer"
     ],
@@ -1668,7 +1866,9 @@
     "description": "R patterns: tidyverse data pipelines with dplyr/tidyr/purrr, native pipe |>, R6 classes, tidy evaluation with rlang {{, vctrs custom types, renv dependency management, ggplot2 visualization, functional programming with purrr::map/walk/reduce. Use when writing or reviewing R code.",
     "category": "General",
     "whenToUse": "- Writing R scripts, packages, or Shiny apps (.R, .Rmd, .qmd) - Designing data transformation pipelines with tidyverse - Building R packages with roxygen2 documentation",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "r-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill r-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/r-patterns/SKILL.md",
     "dir": "r-patterns"
@@ -1678,7 +1878,9 @@
     "description": "R testing patterns: testthat 3e with expect_* assertions, snapshot testing, mocking with mockery and httptest2, covr code coverage, lintr static analysis, property-based testing with hedgehog, testing Shiny apps with shinytest2. Use when writing or reviewing R tests.",
     "category": "Testing",
     "whenToUse": "- Writing tests with testthat in R packages - Mocking HTTP calls or functions in tests - Setting up coverage reporting with covr",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "r-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill r-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/r-testing/SKILL.md",
     "dir": "r-testing"
@@ -1734,11 +1936,23 @@
     "dir": "release-management"
   },
   {
+    "name": "repomap",
+    "description": "Compact codebase map injected at session start — file tree, key symbols, and hot files from git history. Closes the Aider-style context-awareness gap without tree-sitter dependencies.",
+    "category": "General",
+    "whenToUse": "- Claude Code session starts on an unfamiliar or large codebase - User runs /repomap to refresh the injected context map - Context window is clean and a codebase overview would orient Claude faster",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill repomap",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/repomap/SKILL.md",
+    "dir": "repomap"
+  },
+  {
     "name": "resilience-patterns",
     "description": "Production resilience patterns: Circuit Breaker (Closed/Open/Half-Open), Bulkhead isolation, Retry with exponential backoff + jitter, Timeout hierarchies, Fallback strategies, Graceful Degradation, and Health Check patterns for Kubernetes and beyond.",
     "category": "General",
     "whenToUse": "- Designing a service that calls external APIs, databases, or queues - Adding retry logic to an HTTP client - Implementing circuit breakers for external calls",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "resilience-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill resilience-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/resilience-patterns/SKILL.md",
     "dir": "resilience-patterns"
@@ -1810,11 +2024,33 @@
     "dir": "rust-testing"
   },
   {
+    "name": "rust-testing-advanced",
+    "description": "Advanced Rust testing anti-patterns and corrections — cfg(test) placement, expect() over unwrap(), mockall expectation ordering, executor mixing (#[tokio::test] vs block_on), PgPool isolation with #[sqlx::test].",
+    "category": "Testing",
+    "whenToUse": "- Reviewing Rust test code for common mistakes - Debugging flaky tests caused by shared pool state - Diagnosing mock setup ordering errors (already-moved mock)",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill rust-testing-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/rust-testing-advanced/SKILL.md",
+    "dir": "rust-testing-advanced"
+  },
+  {
+    "name": "rust-web-patterns",
+    "description": "Axum HTTP handlers, Serde serialization, async channels, iterator patterns, trait objects, configuration, and WebAssembly target for Rust web services.",
+    "category": "Rust",
+    "whenToUse": "- Building HTTP APIs with Axum - Designing async message passing with Tokio channels - Serializing/deserializing data with Serde",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill rust-web-patterns",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/rust-web-patterns/SKILL.md",
+    "dir": "rust-web-patterns"
+  },
+  {
     "name": "scala-patterns",
     "description": "Idiomatic Scala patterns: ADTs with sealed traits and case classes, typeclass pattern, Option/Either/Try error handling, for-comprehensions, Cats Effect (IO, Resource, Ref, Fiber), ZIO fundamentals, Scala 3 features (given/using, enums, extension methods, opaque types, union types). Covers both Scala 2.13 and Scala 3. Use when writing Scala, reviewing Scala code, or designing Scala domain models.",
     "category": "General",
     "whenToUse": "- Writing any Scala source (.scala, .sc, build.sbt) - Designing domain models or error handling strategies - Choosing between Future, Cats Effect IO, and ZIO",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "scala-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill scala-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/scala-patterns/SKILL.md",
     "dir": "scala-patterns"
@@ -1824,14 +2060,16 @@
     "description": "Scala testing with ScalaTest, MUnit, and ScalaCheck: FunSpec/FlatSpec test structure, property-based testing with forAll, mocking with MockitoSugar, Cats Effect testing with munit-cats-effect (runTest/IOSuite), ZIO Test, Testcontainers-Scala for database integration tests, and CI integration with sbt. Use when writing or reviewing Scala tests.",
     "category": "Testing",
     "whenToUse": "- Writing tests for Scala code - Choosing a Scala test framework - Testing Cats Effect or ZIO code",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "scala-reviewer"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill scala-testing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/scala-testing/SKILL.md",
     "dir": "scala-testing"
   },
   {
     "name": "sdk-design-patterns",
-    "description": "Skill: SDK Design Patterns",
+    "description": "SDK design patterns — API ergonomics, backward compatibility (semantic versioning, deprecation), multi-language SDK generation (openapi-generator vs Speakeasy), error hierarchy design, SDK testing strategies, and documentation as first-class SDK artifact.",
     "category": "Architecture",
     "whenToUse": "- Designing a client library for a REST, gRPC, or WebSocket API - Evaluating whether to generate an SDK from OpenAPI or write it manually - Reviewing an existing SDK for ergonomics, consistency, or backward compatibility",
     "usedByAgents": [],
@@ -1863,11 +2101,12 @@
     "name": "security-review",
     "description": "Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.",
     "category": "Code Review",
-    "whenToUse": "- Implementing authentication or authorization - Handling user input or file uploads - Creating new API endpoints",
+    "whenToUse": "- Implementing authentication or authorization (JWT, OAuth, session management) - Handling user input — form fields, file uploads, query parameters, JSON payloads - Creating new API endpoints that accept external data",
     "usedByAgents": [
       "code-reviewer",
       "cpp-reviewer",
       "database-reviewer",
+      "devsecops-reviewer",
       "elixir-reviewer",
       "go-reviewer",
       "java-reviewer",
@@ -1882,6 +2121,26 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill security-review",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/security-review/SKILL.md",
     "dir": "security-review"
+  },
+  {
+    "name": "security-review-advanced",
+    "description": "Security anti-patterns — localStorage token storage (XSS risk), trusting client-side authorization checks, reflecting full error details to clients, blacklist vs whitelist input validation, using npm install instead of npm ci in CI pipelines.",
+    "category": "Code Review",
+    "whenToUse": "- JWT or session tokens stored in localStorage (XSS risk) - API endpoints rely on frontend UI hiding buttons instead of server-side permission checks - Error handlers return error.stack or raw database error messages to clients",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill security-review-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/security-review-advanced/SKILL.md",
+    "dir": "security-review-advanced"
+  },
+  {
+    "name": "security-review-web3",
+    "description": "Security patterns for Web3 and blockchain applications — Solana wallet signature verification, transaction validation, smart contract interaction security, and checklist for DeFi/NFT features.",
+    "category": "Code Review",
+    "whenToUse": "- Implementing wallet-based authentication (Solana, Ethereum, EVM chains) - Verifying on-chain transaction signatures before processing user actions - Building smart contract interaction logic (minting, trading, staking)",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill security-review-web3",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/security-review-web3/SKILL.md",
+    "dir": "security-review-web3"
   },
   {
     "name": "security-scan",
@@ -1902,6 +2161,16 @@
     "installCmd": "npx github:marvinrichter/clarc --install-skill serverless-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/serverless-patterns/SKILL.md",
     "dir": "serverless-patterns"
+  },
+  {
+    "name": "serverless-patterns-advanced",
+    "description": "Advanced Serverless patterns — Lambda idempotency (Lambda Powertools + DynamoDB persistence layer), Lambda cost model (pricing formula, break-even vs containers), and CloudWatch Insights observability queries for cold starts, duration, and errors.",
+    "category": "General",
+    "whenToUse": "- Lambda receives duplicate events and needs idempotency (at-least-once delivery) - Calculating whether Lambda or containers are more cost-effective at current request volume - Writing CloudWatch Insights queries for cold start analysis, duration percentiles, or error rates",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill serverless-patterns-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/serverless-patterns-advanced/SKILL.md",
+    "dir": "serverless-patterns-advanced"
   },
   {
     "name": "skill-stocktake",
@@ -1990,7 +2259,9 @@
     "description": "Frontend state management patterns: TanStack Query for server state, Zustand for client state, URL state, form state with React Hook Form, and when to use what. Prevents over-engineering and the most common state bugs.",
     "category": "General",
     "whenToUse": "- Deciding where to put state in a React/Vue/Svelte app - Server data is going stale or showing inconsistent values - Global state causing unnecessary re-renders",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "frontend-architect"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill state-management",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/state-management/SKILL.md",
     "dir": "state-management"
@@ -2041,7 +2312,9 @@
     "category": "Security",
     "whenToUse": "- Generating or updating an SBOM (Software Bill of Materials) - Setting up artifact signing for container images or releases - Auditing dependency pinning practices",
     "usedByAgents": [
-      "security-reviewer"
+      "devsecops-reviewer",
+      "security-reviewer",
+      "supply-chain-auditor"
     ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill supply-chain-security",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/supply-chain-security/SKILL.md",
@@ -2147,6 +2420,16 @@
     "dir": "tdd-workflow"
   },
   {
+    "name": "tdd-workflow-advanced",
+    "description": "TDD anti-patterns — writing code before tests, testing implementation details instead of behavior, using waitForTimeout as a sync strategy, chaining tests that share state, mocking the system under test instead of its dependencies.",
+    "category": "Testing",
+    "whenToUse": "- Tests were written after the implementation, not before - Tests spy on private methods or internal state - Tests use waitForTimeout / sleep as a synchronization mechanism",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill tdd-workflow-advanced",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/tdd-workflow-advanced/SKILL.md",
+    "dir": "tdd-workflow-advanced"
+  },
+  {
     "name": "team-foundation",
     "description": "Team Workflow OS — shared clarc setup for engineering teams. Covers shared rules distribution, private skill packs, team sync patterns, onboarding, and multi-developer conventions.",
     "category": "General",
@@ -2171,17 +2454,33 @@
     "description": "Technical debt management: Ward Cunningham's quadrant (Reckless/Prudent × Deliberate/Inadvertent), Martin Fowler taxonomy, quantification with SonarQube/SQALE/radon, Churn×Complexity hotspot matrix (Code Maat), Interest Rate concept, debt ticket format, Buy-vs-Pay-Down decision framework, communicating debt to non-technical stakeholders.",
     "category": "General",
     "whenToUse": "- Planning a tech-debt sprint or \"hardening\" quarter - A team feels slow but can't point to what's wrong - Communicating the cost of technical debt to non-technical stakeholders",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "doc-updater",
+      "modernization-planner",
+      "refactor-cleaner"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill technical-debt",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/technical-debt/SKILL.md",
     "dir": "technical-debt"
+  },
+  {
+    "name": "terraform-ci",
+    "description": "Terraform in CI/CD — plan on PR, apply on merge, OIDC auth, drift detection, importing existing resources, common CLI commands, anti-patterns, and Terraform vs Pulumi vs CDK decision guide.",
+    "category": "Infrastructure",
+    "whenToUse": "- Setting up GitHub Actions (or other CI) to run terraform plan on pull requests - Configuring OIDC-based AWS authentication for CI (no stored credentials) - Importing existing cloud resources under Terraform control",
+    "usedByAgents": [],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill terraform-ci",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/terraform-ci/SKILL.md",
+    "dir": "terraform-ci"
   },
   {
     "name": "terraform-patterns",
     "description": "Infrastructure as Code with Terraform — project structure, remote state, modules, workspace strategy, AWS/GCP patterns, CI/CD integration, and security hardening. The standard for managing production infrastructure.",
     "category": "Infrastructure",
     "whenToUse": "- Provisioning any cloud resource (compute, databases, networking, IAM) - Setting up remote state backend for a team - Creating reusable infrastructure modules",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "finops-advisor"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill terraform-patterns",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/terraform-patterns/SKILL.md",
     "dir": "terraform-patterns"
@@ -2258,7 +2557,9 @@
     "description": "Typography as a creative discipline: typeface selection criteria, type pairing (serif + sans, display + body), modular scale systems, line-height and tracking ratios, hierarchy construction, and web/mobile rendering considerations. The decisions behind design tokens, not the tokens themselves.",
     "category": "Architecture",
     "whenToUse": "- Choosing typefaces for a new product or brand - Building a typographic scale (H1–body–caption) - Critiquing readability or hierarchy problems",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-critic"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill typography-design",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/typography-design/SKILL.md",
     "dir": "typography-design"
@@ -2278,7 +2579,9 @@
     "description": "Run build → type-check → lint → tests in sequence; fail fast and fix each error before continuing; repeat until all quality gates pass. Use after significant code changes and before creating a PR.",
     "category": "General",
     "whenToUse": "Invoke this skill: - After completing a feature or significant code change - Before creating a PR",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "build-error-resolver"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill verification-loop",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/verification-loop/SKILL.md",
     "dir": "verification-loop"
@@ -2288,7 +2591,9 @@
     "description": "Brand identity development: color palette construction (primary/secondary/semantic/neutral), logo concept brief writing, typeface pairings, brand voice definition, mood board direction, and Brand Guidelines document structure. Use when establishing or evolving a visual brand — not for implementing existing tokens.",
     "category": "General",
     "whenToUse": "- Creating a visual identity for a new product, company, or project - Rebranding an existing product - Defining the design system foundation before token implementation",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "design-critic"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill visual-identity",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/visual-identity/SKILL.md",
     "dir": "visual-identity"
@@ -2328,7 +2633,9 @@
     "description": "Web performance optimization: Core Web Vitals (LCP, CLS, INP), Lighthouse CI with budget configuration, bundle analysis (webpack-bundle-analyzer, vite-bundle-visualizer), hydration performance, network waterfall reading, image optimization (WebP/AVIF, srcset), and font performance.",
     "category": "Performance",
     "whenToUse": "- Core Web Vitals are failing in Search Console or Lighthouse - Bundle size has grown and pages feel slow - Setting up Lighthouse CI to prevent regressions",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "performance-analyst"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill web-performance",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/web-performance/SKILL.md",
     "dir": "web-performance"
@@ -2345,7 +2652,7 @@
   },
   {
     "name": "webrtc-patterns",
-    "description": "Skill: WebRTC Patterns",
+    "description": "WebRTC patterns — peer connection setup, ICE/STUN/TURN configuration, signaling server design, SFU vs mesh topology, screen sharing, media track management, and reconnect/ICE restart handling.",
     "category": "General",
     "whenToUse": "- Building real-time audio/video calls (1:1 or group) - Implementing screen sharing - Building a live streaming feature with low latency (<500ms)",
     "usedByAgents": [],
@@ -2365,7 +2672,7 @@
   },
   {
     "name": "zero-trust-patterns",
-    "description": "Skill: Zero-Trust Patterns",
+    "description": "Zero-Trust security patterns — mTLS between microservices (Istio/SPIFFE), SPIRE workload identity, OPA/Envoy authorization, NetworkPolicy default-deny-all, short-lived credentials, service mesh security, and Kubernetes RBAC hardening.",
     "category": "Security",
     "whenToUse": "- Designing service-to-service communication in Kubernetes or cloud environments - Implementing mTLS between microservices - Setting up SPIFFE/SPIRE for workload identity",
     "usedByAgents": [],

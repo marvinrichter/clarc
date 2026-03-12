@@ -1,0 +1,498 @@
+/*
+ * clarc Hub — Wireframe Styles
+ * Annotated layout prototypes for the redesigned hub.
+ *
+ * Conventions:
+ *   .wf-zone        — major layout section
+ *   .wf-placeholder — content placeholder box
+ *   .wf-annotation  — brand/implementation note
+ *   .wf-chip        — inline color/token reference
+ *   .wf-dark        — sections that will be dark-mode in final
+ */
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Document ───────────────────────────────────────────────────────────── */
+body {
+  background: #f2f4f7;
+  color: #1c2130;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ─── Wireframe page header (meta info, not part of design) ─────────────── */
+.wf-meta {
+  background: #fff;
+  border-bottom: 2px solid #1455b8;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.wf-meta-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1455b8;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.wf-meta-info {
+  font-size: 11px;
+  color: #626d7e;
+}
+.wf-meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f5f3ff;
+  border: 1px solid #c4b5fd;
+  border-radius: 3px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5b21b6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.wf-meta-badge.dark { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.wf-meta-badge.light { background: #f0fdf4; border-color: #86efac; color: #166534; }
+
+/* ─── Annotation bar (runs alongside sections) ───────────────────────────── */
+.wf-page {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.wf-content { min-width: 0; }
+.wf-sidebar {
+  background: #fffbeb;
+  border-left: 2px dashed #fbbf24;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.wf-sidebar-header {
+  background: #fbbf24;
+  padding: 8px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #78350f;
+  position: sticky;
+  top: 0;
+}
+.wf-note {
+  padding: 12px 16px;
+  border-bottom: 1px solid #fde68a;
+}
+.wf-note-ref {
+  font-size: 10px;
+  font-weight: 700;
+  color: #92400e;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 4px;
+}
+.wf-note p {
+  font-size: 11px;
+  color: #451a03;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.wf-note p:last-child { margin-bottom: 0; }
+
+/* ─── Token chips ─────────────────────────────────────────────────────────── */
+.wf-token {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.wf-token.color { background: #dbeafe; color: #1e3a8a; }
+.wf-token.font  { background: #d1fae5; color: #065f46; }
+.wf-token.size  { background: #fce7f3; color: #831843; }
+
+/* ─── Zone containers ────────────────────────────────────────────────────── */
+.wf-zone {
+  position: relative;
+  border-top: 1px dashed #cbd5e1;
+}
+.wf-zone-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #475569;
+  color: #f8fafc;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 10;
+  text-transform: uppercase;
+}
+.wf-zone-label.dark-label { background: #1455b8; }
+
+/* ─── Dark zones (will use neutral-950 background) ───────────────────────── */
+.wf-dark {
+  background: #1c2130;
+  color: #e8ecf2;
+}
+.wf-dark .wf-zone-label { background: #0f4089; }
+
+/* ─── Placeholder boxes ──────────────────────────────────────────────────── */
+.wf-placeholder {
+  background: #dde3ee;
+  border: 1px dashed #9aafcf;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #445571;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  padding: 8px;
+}
+.wf-dark .wf-placeholder {
+  background: #2d3441;
+  border-color: #454e5c;
+  color: #848fa1;
+}
+
+/* ─── Layout helpers ─────────────────────────────────────────────────────── */
+.wf-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.wf-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.wf-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.wf-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.sp { flex: 1; }
+
+/* ─── Typography specimens ───────────────────────────────────────────────── */
+.wf-type-specimen { font-family: 'Courier New', monospace; }
+.wf-display      { font-size: 48px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.wf-heading-2xl  { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+.wf-heading-xl   { font-size: 24px; font-weight: 600; line-height: 1.4; }
+.wf-body-lg      { font-size: 18px; line-height: 1.6; }
+.wf-body         { font-size: 15px; line-height: 1.6; }
+.wf-small        { font-size: 12px; line-height: 1.5; }
+.wf-label        { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.wf-mono         { font-family: 'Courier New', monospace; font-size: 13px; }
+
+/* ─── Brand color preview ────────────────────────────────────────────────── */
+.wf-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,0.15);
+  vertical-align: middle;
+  margin-right: 3px;
+}
+
+/* ─── Annotation inline markers ──────────────────────────────────────────── */
+.wf-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  vertical-align: middle;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+/* ─── Component wireframes ───────────────────────────────────────────────── */
+
+/* NAV */
+.wf-nav {
+  height: 52px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  border-bottom: 1px dashed;
+}
+.wf-dark .wf-nav { border-bottom-color: #454e5c; }
+
+/* HERO content */
+.wf-hero-content {
+  padding: 80px 32px 64px;
+  text-align: center;
+}
+
+/* CARDS */
+.wf-card {
+  background: #fff;
+  border: 1px dashed #adb6c8;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wf-dark .wf-card {
+  background: #2d3441;
+  border-color: #454e5c;
+}
+.wf-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.wf-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.wf-model-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: #178f68;
+}
+.wf-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed #dde3ee;
+}
+.wf-dark .wf-card-footer { border-top-color: #454e5c; }
+
+/* FILTER TABS */
+.wf-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+}
+.wf-filter-btn {
+  border: 1px dashed #adb6c8;
+  border-radius: 3px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: #626d7e;
+  background: #fff;
+}
+.wf-filter-btn.active {
+  border-color: #1455b8;
+  border-style: solid;
+  color: #1455b8;
+  background: #eff6ff;
+}
+
+/* SEARCH */
+.wf-search {
+  border: 1px dashed #adb6c8;
+  border-radius: 2px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #848fa1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wf-dark .wf-search {
+  background: #2d3441;
+  border-color: #454e5c;
+  color: #626d7e;
+}
+
+/* SKILL PILLS */
+.wf-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.wf-pill {
+  background: rgba(20,85,184,0.08);
+  border: 1px solid rgba(20,85,184,0.2);
+  color: #1455b8;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+/* TERMINAL MOCKUP */
+.wf-terminal {
+  background: #101620;
+  border-radius: 4px;
+  border: 1px dashed #454e5c;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #e8ecf2;
+  line-height: 1.7;
+}
+.wf-terminal .prompt { color: #17905e; }
+.wf-terminal .cmd    { color: #e8ecf2; }
+.wf-terminal .output { color: #848fa1; }
+.wf-terminal .accent { color: #63a1f2; }
+.wf-terminal .success{ color: #37c99a; }
+
+/* STAT BLOCK */
+.wf-stat-number {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #1455b8;
+}
+.wf-dark .wf-stat-number { color: #63a1f2; }
+.wf-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #848fa1;
+  margin-top: 4px;
+}
+
+/* SECTION CARD (large nav cards) */
+.wf-section-card {
+  border: 1px dashed #9aafcf;
+  background: #fff;
+  border-radius: 4px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s;
+}
+.wf-section-card-count {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #1455b8;
+}
+
+/* INSTALL BLOCK */
+.wf-install-cmd {
+  background: #101620;
+  border: 1px solid #2d3441;
+  border-radius: 2px;
+  padding: 16px 24px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #e8ecf2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ─── Dividers ────────────────────────────────────────────────────────────── */
+.wf-divider {
+  height: 1px;
+  background: #dde3ee;
+  margin: 32px 0;
+}
+
+/* ─── Spacing helpers ─────────────────────────────────────────────────────── */
+.p-4  { padding: 16px; }
+.p-6  { padding: 24px; }
+.p-8  { padding: 32px; }
+.py-4 { padding-top: 16px; padding-bottom: 16px; }
+.py-6 { padding-top: 24px; padding-bottom: 24px; }
+.py-8 { padding-top: 32px; padding-bottom: 32px; }
+.py-12{ padding-top: 48px; padding-bottom: 48px; }
+.py-16{ padding-top: 64px; padding-bottom: 64px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.gap-4{ gap: 16px; }
+.gap-6{ gap: 24px; }
+.tc   { text-align: center; }
+
+.muted { color: #848fa1; }
+.primary-color { color: #1455b8; }
+.accent-color  { color: #178f68; }
+.text-sm  { font-size: 12px; }
+.text-xs  { font-size: 11px; }
+.bold { font-weight: 600; }
+
+/* ─── Anatomy callout (for card anatomy diagram) ─────────────────────────── */
+.wf-callout-line {
+  position: absolute;
+  border-top: 1px dashed #ef4444;
+}
+.wf-callout-label {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 600;
+  color: #dc2626;
+  font-family: 'Courier New', monospace;
+  background: #fff;
+  padding: 2px 6px;
+  border: 1px solid #fca5a5;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .wf-page { grid-template-columns: 1fr; }
+  .wf-sidebar {
+    position: static;
+    height: auto;
+    border-left: none;
+    border-top: 2px dashed #fbbf24;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0;
+  }
+  .wf-sidebar-header { grid-column: 1/-1; }
+}

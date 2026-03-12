@@ -1,6 +1,6 @@
 # Getting Started with clarc
 
-clarc is a workflow OS for Claude Code. It adds agents, skills, commands, hooks, and a learning loop on top of Claude Code.
+clarc is the workflow OS for Claude Code. 62 agents. 248 skills. 172 commands. A continuous learning loop. Wired together.
 
 ## Prerequisites
 
@@ -35,8 +35,8 @@ Expected output:
 ```
 ✅ Node.js 20.x
 ✅ ~/.claude/ exists
-✅ Agents: 61 installed
-✅ Skills: 228 installed
+✅ Agents: 62 installed
+✅ Skills: 248 installed
 ✅ Commands: 172 installed
 ✅ Hooks: active
 ✅ clarc version: 0.9.0

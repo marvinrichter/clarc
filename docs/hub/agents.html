@@ -3,846 +3,821 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>61 Agents — clarc hub</title>
+  <title>62 Agents — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. 62 Agents.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <div class="container">
-    <nav class="nav">
-      <span class="nav-brand">clarc hub</span>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="agents.html" class="active">Agents</a>
-        <a href="skills.html">Skills</a>
-        <a href="commands.html">Commands</a>
-      </div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html" class="active">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
     </nav>
   </div>
 </header>
-
 <main>
+<section class="page-header">
   <div class="container">
-    <div class="hero" style="padding-bottom:1rem">
-      <h1>61 Agents</h1>
-      <p>Specialized subagents delegated by Claude Code for specific engineering tasks.</p>
-      <div class="search-bar">
-        <input id="search" type="search" placeholder="Search agents..." aria-label="Search agents">
-      </div>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">clarc</a> / <span aria-current="page">Agents</span></nav>
+    <h1 class="page-title">Agents <span class="page-count">62 total</span></h1>
+    <p class="page-desc">Specialized subagents delegated by Claude Code for code review, architecture, testing, security, and more.</p>
+  </div>
+</section>
+<section class="search-section">
+  <div class="container">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input id="search" type="search" class="search-input" placeholder="Search 62 agents…" autocomplete="off">
+      <kbd class="search-kbd">⌘K</kbd>
     </div>
-    <div class="filter-tabs">
-  <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="Code Review">Code Review <small>(28)</small></button>
-  <button class="filter-btn" data-filter="Architecture">Architecture <small>(11)</small></button>
-  <button class="filter-btn" data-filter="General">General <small>(9)</small></button>
-  <button class="filter-btn" data-filter="clarc System">clarc System <small>(3)</small></button>
-  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(2)</small></button>
-  <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Documentation">Documentation <small>(1)</small></button>
-  <button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Infrastructure">Infrastructure <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Go">Go <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Performance">Performance <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Product">Product <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Testing">Testing <small>(1)</small></button>
-</div>
+  </div>
+</section>
+<section class="filter-section">
+  <div class="container">
+    <div class="filter-scroll"><div class="filter-tabs">
+  <button class="filter-btn active" data-filter="all">All <span class="count-badge">(62)</span></button>
+  <button class="filter-btn" data-filter="Code Review">Code Review <span class="count-badge">(28)</span></button><button class="filter-btn" data-filter="Architecture">Architecture <span class="count-badge">(11)</span></button><button class="filter-btn" data-filter="General">General <span class="count-badge">(10)</span></button><button class="filter-btn" data-filter="clarc System">clarc System <span class="count-badge">(3)</span></button><button class="filter-btn" data-filter="AI / Agents">AI / Agents <span class="count-badge">(2)</span></button><button class="filter-btn" data-filter="CI / CD">CI / CD <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Documentation">Documentation <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Infrastructure">Infrastructure <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Go">Go <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Performance">Performance <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Product">Product <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Testing">Testing <span class="count-badge">(1)</span></button>
+</div></div>
+  </div>
+</section>
+<section class="grid-section">
+  <div class="container">
+    <p class="grid-meta" id="grid-meta" aria-live="polite" aria-atomic="true">62 total · A–Z</p>
     <div class="grid">
 <div class="card" data-name="agent-quality-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">agent-quality-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">agent-quality-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
-  <p class="card-desc">Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-review or called by agent-system-reviewer during full system review.</p>
-  
-  
+  <p class="card-desc">Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-audit or called by agent-system-reviewer during full system review.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">prompt-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-quality-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-quality-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="agent-system-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">agent-system-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">agent-system-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Orchestrates a full clarc system review by synthesizing results from all component analyzers (agent-quality-reviewer, skill-depth-analyzer, command-auditor, hook-auditor), cross-component validators, and systemic effectiveness tools into a unified Priority Matrix with P0/P1/P2 classification. Uses Opus for deep architectural reasoning. Called by /system-review full.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">multi-agent-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-system-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/agent-system-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="android-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">android-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">android-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Android code reviewer specializing in Jetpack Compose best practices, Hilt DI scoping, Room migrations, ViewModel/UiState patterns, and Coroutine Dispatcher correctness. Use for all Kotlin/Android code changes. MUST BE USED for Android/Compose projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">kotlin-patterns</span><span class="skill-pill">kotlin-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/android-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/android-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
-  <p class="card-desc">Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">ddd-typescript</span><span class="skill-pill">hexagonal-typescript</span><span class="skill-pill">api-design</span></div>
+  <p class="card-desc">System design and architecture specialist. Use PROACTIVELY when users need HOW to structure the system — component boundaries, ADRs, C4/arc42 diagrams, scalability decisions. For task lists and implementation timelines (WHAT to build), use the planner agent instead.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">ddd-typescript</span><span class="skill-pill">hexagonal-typescript</span><span class="pill-more">+1</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="bash-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">bash-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">bash-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Reviews Bash/shell scripts for correctness, safety, idiomatic style, and portability. Checks set -euo pipefail, quoting, shellcheck issues, security (no eval, mktemp, path quoting), BATS test coverage, and formatting via shfmt. Invoked by code-reviewer for .sh/.bash/.zsh files.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">bash-patterns</span><span class="skill-pill">bash-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/bash-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/bash-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="build-error-resolver" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name">build-error-resolver</h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-name">build-error-resolver</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Build error resolution specialist for any language — TypeScript, Go, Python, Java, and more. Use PROACTIVELY when builds fail, type errors occur, or compilation breaks. Fixes errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">verification-loop</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/build-error-resolver.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/build-error-resolver.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="c-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">c-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">c-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert C code reviewer specializing in C11/C17 idioms, memory safety (malloc/free discipline, no double-free), opaque pointer encapsulation, error code patterns, goto cleanup, safe string functions, and AddressSanitizer/Valgrind integration. Use for all C code changes. MUST BE USED for C projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">c-patterns</span><span class="skill-pill">c-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/c-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/c-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="code-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">code-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">code-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, ruby-reviewer, elixir-reviewer, rust-reviewer, cpp-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">security-review</span><span class="skill-pill">tdd-workflow</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">security-review</span><span class="skill-pill">tdd-workflow</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/code-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/code-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="command-auditor" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name">command-auditor</h3>
-    <span class="badge">clarc System</span>
+    <span class="card-name">command-auditor</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Audits clarc commands for UX ergonomics across 8 dimensions — naming consistency, argument design, feedback loops, step count, agent invocation, overlap detection, missing commands, and built-in conflicts. Produces a tabellarische overview and issue list. Use via /command-audit or called by agent-system-reviewer.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">cli-ux</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/command-auditor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/command-auditor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="competitive-analyst" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">competitive-analyst</h3>
-    <span class="badge">General</span>
+    <span class="card-name">competitive-analyst</span>
+    <span class="badge cat-n">General</span>
   </div>
-  <p class="card-desc">Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape.</p>
-  
-  
+  <p class="card-desc">Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape. For clarc vs. AI coding tools specifically → use workflow-os-competitor-analyst.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">market-research</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/competitive-analyst.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/competitive-analyst.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="contract-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">contract-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">contract-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Reviews API changes for contract breaks. Given git diff of API definitions and existing consumer pacts, classifies each change as BREAKING / NON-BREAKING / ADDITIVE and produces a migration plan. Use when modifying any API (REST, event schema, GraphQL).</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">api-design</span><span class="skill-pill">contract-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/contract-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge haiku"><span class="dot"></span>haiku</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/contract-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cpp-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">cpp-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">cpp-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert C++ code reviewer specializing in C++ Core Guidelines, modern C++20/23, memory safety, RAII, and performance. Use for all C++ code changes. MUST BE USED for C++ projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">cpp-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">cpp-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/cpp-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/cpp-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="csharp-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">csharp-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">csharp-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert C# code reviewer specializing in C# 12/.NET 8 idioms, nullable reference types, async/await correctness, records, pattern matching, CQRS with MediatR, Entity Framework Core, SQL injection, mass assignment, secret management, Roslyn analyzers. Use for all C# code changes. MUST BE USED for C#/.NET projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">csharp-patterns</span><span class="skill-pill">csharp-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/csharp-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/csharp-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="data-architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">data-architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">data-architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Data Mesh architecture specialist. Analyzes business domains to identify data products, assigns ownership, recommends technology stack (Lakehouse, Catalog, Contract Testing), and creates a migration plan from centralized data warehouse to Data Mesh. Use when designing a new data platform or migrating an existing one.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">data-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/data-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/data-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="database-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">database-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">database-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">sql-patterns</span><span class="skill-pill">database-migrations</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">sql-patterns</span><span class="skill-pill">database-migrations</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/database-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/database-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="design-critic" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">design-critic</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">design-critic</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Reviews visual designs and gives structured critique covering composition, visual hierarchy, typography, color, brand coherence, and accessibility. Works from screenshots, wireframes, written descriptions, or code (HTML/CSS). Does not generate designs — evaluates existing ones.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">layout-composition</span><span class="skill-pill">typography-design</span><span class="skill-pill">visual-identity</span><span class="pill-more">+1</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/design-critic.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/design-critic.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="design-system-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">design-system-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">design-system-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive design system audit — reviews CSS/token structure, dark mode implementation, icon system, accessibility compliance, design-code consistency, and component completeness. Routes findings across visual design dimensions and produces a prioritized remediation plan. Use when auditing a frontend codebase for design quality, before a major UI release, or when design system debt has accumulated.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">design-system</span><span class="skill-pill">css-architecture</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/design-system-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/design-system-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="devsecops-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">devsecops-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">devsecops-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
-  <p class="card-desc">Automated security reviewer for code changes — scans changed files for OWASP Top 10 vulnerabilities, secrets, dependency issues, and IaC misconfigurations. Produces CRITICAL/HIGH/MEDIUM findings with concrete fixes. Invoke automatically after code changes touching auth, APIs, input handling, or infrastructure.</p>
-  
-  
+  <p class="card-desc">Infrastructure and CI/CD security reviewer — scans Terraform, Dockerfiles, Kubernetes manifests, GitHub Actions workflows, and dependency lockfiles for misconfigurations, supply chain risks, and pipeline vulnerabilities. For application-code OWASP/injection/auth issues, use security-reviewer instead.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">supply-chain-security</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/devsecops-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/devsecops-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="doc-updater" data-category="Documentation">
   <div class="card-header">
-    <h3 class="card-name">doc-updater</h3>
-    <span class="badge">Documentation</span>
+    <span class="card-name">doc-updater</span>
+    <span class="badge cat-n">Documentation</span>
   </div>
-  <p class="card-desc">Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.</p>
-  
-  
+  <p class="card-desc">Documentation and codemap specialist. Use PROACTIVELY after structural changes, before releases, or when codemaps are stale. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">technical-debt</span></div>
   <div class="card-footer">
-    <span class="model-badge">haiku</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/doc-updater.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/doc-updater.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="docs-architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">docs-architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">docs-architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Expert documentation strategy agent. Analyses audience, recommends platform (Mintlify/Docusaurus/Redoc/Scalar), structures docs via Divio framework, configures OpenAPI extensions, designs changelog automation, and outputs a full CI pipeline. Invoke when planning or overhauling API documentation.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">api-design</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/docs-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/docs-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="e2e-runner" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">e2e-runner</h3>
-    <span class="badge">General</span>
+    <span class="card-name">e2e-runner</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">e2e-testing</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">e2e-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/e2e-runner.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/e2e-runner.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="elixir-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">elixir-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">elixir-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Elixir/Phoenix code reviewer specializing in OTP patterns, Ecto queries, security (Sobelow), and idiomatic functional Elixir. Use for all Elixir code changes.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">elixir-patterns</span><span class="skill-pill">elixir-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">elixir-patterns</span><span class="skill-pill">elixir-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/elixir-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/elixir-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="feedback-analyst" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">feedback-analyst</h3>
-    <span class="badge">General</span>
+    <span class="card-name">feedback-analyst</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyzes qualitative user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify pain points, cluster themes, and generate structured idea seeds. Use when given raw user feedback data to extract product insights.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">analytics-workflow</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/feedback-analyst.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/feedback-analyst.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="finops-advisor" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">finops-advisor</h3>
-    <span class="badge">General</span>
+    <span class="card-name">finops-advisor</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyzes cloud infrastructure configuration and costs to provide prioritized optimization recommendations with ROI estimates. Use when reviewing Terraform/Kubernetes configs for cost impact or preparing a FinOps audit report.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">terraform-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/finops-advisor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/finops-advisor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="flutter-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">flutter-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">flutter-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Reviews Flutter/Dart code for idiomatic patterns, performance (missing const, unnecessary rebuilds, RepaintBoundary), accessibility, null safety misuse, async errors, and platform-specific issues. Use for all Flutter/Dart code changes.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">flutter-patterns</span><span class="skill-pill">flutter-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/flutter-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/flutter-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="frontend-architect" data-category="TypeScript / Frontend">
   <div class="card-header">
-    <h3 class="card-name">frontend-architect</h3>
-    <span class="badge">TypeScript / Frontend</span>
+    <span class="card-name">frontend-architect</span>
+    <span class="badge cat-b">TypeScript / Frontend</span>
   </div>
   <p class="card-desc">Micro-Frontend architecture specialist. Designs MFE system architecture — team topology, integration strategy selection, routing, shared state minimization, design system integration, and migration plan from monolith. Use when building multi-team frontend systems or evaluating MFE feasibility.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">frontend-patterns</span><span class="skill-pill">state-management</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/frontend-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/frontend-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="gitops-architect" data-category="Infrastructure">
   <div class="card-header">
-    <h3 class="card-name">gitops-architect</h3>
-    <span class="badge">Infrastructure</span>
+    <span class="card-name">gitops-architect</span>
+    <span class="badge cat-o">Infrastructure</span>
   </div>
   <p class="card-desc">Designs GitOps setup for applications and organizations — repository structure, tool selection (ArgoCD vs Flux), environment strategy, secrets management, progressive delivery plan, and multi-cluster topology. Use when setting up or overhauling Kubernetes deployment workflows.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">kubernetes-patterns</span><span class="skill-pill">deployment-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/gitops-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/gitops-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="go-build-resolver" data-category="Go">
   <div class="card-header">
-    <h3 class="card-name">go-build-resolver</h3>
-    <span class="badge">Go</span>
+    <span class="card-name">go-build-resolver</span>
+    <span class="badge cat-teal">Go</span>
   </div>
-  <p class="card-desc">Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.</p>
-  
-  
+  <p class="card-desc">Go build error resolver — fixes go build, go vet, staticcheck, and golangci-lint failures with minimal surgical changes. Use when Go compilation fails. For non-Go build errors use build-error-resolver.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">go-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/go-build-resolver.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/go-build-resolver.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="go-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">go-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">go-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance. Use for all Go code changes. MUST BE USED for Go projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">go-patterns</span><span class="skill-pill">go-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">go-patterns</span><span class="skill-pill">go-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/go-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/go-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="hook-auditor" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name">hook-auditor</h3>
-    <span class="badge">clarc System</span>
+    <span class="card-name">hook-auditor</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Audits the clarc hook system across 8 dimensions — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and all scripts/hooks/*.js files. Use via /hook-audit or called by agent-system-reviewer.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">bash-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/hook-auditor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/hook-auditor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="java-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">java-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">java-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Java code reviewer specializing in idiomatic Java 25+, Spring Boot patterns, security, JPA, and performance. Use for all Java code changes. MUST BE USED for Java/Spring Boot projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">java-patterns</span><span class="skill-pill">java-testing</span><span class="skill-pill">ddd-java</span><span class="skill-pill">hexagonal-java</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">java-patterns</span><span class="skill-pill">java-testing</span><span class="skill-pill">ddd-java</span><span class="pill-more">+2</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/java-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/java-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="kotlin-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">kotlin-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">kotlin-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Reviews Kotlin code for correctness, idiomatic style, null safety, coroutine usage, architecture patterns, and security. Covers val/var discipline, sealed classes, coEvery/coVerify, CancellationException handling, SQL injection, and ktlint compliance. Invoked by code-reviewer for .kt/.kts files.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">kotlin-patterns</span><span class="skill-pill">kotlin-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">kotlin-patterns</span><span class="skill-pill">kotlin-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/kotlin-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/kotlin-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="mlops-architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">mlops-architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">mlops-architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Designs MLOps infrastructure for ML projects — serving stack selection, monitoring setup, retraining strategy, A/B testing plan, and cost estimation. Use when deploying or operationalizing ML models.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">observability</span><span class="skill-pill">deployment-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/mlops-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/mlops-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="modernization-planner" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">modernization-planner</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">modernization-planner</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Analyzes legacy codebases and creates prioritized modernization roadmaps. Uses Churn×Complexity hotspot analysis, identifies legacy indicators (God Classes, missing tests, outdated dependencies), recommends Strangler Fig vs. Branch-by-Abstraction vs. incremental rewrite, and creates phased migration plans with risk assessment.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">legacy-modernization</span><span class="skill-pill">technical-debt</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/modernization-planner.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/modernization-planner.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="orchestrator" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name">orchestrator</h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-name">orchestrator</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Multi-agent orchestration specialist. Decomposes complex tasks into subtasks, selects the optimal coordination pattern (fan-out, split-role, explorer+validator, worktree isolation, sequential pipeline), and synthesizes results. Use via /orchestrate or for any task requiring 3+ independent agents.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">multi-agent-patterns</span><span class="skill-pill">agent-reliability</span><span class="skill-pill">agent-conflict-resolution</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">multi-agent-patterns</span><span class="skill-pill">agent-reliability</span><span class="skill-pill">agent-conflict-resolution</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="orchestrator-designer" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name">orchestrator-designer</h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-name">orchestrator-designer</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Designs multi-agent systems for complex tasks. Given a goal, produces: task decomposition, agent role definitions, orchestration pattern selection, failure mode analysis, and implementation plan with pseudocode. Use for architecting new multi-agent workflows.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">multi-agent-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator-designer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator-designer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="performance-analyst" data-category="Performance">
   <div class="card-header">
-    <h3 class="card-name">performance-analyst</h3>
-    <span class="badge">Performance</span>
+    <span class="card-name">performance-analyst</span>
+    <span class="badge cat-y">Performance</span>
   </div>
   <p class="card-desc">Analyzes profiling output and code for performance hotspots. Interprets pprof output, flamegraphs, Lighthouse reports, and identifies N+1 queries, unnecessary allocations, blocking I/O, and missing indexes. Provides concrete, prioritized optimization recommendations with expected impact estimates.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">performance-profiling</span><span class="skill-pill">web-performance</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/performance-analyst.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/performance-analyst.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="php-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">php-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">php-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert PHP code reviewer specializing in PHP 8.4+ idioms, PSR-12 style, strict types, readonly classes, enums, value objects, repository pattern, Laravel/Symfony patterns, PHPStan level 9, SQL injection/XSS/CSRF prevention. Use for all PHP code changes. MUST BE USED for PHP projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">php-patterns</span><span class="skill-pill">php-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/php-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/php-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="planner" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">planner</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">planner</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
-  <p class="card-desc">Expert planning specialist for complex features and refactoring. Use PROACTIVELY when users request feature implementation, architectural changes, or complex refactoring. Automatically activated for planning tasks.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">api-design</span></div>
+  <p class="card-desc">Task decomposition and implementation planning specialist. Use PROACTIVELY when users need WHAT tasks to execute — produces PRDs, task breakdowns, timelines, and dependency maps. For HOW to structure the system (component design, ADRs, C4 diagrams), use the architect agent instead.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">api-design</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/planner.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/planner.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="platform-architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">platform-architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">platform-architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Designs Internal Developer Platforms (IDPs) for engineering organizations — scope definition, IDP component prioritization, make-vs-buy decision (Backstage vs SaaS), adoption strategy, and 90-day implementation roadmap. Use when a team wants to improve developer experience at scale.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">backstage-patterns</span><span class="skill-pill">platform-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/platform-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/platform-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="presentation-designer" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">presentation-designer</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">presentation-designer</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Designs and structures presentations — creates slide decks, writes speaker notes, checks narrative flow, evaluates slide density, and ensures opening and closing land. Use for any slide deck creation or structural review.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">presentation-design</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/presentation-designer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/presentation-designer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="product-evaluator" data-category="Product">
   <div class="card-header">
-    <h3 class="card-name">product-evaluator</h3>
-    <span class="badge">Product</span>
+    <span class="card-name">product-evaluator</span>
+    <span class="badge cat-p">Product</span>
   </div>
   <p class="card-desc">Evaluates product ideas critically before any implementation begins. Assesses problem clarity, user fit, feasibility, competitive alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation. Use when a user wants to validate whether an idea is worth building.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">product-lifecycle</span></div>
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/product-evaluator.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/product-evaluator.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="prompt-quality-scorer" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">prompt-quality-scorer</h3>
-    <span class="badge">General</span>
+    <span class="card-name">prompt-quality-scorer</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Evaluates the prompt-engineering quality of clarc agent and command instructions across 6 dimensions — specificity, completeness, output definition, ambiguity, safety coverage, and example density. Produces a ranked report of all agents/commands with scores and improvement suggestions for the lowest-scoring items.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">prompt-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/prompt-quality-scorer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/prompt-quality-scorer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="prompt-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">prompt-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">prompt-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert prompt engineer reviewing system prompts and prompt templates for clarity, injection vulnerabilities, ambiguity, token efficiency, and output consistency. Use when writing or auditing any LLM prompt.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">prompt-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/prompt-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/prompt-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="python-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">python-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">python-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">python-patterns</span><span class="skill-pill">python-testing</span><span class="skill-pill">security-review</span><span class="skill-pill">tdd-workflow</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">python-patterns</span><span class="skill-pill">python-testing</span><span class="skill-pill">security-review</span><span class="pill-more">+1</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/python-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/python-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="r-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">r-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">r-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert R code reviewer specializing in tidyverse idioms, native pipe |&gt;, purrr functional patterns, tidy evaluation, R6 classes, testthat, covr, SQL injection via DBI, Shiny input validation, renv lockfile management. Use for all R code changes. MUST BE USED for R projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">r-patterns</span><span class="skill-pill">r-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/r-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/r-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="refactor-cleaner" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">refactor-cleaner</h3>
-    <span class="badge">General</span>
+    <span class="card-name">refactor-cleaner</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">technical-debt</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/refactor-cleaner.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/refactor-cleaner.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="resilience-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">resilience-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">resilience-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Reviews code and architecture for failure modes, missing circuit breakers, unprotected external calls, retry anti-patterns, and resilience gaps. Use when adding external dependencies, designing distributed system components, or before chaos experiments.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">resilience-patterns</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/resilience-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/resilience-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="ruby-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">ruby-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">ruby-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Ruby/Rails code reviewer specializing in idiomatic Ruby, Rails best practices, security (Brakeman), performance, and N+1 detection. Use for all Ruby code changes.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">ruby-patterns</span><span class="skill-pill">ruby-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">ruby-patterns</span><span class="skill-pill">ruby-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/ruby-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/ruby-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="rust-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">rust-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">rust-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Rust code reviewer specializing in ownership, borrowing, async with Tokio, error handling (thiserror/anyhow), and performance. Use for all Rust code changes. MUST BE USED for Rust projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">rust-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">rust-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/rust-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/rust-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="scala-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">scala-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">scala-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Scala code reviewer specializing in functional programming idioms, ADT correctness, effect system usage (Cats Effect/ZIO), null safety, and Scala 3 migration patterns. Use for all .scala and .sc file changes. MUST BE USED for Scala projects.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">scala-patterns</span><span class="skill-pill">scala-testing</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/scala-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/scala-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="sdk-architect" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">sdk-architect</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">sdk-architect</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Designs SDK architecture for APIs — generation strategy (openapi-generator vs. Speakeasy vs. manual), error hierarchy, authentication patterns, backward compatibility policy, CI release process, and documentation site recommendation. Use when building or evolving a developer-facing SDK.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">api-design</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/sdk-architect.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/sdk-architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="security-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">security-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">security-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">auth-patterns</span><span class="skill-pill">supply-chain-security</span><span class="skill-pill">gdpr-privacy</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">auth-patterns</span><span class="skill-pill">supply-chain-security</span><span class="skill-pill">gdpr-privacy</span><span class="pill-more">+1</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/security-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/security-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="skill-depth-analyzer" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name">skill-depth-analyzer</h3>
-    <span class="badge">clarc System</span>
+    <span class="card-name">skill-depth-analyzer</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Analyzes a clarc skill file for prompt-engineering quality across 7 dimensions — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Produces a scored report. Use via /skill-depth or called by agent-system-reviewer during full system review.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">prompt-engineering</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/skill-depth-analyzer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/skill-depth-analyzer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="solution-designer" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name">solution-designer</h3>
-    <span class="badge">Architecture</span>
+    <span class="card-name">solution-designer</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Generates and compares multiple solution approaches for a validated product idea. Produces 2-4 concrete options with trade-off analysis and an Architecture Decision Record (ADR) recommending one approach. Use after product-evaluator has given a Go or Modify recommendation.</p>
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">product-lifecycle</span><span class="skill-pill">adr-writing</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/solution-designer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="summarizer-haiku" data-category="General">
+  <div class="card-header">
+    <span class="card-name">summarizer-haiku</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Lightweight Haiku-tier agent for summaries, boilerplate generation, routing decisions, and simple text transformations. Use instead of Sonnet for high-frequency, low-complexity tasks to reduce cost by 10–15×. NOT for code review, architecture decisions, or security analysis.</p>
   
   <div class="card-footer">
-    <span class="model-badge">opus</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/solution-designer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge haiku"><span class="dot"></span>haiku</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/summarizer-haiku.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="supply-chain-auditor" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">supply-chain-auditor</h3>
-    <span class="badge">General</span>
+    <span class="card-name">supply-chain-auditor</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyzes repository structure for supply chain security risks — unpinned dependencies, missing SBOM, unsigned artifacts, suspicious install scripts, unverified GitHub Actions. Use before releases and when auditing security posture.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">supply-chain-security</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/supply-chain-auditor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge haiku"><span class="dot"></span>haiku</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/supply-chain-auditor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="swift-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">swift-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">swift-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert Swift code reviewer specializing in Swift concurrency, protocol-based architecture, DDD patterns, SwiftUI best practices, and performance. Use for all Swift code changes. MUST BE USED for Swift/SwiftUI projects.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">swift-patterns</span><span class="skill-pill">swift-testing</span><span class="skill-pill">security-review</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">swift-patterns</span><span class="skill-pill">swift-testing</span><span class="skill-pill">security-review</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/swift-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/swift-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="talk-coach" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">talk-coach</h3>
-    <span class="badge">General</span>
+    <span class="card-name">talk-coach</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Reviews talk outlines, scripts, and slide decks — evaluates structure, timing plausibility, audience fit, clarity, narrative flow, and opening/closing strength. Use after drafting a presentation to get structured improvement feedback.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">presentation-design</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/talk-coach.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/talk-coach.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="tdd-guide" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name">tdd-guide</h3>
-    <span class="badge">Testing</span>
+    <span class="card-name">tdd-guide</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
-  <p class="card-desc">Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">tdd-workflow</span><span class="skill-pill">python-testing</span><span class="skill-pill">typescript-testing</span><span class="skill-pill">go-testing</span><span class="skill-pill">java-testing</span><span class="skill-pill">test-data</span></div>
+  <p class="card-desc">Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage (configurable — check project's `.nycrc`, `vitest.config.ts`, or `pytest.ini` for the project's actual threshold).</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">tdd-workflow</span><span class="skill-pill">python-testing</span><span class="skill-pill">typescript-testing</span><span class="pill-more">+3</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/tdd-guide.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/tdd-guide.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="typescript-reviewer" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name">typescript-reviewer</h3>
-    <span class="badge">Code Review</span>
+    <span class="card-name">typescript-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Expert TypeScript/JavaScript code reviewer for frontend, backend, and full-stack — React, Next.js, Node.js, hexagonal architecture, DDD, type safety, security, and performance. Use for any .ts, .tsx, or .js code changes.</p>
-  
-  <div class="skill-pills"><span class="deps-label">uses:</span><span class="skill-pill">typescript-patterns</span><span class="skill-pill">typescript-testing</span><span class="skill-pill">hexagonal-typescript</span><span class="skill-pill">security-review</span><span class="skill-pill">tdd-workflow</span></div>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">typescript-patterns</span><span class="skill-pill">typescript-testing</span><span class="skill-pill">hexagonal-typescript</span><span class="pill-more">+2</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/typescript-reviewer.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/typescript-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="workflow-os-competitor-analyst" data-category="General">
   <div class="card-header">
-    <h3 class="card-name">workflow-os-competitor-analyst</h3>
-    <span class="badge">General</span>
+    <span class="card-name">workflow-os-competitor-analyst</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Researches and compares clarc against competing AI engineering workflow systems — Cursor, GitHub Copilot, Windsurf, Aider, Devin, and Continue.dev. Produces a feature matrix, identifies clarc-unique capabilities, and prioritizes competitive gaps. Use via /competitive-review or called by agent-system-reviewer.</p>
-  
-  
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">market-research</span></div>
   <div class="card-footer">
-    <span class="model-badge">sonnet</span>
-    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/workflow-os-competitor-analyst.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/workflow-os-competitor-analyst.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div></div>
-    <div class="no-results" id="no-results" style="display:none">No agents match your search.</div>
+    <div class="no-results" id="no-results" style="display:none">
+      <div class="no-results-icon" aria-hidden="true">⊘</div>
+      <h3>No results</h3>
+      <p>Try a different search term or <button class="clear-search" onclick="document.getElementById('search').value='';document.getElementById('search').dispatchEvent(new Event('input'))">clear search</button></p>
+    </div>
   </div>
-</main>
+</section></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
 <script src="search.js"></script>
 </body>
 </html>

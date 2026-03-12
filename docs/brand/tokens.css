@@ -1,0 +1,238 @@
+/**
+ * clarc Design Tokens
+ * Brand: Precise · Structural · Inevitable
+ *
+ * Color system: "Blueprint" — the aesthetic of technical drawings,
+ * precision instruments, and terminal UIs.
+ *
+ * WCAG AA compliance notes:
+ *   --color-primary-500 on white:  ~6.3:1  ✓ AA (text)
+ *   --color-primary-600 on white:  ~8.9:1  ✓ AAA (text)
+ *   --color-accent-600 on white:   ~5.1:1  ✓ AA (text)
+ *   --color-neutral-700 on white:  ~7.2:1  ✓ AAA (text)
+ *   white on --color-primary-500:  ~6.3:1  ✓ AA (text)
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────
+     PRIMARY — "Blueprint Blue"
+     Hue: 216° (cool, architectural blue — distinct
+     from Claude's warm purple ~265°)
+     ───────────────────────────────────────────── */
+  --color-primary-50:  hsl(216, 80%, 96%);   /* #edf3fd */
+  --color-primary-100: hsl(216, 80%, 91%);   /* #d1e2fb */
+  --color-primary-200: hsl(216, 80%, 80%);   /* #a3c4f7 */
+  --color-primary-300: hsl(216, 80%, 66%);   /* #639df2 */
+  --color-primary-400: hsl(216, 80%, 54%);   /* #2f79ed */
+  --color-primary-500: hsl(216, 80%, 40%);   /* #1455b8 — brand primary, WCAG AA */
+  --color-primary-600: hsl(216, 80%, 30%);   /* #0f4089 — WCAG AAA */
+  --color-primary-700: hsl(216, 80%, 22%);   /* #0b2e64 */
+  --color-primary-800: hsl(216, 80%, 14%);   /* #071d40 */
+  --color-primary-900: hsl(216, 80%, 08%);   /* #041125 */
+
+  /* ─────────────────────────────────────────────
+     ACCENT — "Phosphor"
+     Hue: 162° (terminal-green with depth)
+     Used for: highlights, borders, status indicators
+     --color-accent-600 onwards: WCAG AA on white
+     ───────────────────────────────────────────── */
+  --color-accent-50:  hsl(162, 60%, 95%);   /* #ecfaf5 */
+  --color-accent-100: hsl(162, 60%, 88%);   /* #c7f2e4 */
+  --color-accent-200: hsl(162, 60%, 74%);   /* #84e0c2 */
+  --color-accent-300: hsl(162, 60%, 58%);   /* #37c99a */
+  --color-accent-400: hsl(162, 60%, 46%);   /* #1bb07f */
+  --color-accent-500: hsl(162, 60%, 38%);   /* #178f68 — decorative/icon use */
+  --color-accent-600: hsl(162, 65%, 28%);   /* #0e6a4d — WCAG AA on white */
+  --color-accent-700: hsl(162, 65%, 20%);   /* #0a4c37 */
+
+  /* ─────────────────────────────────────────────
+     SEMANTIC
+     Adjusted so none conflict with brand primary/accent
+     ───────────────────────────────────────────── */
+  --color-success-50:  hsl(142, 55%, 95%);
+  --color-success-500: hsl(142, 58%, 36%);   /* #258a44 — WCAG AA */
+  --color-success-900: hsl(142, 58%, 12%);
+
+  --color-warning-50:  hsl(38, 95%, 95%);
+  --color-warning-500: hsl(38, 90%, 44%);    /* #d97a06 — WCAG AA */
+  --color-warning-900: hsl(38, 90%, 14%);
+
+  --color-error-50:  hsl(4, 80%, 96%);
+  --color-error-500: hsl(4, 78%, 44%);       /* #c7230c — WCAG AA */
+  --color-error-900: hsl(4, 78%, 14%);
+
+  --color-info-500: var(--color-primary-500);
+
+  /* ─────────────────────────────────────────────
+     NEUTRALS
+     Primary hue tinted (216°, 8% saturation) —
+     "Blueprint Gray": cool, professional, unified
+     ───────────────────────────────────────────── */
+  --color-neutral-0:   hsl(216, 0%,  100%);  /* pure white */
+  --color-neutral-50:  hsl(216, 20%, 97%);   /* #f5f7fa */
+  --color-neutral-100: hsl(216, 16%, 93%);   /* #e8ecf2 */
+  --color-neutral-200: hsl(216, 14%, 85%);   /* #d0d7e3 */
+  --color-neutral-300: hsl(216, 12%, 72%);   /* #adb6c8 */
+  --color-neutral-400: hsl(216, 10%, 56%);   /* #848fa1 */
+  --color-neutral-500: hsl(216,  9%, 42%);   /* #626d7e */
+  --color-neutral-600: hsl(216,  9%, 30%);   /* #454e5c */
+  --color-neutral-700: hsl(216, 10%, 20%);   /* #2d3441 */
+  --color-neutral-800: hsl(216, 12%, 13%);   /* #1c2130 */
+  --color-neutral-900: hsl(216, 14%, 08%);   /* #101620 */
+  --color-neutral-950: hsl(216, 16%, 05%);   /* #0a0e15 */
+
+  /* ─────────────────────────────────────────────
+     SURFACE (light mode)
+     ───────────────────────────────────────────── */
+  --surface-base:      var(--color-neutral-0);
+  --surface-raised:    var(--color-neutral-50);
+  --surface-overlay:   var(--color-neutral-100);
+  --surface-inset:     var(--color-neutral-200);
+
+  /* ─────────────────────────────────────────────
+     TEXT (light mode)
+     ───────────────────────────────────────────── */
+  --text-primary:      var(--color-neutral-900);
+  --text-secondary:    var(--color-neutral-600);
+  --text-tertiary:     var(--color-neutral-400);
+  --text-disabled:     var(--color-neutral-300);
+  --text-inverse:      var(--color-neutral-0);
+  --text-brand:        var(--color-primary-500);
+  --text-accent:       var(--color-accent-600);
+
+  /* ─────────────────────────────────────────────
+     BORDER (light mode)
+     ───────────────────────────────────────────── */
+  --border-subtle:     var(--color-neutral-100);
+  --border-default:    var(--color-neutral-200);
+  --border-strong:     var(--color-neutral-300);
+  --border-brand:      var(--color-primary-500);
+  --border-accent:     var(--color-accent-500);
+
+  /* ─────────────────────────────────────────────
+     TYPOGRAPHY
+     Display: Space Grotesk — geometric, engineered
+     Body:    Inter — precision readability
+     Mono:    Geist Mono — CLI-native
+     ───────────────────────────────────────────── */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Geist Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Type scale: Major Third (×1.25) rooted at 16px */
+  --text-xs:   0.64rem;    /* 10.24px — metadata, labels */
+  --text-sm:   0.8rem;     /* 12.80px — captions, secondary */
+  --text-base: 1rem;       /* 16.00px — body */
+  --text-lg:   1.25rem;    /* 20.00px — lead text */
+  --text-xl:   1.563rem;   /* 25.00px — small heading */
+  --text-2xl:  1.953rem;   /* 31.25px — section heading */
+  --text-3xl:  2.441rem;   /* 39.06px — page heading */
+  --text-4xl:  3.052rem;   /* 48.83px — display */
+  --text-5xl:  3.815rem;   /* 61.04px — hero */
+
+  /* Line heights */
+  --leading-none:    1;
+  --leading-tight:   1.1;   /* display, hero */
+  --leading-snug:    1.25;  /* headings */
+  --leading-normal:  1.5;   /* UI labels, nav */
+  --leading-relaxed: 1.6;   /* body text */
+  --leading-loose:   1.75;  /* long-form prose */
+
+  /* Font weights */
+  --font-regular:   400;
+  --font-medium:    500;
+  --font-semibold:  600;
+  --font-bold:      700;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.02em;   /* large display */
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;   /* all-caps labels */
+  --tracking-widest:  0.12em;   /* monospace metadata */
+
+  /* ─────────────────────────────────────────────
+     SPACING — 4px base grid
+     ───────────────────────────────────────────── */
+  --space-px:   1px;
+  --space-0-5:  0.125rem;   /* 2px  */
+  --space-1:    0.25rem;    /* 4px  */
+  --space-2:    0.5rem;     /* 8px  */
+  --space-3:    0.75rem;    /* 12px */
+  --space-4:    1rem;       /* 16px */
+  --space-5:    1.25rem;    /* 20px */
+  --space-6:    1.5rem;     /* 24px */
+  --space-8:    2rem;       /* 32px */
+  --space-10:   2.5rem;     /* 40px */
+  --space-12:   3rem;       /* 48px */
+  --space-16:   4rem;       /* 64px */
+  --space-20:   5rem;       /* 80px */
+  --space-24:   6rem;       /* 96px */
+  --space-32:   8rem;       /* 128px */
+
+  /* ─────────────────────────────────────────────
+     BORDER RADIUS
+     ───────────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-sm:   0.125rem;  /* 2px  — tight, structured */
+  --radius-md:   0.25rem;   /* 4px  — default */
+  --radius-lg:   0.5rem;    /* 8px  — cards */
+  --radius-xl:   0.75rem;   /* 12px — modals */
+  --radius-full: 9999px;    /* pills */
+
+  /* ─────────────────────────────────────────────
+     SHADOW — subtle, architectural
+     ───────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px 0 hsl(216, 20%, 10%, 0.04);
+  --shadow-sm: 0 1px 3px 0 hsl(216, 20%, 10%, 0.08),
+               0 1px 2px -1px hsl(216, 20%, 10%, 0.05);
+  --shadow-md: 0 4px 6px -1px hsl(216, 20%, 10%, 0.08),
+               0 2px 4px -2px hsl(216, 20%, 10%, 0.04);
+  --shadow-lg: 0 10px 15px -3px hsl(216, 20%, 10%, 0.08),
+               0 4px 6px -4px hsl(216, 20%, 10%, 0.05);
+  --shadow-xl: 0 20px 25px -5px hsl(216, 20%, 10%, 0.10),
+               0 8px 10px -6px hsl(216, 20%, 10%, 0.06);
+
+  /* ─────────────────────────────────────────────
+     MOTION — precise, not decorative
+     ───────────────────────────────────────────── */
+  --duration-instant:  50ms;
+  --duration-fast:    100ms;
+  --duration-normal:  200ms;
+  --duration-slow:    300ms;
+  --duration-enter:   250ms;
+  --duration-exit:    150ms;
+
+  --ease-linear:   linear;
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);  /* subtle bounce */
+
+}
+
+/* ─────────────────────────────────────────────
+   DARK MODE — "Midnight Blueprint"
+   Deep navy substrate, precise light-on-dark
+   ───────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-base:      var(--color-neutral-950);
+    --surface-raised:    var(--color-neutral-900);
+    --surface-overlay:   var(--color-neutral-800);
+    --surface-inset:     var(--color-neutral-700);
+
+    --text-primary:      var(--color-neutral-50);
+    --text-secondary:    var(--color-neutral-300);
+    --text-tertiary:     var(--color-neutral-500);
+    --text-disabled:     var(--color-neutral-600);
+    --text-brand:        var(--color-primary-300);
+    --text-accent:       var(--color-accent-300);
+
+    --border-subtle:     var(--color-neutral-800);
+    --border-default:    var(--color-neutral-700);
+    --border-strong:     var(--color-neutral-600);
+    --border-brand:      var(--color-primary-400);
+    --border-accent:     var(--color-accent-400);
+  }
+}

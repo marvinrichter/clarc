@@ -29,8 +29,8 @@
 clarc turns Claude Code (and compatible AI coding assistants) from a reactive chat tool into a **structured engineering system**. It provides:
 
 - **Agents** — 62 specialized subagents that delegate planning, review, testing, and debugging
-- **Skills** — 250 domain knowledge libraries loaded on demand
-- **Commands** — 179 slash commands for repeatable engineering workflows
+- **Skills** — 248 domain knowledge libraries loaded on demand
+- **Commands** — 172 slash commands for repeatable engineering workflows
 - **Hooks** — 37 background automations (format, lint, secret scan, budget guard, response dashboard, state persistence)
 - **Rules** — 20 language rule sets always active in every session
 - **Learning flywheel** — session patterns promoted into permanent skills over time

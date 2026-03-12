@@ -9,7 +9,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "prompt-engineering"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent agent-quality-reviewer",
@@ -21,12 +23,16 @@
     "description": "Orchestrates a full clarc system review by synthesizing results from all component analyzers (agent-quality-reviewer, skill-depth-analyzer, command-auditor, hook-auditor), cross-component validators, and systemic effectiveness tools into a unified Priority Matrix with P0/P1/P2 classification. Uses Opus for deep architectural reasoning. Called by /system-review full.",
     "tools": [
       "Read",
+      "Write",
+      "Edit",
       "Grep",
       "Glob",
       "Bash"
     ],
     "model": "opus",
-    "usesSkills": [],
+    "usesSkills": [
+      "multi-agent-patterns"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent agent-system-reviewer",
@@ -43,7 +49,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "kotlin-patterns",
+      "kotlin-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent android-reviewer",
@@ -52,7 +61,7 @@
   },
   {
     "name": "architect",
-    "description": "Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.",
+    "description": "System design and architecture specialist. Use PROACTIVELY when users need HOW to structure the system — component boundaries, ADRs, C4/arc42 diagrams, scalability decisions. For task lists and implementation timelines (WHAT to build), use the planner agent instead.",
     "tools": [
       "Read",
       "Grep",
@@ -77,10 +86,14 @@
     "tools": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "bash-patterns",
+      "bash-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent bash-reviewer",
@@ -99,7 +112,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "verification-loop"
+    ],
     "category": "CI / CD",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent build-error-resolver",
@@ -116,7 +131,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "c-patterns",
+      "c-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent c-reviewer",
@@ -130,7 +148,8 @@
       "Read",
       "Grep",
       "Glob",
-      "Bash"
+      "Bash",
+      "Agent"
     ],
     "model": "sonnet",
     "usesSkills": [
@@ -153,7 +172,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "cli-ux"
+    ],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent command-auditor",
@@ -162,14 +183,17 @@
   },
   {
     "name": "competitive-analyst",
-    "description": "Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape.",
+    "description": "Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape. For clarc vs. AI coding tools specifically → use workflow-os-competitor-analyst.",
     "tools": [
       "WebSearch",
       "Read",
-      "Write"
+      "Write",
+      "Glob"
     ],
-    "model": "opus",
-    "usesSkills": [],
+    "model": "sonnet",
+    "usesSkills": [
+      "market-research"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent competitive-analyst",
@@ -185,8 +209,11 @@
       "Grep",
       "Bash"
     ],
-    "model": "sonnet",
-    "usesSkills": [],
+    "model": "haiku",
+    "usesSkills": [
+      "api-design",
+      "contract-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent contract-reviewer",
@@ -223,7 +250,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "csharp-patterns",
+      "csharp-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent csharp-reviewer",
@@ -237,10 +267,13 @@
       "Read",
       "Glob",
       "Grep",
-      "Bash"
+      "Bash",
+      "Write"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "data-engineering"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent data-architect",
@@ -252,8 +285,6 @@
     "description": "PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.",
     "tools": [
       "Read",
-      "Write",
-      "Edit",
       "Bash",
       "Grep",
       "Glob"
@@ -275,10 +306,16 @@
     "description": "Reviews visual designs and gives structured critique covering composition, visual hierarchy, typography, color, brand coherence, and accessibility. Works from screenshots, wireframes, written descriptions, or code (HTML/CSS). Does not generate designs — evaluates existing ones.",
     "tools": [
       "Read",
-      "Glob"
+      "Glob",
+      "Grep"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "layout-composition",
+      "typography-design",
+      "visual-identity",
+      "creative-direction"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent design-critic",
@@ -295,7 +332,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "design-system",
+      "css-architecture"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent design-system-reviewer",
@@ -304,7 +344,7 @@
   },
   {
     "name": "devsecops-reviewer",
-    "description": "Automated security reviewer for code changes — scans changed files for OWASP Top 10 vulnerabilities, secrets, dependency issues, and IaC misconfigurations. Produces CRITICAL/HIGH/MEDIUM findings with concrete fixes. Invoke automatically after code changes touching auth, APIs, input handling, or infrastructure.",
+    "description": "Infrastructure and CI/CD security reviewer — scans Terraform, Dockerfiles, Kubernetes manifests, GitHub Actions workflows, and dependency lockfiles for misconfigurations, supply chain risks, and pipeline vulnerabilities. For application-code OWASP/injection/auth issues, use security-reviewer instead.",
     "tools": [
       "Read",
       "Glob",
@@ -312,7 +352,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "supply-chain-security",
+      "security-review"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent devsecops-reviewer",
@@ -321,7 +364,7 @@
   },
   {
     "name": "doc-updater",
-    "description": "Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.",
+    "description": "Documentation and codemap specialist. Use PROACTIVELY after structural changes, before releases, or when codemaps are stale. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.",
     "tools": [
       "Read",
       "Write",
@@ -330,8 +373,10 @@
       "Grep",
       "Glob"
     ],
-    "model": "haiku",
-    "usesSkills": [],
+    "model": "sonnet",
+    "usesSkills": [
+      "technical-debt"
+    ],
     "category": "Documentation",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent doc-updater",
@@ -348,7 +393,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "api-design"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent docs-architect",
@@ -404,10 +451,13 @@
       "Read",
       "Write",
       "Glob",
+      "Grep",
       "WebSearch"
     ],
-    "model": "opus",
-    "usesSkills": [],
+    "model": "sonnet",
+    "usesSkills": [
+      "analytics-workflow"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent feedback-analyst",
@@ -424,7 +474,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "terraform-patterns"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent finops-advisor",
@@ -437,10 +489,14 @@
     "tools": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "flutter-patterns",
+      "flutter-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent flutter-reviewer",
@@ -454,10 +510,14 @@
       "Read",
       "Glob",
       "Grep",
-      "Bash"
+      "Bash",
+      "Write"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "frontend-patterns",
+      "state-management"
+    ],
     "category": "TypeScript / Frontend",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent frontend-architect",
@@ -474,7 +534,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "kubernetes-patterns",
+      "deployment-patterns"
+    ],
     "category": "Infrastructure",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent gitops-architect",
@@ -483,7 +546,7 @@
   },
   {
     "name": "go-build-resolver",
-    "description": "Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.",
+    "description": "Go build error resolver — fixes go build, go vet, staticcheck, and golangci-lint failures with minimal surgical changes. Use when Go compilation fails. For non-Go build errors use build-error-resolver.",
     "tools": [
       "Read",
       "Write",
@@ -493,7 +556,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "go-patterns"
+    ],
     "category": "Go",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent go-build-resolver",
@@ -531,7 +596,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "bash-patterns"
+    ],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent hook-auditor",
@@ -567,7 +634,8 @@
     "tools": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Bash"
     ],
     "model": "sonnet",
     "usesSkills": [
@@ -591,7 +659,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "observability",
+      "deployment-patterns"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent mlops-architect",
@@ -608,7 +679,10 @@
       "Bash"
     ],
     "model": "opus",
-    "usesSkills": [],
+    "usesSkills": [
+      "legacy-modernization",
+      "technical-debt"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent modernization-planner",
@@ -644,10 +718,13 @@
       "Read",
       "Glob",
       "Grep",
-      "WebSearch"
+      "WebSearch",
+      "Write"
     ],
     "model": "opus",
-    "usesSkills": [],
+    "usesSkills": [
+      "multi-agent-patterns"
+    ],
     "category": "AI / Agents",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent orchestrator-designer",
@@ -660,10 +737,14 @@
     "tools": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "performance-profiling",
+      "web-performance"
+    ],
     "category": "Performance",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent performance-analyst",
@@ -680,7 +761,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "php-patterns",
+      "php-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent php-reviewer",
@@ -689,13 +773,13 @@
   },
   {
     "name": "planner",
-    "description": "Expert planning specialist for complex features and refactoring. Use PROACTIVELY when users request feature implementation, architectural changes, or complex refactoring. Automatically activated for planning tasks.",
+    "description": "Task decomposition and implementation planning specialist. Use PROACTIVELY when users need WHAT tasks to execute — produces PRDs, task breakdowns, timelines, and dependency maps. For HOW to structure the system (component design, ADRs, C4 diagrams), use the architect agent instead.",
     "tools": [
       "Read",
       "Grep",
       "Glob"
     ],
-    "model": "opus",
+    "model": "sonnet",
     "usesSkills": [
       "arc42-c4",
       "api-design"
@@ -713,10 +797,14 @@
       "Read",
       "Glob",
       "Grep",
-      "WebSearch"
+      "WebSearch",
+      "Write"
     ],
-    "model": "opus",
-    "usesSkills": [],
+    "model": "sonnet",
+    "usesSkills": [
+      "backstage-patterns",
+      "platform-engineering"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent platform-architect",
@@ -732,7 +820,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "presentation-design"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent presentation-designer",
@@ -746,10 +836,13 @@
       "Read",
       "Glob",
       "Grep",
-      "WebSearch"
+      "WebSearch",
+      "Write"
     ],
     "model": "opus",
-    "usesSkills": [],
+    "usesSkills": [
+      "product-lifecycle"
+    ],
     "category": "Product",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent product-evaluator",
@@ -766,7 +859,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "prompt-engineering"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-quality-scorer",
@@ -782,7 +877,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "prompt-engineering"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-reviewer",
@@ -821,7 +918,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "r-patterns",
+      "r-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent r-reviewer",
@@ -840,7 +940,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "technical-debt"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent refactor-cleaner",
@@ -853,10 +955,13 @@
     "tools": [
       "Read",
       "Glob",
-      "Grep"
+      "Grep",
+      "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "resilience-patterns"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent resilience-reviewer",
@@ -914,7 +1019,10 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "scala-patterns",
+      "scala-testing"
+    ],
     "category": "Code Review",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent scala-reviewer",
@@ -931,7 +1039,9 @@
       "Bash"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "api-design"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent sdk-architect",
@@ -949,7 +1059,7 @@
       "Grep",
       "Glob"
     ],
-    "model": "sonnet",
+    "model": "opus",
     "usesSkills": [
       "auth-patterns",
       "supply-chain-security",
@@ -969,11 +1079,12 @@
       "Read",
       "Grep",
       "Glob",
-      "WebSearch",
-      "Bash"
+      "WebSearch"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "prompt-engineering"
+    ],
     "category": "clarc System",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent skill-depth-analyzer",
@@ -985,17 +1096,37 @@
     "description": "Generates and compares multiple solution approaches for a validated product idea. Produces 2-4 concrete options with trade-off analysis and an Architecture Decision Record (ADR) recommending one approach. Use after product-evaluator has given a Go or Modify recommendation.",
     "tools": [
       "Read",
+      "Write",
       "Glob",
       "Grep",
       "WebSearch"
     ],
-    "model": "opus",
-    "usesSkills": [],
+    "model": "sonnet",
+    "usesSkills": [
+      "product-lifecycle",
+      "adr-writing"
+    ],
     "category": "Architecture",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent solution-designer",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/solution-designer.md",
     "filename": "solution-designer.md"
+  },
+  {
+    "name": "summarizer-haiku",
+    "description": "Lightweight Haiku-tier agent for summaries, boilerplate generation, routing decisions, and simple text transformations. Use instead of Sonnet for high-frequency, low-complexity tasks to reduce cost by 10–15×. NOT for code review, architecture decisions, or security analysis.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "model": "haiku",
+    "usesSkills": [],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent summarizer-haiku",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/summarizer-haiku.md",
+    "filename": "summarizer-haiku.md"
   },
   {
     "name": "supply-chain-auditor",
@@ -1006,8 +1137,10 @@
       "Grep",
       "Bash"
     ],
-    "model": "sonnet",
-    "usesSkills": [],
+    "model": "haiku",
+    "usesSkills": [
+      "supply-chain-security"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent supply-chain-auditor",
@@ -1043,7 +1176,9 @@
       "Glob"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "presentation-design"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent talk-coach",
@@ -1052,7 +1187,7 @@
   },
   {
     "name": "tdd-guide",
-    "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.",
+    "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage (configurable — check project's `.nycrc`, `vitest.config.ts`, or `pytest.ini` for the project's actual threshold).",
     "tools": [
       "Read",
       "Write",
@@ -1105,11 +1240,12 @@
       "Read",
       "Grep",
       "Glob",
-      "WebSearch",
-      "Bash"
+      "WebSearch"
     ],
     "model": "sonnet",
-    "usesSkills": [],
+    "usesSkills": [
+      "market-research"
+    ],
     "category": "General",
     "whenToUse": "",
     "installCmd": "npx github:marvinrichter/clarc --install-agent workflow-os-competitor-analyst",

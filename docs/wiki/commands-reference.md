@@ -9,7 +9,7 @@ All clarc slash commands, organized by category. Run them in Claude Code by typi
 | `/quickstart` | Guided tour for new users — recommends workflows for your task |
 | `/clarc-way` | Interactive methodology guide — what to do for any task |
 | `/doctor` | Health-check your clarc installation |
-| `/find-skill` | Search all 247 skills by topic |
+| `/find-skill` | Search all 248 skills by topic |
 
 ## The clarc Way Pipeline
 

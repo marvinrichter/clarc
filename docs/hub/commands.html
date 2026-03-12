@@ -3,1817 +3,1969 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>160 Commands — clarc hub</title>
+  <title>172 Commands — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. 172 Commands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <div class="container">
-    <nav class="nav">
-      <span class="nav-brand">clarc hub</span>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="agents.html">Agents</a>
-        <a href="skills.html">Skills</a>
-        <a href="commands.html" class="active">Commands</a>
-      </div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html" class="active">Commands</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
     </nav>
   </div>
 </header>
-
 <main>
+<section class="page-header">
   <div class="container">
-    <div class="hero" style="padding-bottom:1rem">
-      <h1>160 Commands</h1>
-      <p>Slash commands that activate skills and agents directly in Claude Code.</p>
-      <div class="search-bar">
-        <input id="search" type="search" placeholder="Search commands..." aria-label="Search commands">
-      </div>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">clarc</a> / <span aria-current="page">Commands</span></nav>
+    <h1 class="page-title">Commands <span class="page-count">172 total</span></h1>
+    <p class="page-desc">Slash commands that activate agents and skills directly in Claude Code. Use in any conversation.</p>
+  </div>
+</section>
+<section class="search-section">
+  <div class="container">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input id="search" type="search" class="search-input" placeholder="Search 172 commands…" autocomplete="off">
+      <kbd class="search-kbd">⌘K</kbd>
     </div>
-    <div class="filter-tabs">
-  <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="General">General <small>(68)</small></button>
-  <button class="filter-btn" data-filter="Code Review">Code Review <small>(39)</small></button>
-  <button class="filter-btn" data-filter="clarc System">clarc System <small>(13)</small></button>
-  <button class="filter-btn" data-filter="Testing">Testing <small>(7)</small></button>
-  <button class="filter-btn" data-filter="CI / CD">CI / CD <small>(6)</small></button>
-  <button class="filter-btn" data-filter="AI / Agents">AI / Agents <small>(5)</small></button>
-  <button class="filter-btn" data-filter="Architecture">Architecture <small>(4)</small></button>
-  <button class="filter-btn" data-filter="Observability">Observability <small>(3)</small></button>
-  <button class="filter-btn" data-filter="Product">Product <small>(3)</small></button>
-  <button class="filter-btn" data-filter="Documentation">Documentation <small>(3)</small></button>
-  <button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <small>(2)</small></button>
-  <button class="filter-btn" data-filter="Performance">Performance <small>(2)</small></button>
-  <button class="filter-btn" data-filter="C / C++">C / C++ <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Go">Go <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Rust">Rust <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Security">Security <small>(1)</small></button>
-  <button class="filter-btn" data-filter="Swift / iOS">Swift / iOS <small>(1)</small></button>
-</div>
+  </div>
+</section>
+<section class="filter-section">
+  <div class="container">
+    <div class="filter-scroll"><div class="filter-tabs">
+  <button class="filter-btn active" data-filter="all">All <span class="count-badge">(172)</span></button>
+  <button class="filter-btn" data-filter="General">General <span class="count-badge">(71)</span></button><button class="filter-btn" data-filter="Code Review">Code Review <span class="count-badge">(43)</span></button><button class="filter-btn" data-filter="clarc System">clarc System <span class="count-badge">(13)</span></button><button class="filter-btn" data-filter="AI / Agents">AI / Agents <span class="count-badge">(7)</span></button><button class="filter-btn" data-filter="CI / CD">CI / CD <span class="count-badge">(7)</span></button><button class="filter-btn" data-filter="Testing">Testing <span class="count-badge">(7)</span></button><button class="filter-btn" data-filter="Architecture">Architecture <span class="count-badge">(6)</span></button><button class="filter-btn" data-filter="Documentation">Documentation <span class="count-badge">(4)</span></button><button class="filter-btn" data-filter="Observability">Observability <span class="count-badge">(3)</span></button><button class="filter-btn" data-filter="Product">Product <span class="count-badge">(3)</span></button><button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <span class="count-badge">(2)</span></button><button class="filter-btn" data-filter="Performance">Performance <span class="count-badge">(2)</span></button><button class="filter-btn" data-filter="C / C++">C / C++ <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Go">Go <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Rust">Rust <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Swift / iOS">Swift / iOS <span class="count-badge">(1)</span></button>
+</div></div>
+  </div>
+</section>
+<section class="grid-section">
+  <div class="container">
+    <p class="grid-meta" id="grid-meta" aria-live="polite" aria-atomic="true">172 total · A–Z</p>
     <div class="grid">
 <div class="card" data-name="a11y-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/a11y-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/a11y-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Comprehensive accessibility audit — automated axe scan, keyboard navigation check, color contrast review, ARIA audit, and prioritized CRITICAL/HIGH/MEDIUM issue backlog</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/a11y-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/a11y-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="add-observability" data-category="Observability">
   <div class="card-header">
-    <h3 class="card-name"><code>/add-observability</code></h3>
-    <span class="badge">Observability</span>
+    <span class="card-slash">/add-observability</span>
+    <span class="badge cat-teal">Observability</span>
   </div>
   <p class="card-desc">Add production observability to a service — structured logging, metrics endpoint, health checks, and Sentry error tracking. Detects project type and adds the right libraries and middleware.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/add-observability.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/add-observability.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="agent-audit" data-category="AI / Agents">
+  <div class="card-header">
+    <span class="card-slash">/agent-audit</span>
+    <span class="badge cat-r">AI / Agents</span>
+  </div>
+  <p class="card-desc">Audit a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-audit --all to audit all agents at once.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="agent-design" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name"><code>/agent-design</code></h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-slash">/agent-design</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Guided workshop for designing a multi-agent system — task decomposition, agent roles, orchestration pattern, pseudocode, and failure handling strategy</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-design.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-design.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="agent-evolution" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name"><code>/agent-evolution</code></h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-slash">/agent-evolution</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Review high-confidence instincts and promote them to agent-specific overlay files (~/.clarc/agent-instincts/). Closes the continuous-learning-v2 feedback loop by making agents smarter over time.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-evolution.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-evolution.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="agent-instincts" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name"><code>/agent-instincts</code></h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-slash">/agent-instincts</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Show the learned instinct overlay for a specific agent, or list all overlays with instinct counts.</p>
-  <p class="card-when"><strong>When:</strong> - Before running /agent-evolution — check what is already promoted - After a session that corrected an agent — verify the correction was captured - Debugging: agent behaving unexpectedly — check if a bad instinct was promoted</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-instincts.md" target="_blank" class="btn-ghost">Source</a>
-  </div>
-</div>
-<div class="card" data-name="agent-review" data-category="Code Review">
-  <div class="card-header">
-    <h3 class="card-name"><code>/agent-review</code></h3>
-    <span class="badge">Code Review</span>
-  </div>
-  <p class="card-desc">Review a clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use /agent-review --all to review all agents at once.</p>
-  
-  <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-instincts.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="agent-stats" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name"><code>/agent-stats</code></h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-slash">/agent-stats</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Show agent usage statistics — top agents, heatmap, outcome ratio</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-stats.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/agent-stats.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="analyze-feedback" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/analyze-feedback</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/analyze-feedback</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyze raw user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify top pain points, cluster themes, and generate idea seeds. Delegates to the feedback-analyst agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/analyze-feedback.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/analyze-feedback.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="android-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/android-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/android-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Android code review — Compose best practices, Hilt scoping, Room migrations, ViewModel/UiState patterns, Coroutine Dispatchers. Invokes the android-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/android-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/android-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="arc42" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/arc42</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/arc42</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Generate or update arc42 architecture documentation with C4 diagrams for the current project. Reads the codebase and produces docs/architecture/arc42.md with PlantUML diagrams. Supports targeted section updates.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/arc42.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/arc42.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="arch-design" data-category="Architecture">
+  <div class="card-header">
+    <span class="card-slash">/arch-design</span>
+    <span class="badge cat-g">Architecture</span>
+  </div>
+  <p class="card-desc">Design system architecture for a new project or feature. Delegates to the architect agent to produce component boundaries, C4 diagrams, ADRs, and scalability decisions.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/arch-design.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="backstage-setup" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/backstage-setup</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/backstage-setup</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Install, configure, and deploy Backstage — from npx create-app to production with GitHub integration, TechDocs, and Docker Compose local dev</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/backstage-setup.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/backstage-setup.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="bash-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/bash-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/bash-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Bash/shell script review for safety, correctness, shellcheck compliance, and idiomatic style. Invokes the bash-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying shell scripts - Before committing CI/CD scripts or setup scripts - Reviewing scripts that run in production or CI environments</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/bash-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/bash-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="brainstorm" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/brainstorm</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/brainstorm</span>
+    <span class="badge cat-n">General</span>
   </div>
-  <p class="card-desc">Generate product ideas from a problem space using structured ideation frameworks (JTBD, How Might We, analogy thinking, constraint reversal). Produces concrete idea seeds, not vague concepts.</p>
-  
+  <p class="card-desc">From structured ideation frameworks — generate product ideas using JTBD, How Might We, analogy thinking, and constraint reversal. Produces concrete idea seeds without external research. For market-driven discovery (competitor features, Reddit/HN signals, trend analysis), use /discover instead.</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/brainstorm.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/brainstorm.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="brand-identity" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/brand-identity</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/brand-identity</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Develop a visual brand identity for a product — generates color palette (with WCAG validation), typeface pairings, brand voice, mood board direction, and a starter Brand Guidelines structure.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/brand-identity.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/brand-identity.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="breakdown" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/breakdown</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/breakdown</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Break down a feature, epic, or initiative into sprint-ready tasks. Produces user stories, acceptance criteria, story point estimates, and a prioritized task list ready to paste into Jira, Linear, or GitHub Issues.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/breakdown.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/breakdown.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="build-fix" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/build-fix</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/build-fix</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Incrementally fix build and type errors with minimal, safe changes.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/build-fix.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/build-fix.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="c-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/c-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/c-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">C code review for memory safety, C11/C17 idioms, opaque pointer patterns, and error handling. Invokes the c-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying C code - Before committing C changes - Reviewing systems or embedded code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/c-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/c-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cfp" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/cfp</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/cfp</span>
+    <span class="badge cat-n">General</span>
   </div>
-  <p class="card-desc">Write a conference abstract (CFP submission) — generates abstract in 200/300/500-word versions, title variants, and speaker bio in 50/150-word versions.</p>
-  
+  <p class="card-desc">cfp — write a conference talk proposal (Call For Papers abstract)</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cfp.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cfp.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="chaos-experiment" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/chaos-experiment</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/chaos-experiment</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Design and run a chaos experiment — from hypothesis to tool-specific commands and experiment protocol</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/chaos-experiment.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/chaos-experiment.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="chart-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/chart-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/chart-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review data visualizations for chart type appropriateness, WCAG accessibility (color contrast, ARIA), responsive behavior, and performance. Applies data-visualization skill.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/chart-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/chart-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="checkpoint" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/checkpoint</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/checkpoint</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Create or verify a workflow checkpoint — create, verify, list, and restore git-backed checkpoints with Memory Bank integration.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/checkpoint.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/checkpoint.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="clarc-way" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/clarc-way</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/clarc-way</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Interactive guide to The clarc Way methodology. Identifies your task type, recommends the right pipeline stage, and shows which commands and agents to use — with concrete examples for your current language.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/clarc-way.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/clarc-way.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="claw" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/claw</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/claw</span>
+    <span class="badge cat-n">General</span>
   </div>
-  <p class="card-desc">Start the NanoClaw agent REPL — a persistent, session-aware AI assistant powered by the claude CLI.</p>
-  
+  <p class="card-desc">claw — connect to a NanoClaw interactive REPL session. Persistent conversation history, named sessions, and optional skill context loading via the claude CLI.</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/claw.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/claw.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cli-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/cli-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/cli-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review a CLI tool implementation for ergonomics, error handling, exit codes, help text quality, and Unix composability. Applies cli-patterns and cli-ux skills.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cli-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cli-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="code-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/code-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/code-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive code review — delegates to code-reviewer agent which routes to language specialists (typescript, go, python, java, swift, rust, cpp, ruby, elixir).</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/code-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/code-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="command-audit" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/command-audit</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/command-audit</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Audit the clarc command system for UX ergonomics — naming consistency, argument design, feedback loops, step count, agent invocation, overlap detection, missing commands, and built-in conflicts. Produces a tabular overview and issue list. Use /command-audit --all for a full system audit.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/command-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/command-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="competitive-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/competitive-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/competitive-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Compare clarc against competing AI engineering workflow systems (Cursor, Copilot, Windsurf, Aider, Devin, Continue.dev) — feature matrix, clarc-unique capabilities, and prioritized competitive gaps. Produces a strategic analysis report.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/competitive-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/competitive-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="context" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/context</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/context</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyze the current project stack and surface the most relevant clarc skills, agents, and commands for this codebase.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/context.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/context.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="contract-review" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-slash">/contract-review</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">API contract break detection — classifies REST, GraphQL, and event schema changes as BREAKING / NON-BREAKING / ADDITIVE and produces a migration plan. Invokes the contract-reviewer agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/contract-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="contract-test" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/contract-test</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/contract-test</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Set up consumer-driven contract testing with Pact — write consumer pact, configure Pact Broker, set up provider verification, and add can-i-deploy gate to CI</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/contract-test.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/contract-test.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cpp-build" data-category="C / C++">
   <div class="card-header">
-    <h3 class="card-name"><code>/cpp-build</code></h3>
-    <span class="badge">C / C++</span>
+    <span class="card-slash">/cpp-build</span>
+    <span class="badge cat-n">C / C++</span>
   </div>
   <p class="card-desc">Build C++ code with CMake or Make and run static analysis. Catches compilation errors, warnings, and cppcheck issues.</p>
-  <p class="card-when"><strong>When:</strong> - When CMake or Make build fails - When cppcheck reports issues - After pulling changes that break compilation</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cpp-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cpp-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cpp-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/cpp-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/cpp-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive C++ code review for C++ Core Guidelines, memory safety, RAII, modern C++20/23, concurrency, and performance. Invokes the cpp-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cpp-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cpp-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="csharp-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/csharp-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/csharp-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">C# 12 / .NET 8 code review for nullable reference types, async/await, CQRS patterns, and security. Invokes the csharp-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying C# code - Before committing .NET changes - Reviewing pull requests with C# code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/csharp-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/csharp-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="cursor-setup" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/cursor-setup</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/cursor-setup</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Set up Cursor IDE integration for clarc — creates .cursor/rules/ files for all installed languages and generates .cursorrules from common rules.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cursor-setup.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/cursor-setup.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="dark-mode-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/dark-mode-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/dark-mode-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Audit a codebase's dark mode implementation — checks color strategy (not just CSS invert), elevation system, token structure, contrast ratios on dark surfaces, and common mistakes. Outputs a prioritized finding list with fixes.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dark-mode-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dark-mode-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="data-mesh-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/data-mesh-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/data-mesh-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Data Mesh architecture review — domain boundaries, data contracts, quality checks (Great Expectations/Soda), catalog registration, SLO definitions, PII governance, and cross-domain lineage.</p>
-  <p class="card-when"><strong>When:</strong> Use /data-mesh-review when: - Onboarding a new domain team to the data mesh - Reviewing a new or updated data product before it goes live</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/data-mesh-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/data-mesh-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="database-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/database-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/database-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">PostgreSQL schema, query, and security review — indexes, RLS, schema design, anti-patterns. Invokes the database-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /database-review when: - Writing or modifying SQL queries - Creating or altering database migrations</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/database-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/database-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="debt-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/debt-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/debt-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Systematic technical debt inventory — complexity analysis, hotspot identification (Churn×Complexity), dependency age, test coverage gaps, and prioritized debt backlog</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/debt-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/debt-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="dep-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/dep-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/dep-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Full dependency audit — vulnerability scanning, license compliance, supply chain risk, and prioritized remediation report</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dep-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dep-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
-<div class="card" data-name="deps" data-category="General">
+<div class="card" data-name="dep-update" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/deps</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/dep-update</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Dependency audit and upgrade workflow — check for outdated packages, security vulnerabilities, and safely upgrade dependencies with verification. Supports npm, pnpm, yarn, bun, pip, poetry, go mod, and cargo.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/deps.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dep-update.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="deploy" data-category="CI / CD">
+  <div class="card-header">
+    <span class="card-slash">/deploy</span>
+    <span class="badge cat-v">CI / CD</span>
+  </div>
+  <p class="card-desc">Guide deployment strategy selection and execution for any target environment.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/deploy.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="design-critique" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name"><code>/design-critique</code></h3>
-    <span class="badge">Architecture</span>
+    <span class="card-slash">/design-critique</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Get structured design critique for a visual design — from a screenshot path, URL description, or code. Invokes the design-critic agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/design-critique.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/design-critique.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="design-system-review" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-slash">/design-system-review</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">Full design system audit — CSS tokens, dark mode, icon system, accessibility, and design-code consistency. Invokes the design-system-reviewer agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/design-system-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="devex-survey" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/devex-survey</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/devex-survey</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Design a Developer Experience survey — DX Core 24 questions, SPACE-aligned dimensions, Likert scale, anonymization, and action plan from results</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/devex-survey.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/devex-survey.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="discover" data-category="Product">
   <div class="card-header">
-    <h3 class="card-name"><code>/discover</code></h3>
-    <span class="badge">Product</span>
+    <span class="card-slash">/discover</span>
+    <span class="badge cat-p">Product</span>
   </div>
-  <p class="card-desc">Discover product opportunities through market research. Searches for competitor features, user pain points on Reddit/HN, tech trends, and market gaps in a given domain. Generates idea seeds from what it finds.</p>
-  
+  <p class="card-desc">From external market data — discover product opportunities by searching competitor features, user pain points on Reddit/HN, tech trends, and market gaps in a given domain. For structured ideation frameworks (JTBD, HMW, analogy thinking) without external research, use /brainstorm instead.</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/discover.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/discover.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="docs-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/docs-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/docs-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review API documentation for completeness, quality, playground, code examples, changelog, navigation, and CI — produces a structured audit report with prioritised fixes.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/docs-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/docs-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="docs-strategy" data-category="Documentation">
+  <div class="card-header">
+    <span class="card-slash">/docs-strategy</span>
+    <span class="badge cat-n">Documentation</span>
+  </div>
+  <p class="card-desc">Documentation strategy and platform design — audience analysis, platform recommendation (Mintlify/Docusaurus/Redoc/Scalar), Divio framework structure, OpenAPI extension config, changelog automation, and CI pipeline. Invokes the docs-architect agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/docs-strategy.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="doctor" data-category="Documentation">
   <div class="card-header">
-    <h3 class="card-name"><code>/doctor</code></h3>
-    <span class="badge">Documentation</span>
+    <span class="card-slash">/doctor</span>
+    <span class="badge cat-n">Documentation</span>
   </div>
   <p class="card-desc">Health-check for your clarc installation. Verifies agents, skills, commands, hooks, symlinks, MEMORY.md size, and available updates. Runs scripts/doctor.js.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/doctor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/doctor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="dora-baseline" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/dora-baseline</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/dora-baseline</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Measure DORA Four Keys baseline for a team — deployment frequency, lead time, change failure rate, MTTR — with benchmark comparison and improvement priorities</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dora-baseline.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/dora-baseline.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="e2e" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/e2e</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/e2e</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Generate and run end-to-end tests with Playwright. Creates test journeys, runs tests, captures screenshots/videos/traces, and uploads artifacts.</p>
-  <p class="card-when"><strong>When:</strong> Use /e2e when: - Testing critical user journeys (login, trading, payments) - Verifying multi-step flows work end-to-end</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/e2e.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/e2e.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="eda-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/eda-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/eda-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review event-driven code for idempotency, ordering guarantees, schema evolution compatibility, DLQ handling, and observability — produces prioritized findings</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/eda-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/eda-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="edge-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/edge-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/edge-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review Edge Function code for runtime compatibility, bundle size, caching opportunities, and security — supports Cloudflare Workers, Vercel Edge, and Deno Deploy</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/edge-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/edge-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="elixir-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/elixir-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/elixir-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Elixir/Phoenix code review for OTP patterns, Ecto queries, security (Sobelow), and idiomatic functional Elixir. Invokes the elixir-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/elixir-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/elixir-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="engineering-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/engineering-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/engineering-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Monthly engineering health review — DORA trends, leading indicators, tech debt movement, DevEx pulse, and action items for next month</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/engineering-review.md" target="_blank" class="btn-ghost">Source</a>
-  </div>
-</div>
-<div class="card" data-name="eval" data-category="General">
-  <div class="card-header">
-    <h3 class="card-name"><code>/eval</code></h3>
-    <span class="badge">General</span>
-  </div>
-  <p class="card-desc">Manage eval-driven development workflow — define, run, check results, and list evals for a feature. Supports eval-first development where behaviour is specified before implementation.</p>
-  
-  <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/eval.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/engineering-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="evaluate" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/evaluate</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/evaluate</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Evaluate a product idea before committing to build it. Delegates to the product-evaluator agent to assess problem clarity, user fit, feasibility, alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/evaluate.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/evaluate.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="event-storming" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/event-storming</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/event-storming</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Facilitate an EventStorming workshop — Big Picture discovery, Process Level modeling, Design Level with aggregates and bounded contexts, producing a Domain Event Glossar and aggregate map</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/event-storming.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/event-storming.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="evolve" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/evolve</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/evolve</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Cluster accumulated instincts into skills, commands, or agents — runs conflict detection first, groups instincts by trigger domain, scores clusters by confidence, and writes evolved files with --generate.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/evolve.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/evolve.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="experiment" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/experiment</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/experiment</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Design a statistically valid A/B test. Walk through hypothesis, metric selection, sample size calculation, assignment strategy, and analysis plan. Outputs a ready-to-use experiment spec.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/experiment.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/experiment.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="explore" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/explore</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/explore</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Design solutions for a validated product idea — generates 2-4 concrete approaches with trade-off analysis and an Architecture Decision Record. Use after /evaluate returns Go. Delegates to the solution-designer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/explore.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/explore.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="find-skill" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/find-skill</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/find-skill</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Search all available skills by keyword and return the top matches with their descriptions. Use when unsure which skill covers a topic.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/find-skill.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/find-skill.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="finops-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/finops-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/finops-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Audit cloud costs for a project — tagging coverage, rightsizing opportunities, savings plan potential, anomalies, and Infracost integration gaps</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/finops-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/finops-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="flutter-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/flutter-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/flutter-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Flutter/Dart code review for widget architecture, performance, null safety, and accessibility. Invokes the flutter-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying Flutter/Dart code - Before committing widget or state management changes - Reviewing pull requests with Flutter code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/flutter-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/flutter-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="frontend-arch-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/frontend-arch-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/frontend-arch-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Micro-Frontend architecture review — team boundaries, Module Federation config, shared dependencies, routing, state sharing, fallbacks, design system consistency, and CI/CD independence.</p>
-  <p class="card-when"><strong>When:</strong> Use /frontend-arch-review when: - Setting up a new Micro-Frontend architecture - Adding a new Remote app to an existing Shell</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/frontend-arch-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/frontend-arch-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="gitops-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/gitops-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/gitops-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review GitOps configuration for declarative correctness, sync strategy, secrets management, and progressive delivery readiness</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/gitops-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/gitops-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="go-build" data-category="Go">
   <div class="card-header">
-    <h3 class="card-name"><code>/go-build</code></h3>
-    <span class="badge">Go</span>
+    <span class="card-slash">/go-build</span>
+    <span class="badge cat-teal">Go</span>
   </div>
   <p class="card-desc">Fix Go build errors, go vet warnings, and linter issues incrementally. Invokes the go-build-resolver agent for minimal, surgical fixes.</p>
-  <p class="card-when"><strong>When:</strong> Use /go-build when: - go build ./... fails with errors - go vet ./... reports issues</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="go-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/go-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/go-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Go code review for idiomatic patterns, concurrency safety, error handling, and security. Invokes the go-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /go-review when: - After writing or modifying Go code - Before committing Go changes</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="go-test" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/go-test</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/go-test</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Enforce TDD workflow for Go. Write table-driven tests first, then implement. Verify 80%+ coverage with go test -cover.</p>
-  <p class="card-when"><strong>When:</strong> Use /go-test when: - Implementing new Go functions - Adding test coverage to existing code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-test.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/go-test.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="golden-path" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/golden-path</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/golden-path</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Create a Golden Path Backstage Scaffolder template for a standard service type — generates template.yaml, skeleton files, CI/CD, and catalog-info.yaml</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/golden-path.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/golden-path.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="guide" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/guide</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/guide</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Get a step-by-step workflow plan for a specific task using clarc components. Usage: /guide &lt;task&gt; — e.g. /guide add auth, /guide write E2E tests, /guide deploy to k8s</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/guide.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/guide.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="hook-audit" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/hook-audit</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/hook-audit</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Audit the clarc hook system for coverage, reliability, and performance — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and scripts/hooks/*.js.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hook-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hook-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="hooks-config" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/hooks-config</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/hooks-config</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Configure clarc workflow hooks — enable/disable nudges, set cooldowns, view hook status. Creates/updates .clarc/hooks-config.json.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hooks-config.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hooks-config.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="hooks-stats" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/hooks-stats</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/hooks-stats</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Show hook invocation statistics, performance metrics, and error rates from the hook log.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hooks-stats.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/hooks-stats.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="i18n-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/i18n-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/i18n-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Audit a codebase for i18n completeness — find hardcoded user-visible strings, missing translation keys, RTL-incompatible CSS, and locale-sensitive formatting without Intl API.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/i18n-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/i18n-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="iac-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/iac-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/iac-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">IaC code review for Pulumi and AWS CDK — abstractions, security hardening, tagging, unit tests, multi-environment separation, drift detection, and compliance policy coverage.</p>
-  <p class="card-when"><strong>When:</strong> Use /iac-review when: - Adding new Pulumi programs or CDK stacks to the codebase - Writing new ComponentResources or L3 Constructs</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/iac-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/iac-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="icon-system" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/icon-system</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/icon-system</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Generate an icon system specification — library selection recommendation, token definitions (size/stroke/color), naming convention, accessibility rules, and a React icon component template. Use when starting a new project or auditing existing icons.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/icon-system.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/icon-system.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="idea" data-category="Product">
   <div class="card-header">
-    <h3 class="card-name"><code>/idea</code></h3>
-    <span class="badge">Product</span>
+    <span class="card-slash">/idea</span>
+    <span class="badge cat-p">Product</span>
   </div>
   <p class="card-desc">Capture and structure a raw product idea. Asks clarifying questions to fill gaps, then writes a structured idea document. First step in the product lifecycle before evaluation and solution design.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/idea.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/idea.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="idp-design" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name"><code>/idp-design</code></h3>
-    <span class="badge">Architecture</span>
+    <span class="card-slash">/idp-design</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Design an Internal Developer Platform (IDP) for an engineering organization — guided discovery, component prioritization, make-vs-buy decision, and 90-day roadmap</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/idp-design.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/idp-design.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="incident" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/incident</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/incident</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Open and manage a production incident. Creates a structured incident document, guides root cause analysis, generates status page updates and Slack messages, and sets up a post-mortem after resolution.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/incident.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/incident.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-export" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-export</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-export</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Export instincts from project/global scope to a file</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-export.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-export.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-import" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-import</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-import</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Import instincts from file or URL into project/global scope</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-import.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-import.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-outcome" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-outcome</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-outcome</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Record an outcome (good/bad/neutral) for a specific instinct to adjust its confidence score</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-outcome.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-outcome.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-projects" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-projects</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-projects</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">List registered projects and their instinct/observation counts — part of the continuous-learning-v2 system.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-projects.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-projects.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="instinct-promote" data-category="General">
+  <div class="card-header">
+    <span class="card-slash">/instinct-promote</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Promote project-scoped instincts to global scope</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-promote.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-report" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-report</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-report</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Ranked list of instincts by confidence with trend indicators (↑↓→) and decay candidates</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-report.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-report.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instinct-status" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instinct-status</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instinct-status</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Show learned instincts (project + global) with confidence</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-status.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instinct-status.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="instrument" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/instrument</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/instrument</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Add product analytics event tracking to an existing feature or file. Designs event taxonomy, chooses the right analytics call (track/identify/group), and instruments the code without breaking existing logic.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instrument.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/instrument.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="java-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/java-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/java-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Java code review for idiomatic patterns, Spring Boot 4, hexagonal architecture, DDD, JPA, and security. Invokes the java-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /java-review when: - After writing or modifying Java/Spring Boot code - Before committing Java changes</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/java-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/java-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="kotlin-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/kotlin-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/kotlin-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Kotlin code review for coroutines, null safety, sealed classes, and architecture patterns. Invokes the kotlin-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying Kotlin code - Before committing Kotlin changes (Android or backend) - Reviewing pull requests with Kotlin code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/kotlin-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/kotlin-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="learn-eval" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/learn-eval</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/learn-eval</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Extract reusable patterns from the session, self-evaluate quality before saving, and determine the right save location (Global vs Project).</p>
-  <p class="card-when"><strong>When:</strong> [Trigger conditions]</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/learn-eval.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/learn-eval.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="learning-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/learning-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/learning-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Audit the effectiveness of the clarc continuous-learning-v2 loop — instinct quality, conflict detector accuracy, evolution velocity, and learning coverage gaps. Produces a structured health report for the learning system.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/learning-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/learning-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="llm-eval" data-category="General">
+  <div class="card-header">
+    <span class="card-slash">/llm-eval</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Manage eval-driven development workflow — define, run, check results, and list evals for a feature. Supports eval-first development where behaviour is specified before implementation.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/llm-eval.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="mcp-setup" data-category="General">
+  <div class="card-header">
+    <span class="card-slash">/mcp-setup</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Browse and install curated MCP servers with one-line setup. Shows a table of available servers, what each does, and the exact config to add to ~/.claude.json.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/mcp-setup.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="migrate" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/migrate</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/migrate</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Database migration workflow — plan, review, apply, and verify schema changes safely. Supports Drizzle, Prisma, Flyway, Alembic, golang-migrate. Guards against data-loss migrations reaching production.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/migrate.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/migrate.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="mlops-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/mlops-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/mlops-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">MLOps audit — experiment tracking, model registry, serving SLOs, drift detection, retraining pipelines, A/B testing readiness. Invokes the mlops-architect agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /mlops-review when: - Deploying an ML model to production for the first time - Evaluating an existing ML system for operational gaps</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/mlops-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/mlops-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="mobile-release" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/mobile-release</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/mobile-release</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Mobile release workflow — version bump, test, code signing, beta distribution (TestFlight / Firebase), and staged production rollout for iOS and Android.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/mobile-release.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/mobile-release.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="modernize" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/modernize</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/modernize</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Create a step-by-step modernization plan for a specific component — interface extraction, Branch-by-Abstraction, Strangler Fig, feature toggle cutover, and rollback strategy</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/modernize.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/modernize.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="multi-backend" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/multi-backend</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/multi-backend</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">[Requires codeagent-wrapper] Backend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Codex-led. Requires codeagent-wrapper + ace-tool MCP.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-backend.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-backend.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="multi-execute" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/multi-execute</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/multi-execute</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">[Requires codeagent-wrapper] Multi-model collaborative execution — prototype from plan → Claude refactors and implements → multi-model audit and delivery.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-execute.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-execute.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="multi-frontend" data-category="TypeScript / Frontend">
   <div class="card-header">
-    <h3 class="card-name"><code>/multi-frontend</code></h3>
-    <span class="badge">TypeScript / Frontend</span>
+    <span class="card-slash">/multi-frontend</span>
+    <span class="badge cat-b">TypeScript / Frontend</span>
   </div>
   <p class="card-desc">[Requires codeagent-wrapper] Frontend-focused multi-model workflow (Research→Ideation→Plan→Execute→Optimize→Review), Gemini-led. Requires codeagent-wrapper + ace-tool MCP.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-frontend.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-frontend.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="multi-plan" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name"><code>/multi-plan</code></h3>
-    <span class="badge">Architecture</span>
+    <span class="card-slash">/multi-plan</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">[Requires codeagent-wrapper] Multi-model collaborative planning — Context retrieval + Codex/Gemini dual-model analysis → step-by-step implementation plan.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-plan.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-plan.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="multi-workflow" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/multi-workflow</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/multi-workflow</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">[Requires codeagent-wrapper] Multi-model collaborative development workflow with intelligent routing — Frontend→Gemini, Backend→Codex. Full Research→Ideation→Plan→Execute→Optimize→Review cycle.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-workflow.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/multi-workflow.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="onboard" data-category="Documentation">
   <div class="card-header">
-    <h3 class="card-name"><code>/onboard</code></h3>
-    <span class="badge">Documentation</span>
+    <span class="card-slash">/onboard</span>
+    <span class="badge cat-n">Documentation</span>
   </div>
   <p class="card-desc">Generate onboarding documentation for an existing codebase — README, CONTRIBUTING.md, arc42 architecture docs, architecture tour, setup script validation, domain glossary, and GitHub onboarding issue template.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/onboard.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/onboard.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="orchestrate" data-category="AI / Agents">
   <div class="card-header">
-    <h3 class="card-name"><code>/orchestrate</code></h3>
-    <span class="badge">AI / Agents</span>
+    <span class="card-slash">/orchestrate</span>
+    <span class="badge cat-r">AI / Agents</span>
   </div>
   <p class="card-desc">Orchestrate multiple agents for complex tasks — auto-selects coordination pattern (fan-out, split-role, explorer+validator, worktree, pipeline)</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/orchestrate.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/orchestrate.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="orchestrator-design" data-category="AI / Agents">
+  <div class="card-header">
+    <span class="card-slash">/orchestrator-design</span>
+    <span class="badge cat-r">AI / Agents</span>
+  </div>
+  <p class="card-desc">Design a multi-agent orchestration system for a complex task. Delegates to the orchestrator-designer agent to decompose the goal into agent roles, select a coordination pattern, and produce an implementation plan with pseudocode.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/orchestrator-design.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="oss-setup" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/oss-setup</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/oss-setup</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Set up open source project infrastructure for a GitHub repository — issue/PR templates, CODEOWNERS, CONTRIBUTING.md, label taxonomy, and branch protection configuration.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/oss-setup.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/oss-setup.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="overnight" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/overnight</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/overnight</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Set up an autonomous overnight development pipeline. Analyzes the feature, selects the right pipeline pattern (Sequential, Continuous Claude, Ralphinho, or Infinite Loop), then generates all required files. WAITS for user confirmation before creating files.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/overnight.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/overnight.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="php-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/php-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/php-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">PHP 8.4+ code review for strict types, security, Laravel/Symfony patterns, and PHPStan compliance. Invokes the php-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying PHP code - Before committing PHP changes - Reviewing pull requests with PHP code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/php-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/php-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="plan" data-category="Architecture">
   <div class="card-header">
-    <h3 class="card-name"><code>/plan</code></h3>
-    <span class="badge">Architecture</span>
+    <span class="card-slash">/plan</span>
+    <span class="badge cat-g">Architecture</span>
   </div>
   <p class="card-desc">Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code.</p>
-  <p class="card-when"><strong>When:</strong> Use /plan when: - Starting a new feature - Making significant architectural changes</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/plan.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/plan.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="prd" data-category="Product">
   <div class="card-header">
-    <h3 class="card-name"><code>/prd</code></h3>
-    <span class="badge">Product</span>
+    <span class="card-slash">/prd</span>
+    <span class="badge cat-p">Product</span>
   </div>
   <p class="card-desc">Write a Product Requirements Document from a validated idea and its Architecture Decision Record. Produces a spec directly compatible with /overnight and /plan. Final step before implementation.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/prd.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/prd.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="privacy-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/privacy-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/privacy-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Privacy Engineering audit — PII scan (Presidio), retention-policy check, data minimization, test-fixture scan, RTBF flow validation, consent-basis review, third-party data sharing.</p>
-  <p class="card-when"><strong>When:</strong> Use /privacy-audit when: - Adding any new feature that collects personal data - Onboarding a new third-party service that receives user data</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/privacy-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/privacy-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="profile" data-category="Performance">
   <div class="card-header">
-    <h3 class="card-name"><code>/profile</code></h3>
-    <span class="badge">Performance</span>
+    <span class="card-slash">/profile</span>
+    <span class="badge cat-y">Performance</span>
   </div>
   <p class="card-desc">Guided profiling workflow — detects language, recommends the right profiler, starts a session, and interprets the top hotspots with concrete next steps</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/profile.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/profile.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="project-init" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/project-init</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/project-init</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Initialize a new project from a workflow starter-pack (rest-api, react-spa, python-pipeline, go-service, flutter-app, spring-boot)</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/project-init.md" target="_blank" class="btn-ghost">Source</a>
-  </div>
-</div>
-<div class="card" data-name="promote" data-category="General">
-  <div class="card-header">
-    <h3 class="card-name"><code>/promote</code></h3>
-    <span class="badge">General</span>
-  </div>
-  <p class="card-desc">Promote project-scoped instincts to global scope</p>
-  
-  <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/promote.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/project-init.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="promote-skill" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/promote-skill</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/promote-skill</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Promote a project-local skill from .clarc/skills/&lt;name&gt;/ to global clarc (~/.clarc/skills/). Optionally opens a PR to upstream clarc.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/promote-skill.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/promote-skill.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="prompt-audit" data-category="General">
+  <div class="card-header">
+    <span class="card-slash">/prompt-audit</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Audit the prompt engineering quality of all clarc agents and commands. Delegates to the prompt-quality-scorer agent to score and rank each component across 6 dimensions.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/prompt-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="prompt-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/prompt-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/prompt-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review a system prompt or prompt template for quality, safety, and effectiveness. Invokes the prompt-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/prompt-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/prompt-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="python-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/python-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/python-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Python code review for PEP 8 compliance, type hints, security, and Pythonic idioms. Invokes the python-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /python-review when: - After writing or modifying Python code - Before committing Python changes</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/python-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/python-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="python-test" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/python-test</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/python-test</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Run Python tests with coverage using pytest. Enforces 80%+ coverage and fails fast on the first error.</p>
-  <p class="card-when"><strong>When:</strong> - Before committing Python changes - After adding new features (verify tests pass) - When CI reports failing tests</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/python-test.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/python-test.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="quickstart" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/quickstart</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/quickstart</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Interactive onboarding for new clarc users. Guides through the first 5 minutes: explains the most important workflows, recommends which commands to start with, and gives a practical tour with concrete examples.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/quickstart.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/quickstart.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="r-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/r-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/r-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">R code review for tidyverse idioms, tidy evaluation, Shiny security, and renv lockfile management. Invokes the r-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying R code - Before committing data analysis scripts or Shiny apps - Reviewing R packages for CRAN submission</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/r-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/r-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="refactor" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/refactor</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/refactor</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Safely identify and remove dead code with test verification at every step.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/refactor.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/refactor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="release" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/release</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/release</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Cut a new release. Reads git history since the last tag, determines the version bump (semver), updates CHANGELOG, bumps version files, creates a git tag, and generates GitHub Release notes.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/release.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/release.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
-<div class="card" data-name="resilience-audit" data-category="General">
+<div class="card" data-name="repomap" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/resilience-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/repomap</span>
+    <span class="badge cat-n">General</span>
   </div>
-  <p class="card-desc">Systematic resilience audit of an architecture or codebase — inventories dependencies, checks failure handling, identifies SPOFs, outputs prioritized action plan</p>
-  
+  <p class="card-desc">Inject or refresh the compact codebase map — hot files, key symbols, and directory structure. Improves Claude's codebase orientation without burning context on full file reads.</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/resilience-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/repomap.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="resilience-review" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-slash">/resilience-review</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">Resilience audit — failure mode analysis, missing circuit breakers, unprotected external calls, retry anti-patterns, and distributed system resilience gaps. Invokes the resilience-reviewer agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/resilience-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="ruby-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/ruby-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/ruby-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Ruby/Rails code review for idiomatic Ruby, Rails best practices, security (Brakeman), performance, and N+1 detection. Invokes the ruby-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/ruby-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/ruby-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="rule-lookup" data-category="clarc System">
+  <div class="card-header">
+    <span class="card-slash">/rule-lookup</span>
+    <span class="badge cat-b">clarc System</span>
+  </div>
+  <p class="card-desc">Look up the rule constraint AND the linked skill for a given topic — makes the two-layer rules/skills system navigable</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rule-lookup.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="rules-diff" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/rules-diff</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/rules-diff</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Preview what has changed in clarc rules since your installed version — without applying changes. Dry-run mode for /update-rules.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rules-diff.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rules-diff.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="rust-build" data-category="Rust">
   <div class="card-header">
-    <h3 class="card-name"><code>/rust-build</code></h3>
-    <span class="badge">Rust</span>
+    <span class="card-slash">/rust-build</span>
+    <span class="badge cat-o">Rust</span>
   </div>
   <p class="card-desc">Build Rust code and run Clippy lints. Catches compilation errors and lint warnings with minimal, surgical fixes.</p>
-  <p class="card-when"><strong>When:</strong> - When cargo build fails with errors - When cargo clippy reports warnings - After pulling changes that break compilation</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="rust-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/rust-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/rust-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Rust code review for ownership, borrowing, async correctness (Tokio), error handling (thiserror/anyhow), and performance. Invokes the rust-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="rust-test" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/rust-test</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/rust-test</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Run Rust tests with coverage. Enforces TDD workflow with table-driven tests and 80%+ coverage via cargo test and cargo tarpaulin.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-test.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/rust-test.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="sbom" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/sbom</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/sbom</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Generate SBOM (Software Bill of Materials), run vulnerability scan, and set up attestation with cosign — full workflow from generation to CI integration</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sbom.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sbom.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="scala-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/scala-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/scala-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Scala code review for functional idioms, Cats Effect/ZIO patterns, ADT correctness, and null safety. Invokes the scala-reviewer agent.</p>
-  <p class="card-when"><strong>When:</strong> - After writing or modifying Scala code - Before committing functional Scala changes - Reviewing Cats Effect or ZIO-based code</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/scala-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/scala-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="sdk-design" data-category="Architecture">
+  <div class="card-header">
+    <span class="card-slash">/sdk-design</span>
+    <span class="badge cat-g">Architecture</span>
+  </div>
+  <p class="card-desc">Design an SDK architecture for an API. Delegates to the sdk-architect agent to recommend a generation strategy, error hierarchy, authentication patterns, backward compatibility policy, CI release process, and documentation site.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sdk-design.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="sdk-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/sdk-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/sdk-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">SDK Design Review — ergonomics, consistency, backward compatibility, error hierarchy, documentation coverage, multi-language generation, and VCR/contract test readiness. Invokes the sdk-architect agent.</p>
-  <p class="card-when"><strong>When:</strong> Use /sdk-review when: - Releasing a new major or minor version of an SDK - Onboarding a new language into a multi-language SDK suite</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sdk-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sdk-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
-<div class="card" data-name="security" data-category="Security">
+<div class="card" data-name="security-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/security</code></h3>
-    <span class="badge">Security</span>
+    <span class="card-slash">/security-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Run comprehensive DevSecOps security scan — SAST (Semgrep), secrets (Gitleaks), dependencies (Trivy), container images, DAST (ZAP), and Policy-as-Code (OPA/Kyverno). Produces prioritized CRITICAL/HIGH report with fix plan.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/security.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/security-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="session-cost" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/session-cost</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/session-cost</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Show estimated token usage and cost for recent clarc sessions</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/session-cost.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/session-cost.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="sessions" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/sessions</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/sessions</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Manage Claude Code session history — list, load, alias, and edit sessions stored in ~/.claude/sessions/.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sessions.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/sessions.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="setup-ci" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/setup-ci</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/setup-ci</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Generate GitHub Actions CI/CD workflows for the current project. Detects language, test runner, and deployment target, then creates build/test/lint, Docker, and deploy workflows.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-ci.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-ci.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="setup-dev" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/setup-dev</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/setup-dev</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Set up a complete local development environment for a new project. Generates devcontainer.json, .env.example, docker-compose.dev.yml for services, and a Getting Started section in the README.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-dev.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-dev.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="setup-pm" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/setup-pm</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/setup-pm</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Configure your preferred package manager (npm/pnpm/yarn/bun)</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-pm.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/setup-pm.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="skill-create" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/skill-create</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/skill-create</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.</p>
-  <p class="card-when"><strong>When:</strong> &lt;describe the situation that calls for this skill&gt;</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-create.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-create.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="skill-depth" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/skill-depth</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/skill-depth</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Analyze a clarc skill for prompt-engineering quality — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Use /skill-depth --all to analyze all skills.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-depth.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-depth.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="skill-impact" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/skill-impact</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/skill-impact</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Show which agents depend on a skill and what would be affected by changing it</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skill-impact.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="skills-local" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/skills-local</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/skills-local</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">List all project-local skills in .clarc/skills/. Shows skill names, descriptions, and which ones override global clarc skills.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skills-local.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/skills-local.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="slide-deck" data-category="Observability">
   <div class="card-header">
-    <h3 class="card-name"><code>/slide-deck</code></h3>
-    <span class="badge">Observability</span>
+    <span class="card-slash">/slide-deck</span>
+    <span class="badge cat-teal">Observability</span>
   </div>
   <p class="card-desc">Generate a slide deck structure from a topic, document, or notes. Produces a Reveal.js HTML presentation or Markdown slide structure (Marp-compatible). Invokes the presentation-designer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/slide-deck.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/slide-deck.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="slo" data-category="Observability">
   <div class="card-header">
-    <h3 class="card-name"><code>/slo</code></h3>
-    <span class="badge">Observability</span>
+    <span class="card-slash">/slo</span>
+    <span class="badge cat-teal">Observability</span>
   </div>
   <p class="card-desc">Define SLIs, SLOs, and error budgets for a service. Produces a complete SLO document with burn rate alert rules and deployment gating policy.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/slo.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/slo.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="storybook-audit" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/storybook-audit</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/storybook-audit</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Audit an existing Storybook setup — story coverage, CSF version, accessibility, interaction tests, documentation quality, Chromatic integration, and prioritized improvement plan</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/storybook-audit.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/storybook-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="supply-chain-audit" data-category="General">
+  <div class="card-header">
+    <span class="card-slash">/supply-chain-audit</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Supply chain security audit — CI/CD pipeline security, GitHub Actions pinning, unsigned artifacts, SLSA compliance, and SBOM generation. Invokes the supply-chain-auditor agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/supply-chain-audit.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="swift-build" data-category="Swift / iOS">
   <div class="card-header">
-    <h3 class="card-name"><code>/swift-build</code></h3>
-    <span class="badge">Swift / iOS</span>
+    <span class="card-slash">/swift-build</span>
+    <span class="badge cat-b">Swift / iOS</span>
   </div>
   <p class="card-desc">Build Swift/Xcode projects and run static analysis. Catches compilation errors, warnings, and analyzer issues.</p>
-  <p class="card-when"><strong>When:</strong> - When swift build or xcodebuild fails - After pulling changes that break compilation - Before committing Swift changes</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/swift-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/swift-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="swift-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/swift-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/swift-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive Swift code review for concurrency safety, SwiftUI best practices, protocol-based architecture, memory management, and security. Invokes the swift-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/swift-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/swift-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="system-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/system-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/system-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Orchestrate a structured self-review of the entire clarc system. Three modes: quick (wiring + naming, ~5 min), components (all component analyzers, ~30 min), full (everything + competitive analysis, ~90 min). Produces a report in docs/system-review/.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/system-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/system-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="talk-outline" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/talk-outline</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/talk-outline</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Create a talk outline with time allocation, key points per section, speaker notes skeleton, and Q&amp;A preparation questions.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/talk-outline.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/talk-outline.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="talk-review" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-slash">/talk-review</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">Talk and presentation feedback — evaluates structure, timing plausibility, audience fit, narrative flow, clarity, and opening/closing strength. Invokes the talk-coach agent.</p>
+  <div class="card-footer">
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/talk-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="tdd" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/tdd</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/tdd</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Enforce test-driven development workflow. Scaffold interfaces, generate tests FIRST, then implement minimal code to pass. Ensure 80%+ coverage.</p>
-  <p class="card-when"><strong>When:</strong> Use /tdd when: - Implementing new features - Adding new functions/components</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/tdd.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/tdd.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="team-sync" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/team-sync</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/team-sync</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Sync team clarc installation — pull latest clarc + private rules/skills, re-run team install</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/team-sync.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/team-sync.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="test-coverage" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/test-coverage</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/test-coverage</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Analyze test coverage, identify gaps, and generate missing tests to reach 80%+ coverage.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/test-coverage.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/test-coverage.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="triage" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/triage</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/triage</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Run an issue triage session — list open issues, suggest labels, identify stale issues, and generate standard close responses for out-of-scope or duplicate issues.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/triage.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/triage.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="typescript-build" data-category="TypeScript / Frontend">
   <div class="card-header">
-    <h3 class="card-name"><code>/typescript-build</code></h3>
-    <span class="badge">TypeScript / Frontend</span>
+    <span class="card-slash">/typescript-build</span>
+    <span class="badge cat-b">TypeScript / Frontend</span>
   </div>
   <p class="card-desc">Type-check and lint TypeScript/JavaScript code. Runs tsc --noEmit and ESLint/Biome to catch type errors and style violations without building.</p>
-  <p class="card-when"><strong>When:</strong> - Before committing TypeScript changes - After pulling changes that may introduce type errors - When tsc or eslint is failing in CI</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/typescript-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/typescript-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="typescript-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/typescript-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/typescript-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Comprehensive TypeScript code review for hexagonal architecture, DDD patterns, type safety, security, and performance. Invokes the typescript-reviewer agent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/typescript-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/typescript-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="undo" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/undo</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/undo</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Undo last clarc auto-checkpoint (restores files to state before last Edit/Write)</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/undo.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/undo.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="update-codemaps" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/update-codemaps</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/update-codemaps</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Analyze the codebase structure and generate token-lean architecture documentation in docs/CODEMAPS/.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-codemaps.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-codemaps.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="update-docs" data-category="Documentation">
   <div class="card-header">
-    <h3 class="card-name"><code>/update-docs</code></h3>
-    <span class="badge">Documentation</span>
+    <span class="card-slash">/update-docs</span>
+    <span class="badge cat-n">Documentation</span>
   </div>
   <p class="card-desc">Sync documentation with the codebase, generating from source-of-truth files.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-docs.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-docs.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="update-rules" data-category="clarc System">
   <div class="card-header">
-    <h3 class="card-name"><code>/update-rules</code></h3>
-    <span class="badge">clarc System</span>
+    <span class="card-slash">/update-rules</span>
+    <span class="badge cat-b">clarc System</span>
   </div>
   <p class="card-desc">Apply latest clarc rule updates from upstream. Skips user-modified files. Use --dry-run to preview, --force to overwrite user modifications.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-rules.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/update-rules.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="verify" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/verify</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/verify</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Run comprehensive build, type, lint, test, and git verification on the codebase.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/verify.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/verify.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="visual-test" data-category="Testing">
   <div class="card-header">
-    <h3 class="card-name"><code>/visual-test</code></h3>
-    <span class="badge">Testing</span>
+    <span class="card-slash">/visual-test</span>
+    <span class="badge cat-teal">Testing</span>
   </div>
   <p class="card-desc">Set up visual regression testing for a project — detects project type, recommends tool (Chromatic/Playwright/Percy), installs, creates baselines, and configures CI</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/visual-test.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/visual-test.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="wasm-build" data-category="CI / CD">
   <div class="card-header">
-    <h3 class="card-name"><code>/wasm-build</code></h3>
-    <span class="badge">CI / CD</span>
+    <span class="card-slash">/wasm-build</span>
+    <span class="badge cat-v">CI / CD</span>
   </div>
   <p class="card-desc">Build, optimize, and validate a WebAssembly module from Rust — wasm-pack build, wasm-opt size optimization, and JS integration check</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wasm-build.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wasm-build.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="wasm-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/wasm-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/wasm-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Review WebAssembly/Rust code for correctness, performance pitfalls, unsafe memory management, and JS interop quality</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wasm-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wasm-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="web-perf" data-category="Performance">
   <div class="card-header">
-    <h3 class="card-name"><code>/web-perf</code></h3>
-    <span class="badge">Performance</span>
+    <span class="card-slash">/web-perf</span>
+    <span class="badge cat-y">Performance</span>
   </div>
   <p class="card-desc">Web performance audit — run Lighthouse, interpret Core Web Vitals, analyze bundle, identify quick wins, and set up regression prevention</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/web-perf.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/web-perf.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="webrtc-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/webrtc-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/webrtc-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">WebRTC architecture review — P2P vs SFU vs MCU decision, TURN configuration, signaling robustness, simulcast, access token security, recording consent, and error handling.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/webrtc-review.md" target="_blank" class="btn-ghost">Source</a>
-  </div>
-</div>
-<div class="card" data-name="whats-the-rule" data-category="clarc System">
-  <div class="card-header">
-    <h3 class="card-name"><code>/whats-the-rule</code></h3>
-    <span class="badge">clarc System</span>
-  </div>
-  <p class="card-desc">Look up the rule constraint AND the linked skill for a given topic — makes the two-layer rules/skills system navigable</p>
-  
-  <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/whats-the-rule.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/webrtc-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="wireframe" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/wireframe</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/wireframe</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Create a wireframe or user flow for a feature — generates ASCII/text wireframes, user flow diagrams, IA structure, and annotated specs. Use before writing UI code to validate structure and communicate intent.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wireframe.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/wireframe.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="workflow-check" data-category="General">
   <div class="card-header">
-    <h3 class="card-name"><code>/workflow-check</code></h3>
-    <span class="badge">General</span>
+    <span class="card-slash">/workflow-check</span>
+    <span class="badge cat-n">General</span>
   </div>
   <p class="card-desc">Check whether clarc supports 6 critical end-to-end developer journeys — Idea-to-Production, Bug-to-Fix, New Developer Onboarding, Incident Response, Architecture Decision, and LLM App Development. Identifies which journey steps lack Command, Agent, or Skill coverage.</p>
-  
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/workflow-check.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/workflow-check.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="zero-trust-review" data-category="Code Review">
   <div class="card-header">
-    <h3 class="card-name"><code>/zero-trust-review</code></h3>
-    <span class="badge">Code Review</span>
+    <span class="card-slash">/zero-trust-review</span>
+    <span class="badge cat-b">Code Review</span>
   </div>
   <p class="card-desc">Zero-Trust security review for a service — mTLS enforcement, SPIFFE identity, NetworkPolicies, Authorization Policies, east-west traffic, and secret handling.</p>
-  <p class="card-when"><strong>When:</strong> Use /zero-trust-review when: - Onboarding a new service to a service mesh (Istio, Linkerd) - Migrating from PERMISSIVE to STRICT mTLS mode</p>
   <div class="card-footer">
-    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/zero-trust-review.md" target="_blank" class="btn-ghost">Source</a>
+    <span class="skill-tag">slash command</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/commands/zero-trust-review.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div></div>
-    <div class="no-results" id="no-results" style="display:none">No commands match your search.</div>
+    <div class="no-results" id="no-results" style="display:none">
+      <div class="no-results-icon" aria-hidden="true">⊘</div>
+      <h3>No results</h3>
+      <p>Try a different search term or <button class="clear-search" onclick="document.getElementById('search').value='';document.getElementById('search').dispatchEvent(new Event('input'))">clear search</button></p>
+    </div>
   </div>
-</main>
+</section></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
 <script src="search.js"></script>
 </body>
 </html>
