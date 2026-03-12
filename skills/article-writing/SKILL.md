@@ -52,10 +52,45 @@ Delete and rewrite any of these:
 - vague claims without evidence
 - biography or credibility claims not backed by provided context
 
+## Outline Structure
+
+Before drafting, build the outline in this format:
+
+```markdown
+## Outline
+
+**Thesis:** [One declarative sentence — what this article proves]
+**Estimated length:** [word count]
+
+### Opening
+**Hook type:** [Scene / Statistic / Counterintuitive claim / Problem statement]
+**Hook draft:** [Write it out — do not leave as placeholder]
+**Promise:** [What the reader will get from reading — one sentence]
+
+### Section 1: [Name]
+**Purpose:** [What this section proves or establishes]
+**Evidence/example:** [Specific data point, code snippet, story, or case]
+**Transition:** [Bridging sentence to next section]
+
+### Section N: [repeat]
+
+### Closing
+**Takeaway 1:** [Most important insight]
+**Takeaway 2:** [Supporting insight]
+**Takeaway 3:** [Actionable next step]
+**CTA:** [One specific action — URL, command, repo, or next article]
+```
+
+Rules:
+- Maximum 5 sections (excluding opening and closing)
+- Every section has exactly one purpose — split if it has two
+- No section exists without a specific piece of evidence or example
+- Transitions are written out, not marked as [TBD]
+
 ## Writing Process
 
-1. Clarify the audience and purpose.
-2. Build a skeletal outline with one purpose per section.
+1. Clarify the audience and purpose (or consume the article brief from `article-strategy`).
+2. Build the outline above with one purpose per section.
 3. Start each section with evidence, example, or scene.
 4. Expand only where the next sentence earns its place.
 5. Remove anything that sounds templated or self-congratulatory.
