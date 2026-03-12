@@ -112,7 +112,7 @@
 <table><thead><tr><th>Constraint</th><th>Reason</th></tr></thead><tbody><tr><td>MIT License</td><td>Open source; no proprietary dependencies in core</td></tr><tr><td>No Anthropic API key required</td><td>clarc runs inside Claude Code — does not call the API directly</td></tr><tr><td>Single maintainer (pre-launch)</td><td>All PRs reviewed by Marvin Richter; no external contributors yet</td></tr></tbody></table>
 <hr>
 <h2 id="3-system-scope-context">3. System Scope &amp; Context</h2>
-<p>!<a href="diagrams/context.puml">Context Diagram</a></p>
+<figure class="diagram"><img src="diagrams/context.svg" alt="Context Diagram" loading="lazy"><figcaption>Context Diagram</figcaption></figure>
 <pre><code>Context summary:
   clarc ←→ Claude Code  (primary integration via ~/.claude/ symlinks)
   clarc ←→ Cursor        (rules → .cursor/rules/)
@@ -128,10 +128,10 @@
 <hr>
 <h2 id="5-building-block-view">5. Building Block View</h2>
 <h3 id="level-1-container-diagram">Level 1 — Container Diagram</h3>
-<p>!<a href="diagrams/container.puml">Container Diagram</a></p>
+<figure class="diagram"><img src="diagrams/container.svg" alt="Container Diagram" loading="lazy"><figcaption>Container Diagram</figcaption></figure>
 <h3 id="level-2-component-hook-system">Level 2 — Component: Hook System</h3>
 <p>The Hook System is clarc's most complex container — it coordinates 37 Node.js scripts across 6 event types.</p>
-<p>!<a href="diagrams/component-hooks.puml">Hook Component Diagram</a></p>
+<figure class="diagram"><img src="diagrams/component-hooks.svg" alt="Hook Component Diagram" loading="lazy"><figcaption>Hook Component Diagram</figcaption></figure>
 <h3 id="hook-event-script-mapping">Hook Event → Script Mapping</h3>
 <table><thead><tr><th>Event</th><th>Matcher</th><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>PreToolUse</td><td>Bash</td><td><code>pre-bash-dispatch.js</code></td><td>Block dev servers, tmux reminder, push review</td></tr><tr><td>PreToolUse</td><td>Write</td><td><code>pre-write-secret-scan.js</code></td><td>Block writes with secrets (exit 2)</td></tr><tr><td>PreToolUse</td><td>Write</td><td><code>doc-file-warning.js</code></td><td>Warn about non-standard doc file paths</td></tr><tr><td>PreToolUse</td><td>Edit\</td><td>Write</td><td><code>suggest-compact.js</code></td><td>Suggest compaction at 50-tool threshold (async)</td></tr><tr><td>PreToolUse</td><td>Agent</td><td><code>budget-guard.js</code></td><td>Warn/block Agent calls when daily spend exceeds threshold</td></tr><tr><td>PreCompact</td><td>*</td><td><code>pre-compact.js</code></td><td>Save session snapshot before compaction</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>post-edit-format-dispatch.js</code></td><td>Auto-format in 15 languages</td></tr><tr><td>PostToolUse</td><td>Edit</td><td><code>post-edit-typecheck.js</code></td><td><code>tsc --noEmit</code> (async, debounced)</td></tr><tr><td>PostToolUse</td><td>Edit</td><td><code>post-edit-typecheck-rust.js</code></td><td><code>cargo check</code> (async, debounced)</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>post-edit-workflow-nudge.js</code></td><td>5 advisory nudges with cooldown</td></tr><tr><td>PostToolUse</td><td>Bash</td><td><code>build-failure-router.js</code></td><td>Detect compile errors, suggest agent</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>auto-checkpoint.js</code></td><td>Git checkpoint for /undo</td></tr><tr><td>PostToolUse</td><td>Agent</td><td><code>agent-tracker.js</code></td><td>Track agent invocation frequency</td></tr><tr><td>SessionStart</td><td>*</td><td><code>session-start.js</code></td><td>Load context, skills, instincts</td></tr><tr><td>SessionEnd</td><td>*</td><td><code>session-end.js</code></td><td>Evaluate session, log per-tool cost, trigger weekly evolve</td></tr><tr><td>Stop</td><td>*</td><td><code>response-dashboard.js</code></td><td>Show per-response tool usage, agents, and cost estimate</td></tr><tr><td>Stop</td><td>*</td><td><code>check-console-log.js</code></td><td>Warn if console.log found in modified JS/TS files</td></tr></tbody></table>
 <h3 id="shared-libraries-scriptslib">Shared Libraries (<code>scripts/lib/</code>)</h3>
@@ -139,11 +139,11 @@
 <hr>
 <h2 id="6-runtime-view">6. Runtime View</h2>
 <h3 id="scenario-1-session-lifecycle">Scenario 1 — Session Lifecycle</h3>
-<p>!<a href="diagrams/runtime-session.puml">Session Lifecycle</a></p>
+<figure class="diagram"><img src="diagrams/runtime-session.svg" alt="Session Lifecycle" loading="lazy"><figcaption>Session Lifecycle</figcaption></figure>
 <p><strong>Key invariants:</strong></p>
 <ul><li><code>session-start.js</code> injects at most 3000 chars to avoid context waste</li><li><code>pre-compact.js</code> always runs synchronously before any compaction — no snapshot loss</li><li>All PostToolUse hooks are non-blocking (async) except <code>pre-write-secret-scan.js</code> (must block to abort writes)</li></ul>
 <h3 id="scenario-2-learning-flywheel">Scenario 2 — Learning Flywheel</h3>
-<p>!<a href="diagrams/runtime-learning.puml">Learning Flywheel</a></p>
+<figure class="diagram"><img src="diagrams/runtime-learning.svg" alt="Learning Flywheel" loading="lazy"><figcaption>Learning Flywheel</figcaption></figure>
 <p><strong>Quality gates:</strong></p>
 <ul><li><code>/learn-eval</code> requires minimum confidence 0.7 before persisting an instinct</li><li><code>/evolve</code> promotes only instincts with confidence &gt; 0.8 seen ≥ 3 times</li><li>Contradicting instincts in the same domain go to <code>conflicts.json</code> for human resolution</li><li><code>instinct-decay.js</code> reduces confidence of instincts not reinforced for 30+ days</li></ul>
 <h3 id="scenario-3-ci-validation-pipeline-pre-push">Scenario 3 — CI Validation Pipeline (pre-push)</h3>
@@ -161,7 +161,7 @@
        └─ tests/run-all.js     → unit + artifact tests (~4000 assertions)</code></pre>
 <hr>
 <h2 id="7-deployment-view">7. Deployment View</h2>
-<p>!<a href="diagrams/deployment.puml">Deployment Diagram</a></p>
+<figure class="diagram"><img src="diagrams/deployment.svg" alt="Deployment Diagram" loading="lazy"><figcaption>Deployment Diagram</figcaption></figure>
 <h3 id="installation-modes">Installation Modes</h3>
 <table><thead><tr><th>Mode</th><th>Command</th><th>Use case</th></tr></thead><tbody><tr><td>Interactive wizard</td><td><code>npx github:marvinrichter/clarc</code></td><td>First-time users</td></tr><tr><td>Explicit language</td><td><code>npx github:marvinrichter/clarc typescript</code></td><td>Scripted setup</td></tr><tr><td>Copy mode</td><td><code>npx github:marvinrichter/clarc --copy typescript</code></td><td>CI, containers, cross-filesystem</td></tr><tr><td>Cursor target</td><td><code>npx github:marvinrichter/clarc --target cursor typescript</code></td><td>Cursor IDE</td></tr><tr><td>OpenCode target</td><td><code>npx github:marvinrichter/clarc --target opencode typescript</code></td><td>OpenCode</td></tr><tr><td>Codex target</td><td><code>npx github:marvinrichter/clarc --target codex</code></td><td>Codex CLI</td></tr><tr><td>Check</td><td><code>npx github:marvinrichter/clarc --check</code></td><td>Verify installed rules are current</td></tr><tr><td>Doctor</td><td><code>npx github:marvinrichter/clarc doctor</code></td><td>Full health check</td></tr></tbody></table>
 <h3 id="file-system-layout-after-install">File System Layout After Install</h3>

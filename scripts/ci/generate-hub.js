@@ -37,6 +37,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import zlib from 'zlib';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -427,8 +428,23 @@ function headingId(text) {
     .replace(/^-+|-+$/g, '');
 }
 
-function inlineMd(text) {
+function inlineMd(text, pumlMap = new Map()) {
+  // Handle images before escaping so we have raw src
+  const placeholders = [];
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
+    const key = `\x00IMG${placeholders.length}\x00`;
+    if (src.endsWith('.puml') && pumlMap.has(src)) {
+      const svgFile = pumlMap.get(src);
+      placeholders.push(`<img src="${svgFile}" alt="${escapeHtml(alt)}" loading="lazy" style="max-width:100%;height:auto">`);
+    } else {
+      placeholders.push(`<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" style="max-width:100%;height:auto">`);
+    }
+    return key;
+  });
   text = escapeHtml(text);
+  for (let i = 0; i < placeholders.length; i++) {
+    text = text.replace(`\x00IMG${i}\x00`, placeholders[i]);
+  }
   text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
   text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -436,7 +452,7 @@ function inlineMd(text) {
   return text;
 }
 
-function markdownToHtml(md) {
+function markdownToHtml(md, pumlMap = new Map()) {
   if (md.startsWith('---')) {
     const end = md.indexOf('\n---', 3);
     if (end !== -1) md = md.slice(end + 4).trim();
@@ -487,7 +503,7 @@ function markdownToHtml(md) {
         bqLines.push(lines[i].replace(/^>\s?/, ''));
         i++;
       }
-      out.push(`<blockquote><p>${inlineMd(bqLines.join(' '))}</p></blockquote>`);
+      out.push(`<blockquote><p>${inlineMd(bqLines.join(' '), pumlMap)}</p></blockquote>`);
       continue;
     }
 
@@ -495,7 +511,7 @@ function markdownToHtml(md) {
     if (/^[-*+]\s/.test(line)) {
       const items = [];
       while (i < lines.length && /^[-*+]\s/.test(lines[i])) {
-        items.push(`<li>${inlineMd(lines[i].replace(/^[-*+]\s+/, ''))}</li>`);
+        items.push(`<li>${inlineMd(lines[i].replace(/^[-*+]\s+/, ''), pumlMap)}</li>`);
         i++;
       }
       out.push(`<ul>${items.join('')}</ul>`);
@@ -506,21 +522,35 @@ function markdownToHtml(md) {
     if (/^\d+\.\s/.test(line)) {
       const items = [];
       while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
-        items.push(`<li>${inlineMd(lines[i].replace(/^\d+\.\s+/, ''))}</li>`);
+        items.push(`<li>${inlineMd(lines[i].replace(/^\d+\.\s+/, ''), pumlMap)}</li>`);
         i++;
       }
       out.push(`<ol>${items.join('')}</ol>`);
       continue;
     }
 
+    // Standalone image (entire line is an image reference — render as <figure>)
+    const imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+    if (imgMatch) {
+      const [, alt, src] = imgMatch;
+      if (src.endsWith('.puml') && pumlMap.has(src)) {
+        const svgFile = pumlMap.get(src);
+        out.push(`<figure class="diagram"><img src="${svgFile}" alt="${escapeHtml(alt)}" loading="lazy"><figcaption>${escapeHtml(alt)}</figcaption></figure>`);
+      } else {
+        out.push(`<figure class="diagram"><img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" style="max-width:100%"><figcaption>${escapeHtml(alt)}</figcaption></figure>`);
+      }
+      i++;
+      continue;
+    }
+
     // Table (pipe-delimited, followed by separator row)
     if (line.includes('|') && i + 1 < lines.length && /^\|?[-| :]+\|/.test(lines[i + 1])) {
       const cells = (s) => s.split('|').slice(1, -1).map(c => c.trim());
-      const headers = cells(line).map(h => `<th>${inlineMd(h)}</th>`).join('');
+      const headers = cells(line).map(h => `<th>${inlineMd(h, pumlMap)}</th>`).join('');
       i += 2;
       const rows = [];
       while (i < lines.length && lines[i].includes('|') && !/^\|?[-| :]+\|/.test(lines[i])) {
-        const tds = cells(lines[i]).map(c => `<td>${inlineMd(c)}</td>`).join('');
+        const tds = cells(lines[i]).map(c => `<td>${inlineMd(c, pumlMap)}</td>`).join('');
         rows.push(`<tr>${tds}</tr>`);
         i++;
       }
@@ -545,12 +575,13 @@ function markdownToHtml(md) {
       if (/^\d+\.\s/.test(l)) break;
       if (/^>\s?/.test(l)) break;
       if (/^(-{3,}|\*{3,}|_{3,})$/.test(l.trim()) && !/^[-*+]\s/.test(l)) break;
+      if (/^!\[/.test(l) && /\)\s*$/.test(l)) break;
       if (l.includes('|') && i + 1 < lines.length && /^\|?[-| :]+\|/.test(lines[i + 1])) break;
       paraLines.push(l);
       i++;
     }
     if (paraLines.length > 0) {
-      out.push(`<p>${inlineMd(paraLines.join(' '))}</p>`);
+      out.push(`<p>${inlineMd(paraLines.join(' '), pumlMap)}</p>`);
     }
   }
 
@@ -1448,6 +1479,17 @@ footer {
 }
 .doc-landing-desc { font-family: var(--font-body); font-size: 13px; color: var(--color-neutral-400); line-height: 1.6; }
 
+/* Diagrams */
+.diagram {
+  margin: 28px 0; border: 1px solid var(--color-neutral-800); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--color-neutral-900);
+}
+.diagram img { display: block; width: 100%; height: auto; }
+.diagram figcaption {
+  font-family: var(--font-body); font-size: 12px; color: var(--color-neutral-500);
+  text-align: center; padding: 8px 16px; border-top: 1px solid var(--color-neutral-800);
+}
+
 /* Responsive: doc */
 @media (max-width: 900px) {
   .doc-layout { grid-template-columns: 1fr; padding: 24px 0; }
@@ -1520,6 +1562,74 @@ const SEARCH_JS = `(function () {
 })();
 `;
 
+// ─── PlantUML rendering ───────────────────────────────────────────────────────
+
+function encodePlantUml(source) {
+  const deflated = zlib.deflateRawSync(Buffer.from(source, 'utf8'), { level: 9 });
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
+  let result = '';
+  for (let i = 0; i < deflated.length; i += 3) {
+    const b1 = deflated[i] & 0xff;
+    const b2 = i + 1 < deflated.length ? deflated[i + 1] & 0xff : 0;
+    const b3 = i + 2 < deflated.length ? deflated[i + 2] & 0xff : 0;
+    result += chars[(b1 >> 2) & 0x3f];
+    result += chars[((b1 & 0x3) << 4) | ((b2 >> 4) & 0xf)];
+    result += chars[((b2 & 0xf) << 2) | ((b3 >> 6) & 0x3)];
+    result += chars[b3 & 0x3f];
+  }
+  return result;
+}
+
+async function fetchPlantUmlSvg(source) {
+  const encoded = encodePlantUml(source);
+  const endpoints = [
+    `https://www.plantuml.com/plantuml/svg/${encoded}`,
+    `https://kroki.io/plantuml/svg/${encoded}`,
+  ];
+  let lastErr;
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(25000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const svg = await res.text();
+      // Strip XML declaration and doctype — keep only the <svg>...</svg> element
+      return svg.replace(/<\?xml[^?]*\?>\s*/g, '').replace(/<!DOCTYPE[^>]*>\s*/g, '').trim();
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
+async function preRenderPuml(outDir) {
+  const diagramsDir = path.join(ROOT, 'docs', 'architecture', 'diagrams');
+  if (!fs.existsSync(diagramsDir)) return new Map();
+
+  const outDiagramsDir = path.join(outDir, 'diagrams');
+  fs.mkdirSync(outDiagramsDir, { recursive: true });
+
+  const pumlFiles = fs.readdirSync(diagramsDir).filter(f => f.endsWith('.puml'));
+  const map = new Map();
+
+  // Sequential to avoid rate-limiting on public rendering servers
+  for (const filename of pumlFiles) {
+    const svgFilename = filename.replace('.puml', '.svg');
+    const mapKey = `diagrams/${filename}`; // matches the path used in arc42.md
+    try {
+      const source = fs.readFileSync(path.join(diagramsDir, filename), 'utf8');
+      console.log(`[generate-hub] Rendering ${filename}...`);
+      const svg = await fetchPlantUmlSvg(source);
+      fs.writeFileSync(path.join(outDiagramsDir, svgFilename), svg);
+      map.set(mapKey, `diagrams/${svgFilename}`);
+      console.log(`[generate-hub] ✓ ${filename}`);
+    } catch (err) {
+      console.warn(`[generate-hub] ✗ ${filename}: ${err.message} (diagram skipped)`);
+    }
+  }
+
+  return map;
+}
+
 // ─── Doc page builder ─────────────────────────────────────────────────────────
 
 function docPageHtml(title, contentHtml, toc, activePage) {
@@ -1584,7 +1694,9 @@ function docsLandingHtml() {
 </div>`;
 }
 
-function generateDocPages(outDir) {
+async function generateDocPages(outDir) {
+  const pumlMap = await preRenderPuml(outDir);
+
   const written = [];
   for (const page of DOC_PAGES) {
     const srcPath = path.join(ROOT, page.src);
@@ -1593,7 +1705,7 @@ function generateDocPages(outDir) {
       continue;
     }
     const md = fs.readFileSync(srcPath, 'utf8');
-    const contentHtml = markdownToHtml(md);
+    const contentHtml = markdownToHtml(md, pumlMap);
     const toc = extractToc(md);
     const body = docPageHtml(page.title, contentHtml, toc, page.out);
     fs.writeFileSync(path.join(outDir, page.out), buildPage(page.title, page.out, body));
@@ -1609,7 +1721,7 @@ function generateDocPages(outDir) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const outIdx = args.indexOf('--out');
   const outDir = outIdx !== -1 ? args[outIdx + 1] : DEFAULT_OUT;
@@ -1652,8 +1764,8 @@ function main() {
   fs.writeFileSync(path.join(outDir, 'skills.html'), buildSkillsPage(skills));
   fs.writeFileSync(path.join(outDir, 'commands.html'), buildCommandsPage(commands));
 
-  // Write doc pages
-  const docFiles = generateDocPages(outDir);
+  // Write doc pages (async: fetches PlantUML SVGs from server)
+  const docFiles = await generateDocPages(outDir);
   console.log(`[generate-hub] Doc pages: ${docFiles.join(', ')}`);
 
   console.log(`[generate-hub] Done! Output: ${outDir}`);

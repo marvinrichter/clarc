@@ -554,6 +554,17 @@ footer {
 }
 .doc-landing-desc { font-family: var(--font-body); font-size: 13px; color: var(--color-neutral-400); line-height: 1.6; }
 
+/* Diagrams */
+.diagram {
+  margin: 28px 0; border: 1px solid var(--color-neutral-800); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--color-neutral-900);
+}
+.diagram img { display: block; width: 100%; height: auto; }
+.diagram figcaption {
+  font-family: var(--font-body); font-size: 12px; color: var(--color-neutral-500);
+  text-align: center; padding: 8px 16px; border-top: 1px solid var(--color-neutral-800);
+}
+
 /* Responsive: doc */
 @media (max-width: 900px) {
   .doc-layout { grid-template-columns: 1fr; padding: 24px 0; }
