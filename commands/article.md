@@ -81,7 +81,7 @@ Output the final polished article + change summary + SEO block.
 The article is ready to publish.
 
 Next:
-- /content-engine — repurpose into X threads, LinkedIn posts, or a newsletter
+- Use the `content-engine` skill to repurpose into X threads, LinkedIn posts, or a newsletter
 - /article-review [focus] — re-review a specific dimension if needed
 ```
 

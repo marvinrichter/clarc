@@ -88,5 +88,5 @@ Return the fully polished article followed by a change summary:
 
 ## After This
 
-- `/content-engine` — repurpose the article into X threads, LinkedIn posts, or a newsletter
+- Use the `content-engine` skill to repurpose the article into X threads, LinkedIn posts, or a newsletter
 - The article is ready to publish

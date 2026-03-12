@@ -115,6 +115,7 @@ Invoked by **code-reviewer** automatically based on file extension. Can also be 
 | `sdk-architect` | SDK architecture design | Building or evolving developer SDKs |
 | `skill-depth-analyzer` | Skill prompt-engineering quality analysis | `/skill-depth` command |
 | `supply-chain-auditor` | Supply chain security risk analysis | Before releases, security audits |
+| `article-editor` | Editorial critique for articles — structure, opening, voice, evidence, SEO | After writing an article draft (`/article-review`) |
 | `talk-coach` | Talk outline and slide deck review | After drafting a presentation |
 | `workflow-os-competitor-analyst` | clarc vs competitor feature comparison | `/competitive-review` command |
 
