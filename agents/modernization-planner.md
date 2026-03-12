@@ -2,7 +2,7 @@
 name: modernization-planner
 description: Analyzes legacy codebases and creates prioritized modernization roadmaps. Uses Churn×Complexity hotspot analysis, identifies legacy indicators (God Classes, missing tests, outdated dependencies), recommends Strangler Fig vs. Branch-by-Abstraction vs. incremental rewrite, and creates phased migration plans with risk assessment.
 tools: ["Read", "Glob", "Grep", "Bash"]
-model: sonnet
+model: opus
 uses_skills:
   - legacy-modernization
   - technical-debt

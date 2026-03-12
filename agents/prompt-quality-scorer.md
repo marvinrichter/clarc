@@ -2,7 +2,7 @@
 name: prompt-quality-scorer
 description: Evaluates the prompt-engineering quality of clarc agent and command instructions across 6 dimensions — specificity, completeness, output definition, ambiguity, safety coverage, and example density. Produces a ranked report of all agents/commands with scores and improvement suggestions for the lowest-scoring items.
 tools: ["Read", "Grep", "Glob", "Bash"]
-model: opus
+model: sonnet
 uses_skills:
   - prompt-engineering
 ---

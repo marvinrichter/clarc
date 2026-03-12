@@ -1,7 +1,7 @@
 ---
 name: contract-reviewer
 description: "Reviews API changes for contract breaks. Given git diff of API definitions and existing consumer pacts, classifies each change as BREAKING / NON-BREAKING / ADDITIVE and produces a migration plan. Use when modifying any API (REST, event schema, GraphQL)."
-model: sonnet
+model: haiku
 tools: ["Read", "Glob", "Grep", "Bash"]
 uses_skills:
   - api-design

@@ -2,7 +2,7 @@
 name: planner
 description: Task decomposition and implementation planning specialist. Use PROACTIVELY when users need WHAT tasks to execute — produces PRDs, task breakdowns, timelines, and dependency maps. For HOW to structure the system (component design, ADRs, C4 diagrams), use the architect agent instead.
 tools: ["Read", "Grep", "Glob"]
-model: opus
+model: sonnet
 uses_skills:
   - arc42-c4
   - api-design
