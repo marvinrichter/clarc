@@ -263,7 +263,6 @@ class User:
             raise ValueError(f"Invalid email: {self.email}")
 ```
 
-
 > For advanced patterns — `NamedTuple` with methods, function decorators, parameterized decorators, class-based decorators, concurrency (threading, multiprocessing, async/await), hexagonal architecture with FastAPI, and memory optimization — see `python-patterns-advanced`.
 
 ## Anti-Patterns

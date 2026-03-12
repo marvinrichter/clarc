@@ -284,7 +284,6 @@ func safeFetch(ctx context.Context, url string) <-chan []byte {
 }
 ```
 
-
 > For advanced patterns covering interfaces (small focused interfaces, define-where-used, type assertions), package organization (hexagonal layout, naming conventions, avoiding package-level state), and full hexagonal architecture with working code — see `go-patterns-advanced`.
 
 ## Anti-Patterns
