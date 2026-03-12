@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Architecture.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › Architecture</p>
+    <h1 class="page-title">Architecture</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html" class="active">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#table-of-contents">Table of Contents</a></li>
+    <li class="toc-item toc-level-2"><a href="#1-introduction-goals">1. Introduction &amp; Goals</a></li>
+    <li class="toc-item toc-level-3"><a href="#what-is-clarc">What is clarc?</a></li>
+    <li class="toc-item toc-level-3"><a href="#core-requirements">Core Requirements</a></li>
+    <li class="toc-item toc-level-3"><a href="#quality-goals">Quality Goals</a></li>
+    <li class="toc-item toc-level-3"><a href="#stakeholders">Stakeholders</a></li>
+    <li class="toc-item toc-level-2"><a href="#2-constraints">2. Constraints</a></li>
+    <li class="toc-item toc-level-3"><a href="#technical-constraints">Technical Constraints</a></li>
+    <li class="toc-item toc-level-3"><a href="#organizational-constraints">Organizational Constraints</a></li>
+    <li class="toc-item toc-level-2"><a href="#3-system-scope-context">3. System Scope &amp; Context</a></li>
+    <li class="toc-item toc-level-2"><a href="#4-solution-strategy">4. Solution Strategy</a></li>
+    <li class="toc-item toc-level-2"><a href="#5-building-block-view">5. Building Block View</a></li>
+    <li class="toc-item toc-level-3"><a href="#level-1-container-diagram">Level 1 — Container Diagram</a></li>
+    <li class="toc-item toc-level-3"><a href="#level-2-component-hook-system">Level 2 — Component: Hook System</a></li>
+    <li class="toc-item toc-level-3"><a href="#hook-event-script-mapping">Hook Event → Script Mapping</a></li>
+    <li class="toc-item toc-level-3"><a href="#shared-libraries-scriptslib">Shared Libraries (`scripts/lib/`)</a></li>
+    <li class="toc-item toc-level-2"><a href="#6-runtime-view">6. Runtime View</a></li>
+    <li class="toc-item toc-level-3"><a href="#scenario-1-session-lifecycle">Scenario 1 — Session Lifecycle</a></li>
+    <li class="toc-item toc-level-3"><a href="#scenario-2-learning-flywheel">Scenario 2 — Learning Flywheel</a></li>
+    <li class="toc-item toc-level-3"><a href="#scenario-3-ci-validation-pipeline-pre-push">Scenario 3 — CI Validation Pipeline (pre-push)</a></li>
+    <li class="toc-item toc-level-2"><a href="#7-deployment-view">7. Deployment View</a></li>
+    <li class="toc-item toc-level-3"><a href="#installation-modes">Installation Modes</a></li>
+    <li class="toc-item toc-level-3"><a href="#file-system-layout-after-install">File System Layout After Install</a></li>
+    <li class="toc-item toc-level-2"><a href="#8-cross-cutting-concepts">8. Cross-cutting Concepts</a></li>
+    <li class="toc-item toc-level-3"><a href="#81-secret-detection">8.1 Secret Detection</a></li>
+    <li class="toc-item toc-level-3"><a href="#82-error-handling-in-hooks">8.2 Error Handling in Hooks</a></li>
+    <li class="toc-item toc-level-3"><a href="#83-observability">8.3 Observability</a></li>
+    <li class="toc-item toc-level-3"><a href="#84-validation-strategy">8.4 Validation Strategy</a></li>
+    <li class="toc-item toc-level-3"><a href="#85-immutability-convention">8.5 Immutability Convention</a></li>
+    <li class="toc-item toc-level-3"><a href="#86-context-window-management">8.6 Context Window Management</a></li>
+    <li class="toc-item toc-level-3"><a href="#87-cost-management-budget-controls">8.7 Cost Management &amp; Budget Controls</a></li>
+    <li class="toc-item toc-level-2"><a href="#9-architecture-decisions">9. Architecture Decisions</a></li>
+    <li class="toc-item toc-level-2"><a href="#10-quality-requirements">10. Quality Requirements</a></li>
+    <li class="toc-item toc-level-2"><a href="#11-risks-technical-debt">11. Risks &amp; Technical Debt</a></li>
+    <li class="toc-item toc-level-3"><a href="#known-risks">Known Risks</a></li>
+    <li class="toc-item toc-level-3"><a href="#known-technical-debt">Known Technical Debt</a></li>
+    <li class="toc-item toc-level-2"><a href="#12-glossary">12. Glossary</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="arc42-architecture-documentation-clarc">arc42 Architecture Documentation — clarc</h1>
+<blockquote><p><strong>clarc</strong> v0.9.0 · Workflow OS for AI coding assistants Generated: 2026-03-12 · Render diagrams: <a href="https://www.plantuml.com/plantuml/uml/">PlantUML online</a> or VS Code PlantUML extension</p></blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol><li><a href="#1-introduction--goals">Introduction &amp; Goals</a></li><li><a href="#2-constraints">Constraints</a></li><li><a href="#3-system-scope--context">System Scope &amp; Context</a></li><li><a href="#4-solution-strategy">Solution Strategy</a></li><li><a href="#5-building-block-view">Building Block View</a></li><li><a href="#6-runtime-view">Runtime View</a></li><li><a href="#7-deployment-view">Deployment View</a></li><li><a href="#8-cross-cutting-concepts">Cross-cutting Concepts</a></li><li><a href="#9-architecture-decisions">Architecture Decisions</a></li><li><a href="#10-quality-requirements">Quality Requirements</a></li><li><a href="#11-risks--technical-debt">Risks &amp; Technical Debt</a></li><li><a href="#12-glossary">Glossary</a></li></ol>
+<hr>
+<h2 id="1-introduction-goals">1. Introduction &amp; Goals</h2>
+<h3 id="what-is-clarc">What is clarc?</h3>
+<p>clarc turns Claude Code (and compatible AI coding assistants) from a reactive chat tool into a <strong>structured engineering system</strong>. It provides:</p>
+<ul><li><strong>Agents</strong> — 62 specialized subagents that delegate planning, review, testing, and debugging</li><li><strong>Skills</strong> — 248 domain knowledge libraries loaded on demand</li><li><strong>Commands</strong> — 172 slash commands for repeatable engineering workflows</li><li><strong>Hooks</strong> — 37 background automations (format, lint, secret scan, budget guard, response dashboard, state persistence)</li><li><strong>Rules</strong> — 20 language rule sets always active in every session</li><li><strong>Learning flywheel</strong> — session patterns promoted into permanent skills over time</li></ul>
+<h3 id="core-requirements">Core Requirements</h3>
+<table><thead><tr><th>#</th><th>Requirement</th><th>Priority</th></tr></thead><tbody><tr><td>R1</td><td>Developer can install clarc in &lt; 5 minutes with a single <code>npx</code> command</td><td>Critical</td></tr><tr><td>R2</td><td>All components symlink into <code>~/.claude/</code> without overwriting user's own files</td><td>Critical</td></tr><tr><td>R3</td><td>Works across 4 editors: Claude Code, Cursor, OpenCode, Codex</td><td>High</td></tr><tr><td>R4</td><td>Session state survives context compaction without data loss</td><td>High</td></tr><tr><td>R5</td><td>Learned instincts persist across sessions and improve agent quality over time</td><td>High</td></tr><tr><td>R6</td><td>Every component validated by CI before reaching users</td><td>Medium</td></tr></tbody></table>
+<h3 id="quality-goals">Quality Goals</h3>
+<table><thead><tr><th>Quality</th><th>Target</th><th>Measure</th></tr></thead><tbody><tr><td>Correctness</td><td>Zero broken cross-references</td><td>CI validator (<code>validate-wiring.js</code>)</td></tr><tr><td>Reliability</td><td>Hooks non-blocking; session state always preserved</td><td>Async hooks, PreCompact snapshot</td></tr><tr><td>Security</td><td>No secrets in source; no secrets written to disk</td><td><code>pre-write-secret-scan.js</code></td></tr><tr><td>Learnability</td><td>New developer onboarded in &lt; 10 minutes</td><td><code>/quickstart</code> command</td></tr><tr><td>Evolvability</td><td>System improves from its own usage</td><td>Learning flywheel</td></tr><tr><td>Cost Visibility</td><td>User sees cost and tool breakdown after every response</td><td><code>response-dashboard.js</code> Stop hook</td></tr></tbody></table>
+<h3 id="stakeholders">Stakeholders</h3>
+<table><thead><tr><th>Stakeholder</th><th>Expectation</th></tr></thead><tbody><tr><td>Individual developer</td><td>Faster, more structured engineering work with Claude Code</td></tr><tr><td>Team lead</td><td>Consistent coding standards and review workflows across the team</td></tr><tr><td>clarc maintainer</td><td>Clean component boundaries, CI-validated quality gates</td></tr></tbody></table>
+<hr>
+<h2 id="2-constraints">2. Constraints</h2>
+<h3 id="technical-constraints">Technical Constraints</h3>
+<table><thead><tr><th>Constraint</th><th>Reason</th></tr></thead><tbody><tr><td>Node.js ≥ 22 (ESM modules)</td><td>All hook scripts use <code>import</code>/<code>export</code>; modern Node.js features required</td></tr><tr><td>No runtime database</td><td>All state lives in flat JSON files (<code>~/.claude/projects/</code>, <code>~/.clarc/</code>)</td></tr><tr><td>No network access during hooks</td><td>Hooks run synchronously in Claude Code's process; outbound HTTP not viable</td></tr><tr><td>Markdown-first content</td><td>Agents, skills, commands, rules are all plain Markdown — human-readable, git-diffable</td></tr><tr><td>Symlinks require same filesystem</td><td><code>install.sh --symlink</code> fails across filesystems; use <code>--copy</code> for CI/containers</td></tr></tbody></table>
+<h3 id="organizational-constraints">Organizational Constraints</h3>
+<table><thead><tr><th>Constraint</th><th>Reason</th></tr></thead><tbody><tr><td>MIT License</td><td>Open source; no proprietary dependencies in core</td></tr><tr><td>No Anthropic API key required</td><td>clarc runs inside Claude Code — does not call the API directly</td></tr><tr><td>Single maintainer (pre-launch)</td><td>All PRs reviewed by Marvin Richter; no external contributors yet</td></tr></tbody></table>
+<hr>
+<h2 id="3-system-scope-context">3. System Scope &amp; Context</h2>
+<p>!<a href="diagrams/context.puml">Context Diagram</a></p>
+<pre><code>Context summary:
+  clarc ←→ Claude Code  (primary integration via ~/.claude/ symlinks)
+  clarc ←→ Cursor        (rules → .cursor/rules/)
+  clarc ←→ OpenCode      (commands → .opencode/)
+  clarc ←→ Codex CLI     (commands → codex/)
+  clarc ←→ GitHub        (source via git clone; CI validation on pre-push)
+  clarc ←→ MCP clients   (optional: 8 tools via stdio MCP transport)</code></pre>
+<p><strong>External systems clarc does NOT directly integrate with:</strong></p>
+<ul><li>Anthropic API (runs inside Claude Code, not alongside it)</li><li>Any cloud provider (clarc is a local tool with no cloud backend)</li><li>Any database (flat-file storage only)</li></ul>
+<hr>
+<h2 id="4-solution-strategy">4. Solution Strategy</h2>
+<table><thead><tr><th>Decision</th><th>Choice</th><th>Rationale</th></tr></thead><tbody><tr><td>Storage format</td><td>Flat Markdown files + JSON</td><td>Git-native, human-readable, no database dependency</td></tr><tr><td>Install strategy</td><td>Symlinks into <code>~/.claude/</code></td><td>Single <code>git pull</code> updates everything; no re-install</td></tr><tr><td>Hook implementation</td><td>Node.js ESM scripts</td><td>Cross-platform (macOS/Linux/WSL2); async support; shared lib</td></tr><tr><td>Skill format</td><td><code>SKILL.md</code> per directory</td><td>Namespace isolation; future: per-skill assets (examples, templates)</td></tr><tr><td>Agent format</td><td>Markdown with YAML frontmatter</td><td>Claude Code native; <code>name</code>, <code>description</code>, <code>tools</code>, <code>model</code>, <code>uses_skills</code></td></tr><tr><td>Multi-editor</td><td>Separate install targets</td><td>Claude Code = symlinks; Cursor/OpenCode/Codex = copies</td></tr><tr><td>Learning</td><td>Instinct files → promoted skills</td><td>Incremental; quality-gated; no auto-promotion without human review</td></tr><tr><td>CI</td><td>Node.js validators + pre-push hook</td><td>Fast, language-native, no Docker required</td></tr></tbody></table>
+<hr>
+<h2 id="5-building-block-view">5. Building Block View</h2>
+<h3 id="level-1-container-diagram">Level 1 — Container Diagram</h3>
+<p>!<a href="diagrams/container.puml">Container Diagram</a></p>
+<h3 id="level-2-component-hook-system">Level 2 — Component: Hook System</h3>
+<p>The Hook System is clarc's most complex container — it coordinates 37 Node.js scripts across 6 event types.</p>
+<p>!<a href="diagrams/component-hooks.puml">Hook Component Diagram</a></p>
+<h3 id="hook-event-script-mapping">Hook Event → Script Mapping</h3>
+<table><thead><tr><th>Event</th><th>Matcher</th><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>PreToolUse</td><td>Bash</td><td><code>pre-bash-dispatch.js</code></td><td>Block dev servers, tmux reminder, push review</td></tr><tr><td>PreToolUse</td><td>Write</td><td><code>pre-write-secret-scan.js</code></td><td>Block writes with secrets (exit 2)</td></tr><tr><td>PreToolUse</td><td>Write</td><td><code>doc-file-warning.js</code></td><td>Warn about non-standard doc file paths</td></tr><tr><td>PreToolUse</td><td>Edit\</td><td>Write</td><td><code>suggest-compact.js</code></td><td>Suggest compaction at 50-tool threshold (async)</td></tr><tr><td>PreToolUse</td><td>Agent</td><td><code>budget-guard.js</code></td><td>Warn/block Agent calls when daily spend exceeds threshold</td></tr><tr><td>PreCompact</td><td>*</td><td><code>pre-compact.js</code></td><td>Save session snapshot before compaction</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>post-edit-format-dispatch.js</code></td><td>Auto-format in 15 languages</td></tr><tr><td>PostToolUse</td><td>Edit</td><td><code>post-edit-typecheck.js</code></td><td><code>tsc --noEmit</code> (async, debounced)</td></tr><tr><td>PostToolUse</td><td>Edit</td><td><code>post-edit-typecheck-rust.js</code></td><td><code>cargo check</code> (async, debounced)</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>post-edit-workflow-nudge.js</code></td><td>5 advisory nudges with cooldown</td></tr><tr><td>PostToolUse</td><td>Bash</td><td><code>build-failure-router.js</code></td><td>Detect compile errors, suggest agent</td></tr><tr><td>PostToolUse</td><td>Edit\</td><td>Write</td><td><code>auto-checkpoint.js</code></td><td>Git checkpoint for /undo</td></tr><tr><td>PostToolUse</td><td>Agent</td><td><code>agent-tracker.js</code></td><td>Track agent invocation frequency</td></tr><tr><td>SessionStart</td><td>*</td><td><code>session-start.js</code></td><td>Load context, skills, instincts</td></tr><tr><td>SessionEnd</td><td>*</td><td><code>session-end.js</code></td><td>Evaluate session, log per-tool cost, trigger weekly evolve</td></tr><tr><td>Stop</td><td>*</td><td><code>response-dashboard.js</code></td><td>Show per-response tool usage, agents, and cost estimate</td></tr><tr><td>Stop</td><td>*</td><td><code>check-console-log.js</code></td><td>Warn if console.log found in modified JS/TS files</td></tr></tbody></table>
+<h3 id="shared-libraries-scriptslib">Shared Libraries (<code>scripts/lib/</code>)</h3>
+<table><thead><tr><th>Module</th><th>Purpose</th></tr></thead><tbody><tr><td><code>utils.js</code></td><td>File I/O, path helpers, JSON read/write, logging</td></tr><tr><td><code>package-manager.js</code></td><td>Detect npm/pnpm/yarn/bun; project-level override</td></tr><tr><td><code>project-detect.js</code></td><td>Identify tech stack from lock files and config</td></tr><tr><td><code>skill-search.js</code></td><td>Keyword + domain search across skills/ (used by MCP + CLI)</td></tr><tr><td><code>session-manager.js</code></td><td>Read/write session snapshots in <code>~/.claude/projects/</code></td></tr><tr><td><code>session-aliases.js</code></td><td>Human-readable session name aliases</td></tr><tr><td><code>secret-scanner.js</code></td><td>Regex patterns for AWS keys, GH tokens, PEM, Slack, api_key</td></tr></tbody></table>
+<hr>
+<h2 id="6-runtime-view">6. Runtime View</h2>
+<h3 id="scenario-1-session-lifecycle">Scenario 1 — Session Lifecycle</h3>
+<p>!<a href="diagrams/runtime-session.puml">Session Lifecycle</a></p>
+<p><strong>Key invariants:</strong></p>
+<ul><li><code>session-start.js</code> injects at most 3000 chars to avoid context waste</li><li><code>pre-compact.js</code> always runs synchronously before any compaction — no snapshot loss</li><li>All PostToolUse hooks are non-blocking (async) except <code>pre-write-secret-scan.js</code> (must block to abort writes)</li></ul>
+<h3 id="scenario-2-learning-flywheel">Scenario 2 — Learning Flywheel</h3>
+<p>!<a href="diagrams/runtime-learning.puml">Learning Flywheel</a></p>
+<p><strong>Quality gates:</strong></p>
+<ul><li><code>/learn-eval</code> requires minimum confidence 0.7 before persisting an instinct</li><li><code>/evolve</code> promotes only instincts with confidence &gt; 0.8 seen ≥ 3 times</li><li>Contradicting instincts in the same domain go to <code>conflicts.json</code> for human resolution</li><li><code>instinct-decay.js</code> reduces confidence of instincts not reinforced for 30+ days</li></ul>
+<h3 id="scenario-3-ci-validation-pipeline-pre-push">Scenario 3 — CI Validation Pipeline (pre-push)</h3>
+<pre><code>git push
+  └─ scripts/pre-push.sh
+       ├─ ESLint               → scripts/ code quality
+       ├─ markdownlint         → all *.md files
+       ├─ validate-agents.js   → frontmatter, required fields, tool lists
+       ├─ validate-hooks.js    → hooks.json schema + script existence
+       ├─ validate-commands.js → description frontmatter, After This section
+       ├─ validate-skills.js   → SKILL.md existence, frontmatter, size ≤ 600 lines
+       ├─ validate-rules.js    → rule format contract (≤ 80 lines, checklist)
+       ├─ validate-wiring.js   → uses_skills references resolve to existing skills
+       ├─ validate-naming.js   → kebab-case naming, no reserved names
+       └─ tests/run-all.js     → unit + artifact tests (~4000 assertions)</code></pre>
+<hr>
+<h2 id="7-deployment-view">7. Deployment View</h2>
+<p>!<a href="diagrams/deployment.puml">Deployment Diagram</a></p>
+<h3 id="installation-modes">Installation Modes</h3>
+<table><thead><tr><th>Mode</th><th>Command</th><th>Use case</th></tr></thead><tbody><tr><td>Interactive wizard</td><td><code>npx github:marvinrichter/clarc</code></td><td>First-time users</td></tr><tr><td>Explicit language</td><td><code>npx github:marvinrichter/clarc typescript</code></td><td>Scripted setup</td></tr><tr><td>Copy mode</td><td><code>npx github:marvinrichter/clarc --copy typescript</code></td><td>CI, containers, cross-filesystem</td></tr><tr><td>Cursor target</td><td><code>npx github:marvinrichter/clarc --target cursor typescript</code></td><td>Cursor IDE</td></tr><tr><td>OpenCode target</td><td><code>npx github:marvinrichter/clarc --target opencode typescript</code></td><td>OpenCode</td></tr><tr><td>Codex target</td><td><code>npx github:marvinrichter/clarc --target codex</code></td><td>Codex CLI</td></tr><tr><td>Check</td><td><code>npx github:marvinrichter/clarc --check</code></td><td>Verify installed rules are current</td></tr><tr><td>Doctor</td><td><code>npx github:marvinrichter/clarc doctor</code></td><td>Full health check</td></tr></tbody></table>
+<h3 id="file-system-layout-after-install">File System Layout After Install</h3>
+<pre><code>~/.clarc/                          ← git clone (source of truth)
+│   agents/, skills/, commands/
+│   hooks/, rules/, scripts/
+│   mcp-server/, install.sh
+│
+~/.claude/                         ← Claude Code user directory
+│   agents/        → symlinks → ~/.clarc/agents/*.md
+│   commands/      → symlinks → ~/.clarc/commands/*.md
+│   rules/         → symlinks → ~/.clarc/rules/**/*.md
+│   projects/      → session snapshots (JSON), instinct store
+│   homunculus/    → agent-instinct overlays
+│
+&lt;project&gt;/.claude-plugin/          ← per-project plugin
+│   plugin.json                    ← declares CLAUDE_PLUGIN_ROOT
+│
+&lt;project&gt;/.clarc/                  ← optional per-project overrides
+    skills/                        ← project-local skills
+    hooks-config.json              ← suppress/configure hook nudges</code></pre>
+<hr>
+<h2 id="8-cross-cutting-concepts">8. Cross-cutting Concepts</h2>
+<h3 id="81-secret-detection">8.1 Secret Detection</h3>
+<p>Two-layer defense:</p>
+<ol><li><strong>Pre-write</strong>: <code>pre-write-secret-scan.js</code> — blocks the Write tool (exit 2) if content matches: AWS AKIA keys, GitHub tokens (ghp/gho/ghu/ghs/ghr), PEM headers, Slack xox\*, <code>api_key=</code>, <code>token=</code></li><li><strong>Pre-push</strong>: <code>pre-bash-dispatch.js</code> scans git diffs on <code>git commit</code> commands</li></ol>
+<p>File extension allowlist skips binary/generated files (<code>.png</code>, <code>.jpg</code>, <code>.wasm</code>, <code>.lock</code>, <code>.sum</code>).</p>
+<h3 id="82-error-handling-in-hooks">8.2 Error Handling in Hooks</h3>
+<p>All hooks follow the same pattern:</p>
+<ul><li><strong>Exit 0</strong> → success, continue</li><li><strong>Exit 2</strong> → block the tool call (Write/Bash)</li><li><strong>Any exception</strong> → caught silently, exit 0 (never block user work due to hook failure)</li><li><strong>Async hooks</strong> → fire-and-forget; errors logged but never block</li></ul>
+<h3 id="83-observability">8.3 Observability</h3>
+<ul><li><code>hook-logger.js</code> — writes structured JSON to <code>hooks.log</code> per hook invocation</li><li><code>scripts/hooks-summary.js</code> — analyzes <code>hooks.log</code>; <code>--heatmap</code> shows most-triggered hooks; <code>--errors</code> shows failures</li><li><code>agent-tracker.js</code> — tracks agent invocation frequency</li></ul>
+<h3 id="84-validation-strategy">8.4 Validation Strategy</h3>
+<table><thead><tr><th>Boundary</th><th>Validator</th></tr></thead><tbody><tr><td>User input (secrets)</td><td><code>secret-scanner.js</code> at write time</td></tr><tr><td>Component format</td><td>CI validators in <code>scripts/ci/</code> at pre-push</td></tr><tr><td>Cross-references</td><td><code>validate-wiring.js</code> + <code>validate-agent-skill-refs.js</code></td></tr><tr><td>File size</td><td>Skill max 600 lines (CI hard limit)</td></tr><tr><td>Naming</td><td><code>validate-naming.js</code> — kebab-case, no reserved Claude Code commands</td></tr></tbody></table>
+<h3 id="85-immutability-convention">8.5 Immutability Convention</h3>
+<p>All hook scripts and shared libraries follow immutable data patterns — functions return new objects rather than mutating inputs. Mutable state is limited to file I/O (session snapshots, cooldown state).</p>
+<h3 id="86-context-window-management">8.6 Context Window Management</h3>
+<ul><li><code>session-start.js</code> caps context injection at <strong>3000 characters</strong></li><li><code>suggest-compact.js</code> nudges manual compaction at 50 tool calls (configurable)</li><li><code>pre-compact.js</code> always saves state before compaction so nothing is lost</li></ul>
+<h3 id="87-cost-management-budget-controls">8.7 Cost Management &amp; Budget Controls</h3>
+<p>clarc includes a three-layer cost management system:</p>
+<p><strong>Per-response dashboard</strong> (<code>response-dashboard.js</code> — Stop hook):</p>
+<ul><li>Fires after every Claude response</li><li>Parses <code>transcript_path</code> JSONL to find the last human turn as response boundary</li><li>Counts all tool calls in assistant turns after that boundary</li><li>Resolves agent model tier from agent frontmatter</li><li>Outputs a 3-line formatted summary to stderr (non-blocking):</li></ul>
+<p>  ``<code>   ────────────────────────────────────────────────────────    tools: Read×5  Edit×3  Bash×2  Agent×1    agents: typescript-reviewer [sonnet]    cost:  ~$0.08  ·  ~9.5k tokens (est.)   ────────────────────────────────────────────────────────   </code>``</p>
+<ul><li>Suppressible via <code>CLARC_RESPONSE_DASHBOARD=false</code> or <code>.clarc/hooks-config.json</code></li></ul>
+<p><strong>Daily budget guard</strong> (<code>budget-guard.js</code> — PreToolUse/Agent):</p>
+<ul><li>Fires before every Agent tool call (agents are 20–40× more expensive than simple tools)</li><li>Reads <code>~/.clarc/cost-log.jsonl</code> to sum today's accumulated estimated spend</li><li>Warns via stderr if spend exceeds <code>CLAUDE_COST_WARN</code> (default $5)</li><li>Blocks (exit 2) if spend exceeds <code>CLAUDE_BUDGET_LIMIT</code> (default $20, 0 = disabled)</li><li>Cost estimates: ±50–100% accuracy; ground truth: <code>console.anthropic.com</code></li></ul>
+<p><strong>Session cost log</strong> (<code>session-end.js</code> — SessionEnd hook):</p>
+<ul><li>Appends one JSON entry to <code>~/.clarc/cost-log.jsonl</code> per session</li><li>Uses per-tool token weight table (Agent=8k, Read=1.5k, Bash=400, Grep=300, ...)</li><li>Accurate within ±50–100%; drives <code>budget-guard.js</code> decisions next session</li></ul>
+<p><strong>Per-tool weight table:</strong></p>
+<table><thead><tr><th>Tool</th><th>Input tokens</th><th>Output tokens</th></tr></thead><tbody><tr><td>Agent</td><td>8,000</td><td>2,000</td></tr><tr><td>WebFetch</td><td>2,000</td><td>100</td></tr><tr><td>Read</td><td>1,500</td><td>50</td></tr><tr><td>Edit</td><td>600</td><td>150</td></tr><tr><td>Write</td><td>500</td><td>100</td></tr><tr><td>WebSearch</td><td>800</td><td>100</td></tr><tr><td>Bash</td><td>400</td><td>200</td></tr><tr><td>Grep</td><td>300</td><td>100</td></tr><tr><td>Glob</td><td>200</td><td>50</td></tr></tbody></table>
+<p><strong>Model tier routing</strong> (<code>summarizer-haiku</code> agent):</p>
+<ul><li>Haiku-tier agent (10–15× cheaper than Sonnet) for text summarization, classification, boilerplate generation</li><li>Orchestrator routes to <code>summarizer-haiku</code> for subtasks that don't require reasoning</li><li>Never used for code review, security analysis, or architecture decisions</li></ul>
+<hr>
+<h2 id="9-architecture-decisions">9. Architecture Decisions</h2>
+<p>No ADRs in <code>docs/decisions/</code> yet. Key implicit decisions are captured in Section 4.</p>
+<p>Decisions pending formalization:</p>
+<ul><li>Choice of symlinks over copies as default install strategy</li><li>Markdown as the agent/skill/command format (vs. YAML-only or JSON)</li><li>Single flat-file storage (vs. SQLite or local server)</li><li>Node.js ESM for hooks (vs. Python or Bash)</li></ul>
+<blockquote><p>Run <code>/explore &lt;decision-name&gt;</code> to generate an ADR, then <code>/arc42 decisions</code> to rebuild this index.</p></blockquote>
+<hr>
+<h2 id="10-quality-requirements">10. Quality Requirements</h2>
+<table><thead><tr><th>Scenario</th><th>Stimulus</th><th>Response</th><th>Measure</th></tr></thead><tbody><tr><td>Install</td><td>Developer runs <code>npx github:marvinrichter/clarc</code></td><td>Installation completes, all symlinks healthy</td><td>&lt; 60s on clean machine</td></tr><tr><td>Secret leak prevention</td><td>Developer writes file with AWS key</td><td>Write is blocked with explanation</td><td>Exit code 2 before file is written</td></tr><tr><td>Context compaction</td><td>Claude Code compacts conversation</td><td>Session state fully preserved</td><td>All tasks + touched files in next session</td></tr><tr><td>Hook failure</td><td>A hook script throws an unexpected error</td><td>User work continues uninterrupted</td><td>Hook exits 0, error logged</td></tr><tr><td>Component update</td><td>Developer runs <code>git pull</code> in <code>~/.clarc/</code></td><td>All symlinks immediately reflect new content</td><td>Zero additional steps</td></tr><tr><td>Skill search</td><td>MCP client queries <code>skill_search</code></td><td>Matching skills returned ranked by relevance</td><td>&lt; 100ms</td></tr><tr><td>Cost guard</td><td>Daily Agent spend exceeds <code>CLAUDE_BUDGET_LIMIT</code></td><td>Agent call is blocked with spend summary</td><td>Exit code 2 before agent is spawned</td></tr><tr><td>Response dashboard</td><td>Claude finishes a response</td><td>Tool usage, agents used, and cost estimate shown</td><td>&lt; 50ms parsing; non-blocking</td></tr></tbody></table>
+<hr>
+<h2 id="11-risks-technical-debt">11. Risks &amp; Technical Debt</h2>
+<h3 id="known-risks">Known Risks</h3>
+<table><thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead><tbody><tr><td>Claude Code hook API changes</td><td>Medium</td><td>High</td><td>Hooks are thin wrappers; migration is localized to <code>hooks.json</code> + <code>scripts/hooks/</code></td></tr><tr><td>Symlink conflicts on Windows (non-WSL2)</td><td>High</td><td>Medium</td><td><code>--copy</code> mode available; documented in README</td></tr><tr><td>Instinct quality degradation</td><td>Low</td><td>Medium</td><td>Quality gate (confidence ≥ 0.7) + decay mechanism</td></tr><tr><td>Skill corpus size growth</td><td>Low</td><td>Low</td><td>CI hard limit 600 lines/skill; split pattern established</td></tr><tr><td>MCP SDK version drift</td><td>Low</td><td>Low</td><td><code>@modelcontextprotocol/sdk</code> is optional dependency</td></tr></tbody></table>
+<h3 id="known-technical-debt">Known Technical Debt</h3>
+<table><thead><tr><th>Item</th><th>Location</th><th>Severity</th></tr></thead><tbody><tr><td><code>suggest-compact.js</code> counter race condition</td><td><code>scripts/hooks/suggest-compact.js</code></td><td>Low — advisory only, no data loss</td></tr><tr><td>Hook matchers can't filter by file extension natively</td><td><code>hooks/hooks.json</code></td><td>Low — mitigated by early-exit guards in scripts</td></tr><tr><td>No integration tests for install.sh</td><td><code>tests/integration/</code></td><td>Medium — manual testing required on each release</td></tr><tr><td><code>docs/decisions/</code> has no ADRs yet</td><td><code>docs/decisions/</code></td><td>Low — implicit decisions undocumented</td></tr></tbody></table>
+<hr>
+<h2 id="12-glossary">12. Glossary</h2>
+<table><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td><strong>Agent</strong></td><td>A specialized Claude Code subagent defined in a Markdown file with YAML frontmatter. Invoked automatically by trigger rules or explicitly via <code>--subagent_type</code>.</td></tr><tr><td><strong>Skill</strong></td><td>A domain knowledge library in <code>skills/&lt;name&gt;/SKILL.md</code>. Loaded on-demand by Claude Code when the context matches. Not always-on (unlike rules).</td></tr><tr><td><strong>Command</strong></td><td>A user-invocable slash command (e.g. <code>/tdd</code>, <code>/plan</code>) defined in <code>commands/&lt;name&gt;.md</code>. Expands to a full prompt when invoked.</td></tr><tr><td><strong>Hook</strong></td><td>A shell command triggered by Claude Code events (PreToolUse, PostToolUse, SessionStart, Stop, PreCompact). Implemented as Node.js scripts in <code>scripts/hooks/</code>.</td></tr><tr><td><strong>Rule</strong></td><td>An always-on guideline loaded into every session. Defines <em>what</em> to do (standards, checklists). Skills show <em>how</em> to do it.</td></tr><tr><td><strong>Instinct</strong></td><td>A pattern learned from sessions via <code>/learn-eval</code>. Stored as JSON with domain, confidence, and reinforcement count. Can be promoted to a permanent skill via <code>/evolve</code>.</td></tr><tr><td><strong>SKILL_MAP</strong></td><td>A mapping from detected tech stack (languages, frameworks) to relevant skill names. Injected at session start.</td></tr><tr><td><strong>CLAUDE_PLUGIN_ROOT</strong></td><td>Environment variable set by <code>.claude-plugin/plugin.json</code> that resolves hook script paths relative to the clarc installation.</td></tr><tr><td><strong>clarc-self-dev-nudge</strong></td><td>The hook nudge that fires when <code>.md</code>/<code>.json</code> files in <code>agents/</code>, <code>skills/</code>, or <code>commands/</code> are modified — suggests the appropriate review agent.</td></tr><tr><td><strong>Continuous learning flywheel</strong></td><td>The observe → extract → quality-gate → store → evolve → promote cycle that improves clarc from its own usage.</td></tr><tr><td><strong>MCP</strong></td><td>Model Context Protocol — Anthropic's standard for exposing structured tools to AI models. clarc implements an optional MCP server with 8 tools.</td></tr><tr><td><strong>Worktree isolation</strong></td><td>A multi-agent coordination pattern where each agent runs in a separate git worktree to prevent file conflicts.</td></tr><tr><td><strong>ADR</strong></td><td>Architecture Decision Record — a document capturing the context, options, and rationale for a significant technical choice.</td></tr><tr><td><strong>CLARC_ROOT</strong></td><td>The root directory of the clarc installation (<code>~/.clarc/</code> or the local development repo). Used by hooks to resolve component paths.</td></tr><tr><td><strong>budget-guard</strong></td><td>A PreToolUse/Agent hook that reads <code>~/.clarc/cost-log.jsonl</code> and warns or blocks Agent calls if daily estimated spend exceeds configured thresholds.</td></tr><tr><td><strong>response-dashboard</strong></td><td>A Stop hook that parses the session transcript to produce a per-response summary of tools used, agents invoked, and estimated token cost.</td></tr><tr><td><strong>cost-log.jsonl</strong></td><td>An append-only JSONL file at <code>~/.clarc/cost-log.jsonl</code> logging per-session estimated token costs. Used by <code>budget-guard.js</code> to compute daily spend.</td></tr><tr><td><strong>summarizer-haiku</strong></td><td>A Haiku-tier agent (10–15× cheaper than Sonnet) for text summarization, classification, and boilerplate — routes cheap subtasks away from expensive models.</td></tr></tbody></table>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

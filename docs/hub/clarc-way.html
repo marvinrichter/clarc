@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The clarc Way — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. The clarc Way.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › The clarc Way</p>
+    <h1 class="page-title">The clarc Way</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html" class="active">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#the-pipeline">The Pipeline</a></li>
+    <li class="toc-item toc-level-2"><a href="#skip-matrix">Skip Matrix</a></li>
+    <li class="toc-item toc-level-2"><a href="#phase-0-discovery">Phase 0: Discovery</a></li>
+    <li class="toc-item toc-level-2"><a href="#phase-1-planning">Phase 1: Planning</a></li>
+    <li class="toc-item toc-level-2"><a href="#phase-2-implementation-tdd">Phase 2: Implementation (TDD)</a></li>
+    <li class="toc-item toc-level-2"><a href="#phase-3-quality-gates">Phase 3: Quality Gates</a></li>
+    <li class="toc-item toc-level-2"><a href="#phase-4-ship">Phase 4: Ship</a></li>
+    <li class="toc-item toc-level-2"><a href="#principles">Principles</a></li>
+    <li class="toc-item toc-level-2"><a href="#interactive-guide">Interactive Guide</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="the-clarc-way">The clarc Way</h1>
+<p>The clarc Way is clarc's opinionated development methodology — a structured process from raw idea to shipped code. Every phase has dedicated commands and agents.</p>
+<h2 id="the-pipeline">The Pipeline</h2>
+<pre><code>Phase 0: Discovery        /idea → /evaluate → /explore → /prd
+Phase 1: Planning         /plan
+Phase 2: Implementation   /tdd  (RED → GREEN → IMPROVE)
+Phase 3: Quality          /code-review  +  /security
+Phase 4: Ship             /commit-push-pr</code></pre>
+<h2 id="skip-matrix">Skip Matrix</h2>
+<table><thead><tr><th>Task</th><th>Phase 0</th><th>Phase 1</th><th>Phase 2</th><th>Phase 3</th><th>Phase 4</th></tr></thead><tbody><tr><td>New feature (unknown value)</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr><tr><td>New feature (clear spec)</td><td>⏭</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr><tr><td>Bug fix</td><td>⏭</td><td>⏭</td><td>✅</td><td>✅</td><td>✅</td></tr><tr><td>Refactor</td><td>⏭</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr><tr><td>Chore / docs</td><td>⏭</td><td>⏭</td><td>⏭</td><td>⏭</td><td>✅</td></tr></tbody></table>
+<h2 id="phase-0-discovery">Phase 0: Discovery</h2>
+<p>Use this phase only when you're unsure whether an idea is worth building.</p>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/idea</code></td><td>Captures and structures the raw idea</td></tr><tr><td><code>/evaluate</code></td><td>Go / No-Go / Modify recommendation</td></tr><tr><td><code>/explore</code></td><td>2–4 solution options with trade-off analysis + ADR</td></tr><tr><td><code>/prd</code></td><td>Full Product Requirements Document</td></tr></tbody></table>
+<p><strong>Stop if <code>/evaluate</code> returns No-Go.</strong> Do not build things that fail the evaluation.</p>
+<h2 id="phase-1-planning">Phase 1: Planning</h2>
+<pre><code>/plan &lt;what to build&gt;</code></pre>
+<p>The <code>planner</code> agent:</p>
+<ol><li>Restates requirements precisely</li><li>Breaks work into phases with actionable steps</li><li>Identifies risks and dependencies</li><li><strong>Waits for your explicit approval before any code is written</strong></li></ol>
+<h2 id="phase-2-implementation-tdd">Phase 2: Implementation (TDD)</h2>
+<pre><code>/tdd</code></pre>
+<p>Enforced sequence via <code>tdd-guide</code> agent:</p>
+<ol><li>Write a failing test (RED)</li><li>Run it — confirm it fails for the right reason</li><li>Write minimal code to pass (GREEN)</li><li>Run it — confirm it passes</li><li>Refactor while keeping tests green (IMPROVE)</li><li>Verify 80%+ coverage</li></ol>
+<p>Never write implementation before a failing test. A test that never failed proves nothing.</p>
+<h2 id="phase-3-quality-gates">Phase 3: Quality Gates</h2>
+<p>Both gates run after implementation, before commit.</p>
+<pre><code>/code-review     → language-specific review (TypeScript, Go, Python, etc.)
+/security        → OWASP Top 10, secrets, injection, SSRF (when auth/APIs involved)</code></pre>
+<p>Fix all CRITICAL and HIGH findings before committing.</p>
+<h2 id="phase-4-ship">Phase 4: Ship</h2>
+<pre><code>/commit           → conventional commit message from staged changes
+/commit-push-pr   → commit + push + open PR with test plan in one step</code></pre>
+<h2 id="principles">Principles</h2>
+<ul><li><strong>Convention over Configuration</strong> — clarc chooses the tools, you focus on the problem</li><li><strong>Quality Gates are Mandatory</strong> — TDD + Code Review + Security are the output, not checkboxes</li><li><strong>Continuous Improvement</strong> — session learnings become instincts (<code>/learn-eval</code>), then skills (<code>/evolve</code>)</li><li><strong>Opinionated, not Dogmatic</strong> — skip phases when genuinely not needed</li></ul>
+<h2 id="interactive-guide">Interactive Guide</h2>
+<p>Run <code>/clarc-way</code> in Claude Code for an interactive walkthrough that recommends the right phase for your current task.</p>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

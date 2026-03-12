@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents Reference — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Agents Reference.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › Agents Reference</p>
+    <h1 class="page-title">Agents Reference</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html" class="active">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#core-workflow-agents">Core Workflow Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#language-reviewer-agents">Language Reviewer Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#product-strategy-agents">Product &amp; Strategy Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#visual-design-agents">Visual Design Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#specialist-agents">Specialist Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#system-meta-agents">System &amp; Meta Agents</a></li>
+    <li class="toc-item toc-level-2"><a href="#how-to-invoke-an-agent-manually">How to Invoke an Agent Manually</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="agents-reference">Agents Reference</h1>
+<p>Agents are specialized subagents that clarc delegates work to. Most activate automatically — you don't need to invoke them manually.</p>
+<h2 id="core-workflow-agents">Core Workflow Agents</h2>
+<table><thead><tr><th>Agent</th><th>Activates when</th><th>Manual command</th></tr></thead><tbody><tr><td><code>planner</code></td><td>Complex features, refactoring</td><td><code>/plan</code></td></tr><tr><td><code>tdd-guide</code></td><td>New features, bug fixes</td><td><code>/tdd</code></td></tr><tr><td><code>code-reviewer</code></td><td>After writing or modifying code</td><td><code>/code-review</code></td></tr><tr><td><code>security-reviewer</code></td><td>Code touches auth, input, APIs, secrets</td><td><code>/security-review</code></td></tr><tr><td><code>architect</code></td><td>Architectural decisions</td><td><code>/arc42</code></td></tr><tr><td><code>build-error-resolver</code></td><td>Build fails</td><td><code>/build-fix</code></td></tr><tr><td><code>e2e-runner</code></td><td>Critical user flows need testing</td><td><code>/e2e</code></td></tr><tr><td><code>refactor-cleaner</code></td><td>Dead code cleanup</td><td><code>/refactor</code></td></tr><tr><td><code>doc-updater</code></td><td>Documentation needs updating</td><td><code>/update-docs</code></td></tr></tbody></table>
+<h2 id="language-reviewer-agents">Language Reviewer Agents</h2>
+<p>These are invoked automatically by <code>code-reviewer</code> based on file extension, or directly:</p>
+<table><thead><tr><th>Agent</th><th>Files</th><th>Specialization</th><th>Manual command</th></tr></thead><tbody><tr><td><code>typescript-reviewer</code></td><td><code>.ts</code>, <code>.tsx</code>, <code>.js</code></td><td>Type safety, DDD, hexagonal arch</td><td><code>/typescript-review</code></td></tr><tr><td><code>go-reviewer</code></td><td><code>.go</code></td><td>Idiomatic Go, error handling, concurrency</td><td><code>/go-review</code></td></tr><tr><td><code>python-reviewer</code></td><td><code>.py</code></td><td>PEP 8, type hints, Pythonic idioms</td><td><code>/python-review</code></td></tr><tr><td><code>java-reviewer</code></td><td><code>.java</code></td><td>Spring Boot, JPA, hexagonal arch</td><td><code>/java-review</code></td></tr><tr><td><code>swift-reviewer</code></td><td><code>.swift</code></td><td>SwiftUI, concurrency, protocol arch</td><td><code>/swift-review</code></td></tr><tr><td><code>rust-reviewer</code></td><td><code>.rs</code></td><td>Ownership, async/Tokio, error handling</td><td><code>/rust-review</code></td></tr><tr><td><code>ruby-reviewer</code></td><td><code>.rb</code></td><td>Rails patterns, Brakeman, N+1 detection</td><td><code>/ruby-review</code></td></tr><tr><td><code>elixir-reviewer</code></td><td><code>.ex</code>, <code>.exs</code></td><td>OTP patterns, Ecto, Sobelow</td><td><code>/elixir-review</code></td></tr><tr><td><code>kotlin-reviewer</code></td><td><code>.kt</code></td><td>Coroutines, null safety, Compose</td><td><code>/kotlin-review</code></td></tr><tr><td><code>cpp-reviewer</code></td><td><code>.cpp</code>, <code>.h</code></td><td>C++20, RAII, memory safety</td><td><code>/cpp-review</code></td></tr><tr><td><code>csharp-reviewer</code></td><td><code>.cs</code></td><td>C# 12/.NET 8, nullable types, async/await</td><td><code>/csharp-review</code></td></tr><tr><td><code>php-reviewer</code></td><td><code>.php</code></td><td>PHP 8.4, strict types, Laravel/Symfony</td><td><code>/php-review</code></td></tr><tr><td><code>scala-reviewer</code></td><td><code>.scala</code></td><td>Cats Effect/ZIO, ADTs, functional idioms</td><td><code>/scala-review</code></td></tr><tr><td><code>r-reviewer</code></td><td><code>.r</code>, <code>.R</code></td><td>tidyverse, purrr, Shiny, renv</td><td><code>/r-review</code></td></tr><tr><td><code>bash-reviewer</code></td><td><code>.sh</code>, <code>.bash</code></td><td>shellcheck, set -euo pipefail, BATS</td><td><code>/bash-review</code></td></tr><tr><td><code>c-reviewer</code></td><td><code>.c</code>, <code>.h</code></td><td>C11/C17, memory safety, opaque pointers</td><td><code>/c-review</code></td></tr><tr><td><code>android-reviewer</code></td><td><code>.kt</code> (Android)</td><td>Jetpack Compose, Hilt, Room, ViewModel</td><td><code>/android-review</code></td></tr><tr><td><code>flutter-reviewer</code></td><td><code>.dart</code></td><td>Flutter architecture, const, RepaintBoundary</td><td><code>/flutter-review</code></td></tr><tr><td><code>database-reviewer</code></td><td><code>.sql</code>, <code>.prisma</code></td><td>PostgreSQL, query optimization, RLS</td><td><code>/database-review</code></td></tr></tbody></table>
+<h2 id="product-strategy-agents">Product &amp; Strategy Agents</h2>
+<table><thead><tr><th>Agent</th><th>Purpose</th><th>Invoked by</th></tr></thead><tbody><tr><td><code>product-evaluator</code></td><td>Go/No-Go for product ideas</td><td><code>/evaluate</code></td></tr><tr><td><code>solution-designer</code></td><td>2–4 solution options + ADR</td><td><code>/explore</code></td></tr><tr><td><code>competitive-analyst</code></td><td>Competitor feature matrix</td><td><code>/competitive-review</code></td></tr><tr><td><code>feedback-analyst</code></td><td>Cluster themes from user feedback</td><td><code>/analyze-feedback</code></td></tr></tbody></table>
+<h2 id="visual-design-agents">Visual Design Agents</h2>
+<table><thead><tr><th>Agent</th><th>Purpose</th><th>Invoked by</th></tr></thead><tbody><tr><td><code>design-critic</code></td><td>Structured visual critique — composition, hierarchy, color, typography, accessibility</td><td><code>/design-critique</code></td></tr><tr><td><code>design-system-reviewer</code></td><td>Comprehensive design system audit — tokens, dark mode, icons, accessibility, component completeness</td><td>manual</td></tr><tr><td><code>presentation-designer</code></td><td>Slide deck creation and structure — speaker notes, narrative, slide density</td><td><code>/slide-deck</code></td></tr><tr><td><code>talk-coach</code></td><td>Talk and presentation review — structure, timing, audience fit</td><td><code>/talk-outline</code></td></tr></tbody></table>
+<h2 id="specialist-agents">Specialist Agents</h2>
+<table><thead><tr><th>Agent</th><th>Purpose</th></tr></thead><tbody><tr><td><code>gitops-architect</code></td><td>ArgoCD/Flux setup design</td></tr><tr><td><code>mlops-architect</code></td><td>ML serving, drift, A/B testing</td></tr><tr><td><code>finops-advisor</code></td><td>Cloud cost optimization</td></tr><tr><td><code>frontend-architect</code></td><td>Micro-frontend architecture</td></tr><tr><td><code>data-architect</code></td><td>Data Mesh design</td></tr><tr><td><code>sdk-architect</code></td><td>SDK architecture and release process</td></tr><tr><td><code>devsecops-reviewer</code></td><td>SAST, IaC misconfig, OWASP</td></tr><tr><td><code>supply-chain-auditor</code></td><td>SBOM, unpinned deps, unsigned artifacts</td></tr><tr><td><code>performance-analyst</code></td><td>Flamegraphs, N+1, profiling output</td></tr><tr><td><code>resilience-reviewer</code></td><td>Circuit breakers, retry patterns</td></tr></tbody></table>
+<h2 id="system-meta-agents">System &amp; Meta Agents</h2>
+<p>These analyze and improve clarc itself:</p>
+<table><thead><tr><th>Agent</th><th>Purpose</th><th>Invoked by</th></tr></thead><tbody><tr><td><code>agent-quality-reviewer</code></td><td>Review a single agent file — scores across 8 dimensions</td><td><code>/agent-audit</code></td></tr><tr><td><code>agent-system-reviewer</code></td><td>Full system review — orchestrates all analyzers</td><td><code>/system-review</code></td></tr><tr><td><code>command-auditor</code></td><td>UX ergonomics audit across all commands</td><td><code>/command-audit</code></td></tr><tr><td><code>hook-auditor</code></td><td>Hook coverage, conflicts, and dead references</td><td><code>/hook-audit</code></td></tr><tr><td><code>prompt-quality-scorer</code></td><td>Rate all agent/command prompts for quality</td><td>manual</td></tr><tr><td><code>skill-depth-analyzer</code></td><td>Analyze a skill for prompt-engineering quality</td><td><code>/skill-depth</code></td></tr></tbody></table>
+<h2 id="how-to-invoke-an-agent-manually">How to Invoke an Agent Manually</h2>
+<p>In Claude Code, ask Claude to use a specific agent:</p>
+<pre><code>Use the security-reviewer agent to check my authentication module.
+
+Use the planner agent to create an implementation plan for adding OAuth.</code></pre>
+<p>Or use the relevant slash command, which invokes the agent automatically.</p>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

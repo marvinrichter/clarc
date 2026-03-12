@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commands Reference — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Commands Reference.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › Commands Reference</p>
+    <h1 class="page-title">Commands Reference</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html" class="active">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#getting-started">Getting Started</a></li>
+    <li class="toc-item toc-level-2"><a href="#the-clarc-way-pipeline">The clarc Way Pipeline</a></li>
+    <li class="toc-item toc-level-2"><a href="#daily-workflow">Daily Workflow</a></li>
+    <li class="toc-item toc-level-2"><a href="#architecture-engineering">Architecture &amp; Engineering</a></li>
+    <li class="toc-item toc-level-2"><a href="#engineering-operations">Engineering Operations</a></li>
+    <li class="toc-item toc-level-2"><a href="#security-compliance">Security &amp; Compliance</a></li>
+    <li class="toc-item toc-level-2"><a href="#visual-design">Visual Design</a></li>
+    <li class="toc-item toc-level-2"><a href="#review-commands">Review Commands</a></li>
+    <li class="toc-item toc-level-2"><a href="#learning-evolution">Learning &amp; Evolution</a></li>
+    <li class="toc-item toc-level-2"><a href="#full-list">Full List</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="commands-reference">Commands Reference</h1>
+<p>All clarc slash commands, organized by category. Run them in Claude Code by typing <code>/command-name</code>.</p>
+<h2 id="getting-started">Getting Started</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/quickstart</code></td><td>Guided tour for new users — recommends workflows for your task</td></tr><tr><td><code>/clarc-way</code></td><td>Interactive methodology guide — what to do for any task</td></tr><tr><td><code>/doctor</code></td><td>Health-check your clarc installation</td></tr><tr><td><code>/find-skill</code></td><td>Search all 248 skills by topic</td></tr></tbody></table>
+<h2 id="the-clarc-way-pipeline">The clarc Way Pipeline</h2>
+<table><thead><tr><th>Command</th><th>Phase</th><th>What it does</th></tr></thead><tbody><tr><td><code>/idea</code></td><td>0</td><td>Capture and structure a raw product idea</td></tr><tr><td><code>/evaluate</code></td><td>0</td><td>Go/No-Go evaluation before building</td></tr><tr><td><code>/explore</code></td><td>0</td><td>Generate 2–4 solution options with ADR</td></tr><tr><td><code>/prd</code></td><td>0</td><td>Write a Product Requirements Document</td></tr><tr><td><code>/plan</code></td><td>1</td><td>Implementation plan, waits for confirmation</td></tr><tr><td><code>/tdd</code></td><td>2</td><td>Enforce test-first development</td></tr><tr><td><code>/code-review</code></td><td>3</td><td>Language-specific quality review</td></tr><tr><td><code>/security-review</code></td><td>3</td><td>DevSecOps scan (OWASP, secrets, injection)</td></tr><tr><td><code>/commit</code></td><td>4</td><td>Conventional commit message</td></tr><tr><td><code>/commit-push-pr</code></td><td>4</td><td>Commit + push + open PR in one step</td></tr></tbody></table>
+<h2 id="daily-workflow">Daily Workflow</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/verify</code></td><td>Full quality loop — build + type-check + lint + test</td></tr><tr><td><code>/build-fix</code></td><td>Incrementally fix build and type errors</td></tr><tr><td><code>/breakdown</code></td><td>Break a feature into sprint-ready user stories</td></tr><tr><td><code>/checkpoint</code></td><td>Snapshot current session state</td></tr><tr><td><code>/sessions</code></td><td>Browse session history</td></tr></tbody></table>
+<h2 id="architecture-engineering">Architecture &amp; Engineering</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/arc42</code></td><td>Generate or update arc42 architecture documentation</td></tr><tr><td><code>/onboard</code></td><td>Generate CONTRIBUTING.md + architecture tour</td></tr><tr><td><code>/setup-ci</code></td><td>Generate GitHub Actions CI/CD pipeline</td></tr><tr><td><code>/deps</code></td><td>Dependency audit and upgrade planner</td></tr><tr><td><code>/migrate</code></td><td>Database migration workflow</td></tr><tr><td><code>/slo</code></td><td>Define SLIs, SLOs, and error budget alerts</td></tr><tr><td><code>/resilience-review</code></td><td>Failure mode analysis — circuit breakers, retries, timeouts, bulkheads</td></tr><tr><td><code>/docs-strategy</code></td><td>Documentation platform selection, Divio framework, CI pipeline design</td></tr><tr><td><code>/contract-review</code></td><td>API break detection — BREAKING/NON-BREAKING/ADDITIVE classification</td></tr></tbody></table>
+<h2 id="engineering-operations">Engineering Operations</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/incident</code></td><td>Open and manage a production incident</td></tr><tr><td><code>/instrument</code></td><td>Add analytics event tracking</td></tr><tr><td><code>/experiment</code></td><td>Design a statistically valid A/B test</td></tr><tr><td><code>/dora-baseline</code></td><td>Measure DORA Four Keys baseline</td></tr><tr><td><code>/devex-survey</code></td><td>Design a Developer Experience survey</td></tr></tbody></table>
+<h2 id="security-compliance">Security &amp; Compliance</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/security-review</code></td><td>Full DevSecOps scan</td></tr><tr><td><code>/privacy-audit</code></td><td>PII scan, retention, RTBF, consent</td></tr><tr><td><code>/sbom</code></td><td>Generate Software Bill of Materials + attestation</td></tr><tr><td><code>/supply-chain-audit</code></td><td>CI/CD pinning, unsigned artifacts, SLSA compliance</td></tr><tr><td><code>/zero-trust-review</code></td><td>Service mesh + mTLS review</td></tr><tr><td><code>/gitops-review</code></td><td>GitOps config — sync, secrets, drift</td></tr><tr><td><code>/finops-audit</code></td><td>Cloud cost audit</td></tr></tbody></table>
+<h2 id="visual-design">Visual Design</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/brand-identity</code></td><td>Develop a brand identity — color palette, typeface, voice, mood board</td></tr><tr><td><code>/icon-system</code></td><td>Icon library recommendation, tokens, component template, accessibility</td></tr><tr><td><code>/wireframe</code></td><td>ASCII wireframes, user flow diagrams, IA maps, structural audits</td></tr><tr><td><code>/dark-mode-audit</code></td><td>Audit dark mode — color strategy, elevation, contrast, common mistakes</td></tr><tr><td><code>/design-critique</code></td><td>Structured visual critique — hierarchy, color, typography, accessibility</td></tr><tr><td><code>/a11y-audit</code></td><td>Full accessibility audit — axe scan, keyboard, color contrast, ARIA</td></tr><tr><td><code>/chart-review</code></td><td>Review data visualizations — chart type, WCAG, responsive</td></tr><tr><td><code>/visual-test</code></td><td>Set up visual regression testing (Chromatic/Playwright/Percy)</td></tr><tr><td><code>/storybook-audit</code></td><td>Audit Storybook — coverage, CSF, accessibility, Chromatic integration</td></tr><tr><td><code>/design-system-review</code></td><td>Full design system audit — tokens, dark mode, icons, a11y, design-code consistency</td></tr><tr><td><code>/slide-deck</code></td><td>Generate slide deck structure (Reveal.js or Marp)</td></tr><tr><td><code>/talk-outline</code></td><td>Structured talk outline with time allocation and speaker notes</td></tr><tr><td><code>/talk-review</code></td><td>Presentation feedback — structure, timing, audience fit, narrative flow</td></tr></tbody></table>
+<h2 id="review-commands">Review Commands</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/code-review</code></td><td>Universal (routes to language specialist)</td></tr><tr><td><code>/typescript-review</code></td><td>TypeScript / JavaScript</td></tr><tr><td><code>/go-review</code></td><td>Go</td></tr><tr><td><code>/python-review</code></td><td>Python</td></tr><tr><td><code>/java-review</code></td><td>Java / Spring Boot</td></tr><tr><td><code>/swift-review</code></td><td>Swift / SwiftUI</td></tr><tr><td><code>/rust-review</code></td><td>Rust</td></tr><tr><td><code>/ruby-review</code></td><td>Ruby / Rails</td></tr><tr><td><code>/elixir-review</code></td><td>Elixir / Phoenix</td></tr><tr><td><code>/database-review</code></td><td>PostgreSQL schema + queries</td></tr></tbody></table>
+<h2 id="learning-evolution">Learning &amp; Evolution</h2>
+<table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/learn-eval</code></td><td>Extract patterns from the session (quality gate)</td></tr><tr><td><code>/evolve</code></td><td>Promote instincts into permanent skills</td></tr><tr><td><code>/instinct-status</code></td><td>Show what clarc has learned</td></tr><tr><td><code>/skill-create</code></td><td>Generate a skill from git history</td></tr><tr><td><code>/sessions</code></td><td>Browse session history and snapshots</td></tr></tbody></table>
+<h2 id="full-list">Full List</h2>
+<p>Run <code>/find-skill</code> in Claude Code to search all commands by topic. View all 172 commands in the <code>commands/</code> directory of the clarc repository.</p>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

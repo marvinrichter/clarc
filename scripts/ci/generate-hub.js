@@ -11,12 +11,23 @@
  *
  * Output structure:
  *   docs/hub/
- *   ├── index.html          — Homepage with search + featured items
- *   ├── agents.html         — All agents
- *   ├── skills.html         — All skills
- *   ├── commands.html       — All commands
- *   ├── style.css           — Base styles
- *   ├── search.js           — Client-side search (Fuse.js)
+ *   ├── index.html                — Homepage with search + featured items
+ *   ├── agents.html               — All agents
+ *   ├── skills.html               — All skills
+ *   ├── commands.html             — All commands
+ *   ├── docs.html                 — Documentation landing page
+ *   ├── getting-started.html      — Getting Started guide
+ *   ├── clarc-way.html            — The clarc Way
+ *   ├── faq.html                  — FAQ
+ *   ├── contributing.html         — Contributing guide
+ *   ├── agents-reference.html     — Agents reference
+ *   ├── commands-reference.html   — Commands reference
+ *   ├── skills-reference.html     — Skills reference
+ *   ├── community.html            — Community patterns
+ *   ├── architecture.html         — arc42 architecture
+ *   ├── mcp.html                  — MCP guide
+ *   ├── style.css                 — Base styles
+ *   ├── search.js                 — Client-side search
  *   └── data/
  *       ├── agents.json
  *       ├── skills.json
@@ -338,15 +349,23 @@ function commandCard(cmd) {
 
 // ─── Navigation & Footer ──────────────────────────────────────────────────────
 
+const DOC_PAGE_IDS = new Set([
+  'docs.html', 'getting-started.html', 'clarc-way.html', 'faq.html',
+  'contributing.html', 'agents-reference.html', 'commands-reference.html',
+  'skills-reference.html', 'community.html', 'architecture.html', 'mcp.html',
+]);
+
 function navHtml(activePage) {
   const pages = [
     { href: 'agents.html', label: 'Agents' },
     { href: 'skills.html', label: 'Skills' },
     { href: 'commands.html', label: 'Commands' },
+    { href: 'docs.html', label: 'Docs' },
   ];
-  const links = pages.map(p =>
-    `<a href="${p.href}"${activePage === p.href ? ' class="active"' : ''}>${p.label}</a>`
-  ).join('');
+  const links = pages.map(p => {
+    const isActive = activePage === p.href || (p.href === 'docs.html' && DOC_PAGE_IDS.has(activePage));
+    return `<a href="${p.href}"${isActive ? ' class="active"' : ''}>${p.label}</a>`;
+  }).join('');
   return `<header>
   <div class="container">
     <nav class="nav" aria-label="Main navigation">
@@ -370,11 +389,185 @@ function footerHtml() {
         <a href="agents.html">Agents</a>
         <a href="skills.html">Skills</a>
         <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
         <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
   </div>
 </footer>`;
+}
+
+// ─── Doc source definitions ───────────────────────────────────────────────────
+
+const DOC_PAGES = [
+  { src: 'docs/wiki/getting-started.md',   out: 'getting-started.html',    title: 'Getting Started',     desc: 'Install clarc, verify your setup, and run your first workflow in under 5 minutes.' },
+  { src: 'docs/wiki/clarc-way.md',          out: 'clarc-way.html',          title: 'The clarc Way',        desc: 'Understand the philosophy and opinionated workflow loop that powers clarc.' },
+  { src: 'docs/wiki/faq.md',                out: 'faq.html',                title: 'FAQ',                  desc: 'Answers to common questions about clarc installation, usage, and customization.' },
+  { src: 'docs/wiki/CONTRIBUTING.md',       out: 'contributing.html',       title: 'Contributing',         desc: 'How to contribute agents, skills, commands, and rules back to clarc.' },
+  { src: 'docs/wiki/agents-reference.md',   out: 'agents-reference.html',   title: 'Agents Reference',    desc: 'Complete reference for all 62 agents — when they activate and what they do.' },
+  { src: 'docs/wiki/commands-reference.md', out: 'commands-reference.html', title: 'Commands Reference',   desc: 'All 172 slash commands organized by category with usage examples.' },
+  { src: 'docs/wiki/skills-reference.md',   out: 'skills-reference.html',   title: 'Skills Reference',    desc: 'All 248 skills and how they integrate with agents and commands.' },
+  { src: 'docs/wiki/community-patterns.md', out: 'community.html',          title: 'Community Patterns',  desc: 'Patterns, extensions, and workflows shared by the clarc community.' },
+  { src: 'docs/architecture/arc42.md',      out: 'architecture.html',       title: 'Architecture',        desc: 'arc42 architecture documentation — system context, building blocks, and decisions.' },
+  { src: 'docs/mcp-guide.md',               out: 'mcp.html',                title: 'MCP Guide',           desc: 'Configure MCP servers with clarc for extended capabilities and integrations.' },
+];
+
+// ─── Markdown → HTML ──────────────────────────────────────────────────────────
+
+function headingId(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function inlineMd(text) {
+  text = escapeHtml(text);
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  return text;
+}
+
+function markdownToHtml(md) {
+  if (md.startsWith('---')) {
+    const end = md.indexOf('\n---', 3);
+    if (end !== -1) md = md.slice(end + 4).trim();
+  }
+  const lines = md.split('\n');
+  const out = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Fenced code block
+    if (/^```/.test(line)) {
+      const lang = line.slice(3).trim();
+      const codeLines = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i])) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      i++;
+      const langAttr = lang ? ` class="language-${escapeHtml(lang)}"` : '';
+      out.push(`<pre><code${langAttr}>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+      continue;
+    }
+
+    // Horizontal rule (line is entirely dashes/asterisks/underscores, 3+)
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(line.trim()) && !/^[-*+]\s/.test(line)) {
+      out.push('<hr>');
+      i++;
+      continue;
+    }
+
+    // Heading
+    const hm = line.match(/^(#{1,6})\s+(.+)/);
+    if (hm) {
+      const level = hm[1].length;
+      const id = headingId(hm[2]);
+      out.push(`<h${level} id="${id}">${inlineMd(hm[2])}</h${level}>`);
+      i++;
+      continue;
+    }
+
+    // Blockquote
+    if (/^>\s?/.test(line)) {
+      const bqLines = [];
+      while (i < lines.length && /^>\s?/.test(lines[i])) {
+        bqLines.push(lines[i].replace(/^>\s?/, ''));
+        i++;
+      }
+      out.push(`<blockquote><p>${inlineMd(bqLines.join(' '))}</p></blockquote>`);
+      continue;
+    }
+
+    // Unordered list
+    if (/^[-*+]\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*+]\s/.test(lines[i])) {
+        items.push(`<li>${inlineMd(lines[i].replace(/^[-*+]\s+/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+
+    // Ordered list
+    if (/^\d+\.\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push(`<li>${inlineMd(lines[i].replace(/^\d+\.\s+/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ol>${items.join('')}</ol>`);
+      continue;
+    }
+
+    // Table (pipe-delimited, followed by separator row)
+    if (line.includes('|') && i + 1 < lines.length && /^\|?[-| :]+\|/.test(lines[i + 1])) {
+      const cells = (s) => s.split('|').slice(1, -1).map(c => c.trim());
+      const headers = cells(line).map(h => `<th>${inlineMd(h)}</th>`).join('');
+      i += 2;
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|') && !/^\|?[-| :]+\|/.test(lines[i])) {
+        const tds = cells(lines[i]).map(c => `<td>${inlineMd(c)}</td>`).join('');
+        rows.push(`<tr>${tds}</tr>`);
+        i++;
+      }
+      out.push(`<table><thead><tr>${headers}</tr></thead><tbody>${rows.join('')}</tbody></table>`);
+      continue;
+    }
+
+    // Empty line
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+
+    // Paragraph — collect consecutive non-special lines
+    const paraLines = [];
+    while (i < lines.length) {
+      const l = lines[i];
+      if (l.trim() === '') break;
+      if (/^#{1,6}\s/.test(l)) break;
+      if (/^```/.test(l)) break;
+      if (/^[-*+]\s/.test(l)) break;
+      if (/^\d+\.\s/.test(l)) break;
+      if (/^>\s?/.test(l)) break;
+      if (/^(-{3,}|\*{3,}|_{3,})$/.test(l.trim()) && !/^[-*+]\s/.test(l)) break;
+      if (l.includes('|') && i + 1 < lines.length && /^\|?[-| :]+\|/.test(lines[i + 1])) break;
+      paraLines.push(l);
+      i++;
+    }
+    if (paraLines.length > 0) {
+      out.push(`<p>${inlineMd(paraLines.join(' '))}</p>`);
+    }
+  }
+
+  return out.join('\n');
+}
+
+function extractToc(md) {
+  if (md.startsWith('---')) {
+    const end = md.indexOf('\n---', 3);
+    if (end !== -1) md = md.slice(end + 4).trim();
+  }
+  return md.split('\n')
+    .filter(l => /^#{2,3}\s/.test(l))
+    .map(l => {
+      const m = l.match(/^(#{2,3})\s+(.+)/);
+      return { level: m[1].length, text: m[2], id: headingId(m[2]) };
+    });
 }
 
 // ─── Filter helpers ───────────────────────────────────────────────────────────
@@ -1151,7 +1344,120 @@ footer {
   .stats-row { flex-wrap: wrap; }
   .stat-block { min-width: 33%; }
 }
+
+/* ── Doc layout ── */
+.doc-layout-wrapper { background: var(--color-neutral-950); padding: 0 0 80px; }
+.doc-layout {
+  display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding: 40px 0; align-items: start;
+}
+.doc-sidebar { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 28px; }
+.doc-nav-label, .toc-label {
+  font-family: var(--font-body); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--color-neutral-500); margin-bottom: 6px; display: block;
+}
+.doc-nav ul, .doc-toc ul { list-style: none; }
+.doc-nav li { margin: 1px 0; }
+.doc-toc li { margin: 3px 0; }
+.doc-nav a {
+  font-family: var(--font-body); font-size: 13px; color: var(--color-neutral-400);
+  padding: 5px 8px; border-radius: var(--radius-sm); display: block;
+  transition: color 100ms, background 100ms;
+}
+.doc-nav a:hover { color: var(--color-neutral-200); background: hsla(216, 80%, 50%, 0.08); }
+.doc-nav a.active { color: var(--color-primary-300); background: hsla(216, 80%, 40%, 0.12); }
+.doc-toc a {
+  font-family: var(--font-body); font-size: 12px; color: var(--color-neutral-500);
+  padding: 3px 8px; display: block; border-radius: var(--radius-sm);
+  transition: color 100ms;
+}
+.doc-toc a:hover { color: var(--color-neutral-300); }
+.toc-item.toc-level-3 a { padding-left: 20px; font-size: 11px; }
+
+/* Doc content typography */
+.doc-content { min-width: 0; color: var(--color-neutral-300); }
+.doc-content h1 {
+  font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700;
+  color: var(--color-neutral-50); letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 24px;
+}
+.doc-content h2 {
+  font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600;
+  color: var(--color-neutral-100); letter-spacing: -0.02em;
+  margin-top: 48px; margin-bottom: 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--color-neutral-800);
+}
+.doc-content h3 {
+  font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600;
+  color: var(--color-neutral-200); margin-top: 32px; margin-bottom: 10px;
+}
+.doc-content h4, .doc-content h5, .doc-content h6 {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  color: var(--color-neutral-300); margin-top: 24px; margin-bottom: 8px;
+}
+.doc-content p { font-family: var(--font-body); font-size: 14px; line-height: 1.75; margin-bottom: 16px; }
+.doc-content ul, .doc-content ol {
+  font-family: var(--font-body); font-size: 14px; line-height: 1.75;
+  padding-left: 24px; margin-bottom: 16px;
+}
+.doc-content li { margin: 4px 0; }
+.doc-content code {
+  font-family: var(--font-mono); font-size: 12.5px;
+  background: var(--color-neutral-800); color: var(--color-accent-300);
+  padding: 1px 5px; border-radius: var(--radius-sm);
+}
+.doc-content pre {
+  background: var(--color-neutral-900); border: 1px solid var(--color-neutral-800);
+  border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; overflow-x: auto;
+}
+.doc-content pre code {
+  background: none; color: var(--color-neutral-200); font-size: 13px; padding: 0; border-radius: 0;
+}
+.doc-content blockquote {
+  border-left: 3px solid var(--color-primary-500); padding-left: 16px;
+  margin: 20px 0; color: var(--color-neutral-400); font-style: italic;
+}
+.doc-content table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--font-body); font-size: 13px; margin-bottom: 24px;
+}
+.doc-content th {
+  background: var(--color-neutral-800); color: var(--color-neutral-200);
+  font-weight: 600; padding: 8px 12px; text-align: left;
+  border-bottom: 2px solid var(--color-neutral-700);
+}
+.doc-content td {
+  padding: 8px 12px; border-bottom: 1px solid var(--color-neutral-800); vertical-align: top;
+}
+.doc-content tr:hover td { background: hsla(216, 20%, 100%, 0.02); }
+.doc-content a { color: var(--color-primary-300); }
+.doc-content a:hover { text-decoration: underline; }
+.doc-content strong { color: var(--color-neutral-100); font-weight: 600; }
+.doc-content em { font-style: italic; }
+.doc-content hr { border: none; border-top: 1px solid var(--color-neutral-800); margin: 32px 0; }
+
+/* Doc landing page */
+.doc-landing-section { background: var(--color-neutral-950); padding: 40px 0 80px; }
+.doc-landing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+.doc-landing-card {
+  background: var(--color-neutral-900); border: 1px solid var(--color-neutral-800);
+  border-radius: var(--radius-lg); padding: 24px;
+  display: flex; flex-direction: column; gap: 8px; transition: border-color 150ms;
+}
+.doc-landing-card:hover { border-color: var(--color-primary-500); }
+.doc-landing-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--color-neutral-100);
+}
+.doc-landing-desc { font-family: var(--font-body); font-size: 13px; color: var(--color-neutral-400); line-height: 1.6; }
+
+/* Responsive: doc */
+@media (max-width: 900px) {
+  .doc-layout { grid-template-columns: 1fr; padding: 24px 0; }
+  .doc-sidebar { position: static; }
+}
+@media (max-width: 640px) {
+  .doc-landing-grid { grid-template-columns: 1fr; }
+}
 `;
+
 
 // ─── Search JS ────────────────────────────────────────────────────────────────
 
@@ -1214,6 +1520,93 @@ const SEARCH_JS = `(function () {
 })();
 `;
 
+// ─── Doc page builder ─────────────────────────────────────────────────────────
+
+function docPageHtml(title, contentHtml, toc, activePage) {
+  const tocHtml = toc.length === 0 ? '' : `<nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    ${toc.map(item =>
+    `<li class="toc-item toc-level-${item.level}"><a href="#${item.id}">${escapeHtml(item.text)}</a></li>`
+  ).join('\n    ')}
+  </ul>
+</nav>`;
+
+  const navItems = DOC_PAGES.map(p =>
+    `<li><a href="${p.out}"${activePage === p.out ? ' class="active"' : ''}>${escapeHtml(p.title)}</a></li>`
+  ).join('\n          ');
+
+  return `<div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › ${escapeHtml(title)}</p>
+    <h1 class="page-title">${escapeHtml(title)}</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          ${navItems}
+          </ul>
+        </nav>
+        ${tocHtml}
+      </aside>
+      <article class="doc-content">
+        ${contentHtml}
+      </article>
+    </div>
+  </div>
+</div>`;
+}
+
+function docsLandingHtml() {
+  const cards = DOC_PAGES.map(p => `<a href="${p.out}" class="doc-landing-card">
+  <div class="doc-landing-title">${escapeHtml(p.title)}</div>
+  <div class="doc-landing-desc">${escapeHtml(p.desc)}</div>
+</a>`).join('');
+
+  return `<div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › Docs</p>
+    <h1 class="page-title">Documentation</h1>
+    <p class="page-desc">Everything you need to know about clarc — install, configure, and master the workflow OS for Claude Code.</p>
+  </div>
+</div>
+<div class="doc-landing-section">
+  <div class="container">
+    <div class="doc-landing-grid">
+      ${cards}
+    </div>
+  </div>
+</div>`;
+}
+
+function generateDocPages(outDir) {
+  const written = [];
+  for (const page of DOC_PAGES) {
+    const srcPath = path.join(ROOT, page.src);
+    if (!fs.existsSync(srcPath)) {
+      console.warn(`[generate-hub] Warning: doc source not found: ${page.src}`);
+      continue;
+    }
+    const md = fs.readFileSync(srcPath, 'utf8');
+    const contentHtml = markdownToHtml(md);
+    const toc = extractToc(md);
+    const body = docPageHtml(page.title, contentHtml, toc, page.out);
+    fs.writeFileSync(path.join(outDir, page.out), buildPage(page.title, page.out, body));
+    written.push(page.out);
+  }
+
+  // Docs landing page
+  fs.writeFileSync(path.join(outDir, 'docs.html'), buildPage('Documentation', 'docs.html', docsLandingHtml()));
+  written.push('docs.html');
+
+  return written;
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 function main() {
@@ -1259,8 +1652,12 @@ function main() {
   fs.writeFileSync(path.join(outDir, 'skills.html'), buildSkillsPage(skills));
   fs.writeFileSync(path.join(outDir, 'commands.html'), buildCommandsPage(commands));
 
+  // Write doc pages
+  const docFiles = generateDocPages(outDir);
+  console.log(`[generate-hub] Doc pages: ${docFiles.join(', ')}`);
+
   console.log(`[generate-hub] Done! Output: ${outDir}`);
-  console.log(`[generate-hub] Files written: index.html, agents.html, skills.html, commands.html, style.css, search.js + data/*.json`);
+  console.log(`[generate-hub] Files written: index.html, agents.html, skills.html, commands.html, docs.html + ${docFiles.length - 1} doc pages, style.css, search.js + data/*.json`);
 }
 
 main();
