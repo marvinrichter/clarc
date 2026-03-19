@@ -14,15 +14,6 @@ on:
       - 'examples/**'
   pull_request:
     branches: [main]
-    paths-ignore:
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - 'CONTRIBUTING.md'
-      - 'CODE_OF_CONDUCT.md'
-      - 'SECURITY.md'
-      - 'LICENSE'
-      - 'docs/**'
-      - 'examples/**'
 
 # Prevent duplicate runs
 concurrency:
@@ -34,10 +25,45 @@ permissions:
   contents: read
 
 jobs:
+  # Detects which paths changed so downstream jobs can skip when unnecessary.
+  # Always runs on pull_request — this is what lets ci-required post a status
+  # even when only docs files (e.g. CHANGELOG.md) changed.
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'scripts/**'
+              - 'tests/**'
+              - 'agents/**'
+              - 'skills/**'
+              - 'commands/**'
+              - 'hooks/**'
+              - 'rules/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - '.eslintrc*'
+              - 'eslint.config*'
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # On push: `changes` is skipped (push has workflow-level paths-ignore instead),
+    # but this job still runs because github.event_name == 'push' is true.
+    # On PR: only runs when source files changed (changes.outputs.src == 'true').
+    if: |
+      github.event_name == 'push' ||
+      needs.changes.outputs.src == 'true'
+    needs: [changes]
 
     steps:
       - name: Checkout
@@ -61,6 +87,10 @@ jobs:
     name: Validate Components
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: |
+      github.event_name == 'push' ||
+      needs.changes.outputs.src == 'true'
+    needs: [changes]
 
     steps:
       - name: Checkout
@@ -108,6 +138,10 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: |
+      github.event_name == 'push' ||
+      needs.changes.outputs.src == 'true'
+    needs: [changes]
 
     steps:
       - name: Checkout
@@ -127,6 +161,10 @@ jobs:
     name: Test (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.pm }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
+    if: |
+      github.event_name == 'push' ||
+      needs.changes.outputs.src == 'true'
+    needs: [changes]
 
     strategy:
       fail-fast: false
@@ -274,3 +312,27 @@ jobs:
           path: |
             tests/
             !tests/node_modules/
+
+  # Required status check for branch protection.
+  # Always runs on pull_request — posts green when jobs were skipped (docs-only PR),
+  # posts red when any job failed. Set THIS job as the required check, not the
+  # individual lint/validate/security/test jobs.
+  ci-required:
+    name: CI Required
+    runs-on: ubuntu-latest
+    if: always() && github.event_name == 'pull_request'
+    needs: [changes, lint, validate, security, test]
+    steps:
+      - name: Check results
+        run: |
+          results='${{ toJSON(needs) }}'
+          echo "Job results: $results"
+          if echo "$results" | grep -q '"result": "failure"'; then
+            echo "One or more CI jobs failed."
+            exit 1
+          fi
+          if echo "$results" | grep -q '"result": "cancelled"'; then
+            echo "One or more CI jobs were cancelled."
+            exit 1
+          fi
+          echo "All CI checks passed or were skipped (docs-only change)."
