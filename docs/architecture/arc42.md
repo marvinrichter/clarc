@@ -1,6 +1,6 @@
 # arc42 Architecture Documentation — clarc
 
-> **clarc** v0.9.0 · Workflow OS for AI coding assistants
+> **clarc** v1.0.0 · Workflow OS for AI coding assistants
 > Generated: 2026-03-12 · Render diagrams: [PlantUML online](https://www.plantuml.com/plantuml/uml/) or VS Code PlantUML extension
 
 ---

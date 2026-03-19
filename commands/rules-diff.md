@@ -31,7 +31,7 @@ node ~/.clarc/scripts/update-rules.js --dry-run
 ```
 clarc rules-diff — comparing installed vs upstream
 
-Installed: v0.8.5  →  Available: v0.9.0
+Installed: v0.8.5  →  Available: v1.0.0
 
 + rules/kotlin/coding-style.md     (NEW)
 + rules/kotlin/testing.md          (NEW)

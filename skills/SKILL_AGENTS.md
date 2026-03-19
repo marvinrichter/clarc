@@ -262,7 +262,7 @@ These skills exist but are not declared in any agent's `uses_skills`. Consider a
 - `color-theory`
 - `compliance-audit`
 - `conference-abstract`
-- `configure-ecc`
+- `configure-clarc`
 - `content-engine`
 - `content-hash-cache-patterns`
 - `context-management`

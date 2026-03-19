@@ -1,0 +1,35 @@
+--- Codebase Map (2026-03-18) ---
+Hot files (recently modified):
+  CONTRIBUTING.md                            [41L]
+  commands/article-polish.md                 [93L]
+  commands/article.md                        [99L]
+  rules/common/agents.md                     [142L]
+  agents/article-editor.md                   [140L]
+  commands/article-draft.md                  [43L]
+  commands/article-idea.md                   [47L]
+  commands/article-outline.md                [59L]
+  commands/article-review.md                 [57L]
+  skills/article-strategy/SKILL.md           [103L]
+  skills/article-writing/SKILL.md            [149L]
+  docs/hub/architecture.html                 [258L]
+  docs/hub/diagrams/component-hooks.svg      [1L]
+  docs/hub/diagrams/container.svg            [1L]
+  docs/hub/diagrams/context.svg              [1L]
+  docs/hub/diagrams/deployment.svg           [1L]
+  docs/hub/diagrams/runtime-learning.svg     [1L]
+  docs/hub/diagrams/runtime-session.svg      [1L]
+  docs/hub/style.css                         [576L]
+  scripts/ci/generate-hub.js                 [1776L]
+
+Structure (22 dirs, 1169 files):
+  skills/                265 files
+  commands/              178 files
+  .cursor/               120 files
+  docs/                  117 files
+  rules/                 107 files
+  .opencode/             96 files
+  scripts/               84 files
+  agents/                63 files
+
+Run /repomap --refresh to regenerate.
+---

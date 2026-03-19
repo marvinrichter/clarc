@@ -47,10 +47,10 @@ clarc doctor — checking your installation
 ✅ Hooks: active (12 hooks)
 ✅ Symlinks: 59 healthy
 ⚠️  MEMORY.md: 193 lines (approaching 200-line limit — clean up soon)
-✅ clarc version: 0.9.0
-⚠️  Update available: 0.9.0 → 1.0.0
+✅ clarc version: 1.0.0
+✅  clarc is up to date
    → Run: cd ~/.clarc && git pull
-⚠️  Rules: v0.8.5 → v0.9.0 available (47 days ago)
+⚠️  Rules: v0.9.0 → v1.0.0 available (47 days ago)
    → Run: /update-rules  or  cd ~/.clarc && git pull && ./install.sh
 
 3 warnings

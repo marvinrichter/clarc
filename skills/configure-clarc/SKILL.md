@@ -1,24 +1,24 @@
 ---
-name: configure-ecc
+name: configure-clarc
 description: Interactive installer for clarc — guides users through selecting and installing skills and rules to user-level or project-level directories, verifies paths, and optionally optimizes installed files.
 ---
 
-# Configure clarc (ECC)
+# Configure clarc
 
 An interactive, step-by-step installation wizard for the clarc project. Uses `AskUserQuestion` to guide users through selective installation of skills and rules, then verifies correctness and offers optimization.
 
 ## When to Activate
 
-- User says "configure ecc", "install ecc", "setup everything claude code", or similar
+- User says "configure clarc", "install clarc", "setup clarc", or similar
 - User wants to selectively install skills or rules from this project
-- User wants to verify or fix an existing ECC installation
+- User wants to verify or fix an existing clarc installation
 - User wants to optimize installed skills or rules for their project
 
 ## Prerequisites
 
 This skill must be accessible to Claude Code before activation. Two ways to bootstrap:
-1. **Via Plugin**: `/plugin install everything-claude-code` — the plugin loads this skill automatically
-2. **Manual**: Copy only this skill to `~/.claude/skills/configure-ecc/SKILL.md`, then activate by saying "configure ecc"
+1. **Via install**: `npx github:marvinrichter/clarc` — the wizard installs this skill automatically
+2. **Manual**: Copy only this skill to `~/.claude/skills/configure-clarc/SKILL.md`, then activate by saying "configure clarc"
 
 ---
 

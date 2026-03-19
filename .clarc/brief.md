@@ -35,7 +35,7 @@ tests/            Test suite for scripts
 ## Key conventions
 - File naming: lowercase with hyphens (`python-reviewer.md`, `tdd-workflow.md`)
 - Commit format: conventional commits (feat/fix/chore/docs/test/perf/ci), English
-- Versioning: canonical in `package.json` (current: 0.9.0, pre-launch)
+- Versioning: canonical in `package.json` (current: 1.0.0)
 - Branching: one branch + PR per roadmap topic, never commit directly to `main`
 - No git push without explicit user request
 

@@ -1,6 +1,6 @@
 {
   "name": "@marvinrichter/clarc",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.",
   "keywords": [
     "claude-code",

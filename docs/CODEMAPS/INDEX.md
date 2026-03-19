@@ -1,7 +1,7 @@
 # clarc Codemap Index
 
 **Last Updated:** 2026-03-12
-**Version:** 0.9.0 (pre-launch)
+**Version:** 1.0.0
 **Entry Points:** `install.sh`, `scripts/setup-wizard.js`, `mcp-server/index.js`
 
 ## Architecture Overview

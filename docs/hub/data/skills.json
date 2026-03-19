@@ -422,14 +422,14 @@
     "dir": "conference-abstract"
   },
   {
-    "name": "configure-ecc",
+    "name": "configure-clarc",
     "description": "Interactive installer for clarc — guides users through selecting and installing skills and rules to user-level or project-level directories, verifies paths, and optionally optimizes installed files.",
     "category": "General",
-    "whenToUse": "- User says \"configure ecc\", \"install ecc\", \"setup everything claude code\", or similar - User wants to selectively install skills or rules from this project - User wants to verify or fix an existing ECC installation",
+    "whenToUse": "- User says \"configure clarc\", \"install clarc\", \"setup clarc\", or similar - User wants to selectively install skills or rules from this project - User wants to verify or fix an existing clarc installation",
     "usedByAgents": [],
-    "installCmd": "npx github:marvinrichter/clarc --install-skill configure-ecc",
-    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/configure-ecc/SKILL.md",
-    "dir": "configure-ecc"
+    "installCmd": "npx github:marvinrichter/clarc --install-skill configure-clarc",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/configure-clarc/SKILL.md",
+    "dir": "configure-clarc"
   },
   {
     "name": "content-engine",

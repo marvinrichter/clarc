@@ -39,7 +39,7 @@ Expected output:
 ✅ Skills: 248 installed
 ✅ Commands: 172 installed
 ✅ Hooks: active
-✅ clarc version: 0.9.0
+✅ clarc version: 1.0.0
 
 All checks passed!
 ```

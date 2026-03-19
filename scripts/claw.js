@@ -66,7 +66,7 @@ function appendTurn(filePath, role, content, timestamp) {
 
 // ─── Context & Delegation Pipeline ──────────────────────────────────────────
 
-function loadECCContext(skillList) {
+function loadClarcContext(skillList) {
   const raw = skillList !== undefined ? skillList : (process.env.CLAW_SKILLS || '');
   if (!raw.trim()) {
     return '';
@@ -173,7 +173,7 @@ function main() {
   fs.mkdirSync(clawDir, { recursive: true });
 
   const sessionPath = getSessionPath(sessionName);
-  const eccContext = loadECCContext();
+  const eccContext = loadClarcContext();
 
   const requestedSkills = (process.env.CLAW_SKILLS || '').split(',').map(s => s.trim()).filter(Boolean);
   const loadedCount = requestedSkills.filter(name =>
@@ -252,7 +252,7 @@ export {
   listSessions,
   loadHistory,
   appendTurn,
-  loadECCContext,
+  loadClarcContext,
   askClaude,
   buildPrompt,
   isValidSessionName,

@@ -94,4 +94,4 @@ For new scripts (`scripts/*.js`): follow TDD — write the test in `tests/` befo
 
 ## Versioning
 
-The canonical version is in `package.json`. All version references across the project (README badges, install scripts, changelogs) must match `package.json`. Current version: `0.9.0` (pre-launch).
+The canonical version is in `package.json`. All version references across the project (README badges, install scripts, changelogs) must match `package.json`. Current version: `1.0.0`.
