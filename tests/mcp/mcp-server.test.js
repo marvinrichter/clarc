@@ -179,7 +179,7 @@ test('tdd-guide.md can be read and has frontmatter', () => {
   const agentFile = path.join(AGENTS_DIR, 'tdd-guide.md');
   assert(fs.existsSync(agentFile), 'tdd-guide.md not found');
   const content = fs.readFileSync(agentFile, 'utf8');
-  const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   assert(fmMatch !== null, 'tdd-guide.md has no frontmatter');
 });
 
