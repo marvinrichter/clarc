@@ -1353,11 +1353,29 @@ function runTests() {
 
   if (
     test('getGitModifiedFiles with empty array returns all modified files', () => {
-      // With an empty patterns array, every file should match (no filter applied)
-      const withEmpty = utils.getGitModifiedFiles([]);
-      const withNone = utils.getGitModifiedFiles();
-      // Both should return the same list (no filtering)
-      assert.deepStrictEqual(withEmpty, withNone, 'Empty patterns array should behave same as no patterns');
+      // Use an isolated git repo so this test is immune to real-repo git state changes
+      // caused by parallel tests that temporarily modify repo files (e.g. evaluate-session.test.js).
+      const tmpDir = fs.mkdtempSync(utils.getTempDir() + '/clarc-r31-');
+      const origCwd = process.cwd();
+      try {
+        spawnSync('git', ['init'], { cwd: tmpDir });
+        spawnSync('git', ['config', 'user.email', 'test@test.com'], { cwd: tmpDir });
+        spawnSync('git', ['config', 'user.name', 'Test'], { cwd: tmpDir });
+        fs.writeFileSync(path.join(tmpDir, 'test.txt'), 'hello');
+        spawnSync('git', ['add', '.'], { cwd: tmpDir });
+        spawnSync('git', ['commit', '-m', 'init', '--no-gpg-sign'], { cwd: tmpDir });
+        fs.writeFileSync(path.join(tmpDir, 'test.txt'), 'modified');
+
+        process.chdir(tmpDir);
+        // With an empty patterns array, every file should match (no filter applied)
+        const withEmpty = utils.getGitModifiedFiles([]);
+        const withNone = utils.getGitModifiedFiles();
+        // Both should return the same list (no filtering)
+        assert.deepStrictEqual(withEmpty, withNone, 'Empty patterns array should behave same as no patterns');
+      } finally {
+        process.chdir(origCwd);
+        fs.rmSync(tmpDir, { recursive: true, force: true });
+      }
     })
   )
     passed++;
