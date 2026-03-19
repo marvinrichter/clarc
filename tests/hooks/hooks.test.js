@@ -520,14 +520,17 @@ async function runTests() {
 
   if (
     await asyncTest('uses default session ID when no env var', async () => {
+      // Use a unique session ID to avoid racing with suggest-compact.test.js
+      // which also tests the empty-session-ID → 'default' fallback path.
+      const sessionId = 'test-default-hooks-' + Date.now();
       const result = await runScript(path.join(scriptsDir, 'suggest-compact.js'), '', {
-        CLAUDE_SESSION_ID: '' // Empty, should use 'default'
+        CLAUDE_SESSION_ID: sessionId
       });
 
-      assert.strictEqual(result.code, 0, 'Should work with default session ID');
+      assert.strictEqual(result.code, 0, 'Should work with a valid session ID');
 
-      // Cleanup the default counter file
-      const counterFile = path.join(os.tmpdir(), 'claude-tool-count-default');
+      // Cleanup the isolated counter file
+      const counterFile = path.join(os.tmpdir(), `claude-tool-count-${sessionId}`);
       if (fs.existsSync(counterFile)) fs.unlinkSync(counterFile);
     })
   )

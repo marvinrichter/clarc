@@ -224,7 +224,7 @@ function main() {
 
   if (isDisabled()) return passthrough();
 
-  let transcriptPath = null;
+  let transcriptPath;
   try {
     const input = JSON.parse(stdinData);
     transcriptPath = input.transcript_path;

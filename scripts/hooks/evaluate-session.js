@@ -40,7 +40,7 @@ process.stdin.on('end', () => {
 
 async function main() {
   // Parse stdin JSON to get transcript_path
-  let transcriptPath = null;
+  let transcriptPath;
   try {
     const input = JSON.parse(stdinData);
     transcriptPath = input.transcript_path;

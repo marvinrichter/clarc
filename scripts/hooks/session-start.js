@@ -645,7 +645,7 @@ function loadLocalSkills(cwd) {
     const skillFile = path.join(skillsDir, entry.name, 'SKILL.md');
     if (!fs.existsSync(skillFile)) continue;
 
-    let content = '';
+    let content;
     try {
       content = fs.readFileSync(skillFile, 'utf8');
     } catch {
