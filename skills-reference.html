@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Reference — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Skills Reference.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › Skills Reference</p>
+    <h1 class="page-title">Skills Reference</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html" class="active">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#how-skills-work">How Skills Work</a></li>
+    <li class="toc-item toc-level-2"><a href="#skill-categories">Skill Categories</a></li>
+    <li class="toc-item toc-level-3"><a href="#methodology">Methodology</a></li>
+    <li class="toc-item toc-level-3"><a href="#language-patterns">Language Patterns</a></li>
+    <li class="toc-item toc-level-3"><a href="#architecture">Architecture</a></li>
+    <li class="toc-item toc-level-3"><a href="#infrastructure-devops">Infrastructure &amp; DevOps</a></li>
+    <li class="toc-item toc-level-3"><a href="#data">Data</a></li>
+    <li class="toc-item toc-level-3"><a href="#visual-design">Visual Design</a></li>
+    <li class="toc-item toc-level-3"><a href="#testing">Testing</a></li>
+    <li class="toc-item toc-level-3"><a href="#security">Security</a></li>
+    <li class="toc-item toc-level-3"><a href="#aiml">AI/ML</a></li>
+    <li class="toc-item toc-level-2"><a href="#finding-skills">Finding Skills</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="skills-reference">Skills Reference</h1>
+<p>Skills are knowledge files loaded on-demand when Claude detects they're relevant. They encode domain expertise: patterns, conventions, examples, anti-patterns.</p>
+<h2 id="how-skills-work">How Skills Work</h2>
+<p>Skills are not commands — they don't require invocation. Claude loads them automatically when the task context matches. You can also reference them explicitly:</p>
+<pre><code>Use the clarc-way skill to understand the development methodology.
+Load the postgres-patterns skill for this query optimization.</code></pre>
+<h2 id="skill-categories">Skill Categories</h2>
+<h3 id="methodology">Methodology</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>clarc-way</code></td><td>The clarc Way — full development methodology, skip matrix, pipeline</td></tr><tr><td><code>debugging-workflow</code></td><td>Systematic debugging — reproduce, isolate, hypothesize, verify</td></tr><tr><td><code>tdd-workflow</code></td><td>Test-Driven Development — RED/GREEN/IMPROVE cycle</td></tr><tr><td><code>search-first</code></td><td>Research-before-coding — find existing solutions first</td></tr><tr><td><code>subagent-context-retrieval</code></td><td>Progressive context loading for large codebases</td></tr></tbody></table>
+<h3 id="language-patterns">Language Patterns</h3>
+<table><thead><tr><th>Skill</th><th>Languages</th></tr></thead><tbody><tr><td><code>typescript-patterns</code></td><td>TypeScript strict mode, utility types, module patterns</td></tr><tr><td><code>typescript-patterns-advanced</code></td><td>Mapped types, conditional types, template literals</td></tr><tr><td><code>python-patterns</code></td><td>PEP 8, idiomatic Python, async patterns</td></tr><tr><td><code>python-patterns-advanced</code></td><td>Metaclasses, descriptors, protocol-based design</td></tr><tr><td><code>go-patterns</code></td><td>Idiomatic Go, error handling, interface design</td></tr><tr><td><code>go-patterns-advanced</code></td><td>Generics, concurrency patterns, testing</td></tr><tr><td><code>swift-patterns</code></td><td>Value types, protocols, Combine</td></tr><tr><td><code>swift-patterns-advanced</code></td><td>Macros, result builders, advanced concurrency</td></tr><tr><td><code>rust-patterns</code></td><td>Ownership, error handling, traits</td></tr><tr><td><code>java-patterns</code></td><td>Spring Boot, DI, hexagonal architecture</td></tr><tr><td><code>kotlin-patterns</code></td><td>Coroutines, null safety, sealed classes</td></tr><tr><td><code>ruby-patterns</code></td><td>Rails idioms, ActiveRecord, RSpec</td></tr><tr><td><code>elixir-patterns</code></td><td>GenServer, Supervisors, OTP design</td></tr><tr><td><code>cpp-patterns</code></td><td>C++20, RAII, smart pointers</td></tr><tr><td><code>php-patterns</code></td><td>PHP 8.4+, PSR-12, readonly classes</td></tr></tbody></table>
+<h3 id="architecture">Architecture</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>hexagonal-typescript</code></td><td>Ports &amp; adapters in TypeScript</td></tr><tr><td><code>hexagonal-java</code></td><td>Hexagonal architecture in Java/Spring</td></tr><tr><td><code>ddd-typescript</code></td><td>Domain-Driven Design in TypeScript</td></tr><tr><td><code>ddd-java</code></td><td>DDD in Java</td></tr><tr><td><code>strategic-ddd</code></td><td>Bounded contexts, context mapping</td></tr><tr><td><code>cqrs-event-sourcing</code></td><td>CQRS patterns, event stores</td></tr><tr><td><code>api-design</code></td><td>REST API design, versioning, RFC 7807 errors</td></tr><tr><td><code>api-contract</code></td><td>Contract-first API design with OpenAPI</td></tr><tr><td><code>graphql-patterns</code></td><td>Schema design, resolvers, subscriptions</td></tr><tr><td><code>grpc-patterns</code></td><td>Protocol Buffers, streaming, service mesh</td></tr></tbody></table>
+<h3 id="infrastructure-devops">Infrastructure &amp; DevOps</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>kubernetes-patterns</code></td><td>Pods, Services, operators, health checks</td></tr><tr><td><code>docker-patterns</code></td><td>Multi-stage builds, compose, networking</td></tr><tr><td><code>terraform-patterns</code></td><td>IaC patterns, modules, state management</td></tr><tr><td><code>ci-cd-patterns</code></td><td>GitHub Actions, deployment strategies</td></tr><tr><td><code>serverless-patterns</code></td><td>Lambda, cold starts, event-driven</td></tr><tr><td><code>edge-patterns</code></td><td>Edge functions, CDN, distributed state</td></tr><tr><td><code>gitops-patterns</code> (via skill)</td><td>ArgoCD, Flux, progressive delivery</td></tr></tbody></table>
+<h3 id="data">Data</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>postgres-patterns</code></td><td>Query optimization, indexes, RLS, Supabase</td></tr><tr><td><code>database-migrations</code></td><td>Schema evolution, rollback, zero-downtime</td></tr><tr><td><code>nosql-patterns</code></td><td>MongoDB, DynamoDB, Redis data modeling</td></tr><tr><td><code>duckdb-patterns</code></td><td>Embedded analytics, OLAP queries</td></tr><tr><td><code>data-engineering</code></td><td>Pipelines, transformations, quality</td></tr><tr><td><code>caching-patterns</code></td><td>Cache invalidation, TTL strategies, Redis</td></tr></tbody></table>
+<h3 id="visual-design">Visual Design</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>visual-identity</code></td><td>Brand color palette, logo brief, brand voice, mood board, guidelines</td></tr><tr><td><code>typography-design</code></td><td>Typeface selection, pairing rules, modular scale, line-height, rendering</td></tr><tr><td><code>color-theory</code></td><td>Harmony rules, color psychology, dark mode strategy, OKLCH, colorblind patterns</td></tr><tr><td><code>icon-system</code></td><td>Icon library selection, SVG tokens, SVGO, sprite sheets, accessibility</td></tr><tr><td><code>illustration-style</code></td><td>Style brief writing, SVG techniques, character sheets, AI-assisted illustration</td></tr><tr><td><code>design-system</code></td><td>Design tokens, component layers (Primitive→Composite→Pattern), theming, Storybook</td></tr><tr><td><code>figma-to-code</code></td><td>Figma Variables → Style Dictionary → CSS/Tailwind sync pipeline</td></tr><tr><td><code>design-ops</code></td><td>Figma organization, handoff workflow, design QA, token sync CI, governance</td></tr><tr><td><code>css-architecture</code></td><td>Tailwind conventions, CSS Modules, fluid typography, container queries</td></tr><tr><td><code>wireframing</code></td><td>Fidelity levels, ASCII wireframes, user flow diagrams, IA mapping, annotations</td></tr><tr><td><code>ux-micro-patterns</code></td><td>Empty states, loading states, error states, progressive disclosure</td></tr><tr><td><code>dashboard-design</code></td><td>KPI hierarchy, filter patterns, drill-down, real-time updates</td></tr><tr><td><code>motion-animation</code></td><td>CSS transitions, Framer Motion, prefers-reduced-motion</td></tr><tr><td><code>data-visualization</code></td><td>Chart type selection, D3.js, accessible charts, colorblind-safe palettes</td></tr><tr><td><code>accessibility</code></td><td>WCAG 2.2, semantic HTML, ARIA, keyboard navigation, screen reader testing</td></tr><tr><td><code>accessibility-patterns</code></td><td>Focus management, skip links, dialog patterns, automated testing</td></tr><tr><td><code>marketing-design</code></td><td>OG images, social card specs, HTML email templates, banner dimensions</td></tr><tr><td><code>generative-ai-design</code></td><td>AI image prompting (Midjourney/DALL-E/Flux), style consistency, post-processing</td></tr><tr><td><code>visual-testing</code></td><td>Visual regression: Chromatic/Percy/Playwright, baseline management</td></tr><tr><td><code>presentation-design</code></td><td>Presentation narrative, slide density, opening/closing, slide types</td></tr><tr><td><code>liquid-glass-design</code></td><td>iOS 26 Liquid Glass — SwiftUI/UIKit/WidgetKit</td></tr></tbody></table>
+<h3 id="testing">Testing</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>tdd-workflow</code></td><td>TDD cycle, test isolation, mocking</td></tr><tr><td><code>e2e-testing</code></td><td>Playwright, test journeys, flaky test handling</td></tr><tr><td><code>contract-testing</code></td><td>Pact, consumer-driven contracts</td></tr><tr><td><code>load-testing</code></td><td>k6, Locust, performance thresholds</td></tr><tr><td><code>visual-testing</code></td><td>Visual regression, screenshot diffs</td></tr></tbody></table>
+<h3 id="security">Security</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>auth-patterns</code></td><td>OAuth, JWT, session management</td></tr><tr><td><code>gdpr-privacy</code></td><td>PII handling, consent, RTBF, DPA</td></tr><tr><td><code>supply-chain-security</code></td><td>SBOM, SLSA, provenance, pinned deps</td></tr><tr><td><code>security-review</code></td><td>OWASP checklist, threat modeling</td></tr></tbody></table>
+<h3 id="aiml">AI/ML</h3>
+<table><thead><tr><th>Skill</th><th>What it covers</th></tr></thead><tbody><tr><td><code>llm-app-patterns</code></td><td>Prompt engineering, structured output, RAG</td></tr><tr><td><code>rag-patterns</code></td><td>Retrieval-Augmented Generation</td></tr><tr><td><code>eval-harness</code></td><td>LLM evaluation frameworks</td></tr><tr><td><code>cost-aware-llm-pipeline</code></td><td>Token optimization, caching, model selection</td></tr><tr><td><code>prompt-engineering</code></td><td>System prompts, few-shot, chain-of-thought</td></tr></tbody></table>
+<h2 id="finding-skills">Finding Skills</h2>
+<pre><code>/find-skill &lt;topic&gt;</code></pre>
+<p>Examples:</p>
+<pre><code>/find-skill postgres
+/find-skill react native
+/find-skill authentication</code></pre>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

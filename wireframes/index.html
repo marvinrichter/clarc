@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-001 · Homepage — clarc Hub Wireframe</title>
+  <link rel="stylesheet" href="wireframe.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Override body font with actual brand fonts for realistic type rendering */
+    body { font-family: 'Inter', sans-serif; }
+    .wf-display, .wf-heading-2xl, .wf-heading-xl, .wf-section-card-count, .wf-stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Wireframe meta header ──────────────────────────────────────────────── -->
+<div class="wf-meta">
+  <span class="wf-meta-title">WF-001 · Homepage</span>
+  <span class="wf-meta-info">clarc Hub Redesign · v1 Wireframe · 2026-03</span>
+  <span class="wf-meta-badge dark">Primary: Dark Mode</span>
+  <span class="wf-meta-badge light">Catalog link → WF-002</span>
+  <a href="catalog.html" style="font-size:11px;color:#1455b8;margin-left:auto">→ View Catalog Wireframe</a>
+</div>
+
+<!-- ─── Main layout: content + annotation sidebar ─────────────────────────── -->
+<div class="wf-page">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       CONTENT COLUMN
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="wf-content">
+
+    <!-- ─── WF-001-NAV: Navigation ─────────────────────────────────────── -->
+    <section class="wf-zone wf-dark">
+      <span class="wf-zone-label dark-label">WF-001-NAV · height: 52px · position: sticky top:0 · z-index: 100</span>
+      <div class="wf-nav" id="wf-nav">
+        <!-- Wordmark -->
+        <span style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; letter-spacing:-0.02em; color:#e8ecf2;">
+          clarc
+        </span>
+
+        <!-- Nav links -->
+        <div class="wf-row" style="gap:0; flex:1; justify-content:flex-end; align-items:center;">
+          <span style="color:#848fa1; font-size:13px; padding: 0 16px;">Agents</span>
+          <span style="color:#848fa1; font-size:13px; padding: 0 16px;">Skills</span>
+          <span style="color:#848fa1; font-size:13px; padding: 0 16px;">Commands</span>
+          <span style="color:#848fa1; font-size:13px; padding: 0 16px;">Docs</span>
+          <span style="color:#63a1f2; font-size:13px; padding: 0 16px; border-left:1px solid #2d3441; margin-left:8px;">
+            GitHub ↗
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-001-HERO: Hero section ──────────────────────────────────── -->
+    <section class="wf-zone wf-dark" id="wf-hero">
+      <span class="wf-zone-label dark-label">WF-001-HERO · bg: neutral-950 · full-width</span>
+      <div class="wf-hero-content">
+
+        <!-- Eyebrow label -->
+        <div class="wf-label mb-4" style="color:#848fa1; letter-spacing:0.12em;">
+          WORKFLOW OS FOR CLAUDE CODE
+        </div>
+
+        <!-- Main headline -->
+        <h1 class="wf-display mb-4" style="color:#e8ecf2; max-width:720px; margin: 0 auto 20px; font-family:'Space Grotesk',sans-serif;">
+          Structure for<br>
+          <span style="color:#63a1f2;">Claude Code.</span>
+        </h1>
+
+        <!-- Tagline -->
+        <p class="wf-body-lg mb-8 muted" style="max-width:560px; margin: 0 auto 32px; color:#848fa1;">
+          61 agents. 247 skills. 172 commands.<br>
+          Turn your AI assistant into an engineering system.
+        </p>
+
+        <!-- Install CTA -->
+        <div class="wf-install-cmd mb-6" style="margin-bottom:24px;">
+          <span style="color:#37c99a; flex-shrink:0;">$</span>
+          <span style="flex:1;">npx github:marvinrichter/clarc</span>
+          <span style="color:#454e5c; font-size:11px; cursor:pointer;">⎘ copy</span>
+        </div>
+
+        <!-- Secondary CTA -->
+        <div class="wf-row" style="justify-content:center; gap:12px; margin-bottom:64px;">
+          <div style="border:1px solid #1455b8; color:#63a1f2; padding:8px 20px; border-radius:2px; font-size:13px;">
+            Browse Agents →
+          </div>
+          <div style="border:1px dashed #454e5c; color:#848fa1; padding:8px 20px; border-radius:2px; font-size:13px;">
+            Read Docs
+          </div>
+        </div>
+
+        <!-- Stat numbers -->
+        <div class="wf-grid-3" style="max-width:560px; margin:0 auto; gap:0;">
+          <div class="tc">
+            <div class="wf-stat-number" style="font-family:'Space Grotesk',sans-serif;">61</div>
+            <div class="wf-stat-label">Agents</div>
+          </div>
+          <div class="tc" style="border-left:1px solid #2d3441; border-right:1px solid #2d3441;">
+            <div class="wf-stat-number" style="font-family:'Space Grotesk',sans-serif;">247</div>
+            <div class="wf-stat-label">Skills</div>
+          </div>
+          <div class="tc">
+            <div class="wf-stat-number" style="font-family:'Space Grotesk',sans-serif;">172</div>
+            <div class="wf-stat-label">Commands</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── WF-001-CONCEPT: What is clarc ──────────────────────────────── -->
+    <section class="wf-zone" id="wf-concept" style="background:#fff;">
+      <span class="wf-zone-label">WF-001-CONCEPT · 2-col: 40/60 · stacks on mobile</span>
+      <div class="wf-container py-16">
+        <div class="wf-grid-2">
+
+          <!-- Left: concept text -->
+          <div>
+            <div class="wf-label mb-4" style="color:#848fa1;">What is clarc</div>
+            <h2 class="wf-heading-2xl mb-4" style="font-family:'Space Grotesk',sans-serif; color:#101620;">
+              Not an assistant.<br>An engineering system.
+            </h2>
+            <p class="wf-body mb-4" style="color:#626d7e; line-height:1.7;">
+              clarc installs into <code style="background:#f2f4f7;padding:2px 6px;border-radius:2px;font-size:12px;">~/.claude/</code> and wires 61 specialized agents, 247 domain skills, and 172 slash commands into a structured, opinionated workflow.
+            </p>
+
+            <!-- Feature list -->
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">
+              <div class="wf-row" style="align-items:flex-start; gap:12px;">
+                <span style="color:#1455b8; font-size:18px; flex-shrink:0;">→</span>
+                <div>
+                  <div style="font-weight:600; font-size:14px; color:#101620; margin-bottom:2px;">Agents route automatically</div>
+                  <div style="font-size:13px; color:#626d7e;">Write Go code → go-reviewer invoked. Fail a build → build-error-resolver. No config.</div>
+                </div>
+              </div>
+              <div class="wf-row" style="align-items:flex-start; gap:12px;">
+                <span style="color:#1455b8; font-size:18px; flex-shrink:0;">→</span>
+                <div>
+                  <div style="font-weight:600; font-size:14px; color:#101620; margin-bottom:2px;">Skills load on demand</div>
+                  <div style="font-size:13px; color:#626d7e;">247 deep workflow patterns. Only loaded when relevant. Zero context overhead.</div>
+                </div>
+              </div>
+              <div class="wf-row" style="align-items:flex-start; gap:12px;">
+                <span style="color:#1455b8; font-size:18px; flex-shrink:0;">→</span>
+                <div>
+                  <div style="font-weight:600; font-size:14px; color:#101620; margin-bottom:2px;">Gets better with use</div>
+                  <div style="font-size:13px; color:#626d7e;">Continuous learning flywheel extracts patterns from every session.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: terminal mockup -->
+          <div>
+            <div class="wf-terminal" style="border-radius:4px; min-height:280px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #2d3441;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#454e5c;display:inline-block;"></span>
+                <span style="width:10px;height:10px;border-radius:50%;background:#454e5c;display:inline-block;"></span>
+                <span style="width:10px;height:10px;border-radius:50%;background:#454e5c;display:inline-block;"></span>
+                <span style="font-size:10px; color:#454e5c; margin-left:8px;">clarc — zsh</span>
+              </div>
+              <div class="prompt">$ <span class="cmd">npx github:marvinrichter/clarc typescript</span></div>
+              <div class="output" style="margin-top:8px;">
+                <span class="success">✓</span> clarc v0.9.0 installed<br>
+                <span class="success">✓</span> 61 agents linked → ~/.claude/agents/<br>
+                <span class="success">✓</span> 247 skills linked → ~/.claude/skills/<br>
+                <span class="success">✓</span> TypeScript rules active<br>
+                <span class="success">✓</span> Hooks wired<br>
+              </div>
+              <div style="margin-top:16px;">
+                <div class="prompt">$ <span class="cmd">/tdd</span></div>
+                <div class="output" style="margin-top:6px;">
+                  <span class="accent">tdd-guide</span> activated<br>
+                  Writing tests first for <span class="accent">UserService</span>...<br>
+                  <span class="success">RED</span> → <span class="success">GREEN</span> → <span class="success">REFACTOR</span> ✓
+                </div>
+              </div>
+            </div>
+            <div class="wf-label mt-2" style="color:#848fa1; text-align:center; font-size:10px;">
+              TERMINAL OUTPUT — Geist Mono · text-sm
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-001-CATALOG: Catalog entry cards ────────────────────────── -->
+    <section class="wf-zone" id="wf-catalog" style="background:#f2f4f7;">
+      <span class="wf-zone-label">WF-001-CATALOG · 3-col grid · hover: border-brand</span>
+      <div class="wf-container py-12">
+        <h2 class="wf-heading-xl mb-4" style="font-family:'Space Grotesk',sans-serif; color:#101620; text-align:center;">
+          Everything, indexed.
+        </h2>
+        <p class="wf-body mb-8" style="color:#626d7e; text-align:center; max-width:480px; margin: 0 auto 48px;">
+          Browse the full catalog or search across all agents, skills, and commands at once.
+        </p>
+
+        <div class="wf-grid-3" style="gap:16px;">
+
+          <!-- Agents -->
+          <a href="catalog.html" style="text-decoration:none;">
+            <div class="wf-section-card">
+              <div class="wf-section-card-count" style="font-family:'Space Grotesk',sans-serif;">61</div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; color:#101620;">Agents</div>
+              <p style="font-size:13px; color:#626d7e; line-height:1.6; flex:1;">
+                Specialized subagents for code review, architecture, testing, security, and more. Invoked automatically based on context.
+              </p>
+              <div style="font-size:13px; color:#1455b8; font-weight:500; margin-top:8px;">Browse agents →</div>
+            </div>
+          </a>
+
+          <!-- Skills -->
+          <a href="catalog.html" style="text-decoration:none;">
+            <div class="wf-section-card">
+              <div class="wf-section-card-count" style="font-family:'Space Grotesk',sans-serif;">247</div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; color:#101620;">Skills</div>
+              <p style="font-size:13px; color:#626d7e; line-height:1.6; flex:1;">
+                Deep workflow patterns for 40+ frameworks and practices. Loaded on demand — zero context overhead when not in use.
+              </p>
+              <div style="font-size:13px; color:#1455b8; font-weight:500; margin-top:8px;">Browse skills →</div>
+            </div>
+          </a>
+
+          <!-- Commands -->
+          <a href="catalog.html" style="text-decoration:none;">
+            <div class="wf-section-card">
+              <div class="wf-section-card-count" style="font-family:'Space Grotesk',sans-serif;">172</div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; color:#101620;">Commands</div>
+              <p style="font-size:13px; color:#626d7e; line-height:1.6; flex:1;">
+                Slash commands that activate workflows in Claude Code. <code style="background:#e8ecf2; padding:1px 5px; border-radius:2px; font-size:11px;">/tdd</code> <code style="background:#e8ecf2; padding:1px 5px; border-radius:2px; font-size:11px;">/plan</code> <code style="background:#e8ecf2; padding:1px 5px; border-radius:2px; font-size:11px;">/e2e</code> and 169 more.
+              </p>
+              <div style="font-size:13px; color:#1455b8; font-weight:500; margin-top:8px;">Browse commands →</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-001-FEATURED: Featured agents ───────────────────────────── -->
+    <section class="wf-zone" id="wf-featured" style="background:#fff;">
+      <span class="wf-zone-label">WF-001-FEATURED · 3 representative agent cards</span>
+      <div class="wf-container py-12">
+
+        <div class="wf-row mb-8" style="align-items:baseline;">
+          <h2 class="wf-heading-xl" style="font-family:'Space Grotesk',sans-serif; color:#101620;">Featured Agents</h2>
+          <div class="sp"></div>
+          <a style="font-size:13px; color:#1455b8;">View all 61 agents →</a>
+        </div>
+
+        <div class="wf-grid-3" style="gap:16px; margin-bottom:48px;">
+
+          <!-- Card 1: code-reviewer -->
+          <div class="wf-card">
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">code-reviewer</div>
+              <span class="wf-badge">Code Review</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1;">
+              Detects file language, routes to specialist reviewer. Falls back to universal security + quality checks. Use after any code change.
+            </p>
+            <div class="wf-pills">
+              <span style="font-size:10px; color:#848fa1; margin-right:2px;">routes to:</span>
+              <span class="wf-pill">typescript-reviewer</span>
+              <span class="wf-pill">go-reviewer</span>
+              <span class="wf-pill">+8</span>
+            </div>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge">● sonnet</span>
+              <span style="font-size:11px; color:#848fa1; border:1px dashed #dde3ee; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Card 2: tdd-guide -->
+          <div class="wf-card">
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">tdd-guide</div>
+              <span class="wf-badge">Testing</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1;">
+              Enforces write-tests-first methodology. Ensures 80%+ coverage. Use proactively when writing new features, fixing bugs, or refactoring.
+            </p>
+            <div class="wf-pills">
+              <span style="font-size:10px; color:#848fa1; margin-right:2px;">uses:</span>
+              <span class="wf-pill">tdd-workflow</span>
+              <span class="wf-pill">python-testing</span>
+            </div>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge">● sonnet</span>
+              <span style="font-size:11px; color:#848fa1; border:1px dashed #dde3ee; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Card 3: planner -->
+          <div class="wf-card">
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">planner</div>
+              <span class="wf-badge" style="background:#d1fae5;color:#065f46;">Architecture</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1;">
+              Task decomposition and planning specialist. Produces PRDs, task breakdowns, timelines. Use when users need WHAT tasks to execute.
+            </p>
+            <div class="wf-pills">
+              <span style="font-size:10px; color:#848fa1; margin-right:2px;">uses:</span>
+              <span class="wf-pill">product-lifecycle</span>
+              <span class="wf-pill">adr-writing</span>
+            </div>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge">● opus</span>
+              <span style="font-size:11px; color:#848fa1; border:1px dashed #dde3ee; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-001-INSTALL: Install CTA strip ─────────────────────────── -->
+    <section class="wf-zone wf-dark" id="wf-install">
+      <span class="wf-zone-label dark-label">WF-001-INSTALL · full-width dark strip · bg: neutral-900</span>
+      <div class="wf-container py-16 tc">
+        <h2 class="wf-heading-xl mb-4" style="font-family:'Space Grotesk',sans-serif; color:#e8ecf2; max-width:480px; margin:0 auto 16px;">
+          One command to wire it all.
+        </h2>
+        <p class="mb-6" style="color:#848fa1; font-size:14px; margin-bottom:32px;">
+          Installs into <code style="background:#2d3441;padding:2px 6px;border-radius:2px;font-size:12px;">~/.claude/</code> via symlinks. Uninstall is <code style="background:#2d3441;padding:2px 6px;border-radius:2px;font-size:12px;">rm ~/.clarc</code>. No surprises.
+        </p>
+        <div class="wf-install-cmd" style="margin-bottom:24px;">
+          <span style="color:#37c99a;">$</span>
+          <span>npx github:marvinrichter/clarc</span>
+          <span style="color:#454e5c;font-size:11px;cursor:pointer;margin-left:auto;">⎘ copy</span>
+        </div>
+        <div style="font-size:12px; color:#454e5c; margin-top:16px;">
+          or: <code style="color:#848fa1;">npx github:marvinrichter/clarc typescript</code>
+          · <code style="color:#848fa1;">npx github:marvinrichter/clarc python</code>
+          · <code style="color:#848fa1;">npx github:marvinrichter/clarc --copy</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-001-FOOTER: Footer ──────────────────────────────────────── -->
+    <section class="wf-zone wf-dark" id="wf-footer">
+      <span class="wf-zone-label dark-label">WF-001-FOOTER · bg: neutral-950</span>
+      <div class="wf-container py-8" style="border-top:1px solid #2d3441;">
+        <div class="wf-row">
+          <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:#626d7e;">clarc</span>
+          <span style="font-size:11px; color:#454e5c; margin-left:8px;">v0.9.0</span>
+          <div class="sp"></div>
+          <div style="display:flex; gap:20px;">
+            <span style="font-size:12px; color:#626d7e;">GitHub ↗</span>
+            <span style="font-size:12px; color:#626d7e;">Agents</span>
+            <span style="font-size:12px; color:#626d7e;">Skills</span>
+            <span style="font-size:12px; color:#626d7e;">Commands</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.wf-content -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       ANNOTATION SIDEBAR
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar-header">Brand Notes · WF-001</div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-NAV</div>
+      <p>Background: <span class="wf-token color">neutral-900</span> · translucent on scroll</p>
+      <p>Wordmark: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-lg</span> · weight 600 · <span class="wf-token color">neutral-50</span></p>
+      <p>Nav links: <span class="wf-token color">neutral-400</span> → <span class="wf-token color">neutral-100</span> on hover</p>
+      <p>GitHub link: separator + <span class="wf-token color">primary-300</span></p>
+      <p>Height: 52px. Border-bottom: <span class="wf-token color">neutral-800</span> 1px</p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-HERO</div>
+      <p>Background: <span class="wf-token color">neutral-950</span> (#0a0e15)</p>
+      <p>Eyebrow: <span class="wf-token size">text-xs</span> · uppercase · <span class="wf-token color">neutral-500</span> · tracking-widest</p>
+      <p>Headline: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-5xl</span> · weight 700 · tracking-tight · "Structure for" in <span class="wf-token color">neutral-50</span>, accent word in <span class="wf-token color">primary-300</span></p>
+      <p>Tagline: <span class="wf-token font">Inter</span> <span class="wf-token size">text-lg</span> · <span class="wf-token color">neutral-400</span></p>
+      <p>Install cmd: <span class="wf-token font">Geist Mono</span> <span class="wf-token size">text-sm</span> · bg neutral-900 · border neutral-800</p>
+      <p>Stats: numbers <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-5xl</span> · <span class="wf-token color">primary-300</span> · labels neutral-500 uppercase</p>
+      <p>Padding top: 80px · bottom: 64px · centered, max-width 720px</p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-CONCEPT</div>
+      <p>Background: <span class="wf-token color">neutral-0</span> (white)</p>
+      <p>Layout: 2-col 40/60. Stacks to 1-col below 768px.</p>
+      <p>Section label: <span class="wf-token size">text-xs</span> uppercase · <span class="wf-token color">neutral-400</span></p>
+      <p>Heading: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-3xl</span></p>
+      <p>Feature arrows: <span class="wf-token color">primary-500</span> →</p>
+      <p>Terminal: bg <span class="wf-token color">neutral-950</span> · rounded-lg · prompt in <span class="wf-token color">accent-400</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-CATALOG</div>
+      <p>Background: <span class="wf-token color">neutral-50</span></p>
+      <p>Cards: bg <span class="wf-token color">neutral-0</span> · border <span class="wf-token color">neutral-200</span> dashed → solid <span class="wf-token color">primary-500</span> on hover</p>
+      <p>Count number: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-5xl</span> · <span class="wf-token color">primary-500</span></p>
+      <p>Card title: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-2xl</span> · weight 600</p>
+      <p>CTA link: <span class="wf-token color">primary-500</span> · weight 500 · no underline</p>
+      <p>Border-radius: <span class="wf-token">radius-lg</span> (8px)</p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-FEATURED</div>
+      <p>Background: <span class="wf-token color">neutral-0</span></p>
+      <p>Card name: <span class="wf-token font">Geist Mono</span> <span class="wf-token size">text-sm</span> · weight 600 · <span class="wf-token color">neutral-900</span></p>
+      <p>Category badge: bg <span class="wf-token color">primary-100</span> · text <span class="wf-token color">primary-700</span> · <span class="wf-token size">text-xs</span> · uppercase · tracking-wide</p>
+      <p>Description: <span class="wf-token font">Inter</span> <span class="wf-token size">text-sm</span> · <span class="wf-token color">neutral-500</span> · 3-line clamp</p>
+      <p>Skill pills: bg <span class="wf-token color">primary-50</span> · border <span class="wf-token color">primary-200</span> · text <span class="wf-token color">primary-600</span></p>
+      <p>Model badge: ● dot + text · <span class="wf-token color">accent-500</span> for sonnet · <span class="wf-token color">warning-500</span> for opus</p>
+      <p>Card hover: border-color → <span class="wf-token color">primary-500</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-INSTALL</div>
+      <p>Background: <span class="wf-token color">neutral-900</span></p>
+      <p>Heading: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-2xl</span> · <span class="wf-token color">neutral-50</span></p>
+      <p>Install block: same as HERO install cmd</p>
+      <p>Variant commands: <span class="wf-token font">Geist Mono</span> · <span class="wf-token color">neutral-400</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-001-FOOTER</div>
+      <p>Background: <span class="wf-token color">neutral-950</span></p>
+      <p>Logo: <span class="wf-token color">neutral-500</span> (subdued)</p>
+      <p>Version badge: <span class="wf-token color">neutral-700</span></p>
+      <p>Links: <span class="wf-token color">neutral-500</span> → <span class="wf-token color">neutral-300</span> on hover</p>
+    </div>
+
+    <div class="wf-note" style="background:#e0e7ff;">
+      <div class="wf-note-ref" style="color:#3730a3;">GLOBAL</div>
+      <p><strong>Max-width:</strong> 1200px · padding: 0 32px</p>
+      <p><strong>Grid gap:</strong> 16px (cards) · 32px (2-col)</p>
+      <p><strong>Border-radius:</strong> 2px (tight) / 4px (cards) / 8px (modals)</p>
+      <p><strong>No gradients.</strong> Flat fills only.</p>
+      <p><strong>No rounded corners on wordmark.</strong></p>
+      <p><strong>Primary mode:</strong> Dark (neutral-950 base)</p>
+      <p><strong>Fonts to load:</strong> Space Grotesk (400/600/700) · Inter (400/500/600) · Geist Mono (400/500)</p>
+    </div>
+
+  </aside>
+
+</div><!-- /.wf-page -->
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Guide — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. MCP Guide.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › MCP Guide</p>
+    <h1 class="page-title">MCP Guide</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html" class="active">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#when-to-use-mcp-vs-cli-commands">When to Use MCP vs CLI Commands</a></li>
+    <li class="toc-item toc-level-2"><a href="#tool-reference">Tool Reference</a></li>
+    <li class="toc-item toc-level-3"><a href="#shared-library-tools-mcp-and-cli-use-the-same-logic">Shared-library tools (MCP and CLI use the same logic)</a></li>
+    <li class="toc-item toc-level-3"><a href="#unique-mcp-tools-no-cli-equivalent">Unique MCP tools (no CLI equivalent)</a></li>
+    <li class="toc-item toc-level-2"><a href="#setup">Setup</a></li>
+    <li class="toc-item toc-level-3"><a href="#claude-desktop-cursor-other-mcp-clients">Claude Desktop / Cursor / other MCP clients</a></li>
+    <li class="toc-item toc-level-3"><a href="#as-self-hosted-clarc-inspecting-itself">As self-hosted (clarc inspecting itself)</a></li>
+    <li class="toc-item toc-level-3"><a href="#cicd-health-checks">CI/CD health checks</a></li>
+    <li class="toc-item toc-level-2"><a href="#examples">Examples</a></li>
+    <li class="toc-item toc-level-3"><a href="#check-which-agents-use-a-specific-skill">Check which agents use a specific skill</a></li>
+    <li class="toc-item toc-level-3"><a href="#search-skills-from-an-agent">Search skills from an agent</a></li>
+    <li class="toc-item toc-level-3"><a href="#detect-project-type-for-a-given-directory">Detect project type for a given directory</a></li>
+    <li class="toc-item toc-level-3"><a href="#health-check-for-ci-gate">Health check for CI gate</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="clarc-mcp-server-guide">clarc MCP Server Guide</h1>
+<h2 id="when-to-use-mcp-vs-cli-commands">When to Use MCP vs CLI Commands</h2>
+<table><thead><tr><th>Surface</th><th>Audience</th><th>Output Format</th><th>Use When</th></tr></thead><tbody><tr><td><strong>MCP tools</strong></td><td>Agents, CI/CD, programmatic clients</td><td>Structured JSON</td><td>Another AI tool or pipeline needs clarc data</td></tr><tr><td><strong>CLI commands</strong></td><td>Humans in terminal</td><td>Formatted prose + checklists</td><td>You are working interactively in Claude Code</td></tr></tbody></table>
+<p><strong>Rule of thumb:</strong> If you are a human typing in a terminal, use CLI commands (<code>/find-skill</code>, <code>/clarc-way</code>). If you are an agent or script consuming data, use MCP tools.</p>
+<hr>
+<h2 id="tool-reference">Tool Reference</h2>
+<h3 id="shared-library-tools-mcp-and-cli-use-the-same-logic">Shared-library tools (MCP and CLI use the same logic)</h3>
+<table><thead><tr><th>MCP Tool</th><th>CLI Equivalent</th><th>What they share</th></tr></thead><tbody><tr><td><code>skill_search</code></td><td><code>/find-skill</code></td><td><code>scripts/lib/skill-search.js</code></td></tr><tr><td><code>get_project_context</code></td><td>session-start.js detection</td><td><code>scripts/lib/project-detect.js</code></td></tr></tbody></table>
+<p>These return the same results. MCP returns JSON; CLI returns formatted terminal output.</p>
+<h3 id="unique-mcp-tools-no-cli-equivalent">Unique MCP tools (no CLI equivalent)</h3>
+<table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody><tr><td><code>get_component_graph</code></td><td>Agent→skill dependency graph. Answers &quot;which agents use skill X?&quot; or &quot;what skills does agent Y need?&quot;. Reads <code>uses_skills</code> from agent frontmatter.</td></tr><tr><td><code>get_health_status</code></td><td>Installation health check: symlink status, hook registration, INDEX.md freshness. Designed for CI/CD pipelines.</td></tr><tr><td><code>get_instinct_status</code></td><td>Learned instincts with confidence scores. Useful for meta-agents inspecting clarc's learned patterns.</td></tr><tr><td><code>get_session_context</code></td><td>Latest session snapshot. Useful for agent-to-agent context passing.</td></tr><tr><td><code>agent_describe</code></td><td>Full agent instructions. Useful for meta-agents that need to inspect or compose with clarc agents.</td></tr><tr><td><code>rule_check</code></td><td>Rule file content. Useful for compliance checking in CI.</td></tr></tbody></table>
+<hr>
+<h2 id="setup">Setup</h2>
+<h3 id="claude-desktop-cursor-other-mcp-clients">Claude Desktop / Cursor / other MCP clients</h3>
+<p>Add to your client's MCP config:</p>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;clarc&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;/path/to/.clarc/mcp-server/index.js&quot;]
+    }
+  }
+}</code></pre>
+<p>For clarc installed via symlink at <code>~/.clarc/</code>:</p>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;clarc&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;${HOME}/.clarc/mcp-server/index.js&quot;]
+    }
+  }
+}</code></pre>
+<h3 id="as-self-hosted-clarc-inspecting-itself">As self-hosted (clarc inspecting itself)</h3>
+<p>Use <code>mcp-configs/clarc-self.json</code>:</p>
+<pre><code class="language-bash"># In ~/.claude/settings.json
+{
+  &quot;mcpServers&quot;: {
+    &quot;clarc-self&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;${CLAUDE_PLUGIN_ROOT}/mcp-server/index.js&quot;]
+    }
+  }
+}</code></pre>
+<h3 id="cicd-health-checks">CI/CD health checks</h3>
+<pre><code class="language-yaml"># .github/workflows/clarc-health.yml
+- name: Check clarc health
+  run: |
+    echo '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;get_health_status&quot;,&quot;arguments&quot;:{}}}' \
+      | node .clarc/mcp-server/index.js | jq '.result.content[0].text | fromjson | .healthy'</code></pre>
+<hr>
+<h2 id="examples">Examples</h2>
+<h3 id="check-which-agents-use-a-specific-skill">Check which agents use a specific skill</h3>
+<pre><code class="language-json">{ &quot;tool&quot;: &quot;get_component_graph&quot;, &quot;arguments&quot;: { &quot;skill&quot;: &quot;typescript-patterns&quot; } }</code></pre>
+<p>Returns:</p>
+<pre><code class="language-json">{
+  &quot;skill_to_agents&quot;: {
+    &quot;typescript-patterns&quot;: [&quot;typescript-reviewer&quot;, &quot;code-reviewer&quot;, &quot;frontend-architect&quot;]
+  }
+}</code></pre>
+<h3 id="search-skills-from-an-agent">Search skills from an agent</h3>
+<pre><code class="language-json">{ &quot;tool&quot;: &quot;skill_search&quot;, &quot;arguments&quot;: { &quot;query&quot;: &quot;react state management&quot;, &quot;limit&quot;: 5 } }</code></pre>
+<h3 id="detect-project-type-for-a-given-directory">Detect project type for a given directory</h3>
+<pre><code class="language-json">{ &quot;tool&quot;: &quot;get_project_context&quot;, &quot;arguments&quot;: { &quot;cwd&quot;: &quot;/path/to/project&quot; } }</code></pre>
+<h3 id="health-check-for-ci-gate">Health check for CI gate</h3>
+<pre><code class="language-json">{ &quot;tool&quot;: &quot;get_health_status&quot;, &quot;arguments&quot;: { &quot;check&quot;: &quot;symlinks&quot; } }</code></pre>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

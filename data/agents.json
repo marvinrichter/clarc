@@ -1,0 +1,1273 @@
+[
+  {
+    "name": "agent-quality-reviewer",
+    "description": "Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision, exit criteria, examples, overlap detection, and safety guardrails. Produces a scored JSON report. Use via /agent-audit or called by agent-system-reviewer during full system review.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "prompt-engineering"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent agent-quality-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/agent-quality-reviewer.md",
+    "filename": "agent-quality-reviewer.md"
+  },
+  {
+    "name": "agent-system-reviewer",
+    "description": "Orchestrates a full clarc system review by synthesizing results from all component analyzers (agent-quality-reviewer, skill-depth-analyzer, command-auditor, hook-auditor), cross-component validators, and systemic effectiveness tools into a unified Priority Matrix with P0/P1/P2 classification. Uses Opus for deep architectural reasoning. Called by /system-review full.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "multi-agent-patterns"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent agent-system-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/agent-system-reviewer.md",
+    "filename": "agent-system-reviewer.md"
+  },
+  {
+    "name": "android-reviewer",
+    "description": "Expert Android code reviewer specializing in Jetpack Compose best practices, Hilt DI scoping, Room migrations, ViewModel/UiState patterns, and Coroutine Dispatcher correctness. Use for all Kotlin/Android code changes. MUST BE USED for Android/Compose projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "kotlin-patterns",
+      "kotlin-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent android-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/android-reviewer.md",
+    "filename": "android-reviewer.md"
+  },
+  {
+    "name": "architect",
+    "description": "System design and architecture specialist. Use PROACTIVELY when users need HOW to structure the system — component boundaries, ADRs, C4/arc42 diagrams, scalability decisions. For task lists and implementation timelines (WHAT to build), use the planner agent instead.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "arc42-c4",
+      "ddd-typescript",
+      "hexagonal-typescript",
+      "api-design"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/architect.md",
+    "filename": "architect.md"
+  },
+  {
+    "name": "article-editor",
+    "description": "Editorial critique for blog posts, essays, guides, and long-form articles — evaluates structure, opening strength, voice consistency, evidence quality, banned patterns, and SEO basics. Use after writing a first draft to get structured, actionable improvement feedback before publishing.",
+    "tools": [
+      "Read",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "article-writing",
+      "article-strategy"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent article-editor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/article-editor.md",
+    "filename": "article-editor.md"
+  },
+  {
+    "name": "bash-reviewer",
+    "description": "Reviews Bash/shell scripts for correctness, safety, idiomatic style, and portability. Checks set -euo pipefail, quoting, shellcheck issues, security (no eval, mktemp, path quoting), BATS test coverage, and formatting via shfmt. Invoked by code-reviewer for .sh/.bash/.zsh files.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "bash-patterns",
+      "bash-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent bash-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/bash-reviewer.md",
+    "filename": "bash-reviewer.md"
+  },
+  {
+    "name": "build-error-resolver",
+    "description": "Build error resolution specialist for any language — TypeScript, Go, Python, Java, and more. Use PROACTIVELY when builds fail, type errors occur, or compilation breaks. Fixes errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "verification-loop"
+    ],
+    "category": "CI / CD",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent build-error-resolver",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/build-error-resolver.md",
+    "filename": "build-error-resolver.md"
+  },
+  {
+    "name": "c-reviewer",
+    "description": "Expert C code reviewer specializing in C11/C17 idioms, memory safety (malloc/free discipline, no double-free), opaque pointer encapsulation, error code patterns, goto cleanup, safe string functions, and AddressSanitizer/Valgrind integration. Use for all C code changes. MUST BE USED for C projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "c-patterns",
+      "c-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent c-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/c-reviewer.md",
+    "filename": "c-reviewer.md"
+  },
+  {
+    "name": "code-reviewer",
+    "description": "Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, ruby-reviewer, elixir-reviewer, rust-reviewer, cpp-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash",
+      "Agent"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "security-review",
+      "tdd-workflow"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent code-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/code-reviewer.md",
+    "filename": "code-reviewer.md"
+  },
+  {
+    "name": "command-auditor",
+    "description": "Audits clarc commands for UX ergonomics across 8 dimensions — naming consistency, argument design, feedback loops, step count, agent invocation, overlap detection, missing commands, and built-in conflicts. Produces a tabellarische overview and issue list. Use via /command-audit or called by agent-system-reviewer.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "cli-ux"
+    ],
+    "category": "clarc System",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent command-auditor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/command-auditor.md",
+    "filename": "command-auditor.md"
+  },
+  {
+    "name": "competitive-analyst",
+    "description": "Systematically researches competitors to map features, pricing, positioning, recent releases, and market gaps. Produces a feature matrix and opportunity list that feeds directly into idea discovery. Use with /discover or when asked to analyze the competitive landscape. For clarc vs. AI coding tools specifically → use workflow-os-competitor-analyst.",
+    "tools": [
+      "WebSearch",
+      "Read",
+      "Write",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "market-research"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent competitive-analyst",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/competitive-analyst.md",
+    "filename": "competitive-analyst.md"
+  },
+  {
+    "name": "contract-reviewer",
+    "description": "Reviews API changes for contract breaks. Given git diff of API definitions and existing consumer pacts, classifies each change as BREAKING / NON-BREAKING / ADDITIVE and produces a migration plan. Use when modifying any API (REST, event schema, GraphQL).",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "haiku",
+    "usesSkills": [
+      "api-design",
+      "contract-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent contract-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/contract-reviewer.md",
+    "filename": "contract-reviewer.md"
+  },
+  {
+    "name": "cpp-reviewer",
+    "description": "Expert C++ code reviewer specializing in C++ Core Guidelines, modern C++20/23, memory safety, RAII, and performance. Use for all C++ code changes. MUST BE USED for C++ projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "cpp-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent cpp-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/cpp-reviewer.md",
+    "filename": "cpp-reviewer.md"
+  },
+  {
+    "name": "csharp-reviewer",
+    "description": "Expert C# code reviewer specializing in C# 12/.NET 8 idioms, nullable reference types, async/await correctness, records, pattern matching, CQRS with MediatR, Entity Framework Core, SQL injection, mass assignment, secret management, Roslyn analyzers. Use for all C# code changes. MUST BE USED for C#/.NET projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "csharp-patterns",
+      "csharp-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent csharp-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/csharp-reviewer.md",
+    "filename": "csharp-reviewer.md"
+  },
+  {
+    "name": "data-architect",
+    "description": "Data Mesh architecture specialist. Analyzes business domains to identify data products, assigns ownership, recommends technology stack (Lakehouse, Catalog, Contract Testing), and creates a migration plan from centralized data warehouse to Data Mesh. Use when designing a new data platform or migrating an existing one.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash",
+      "Write"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "data-engineering"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent data-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/data-architect.md",
+    "filename": "data-architect.md"
+  },
+  {
+    "name": "database-reviewer",
+    "description": "PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.",
+    "tools": [
+      "Read",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "sql-patterns",
+      "database-migrations",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent database-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/database-reviewer.md",
+    "filename": "database-reviewer.md"
+  },
+  {
+    "name": "design-critic",
+    "description": "Reviews visual designs and gives structured critique covering composition, visual hierarchy, typography, color, brand coherence, and accessibility. Works from screenshots, wireframes, written descriptions, or code (HTML/CSS). Does not generate designs — evaluates existing ones.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "layout-composition",
+      "typography-design",
+      "visual-identity",
+      "creative-direction"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent design-critic",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/design-critic.md",
+    "filename": "design-critic.md"
+  },
+  {
+    "name": "design-system-reviewer",
+    "description": "Comprehensive design system audit — reviews CSS/token structure, dark mode implementation, icon system, accessibility compliance, design-code consistency, and component completeness. Routes findings across visual design dimensions and produces a prioritized remediation plan. Use when auditing a frontend codebase for design quality, before a major UI release, or when design system debt has accumulated.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "design-system",
+      "css-architecture"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent design-system-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/design-system-reviewer.md",
+    "filename": "design-system-reviewer.md"
+  },
+  {
+    "name": "devsecops-reviewer",
+    "description": "Infrastructure and CI/CD security reviewer — scans Terraform, Dockerfiles, Kubernetes manifests, GitHub Actions workflows, and dependency lockfiles for misconfigurations, supply chain risks, and pipeline vulnerabilities. For application-code OWASP/injection/auth issues, use security-reviewer instead.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "supply-chain-security",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent devsecops-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/devsecops-reviewer.md",
+    "filename": "devsecops-reviewer.md"
+  },
+  {
+    "name": "doc-updater",
+    "description": "Documentation and codemap specialist. Use PROACTIVELY after structural changes, before releases, or when codemaps are stale. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "technical-debt"
+    ],
+    "category": "Documentation",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent doc-updater",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/doc-updater.md",
+    "filename": "doc-updater.md"
+  },
+  {
+    "name": "docs-architect",
+    "description": "Expert documentation strategy agent. Analyses audience, recommends platform (Mintlify/Docusaurus/Redoc/Scalar), structures docs via Divio framework, configures OpenAPI extensions, designs changelog automation, and outputs a full CI pipeline. Invoke when planning or overhauling API documentation.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "api-design"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent docs-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/docs-architect.md",
+    "filename": "docs-architect.md"
+  },
+  {
+    "name": "e2e-runner",
+    "description": "End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "e2e-testing"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent e2e-runner",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/e2e-runner.md",
+    "filename": "e2e-runner.md"
+  },
+  {
+    "name": "elixir-reviewer",
+    "description": "Expert Elixir/Phoenix code reviewer specializing in OTP patterns, Ecto queries, security (Sobelow), and idiomatic functional Elixir. Use for all Elixir code changes.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "elixir-patterns",
+      "elixir-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent elixir-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/elixir-reviewer.md",
+    "filename": "elixir-reviewer.md"
+  },
+  {
+    "name": "feedback-analyst",
+    "description": "Analyzes qualitative user feedback (support tickets, NPS comments, app store reviews, survey responses) to identify pain points, cluster themes, and generate structured idea seeds. Use when given raw user feedback data to extract product insights.",
+    "tools": [
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "WebSearch"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "analytics-workflow"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent feedback-analyst",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/feedback-analyst.md",
+    "filename": "feedback-analyst.md"
+  },
+  {
+    "name": "finops-advisor",
+    "description": "Analyzes cloud infrastructure configuration and costs to provide prioritized optimization recommendations with ROI estimates. Use when reviewing Terraform/Kubernetes configs for cost impact or preparing a FinOps audit report.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "terraform-patterns"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent finops-advisor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/finops-advisor.md",
+    "filename": "finops-advisor.md"
+  },
+  {
+    "name": "flutter-reviewer",
+    "description": "Reviews Flutter/Dart code for idiomatic patterns, performance (missing const, unnecessary rebuilds, RepaintBoundary), accessibility, null safety misuse, async errors, and platform-specific issues. Use for all Flutter/Dart code changes.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "flutter-patterns",
+      "flutter-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent flutter-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/flutter-reviewer.md",
+    "filename": "flutter-reviewer.md"
+  },
+  {
+    "name": "frontend-architect",
+    "description": "Micro-Frontend architecture specialist. Designs MFE system architecture — team topology, integration strategy selection, routing, shared state minimization, design system integration, and migration plan from monolith. Use when building multi-team frontend systems or evaluating MFE feasibility.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash",
+      "Write"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "frontend-patterns",
+      "state-management"
+    ],
+    "category": "TypeScript / Frontend",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent frontend-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/frontend-architect.md",
+    "filename": "frontend-architect.md"
+  },
+  {
+    "name": "gitops-architect",
+    "description": "Designs GitOps setup for applications and organizations — repository structure, tool selection (ArgoCD vs Flux), environment strategy, secrets management, progressive delivery plan, and multi-cluster topology. Use when setting up or overhauling Kubernetes deployment workflows.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "kubernetes-patterns",
+      "deployment-patterns"
+    ],
+    "category": "Infrastructure",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent gitops-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/gitops-architect.md",
+    "filename": "gitops-architect.md"
+  },
+  {
+    "name": "go-build-resolver",
+    "description": "Go build error resolver — fixes go build, go vet, staticcheck, and golangci-lint failures with minimal surgical changes. Use when Go compilation fails. For non-Go build errors use build-error-resolver.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "go-patterns"
+    ],
+    "category": "Go",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent go-build-resolver",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/go-build-resolver.md",
+    "filename": "go-build-resolver.md"
+  },
+  {
+    "name": "go-reviewer",
+    "description": "Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance. Use for all Go code changes. MUST BE USED for Go projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "go-patterns",
+      "go-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent go-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/go-reviewer.md",
+    "filename": "go-reviewer.md"
+  },
+  {
+    "name": "hook-auditor",
+    "description": "Audits the clarc hook system across 8 dimensions — event coverage, false positive risk, performance impact, error handling, dead references, dead hooks, missing critical hooks, and interaction conflicts. Analyzes hooks/hooks.json and all scripts/hooks/*.js files. Use via /hook-audit or called by agent-system-reviewer.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "bash-patterns"
+    ],
+    "category": "clarc System",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent hook-auditor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/hook-auditor.md",
+    "filename": "hook-auditor.md"
+  },
+  {
+    "name": "java-reviewer",
+    "description": "Expert Java code reviewer specializing in idiomatic Java 25+, Spring Boot patterns, security, JPA, and performance. Use for all Java code changes. MUST BE USED for Java/Spring Boot projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "java-patterns",
+      "java-testing",
+      "ddd-java",
+      "hexagonal-java",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent java-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/java-reviewer.md",
+    "filename": "java-reviewer.md"
+  },
+  {
+    "name": "kotlin-reviewer",
+    "description": "Reviews Kotlin code for correctness, idiomatic style, null safety, coroutine usage, architecture patterns, and security. Covers val/var discipline, sealed classes, coEvery/coVerify, CancellationException handling, SQL injection, and ktlint compliance. Invoked by code-reviewer for .kt/.kts files.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "kotlin-patterns",
+      "kotlin-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent kotlin-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/kotlin-reviewer.md",
+    "filename": "kotlin-reviewer.md"
+  },
+  {
+    "name": "mlops-architect",
+    "description": "Designs MLOps infrastructure for ML projects — serving stack selection, monitoring setup, retraining strategy, A/B testing plan, and cost estimation. Use when deploying or operationalizing ML models.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "observability",
+      "deployment-patterns"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent mlops-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/mlops-architect.md",
+    "filename": "mlops-architect.md"
+  },
+  {
+    "name": "modernization-planner",
+    "description": "Analyzes legacy codebases and creates prioritized modernization roadmaps. Uses Churn×Complexity hotspot analysis, identifies legacy indicators (God Classes, missing tests, outdated dependencies), recommends Strangler Fig vs. Branch-by-Abstraction vs. incremental rewrite, and creates phased migration plans with risk assessment.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "legacy-modernization",
+      "technical-debt"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent modernization-planner",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/modernization-planner.md",
+    "filename": "modernization-planner.md"
+  },
+  {
+    "name": "orchestrator",
+    "description": "Multi-agent orchestration specialist. Decomposes complex tasks into subtasks, selects the optimal coordination pattern (fan-out, split-role, explorer+validator, worktree isolation, sequential pipeline), and synthesizes results. Use via /orchestrate or for any task requiring 3+ independent agents.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Agent",
+      "Bash"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "multi-agent-patterns",
+      "agent-reliability",
+      "agent-conflict-resolution"
+    ],
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent orchestrator",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator.md",
+    "filename": "orchestrator.md"
+  },
+  {
+    "name": "orchestrator-designer",
+    "description": "Designs multi-agent systems for complex tasks. Given a goal, produces: task decomposition, agent role definitions, orchestration pattern selection, failure mode analysis, and implementation plan with pseudocode. Use for architecting new multi-agent workflows.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "Write"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "multi-agent-patterns"
+    ],
+    "category": "AI / Agents",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent orchestrator-designer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/orchestrator-designer.md",
+    "filename": "orchestrator-designer.md"
+  },
+  {
+    "name": "performance-analyst",
+    "description": "Analyzes profiling output and code for performance hotspots. Interprets pprof output, flamegraphs, Lighthouse reports, and identifies N+1 queries, unnecessary allocations, blocking I/O, and missing indexes. Provides concrete, prioritized optimization recommendations with expected impact estimates.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "performance-profiling",
+      "web-performance"
+    ],
+    "category": "Performance",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent performance-analyst",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/performance-analyst.md",
+    "filename": "performance-analyst.md"
+  },
+  {
+    "name": "php-reviewer",
+    "description": "Expert PHP code reviewer specializing in PHP 8.4+ idioms, PSR-12 style, strict types, readonly classes, enums, value objects, repository pattern, Laravel/Symfony patterns, PHPStan level 9, SQL injection/XSS/CSRF prevention. Use for all PHP code changes. MUST BE USED for PHP projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "php-patterns",
+      "php-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent php-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/php-reviewer.md",
+    "filename": "php-reviewer.md"
+  },
+  {
+    "name": "planner",
+    "description": "Task decomposition and implementation planning specialist. Use PROACTIVELY when users need WHAT tasks to execute — produces PRDs, task breakdowns, timelines, and dependency maps. For HOW to structure the system (component design, ADRs, C4 diagrams), use the architect agent instead.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "arc42-c4",
+      "api-design"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent planner",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/planner.md",
+    "filename": "planner.md"
+  },
+  {
+    "name": "platform-architect",
+    "description": "Designs Internal Developer Platforms (IDPs) for engineering organizations — scope definition, IDP component prioritization, make-vs-buy decision (Backstage vs SaaS), adoption strategy, and 90-day implementation roadmap. Use when a team wants to improve developer experience at scale.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "Write"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "backstage-patterns",
+      "platform-engineering"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent platform-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/platform-architect.md",
+    "filename": "platform-architect.md"
+  },
+  {
+    "name": "presentation-designer",
+    "description": "Designs and structures presentations — creates slide decks, writes speaker notes, checks narrative flow, evaluates slide density, and ensures opening and closing land. Use for any slide deck creation or structural review.",
+    "tools": [
+      "Read",
+      "Write",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "presentation-design"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent presentation-designer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/presentation-designer.md",
+    "filename": "presentation-designer.md"
+  },
+  {
+    "name": "product-evaluator",
+    "description": "Evaluates product ideas critically before any implementation begins. Assesses problem clarity, user fit, feasibility, competitive alternatives, and opportunity cost. Produces a structured Go/No-Go recommendation. Use when a user wants to validate whether an idea is worth building.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "Write"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "product-lifecycle"
+    ],
+    "category": "Product",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent product-evaluator",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/product-evaluator.md",
+    "filename": "product-evaluator.md"
+  },
+  {
+    "name": "prompt-quality-scorer",
+    "description": "Evaluates the prompt-engineering quality of clarc agent and command instructions across 6 dimensions — specificity, completeness, output definition, ambiguity, safety coverage, and example density. Produces a ranked report of all agents/commands with scores and improvement suggestions for the lowest-scoring items.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "prompt-engineering"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-quality-scorer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/prompt-quality-scorer.md",
+    "filename": "prompt-quality-scorer.md"
+  },
+  {
+    "name": "prompt-reviewer",
+    "description": "Expert prompt engineer reviewing system prompts and prompt templates for clarity, injection vulnerabilities, ambiguity, token efficiency, and output consistency. Use when writing or auditing any LLM prompt.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "prompt-engineering"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent prompt-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/prompt-reviewer.md",
+    "filename": "prompt-reviewer.md"
+  },
+  {
+    "name": "python-reviewer",
+    "description": "Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "python-patterns",
+      "python-testing",
+      "security-review",
+      "tdd-workflow"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent python-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/python-reviewer.md",
+    "filename": "python-reviewer.md"
+  },
+  {
+    "name": "r-reviewer",
+    "description": "Expert R code reviewer specializing in tidyverse idioms, native pipe |>, purrr functional patterns, tidy evaluation, R6 classes, testthat, covr, SQL injection via DBI, Shiny input validation, renv lockfile management. Use for all R code changes. MUST BE USED for R projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "r-patterns",
+      "r-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent r-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/r-reviewer.md",
+    "filename": "r-reviewer.md"
+  },
+  {
+    "name": "refactor-cleaner",
+    "description": "Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "technical-debt"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent refactor-cleaner",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/refactor-cleaner.md",
+    "filename": "refactor-cleaner.md"
+  },
+  {
+    "name": "resilience-reviewer",
+    "description": "Reviews code and architecture for failure modes, missing circuit breakers, unprotected external calls, retry anti-patterns, and resilience gaps. Use when adding external dependencies, designing distributed system components, or before chaos experiments.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "resilience-patterns"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent resilience-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/resilience-reviewer.md",
+    "filename": "resilience-reviewer.md"
+  },
+  {
+    "name": "ruby-reviewer",
+    "description": "Expert Ruby/Rails code reviewer specializing in idiomatic Ruby, Rails best practices, security (Brakeman), performance, and N+1 detection. Use for all Ruby code changes.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "ruby-patterns",
+      "ruby-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent ruby-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/ruby-reviewer.md",
+    "filename": "ruby-reviewer.md"
+  },
+  {
+    "name": "rust-reviewer",
+    "description": "Expert Rust code reviewer specializing in ownership, borrowing, async with Tokio, error handling (thiserror/anyhow), and performance. Use for all Rust code changes. MUST BE USED for Rust projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "rust-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent rust-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/rust-reviewer.md",
+    "filename": "rust-reviewer.md"
+  },
+  {
+    "name": "scala-reviewer",
+    "description": "Expert Scala code reviewer specializing in functional programming idioms, ADT correctness, effect system usage (Cats Effect/ZIO), null safety, and Scala 3 migration patterns. Use for all .scala and .sc file changes. MUST BE USED for Scala projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "scala-patterns",
+      "scala-testing"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent scala-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/scala-reviewer.md",
+    "filename": "scala-reviewer.md"
+  },
+  {
+    "name": "sdk-architect",
+    "description": "Designs SDK architecture for APIs — generation strategy (openapi-generator vs. Speakeasy vs. manual), error hierarchy, authentication patterns, backward compatibility policy, CI release process, and documentation site recommendation. Use when building or evolving a developer-facing SDK.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "api-design"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent sdk-architect",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/sdk-architect.md",
+    "filename": "sdk-architect.md"
+  },
+  {
+    "name": "security-reviewer",
+    "description": "Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "model": "opus",
+    "usesSkills": [
+      "auth-patterns",
+      "supply-chain-security",
+      "gdpr-privacy",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent security-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/security-reviewer.md",
+    "filename": "security-reviewer.md"
+  },
+  {
+    "name": "skill-depth-analyzer",
+    "description": "Analyzes a clarc skill file for prompt-engineering quality across 7 dimensions — actionability ratio, trigger precision, example completeness, internal consistency, length calibration, cross-reference validity, and freshness. Produces a scored report. Use via /skill-depth or called by agent-system-reviewer during full system review.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "WebSearch"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "prompt-engineering"
+    ],
+    "category": "clarc System",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent skill-depth-analyzer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/skill-depth-analyzer.md",
+    "filename": "skill-depth-analyzer.md"
+  },
+  {
+    "name": "solution-designer",
+    "description": "Generates and compares multiple solution approaches for a validated product idea. Produces 2-4 concrete options with trade-off analysis and an Architecture Decision Record (ADR) recommending one approach. Use after product-evaluator has given a Go or Modify recommendation.",
+    "tools": [
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "WebSearch"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "product-lifecycle",
+      "adr-writing"
+    ],
+    "category": "Architecture",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent solution-designer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/solution-designer.md",
+    "filename": "solution-designer.md"
+  },
+  {
+    "name": "summarizer-haiku",
+    "description": "Lightweight Haiku-tier agent for summaries, boilerplate generation, routing decisions, and simple text transformations. Use instead of Sonnet for high-frequency, low-complexity tasks to reduce cost by 10–15×. NOT for code review, architecture decisions, or security analysis.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "model": "haiku",
+    "usesSkills": [],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent summarizer-haiku",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/summarizer-haiku.md",
+    "filename": "summarizer-haiku.md"
+  },
+  {
+    "name": "supply-chain-auditor",
+    "description": "Analyzes repository structure for supply chain security risks — unpinned dependencies, missing SBOM, unsigned artifacts, suspicious install scripts, unverified GitHub Actions. Use before releases and when auditing security posture.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash"
+    ],
+    "model": "haiku",
+    "usesSkills": [
+      "supply-chain-security"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent supply-chain-auditor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/supply-chain-auditor.md",
+    "filename": "supply-chain-auditor.md"
+  },
+  {
+    "name": "swift-reviewer",
+    "description": "Expert Swift code reviewer specializing in Swift concurrency, protocol-based architecture, DDD patterns, SwiftUI best practices, and performance. Use for all Swift code changes. MUST BE USED for Swift/SwiftUI projects.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "swift-patterns",
+      "swift-testing",
+      "security-review"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent swift-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/swift-reviewer.md",
+    "filename": "swift-reviewer.md"
+  },
+  {
+    "name": "talk-coach",
+    "description": "Reviews talk outlines, scripts, and slide decks — evaluates structure, timing plausibility, audience fit, clarity, narrative flow, and opening/closing strength. Use after drafting a presentation to get structured improvement feedback.",
+    "tools": [
+      "Read",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "presentation-design"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent talk-coach",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/talk-coach.md",
+    "filename": "talk-coach.md"
+  },
+  {
+    "name": "tdd-guide",
+    "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage (configurable — check project's `.nycrc`, `vitest.config.ts`, or `pytest.ini` for the project's actual threshold).",
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "tdd-workflow",
+      "python-testing",
+      "typescript-testing",
+      "go-testing",
+      "java-testing",
+      "test-data"
+    ],
+    "category": "Testing",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent tdd-guide",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/tdd-guide.md",
+    "filename": "tdd-guide.md"
+  },
+  {
+    "name": "typescript-reviewer",
+    "description": "Expert TypeScript/JavaScript code reviewer for frontend, backend, and full-stack — React, Next.js, Node.js, hexagonal architecture, DDD, type safety, security, and performance. Use for any .ts, .tsx, or .js code changes.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "typescript-patterns",
+      "typescript-testing",
+      "hexagonal-typescript",
+      "security-review",
+      "tdd-workflow"
+    ],
+    "category": "Code Review",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent typescript-reviewer",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/typescript-reviewer.md",
+    "filename": "typescript-reviewer.md"
+  },
+  {
+    "name": "workflow-os-competitor-analyst",
+    "description": "Researches and compares clarc against competing AI engineering workflow systems — Cursor, GitHub Copilot, Windsurf, Aider, Devin, and Continue.dev. Produces a feature matrix, identifies clarc-unique capabilities, and prioritizes competitive gaps. Use via /competitive-review or called by agent-system-reviewer.",
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "WebSearch"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "market-research"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent workflow-os-competitor-analyst",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/workflow-os-competitor-analyst.md",
+    "filename": "workflow-os-competitor-analyst.md"
+  }
+]

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-002 · Catalog — clarc Hub Wireframe</title>
+  <link rel="stylesheet" href="wireframe.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .wf-display, .wf-heading-2xl, .wf-heading-xl, .wf-section-card-count, .wf-stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    /* Card anatomy overlay */
+    .anatomy-diagram { position: relative; }
+    .anatomy-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 12px 16px;
+      border-bottom: 1px dashed #e8ecf2;
+    }
+    .anatomy-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #ef4444; color: white;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .anatomy-label {
+      font-size: 11px; font-weight: 700;
+      color: #dc2626; font-family: 'Courier New', monospace;
+      min-width: 80px;
+    }
+    .anatomy-spec { font-size: 11px; color: #445571; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- ─── Wireframe meta header ──────────────────────────────────────────────── -->
+<div class="wf-meta">
+  <span class="wf-meta-title">WF-002 · Catalog</span>
+  <span class="wf-meta-info">clarc Hub Redesign · v1 Wireframe · 2026-03 · Applies to: agents.html, skills.html, commands.html</span>
+  <span class="wf-meta-badge dark">Primary: Dark Mode</span>
+  <span class="wf-meta-badge">Shared Template</span>
+  <a href="index.html" style="font-size:11px;color:#1455b8;margin-left:auto">← Homepage Wireframe</a>
+</div>
+
+<!-- ─── Main layout ────────────────────────────────────────────────────────── -->
+<div class="wf-page">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       CONTENT COLUMN
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="wf-content">
+
+    <!-- ─── WF-002-NAV: Navigation (shared) ────────────────────────────── -->
+    <section class="wf-zone wf-dark">
+      <span class="wf-zone-label dark-label">WF-002-NAV · shared component — same as WF-001-NAV</span>
+      <div class="wf-nav">
+        <span style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; letter-spacing:-0.02em; color:#e8ecf2;">clarc</span>
+        <div class="wf-row" style="gap:0; flex:1; justify-content:flex-end; align-items:center;">
+          <span style="color:#63a1f2; font-size:13px; padding:0 16px; border-bottom:2px solid #1455b8;">Agents</span>
+          <span style="color:#848fa1; font-size:13px; padding:0 16px;">Skills</span>
+          <span style="color:#848fa1; font-size:13px; padding:0 16px;">Commands</span>
+          <span style="color:#848fa1; font-size:13px; padding:0 16px;">Docs</span>
+          <span style="color:#63a1f2; font-size:13px; padding:0 16px; border-left:1px solid #2d3441; margin-left:8px;">GitHub ↗</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-002-HEADER: Page header ─────────────────────────────────── -->
+    <section class="wf-zone wf-dark" id="wf-header">
+      <span class="wf-zone-label dark-label">WF-002-HEADER · bg: neutral-950 · compact hero</span>
+      <div class="wf-container" style="padding-top:48px; padding-bottom:32px;">
+
+        <div class="wf-row mb-4" style="align-items:baseline; gap:12px;">
+          <!-- Breadcrumb -->
+          <span style="font-size:12px; color:#454e5c;">clarc</span>
+          <span style="font-size:12px; color:#454e5c;">/</span>
+          <span style="font-size:12px; color:#848fa1;">agents</span>
+        </div>
+
+        <div class="wf-row" style="align-items:flex-end; gap:16px; flex-wrap:wrap;">
+          <div>
+            <h1 class="wf-heading-2xl" style="font-family:'Space Grotesk',sans-serif; color:#e8ecf2; margin-bottom:8px;">
+              Agents
+              <span style="font-size:14px; font-weight:400; color:#848fa1; font-family:'Inter',sans-serif; margin-left:8px;">61 total</span>
+            </h1>
+            <p style="font-size:14px; color:#848fa1; max-width:480px; line-height:1.6;">
+              Specialized subagents delegated by Claude Code. Invoked automatically by hooks or explicitly via the Agent tool.
+            </p>
+          </div>
+          <div class="sp"></div>
+
+          <!-- View toggle (list / grid) -->
+          <div style="display:flex; gap:0; border:1px solid #2d3441; border-radius:2px; overflow:hidden;">
+            <div style="padding:6px 10px; background:#2d3441; color:#e8ecf2; font-size:11px;">⊞ Grid</div>
+            <div style="padding:6px 10px; color:#454e5c; font-size:11px;">☰ List</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── WF-002-SEARCH: Search bar ──────────────────────────────────── -->
+    <section class="wf-zone" id="wf-search" style="background:#fff; border-bottom:1px solid #e8ecf2;">
+      <span class="wf-zone-label">WF-002-SEARCH · sticky below nav · bg: white / dark: neutral-900</span>
+      <div class="wf-container py-4">
+        <div style="position:relative; max-width:100%;">
+          <div class="wf-search">
+            <span style="color:#adb6c8; flex-shrink:0; font-size:14px;">⌕</span>
+            <span style="flex:1; color:#adb6c8;">Search 61 agents by name, category, or description...</span>
+            <span style="color:#d0d7e3; font-size:11px; font-family:'Courier New',monospace; border:1px solid #e8ecf2; padding:2px 6px; border-radius:2px; flex-shrink:0;">⌘K</span>
+          </div>
+          <!-- Result count (shown when filtering) -->
+          <div style="position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:11px; color:#848fa1; display:none;">
+            12 results
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-002-FILTERS: Category filter tabs ───────────────────────── -->
+    <section class="wf-zone" id="wf-filters" style="background:#fff; border-bottom:1px solid #e8ecf2;">
+      <span class="wf-zone-label">WF-002-FILTERS · horizontally scrollable on mobile</span>
+      <div class="wf-container" style="padding-top:12px; padding-bottom:12px; overflow-x:auto;">
+        <div class="wf-filters" style="flex-wrap:nowrap; min-width:max-content; gap:6px;">
+          <button class="wf-filter-btn active">All <span style="opacity:0.6;">(61)</span></button>
+          <button class="wf-filter-btn">Code Review <span style="opacity:0.6;">(28)</span></button>
+          <button class="wf-filter-btn">Architecture <span style="opacity:0.6;">(11)</span></button>
+          <button class="wf-filter-btn">General <span style="opacity:0.6;">(9)</span></button>
+          <button class="wf-filter-btn">Security <span style="opacity:0.6;">(3)</span></button>
+          <button class="wf-filter-btn">Testing <span style="opacity:0.6;">(3)</span></button>
+          <button class="wf-filter-btn">AI / Agents <span style="opacity:0.6;">(2)</span></button>
+          <button class="wf-filter-btn">Infrastructure <span style="opacity:0.6;">(1)</span></button>
+          <button class="wf-filter-btn">Performance <span style="opacity:0.6;">(1)</span></button>
+          <button class="wf-filter-btn">Product <span style="opacity:0.6;">(1)</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-002-GRID: Card grid ─────────────────────────────────────── -->
+    <section class="wf-zone" id="wf-grid" style="background:#f2f4f7;">
+      <span class="wf-zone-label">WF-002-GRID · 3-col desktop / 2-col tablet / 1-col mobile</span>
+      <div class="wf-container" style="padding-top:24px; padding-bottom:48px;">
+
+        <!-- Result summary -->
+        <div style="font-size:12px; color:#848fa1; margin-bottom:16px;">
+          Showing <strong style="color:#445571;">61</strong> agents · sorted A–Z
+          <span style="float:right; color:#1455b8; cursor:pointer; font-size:12px;">Sort: A–Z ↕</span>
+        </div>
+
+        <div class="wf-grid-3" style="gap:12px;">
+
+          <!-- Agent card: full spec -->
+          <div class="wf-card">
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620; word-break:break-all;">
+                agent-quality-reviewer
+              </div>
+              <span class="wf-badge">Code Review</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+              Reviews a single clarc agent file for quality across 8 dimensions — instruction clarity, model appropriateness, tool coverage, trigger precision.
+            </p>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge">● sonnet</span>
+              <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Agent card: with skill pills -->
+          <div class="wf-card" style="border-color:#1455b8; border-style:solid;">
+            <!-- HOVER STATE SHOWN -->
+            <div style="font-size:9px; color:#1455b8; font-weight:700; font-family:'Courier New',monospace; margin-bottom:4px; letter-spacing:0.06em; text-transform:uppercase;">← hover state</div>
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">architect</div>
+              <span class="wf-badge" style="background:#d1fae5;color:#065f46;">Architecture</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+              System design and architecture specialist. Use proactively when users need HOW to structure the system — component boundaries, ADRs, C4 diagrams.
+            </p>
+            <div class="wf-pills" style="margin-top:4px;">
+              <span style="font-size:10px; color:#848fa1; margin-right:2px;">uses:</span>
+              <span class="wf-pill">arc42-c4</span>
+              <span class="wf-pill">ddd-typescript</span>
+              <span class="wf-pill">api-design</span>
+            </div>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge" style="color:#d97a06;">● opus</span>
+              <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Agent card: minimal (no skills) -->
+          <div class="wf-card">
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">build-error-resolver</div>
+              <span class="wf-badge" style="background:#ede9fe;color:#5b21b6;">CI / CD</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+              Build error resolution for any language. TypeScript, Go, Python, Java. Fixes errors with minimal diffs. Focuses on getting the build green quickly.
+            </p>
+            <div class="wf-card-footer">
+              <span class="wf-model-badge">● sonnet</span>
+              <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- More placeholder cards -->
+          <div class="wf-placeholder" style="height:140px;">card 4 of 61</div>
+          <div class="wf-placeholder" style="height:140px;">card 5 of 61</div>
+          <div class="wf-placeholder" style="height:140px;">card 6 of 61</div>
+          <div class="wf-placeholder" style="height:140px;">card 7 of 61</div>
+          <div class="wf-placeholder" style="height:140px;">card 8 of 61</div>
+          <div class="wf-placeholder" style="height:140px;">card 9 of 61</div>
+
+        </div>
+
+        <!-- Load more / pagination -->
+        <div style="text-align:center; margin-top:32px;">
+          <div style="display:inline-block; border:1px solid #dde3ee; padding:8px 24px; border-radius:2px; font-size:13px; color:#626d7e; cursor:pointer;">
+            Load more agents ↓ (showing 9 of 61)
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── WF-002-EMPTY: Empty state ──────────────────────────────────── -->
+    <section class="wf-zone" id="wf-empty" style="background:#f2f4f7;">
+      <span class="wf-zone-label">WF-002-EMPTY · shown when search returns 0 results</span>
+      <div class="wf-container py-12 tc">
+        <div style="font-size:32px; margin-bottom:12px; color:#d0d7e3;">⊘</div>
+        <div style="font-size:16px; font-weight:600; color:#445571; margin-bottom:8px;">No agents found</div>
+        <div style="font-size:13px; color:#848fa1; margin-bottom:16px;">
+          No results for <code style="background:#e8ecf2; padding:2px 6px; border-radius:2px;">"rust linter"</code>
+        </div>
+        <div style="font-size:12px; color:#1455b8; cursor:pointer;">Clear search →</div>
+      </div>
+    </section>
+
+    <!-- ─── WF-002-ANATOMY: Card anatomy diagram ───────────────────────── -->
+    <section class="wf-zone" id="wf-anatomy" style="background:#fff; border-top:2px solid #fbbf24;">
+      <span class="wf-zone-label">WF-002-ANATOMY · Implementation reference: card structure</span>
+      <div class="wf-container py-8">
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; color:#101620; margin-bottom:24px;">
+          Card Anatomy — Agent Card
+        </h3>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+
+          <!-- Annotated card specimen -->
+          <div class="anatomy-diagram">
+            <div class="wf-card" style="border:2px dashed #fbbf24; position:relative;">
+
+              <!-- Zone A: Header -->
+              <div style="background:#fffbeb; border:1px dashed #fbbf24; border-radius:2px; padding:8px; margin-bottom:8px;">
+                <div style="font-size:9px; color:#92400e; font-weight:700; font-family:'Courier New',monospace; margin-bottom:6px;">A — CARD HEADER</div>
+                <div class="wf-card-header">
+                  <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">agent-name</div>
+                  <span class="wf-badge">Category</span>
+                </div>
+              </div>
+
+              <!-- Zone B: Description -->
+              <div style="background:#f0fdf4; border:1px dashed #86efac; border-radius:2px; padding:8px; margin-bottom:8px;">
+                <div style="font-size:9px; color:#166534; font-weight:700; font-family:'Courier New',monospace; margin-bottom:6px;">B — DESCRIPTION (3-line clamp)</div>
+                <p style="font-size:12px; color:#626d7e; line-height:1.6;">
+                  Short description of what this agent does and when to invoke it. Maximum 3 lines visible.
+                </p>
+              </div>
+
+              <!-- Zone C: Skill pills (optional) -->
+              <div style="background:#eff6ff; border:1px dashed #93c5fd; border-radius:2px; padding:8px; margin-bottom:8px;">
+                <div style="font-size:9px; color:#1e40af; font-weight:700; font-family:'Courier New',monospace; margin-bottom:6px;">C — SKILL PILLS (conditional: only if uses_skills)</div>
+                <div class="wf-pills">
+                  <span style="font-size:10px; color:#848fa1; margin-right:2px;">uses:</span>
+                  <span class="wf-pill">skill-a</span>
+                  <span class="wf-pill">skill-b</span>
+                </div>
+              </div>
+
+              <!-- Zone D: Footer -->
+              <div style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:2px; padding:8px;">
+                <div style="font-size:9px; color:#991b1b; font-weight:700; font-family:'Courier New',monospace; margin-bottom:6px;">D — CARD FOOTER</div>
+                <div class="wf-card-footer" style="border-top:none; padding-top:0; margin-top:0;">
+                  <span class="wf-model-badge">● sonnet</span>
+                  <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Spec breakdown -->
+          <div>
+            <div class="anatomy-row">
+              <div class="anatomy-num">A</div>
+              <div>
+                <div class="anatomy-label">HEADER</div>
+                <div class="anatomy-spec">
+                  Name: <span class="wf-token font">Geist Mono</span> <span class="wf-token size">text-sm</span> · weight 600 · <span class="wf-token color">neutral-900</span><br>
+                  Badge: <span class="wf-token size">text-xs</span> uppercase · bg <span class="wf-token color">primary-100</span> text <span class="wf-token color">primary-700</span><br>
+                  Badge colors vary by category (see token map)
+                </div>
+              </div>
+            </div>
+            <div class="anatomy-row">
+              <div class="anatomy-num">B</div>
+              <div>
+                <div class="anatomy-label">DESCRIPTION</div>
+                <div class="anatomy-spec">
+                  <span class="wf-token font">Inter</span> <span class="wf-token size">text-sm</span> · <span class="wf-token color">neutral-500</span> · line-height 1.6<br>
+                  3-line clamp: <code style="font-size:10px;">-webkit-line-clamp: 3</code><br>
+                  Source: <code style="font-size:10px;">meta.description</code> or first paragraph
+                </div>
+              </div>
+            </div>
+            <div class="anatomy-row">
+              <div class="anatomy-num">C</div>
+              <div>
+                <div class="anatomy-label">SKILL PILLS</div>
+                <div class="anatomy-spec">
+                  Conditional: only rendered if <code style="font-size:10px;">uses_skills.length > 0</code><br>
+                  <span class="wf-token font">Inter</span> <span class="wf-token size">text-xs</span> · bg <span class="wf-token color">primary-50</span> · border <span class="wf-token color">primary-200</span> · text <span class="wf-token color">primary-600</span><br>
+                  Max display: 3 pills + "+N more" if overflow
+                </div>
+              </div>
+            </div>
+            <div class="anatomy-row">
+              <div class="anatomy-num">D</div>
+              <div>
+                <div class="anatomy-label">FOOTER</div>
+                <div class="anatomy-spec">
+                  Model badge: ● dot + model name<br>
+                  sonnet → <span style="color:#178f68; font-weight:600;">accent-500</span><br>
+                  opus → <span style="color:#d97a06; font-weight:600;">warning-500</span><br>
+                  haiku → <span style="color:#848fa1; font-weight:600;">neutral-400</span><br>
+                  Source link: ghost button · opens GitHub in new tab
+                </div>
+              </div>
+            </div>
+
+            <!-- Category badge color map -->
+            <div style="margin-top:16px; background:#f8f9fa; border:1px dashed #dde3ee; border-radius:4px; padding:16px;">
+              <div style="font-size:10px; font-weight:700; color:#445571; font-family:'Courier New',monospace; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.06em;">
+                Category Badge Color Map
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#dbeafe;color:#1e3a8a;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">Code Review</span>
+                  <span style="font-size:10px;color:#848fa1;">primary</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#d1fae5;color:#065f46;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">Architecture</span>
+                  <span style="font-size:10px;color:#848fa1;">success</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#ede9fe;color:#5b21b6;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">CI / CD</span>
+                  <span style="font-size:10px;color:#848fa1;">violet</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#fef3c7;color:#92400e;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">Security</span>
+                  <span style="font-size:10px;color:#848fa1;">warning</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#fee2e2;color:#991b1b;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">AI / Agents</span>
+                  <span style="font-size:10px;color:#848fa1;">error-tint</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:#f1f5f9;color:#475569;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;">General</span>
+                  <span style="font-size:10px;color:#848fa1;">neutral</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── WF-002-SKILLS: Skills page variant ─────────────────────────── -->
+    <section class="wf-zone" id="wf-skills" style="background:#f2f4f7;">
+      <span class="wf-zone-label">WF-002-SKILLS · skills.html variant — note diff from agents</span>
+      <div class="wf-container py-8">
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:#101620; margin-bottom:16px;">
+          Skills card — differences from Agent card
+        </h3>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:900px;">
+
+          <!-- Skills card specimen -->
+          <div class="wf-card" style="border:2px dashed #86efac;">
+            <div style="font-size:9px; color:#166534; font-weight:700; font-family:'Courier New',monospace; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">
+              Skill card variant
+            </div>
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:13px; font-weight:600; color:#101620;">typescript-patterns</div>
+              <span class="wf-badge" style="background:#dbeafe;color:#1e3a8a;">TypeScript</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1;">
+              TypeScript patterns: strict mode, type utilities, branded types, domain modeling, hexagonal architecture.
+            </p>
+            <!-- Used-by agents (reverse relation) -->
+            <div class="wf-pills" style="margin-top:4px;">
+              <span style="font-size:10px; color:#848fa1; margin-right:2px;">used by:</span>
+              <span style="background:rgba(23,144,104,0.08); border:1px solid rgba(23,144,104,0.2); color:#0e6a4d; font-size:10px; padding:2px 7px; border-radius:3px;">typescript-reviewer</span>
+              <span style="background:rgba(23,144,104,0.08); border:1px solid rgba(23,144,104,0.2); color:#0e6a4d; font-size:10px; padding:2px 7px; border-radius:3px;">+3</span>
+            </div>
+            <div class="wf-card-footer">
+              <span style="font-size:10px; color:#848fa1;">on-demand skill</span>
+              <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Explanation box -->
+          <div style="background:#fff; border:1px dashed #fbbf24; border-radius:4px; padding:16px; font-size:12px; color:#445571; grid-column:span 2;">
+            <div style="font-size:10px; font-weight:700; color:#92400e; font-family:'Courier New',monospace; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">
+              Skills diff from Agents
+            </div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; padding:0;">
+              <li>→ No model badge (skills are content, not agents)</li>
+              <li>→ "used by:" pills instead of "uses:" (reverse relation) — accent green pills not primary blue</li>
+              <li>→ Footer shows "on-demand skill" label instead of model tier</li>
+              <li>→ Card name uses skill directory name (kebab-case), always monospace</li>
+              <li>→ Category derived from skill family (<code style="font-size:10px;">skill_family</code> frontmatter field)</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WF-002-COMMANDS: Commands page variant ─────────────────────── -->
+    <section class="wf-zone" id="wf-commands" style="background:#fff;">
+      <span class="wf-zone-label">WF-002-COMMANDS · commands.html variant — slash command display</span>
+      <div class="wf-container py-8">
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:#101620; margin-bottom:16px;">
+          Commands card — distinct treatment
+        </h3>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:900px;">
+
+          <!-- Command card specimen -->
+          <div class="wf-card" style="border:2px dashed #a78bfa;">
+            <div style="font-size:9px; color:#5b21b6; font-weight:700; font-family:'Courier New',monospace; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">
+              Command card variant
+            </div>
+            <div class="wf-card-header">
+              <div style="font-family:'Courier New',monospace; font-size:15px; font-weight:700; color:#1455b8; letter-spacing:-0.02em;">/tdd</div>
+              <span class="wf-badge" style="background:#dbeafe;color:#1e3a8a;">Testing</span>
+            </div>
+            <p style="font-size:12px; color:#626d7e; line-height:1.6; flex:1;">
+              Enforce test-driven development. Invokes tdd-guide agent, ensures write-tests-first, verifies 80%+ coverage before marking work complete.
+            </p>
+            <div class="wf-card-footer">
+              <code style="font-size:11px; color:#848fa1; background:#f2f4f7; padding:2px 6px; border-radius:2px;">/tdd</code>
+              <span style="font-size:11px; color:#848fa1; border:1px solid #e8ecf2; padding:2px 8px; border-radius:2px;">Source ↗</span>
+            </div>
+          </div>
+
+          <!-- Explanation box -->
+          <div style="background:#f5f3ff; border:1px dashed #a78bfa; border-radius:4px; padding:16px; font-size:12px; color:#445571; grid-column:span 2;">
+            <div style="font-size:10px; font-weight:700; color:#5b21b6; font-family:'Courier New',monospace; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">
+              Commands diff from Agents
+            </div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; padding:0;">
+              <li>→ Slash command name is the primary visual: <span style="font-family:'Courier New',monospace; color:#1455b8; font-weight:700;">/name</span> prominent, <span class="wf-token size">text-lg</span>, <span class="wf-token color">primary-500</span></li>
+              <li>→ No model badge (commands invoke agents indirectly)</li>
+              <li>→ Footer shows the command name as a copyable code chip</li>
+              <li>→ No skill pills — commands are entry points, not structured with uses_skills</li>
+              <li>→ Background of command name cell: very light tint of <span class="wf-token color">primary-50</span></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.wf-content -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       ANNOTATION SIDEBAR
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar-header">Brand Notes · WF-002</div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-HEADER</div>
+      <p>Background: <span class="wf-token color">neutral-950</span></p>
+      <p>Breadcrumb: <span class="wf-token size">text-xs</span> · <span class="wf-token color">neutral-600</span> → <span class="wf-token color">neutral-400</span> (active)</p>
+      <p>Title: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-3xl</span> · count inline as <span class="wf-token size">text-sm</span> <span class="wf-token color">neutral-500</span></p>
+      <p>Description: <span class="wf-token font">Inter</span> <span class="wf-token size">text-sm</span> · <span class="wf-token color">neutral-400</span></p>
+      <p>View toggle: <span class="wf-token color">neutral-800</span> border · active bg <span class="wf-token color">neutral-700</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-SEARCH</div>
+      <p>Sticky below nav. z-index: 90 (below nav).</p>
+      <p>Background: <span class="wf-token color">neutral-0</span> light / <span class="wf-token color">neutral-900</span> dark</p>
+      <p>Border: bottom 1px <span class="wf-token color">neutral-100</span></p>
+      <p>Input: <span class="wf-token font">Inter</span> <span class="wf-token size">text-base</span> · placeholder <span class="wf-token color">neutral-300</span></p>
+      <p>Focus: border-color → <span class="wf-token color">primary-500</span> · outline: none</p>
+      <p>Search icon: <span class="wf-token color">neutral-300</span> (magnifying glass, 16px)</p>
+      <p>⌘K shortcut shown as kbd chip: <span class="wf-token font">Geist Mono</span> <span class="wf-token size">text-xs</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-FILTERS</div>
+      <p>Sticky below search. bg: <span class="wf-token color">neutral-0</span> / <span class="wf-token color">neutral-900</span></p>
+      <p>Overflow-x: auto on mobile (no wrap)</p>
+      <p>Button default: border <span class="wf-token color">neutral-200</span> · text <span class="wf-token color">neutral-500</span></p>
+      <p>Button active: border <span class="wf-token color">primary-500</span> solid · text <span class="wf-token color">primary-500</span> · bg <span class="wf-token color">primary-50</span></p>
+      <p>Count: opacity 0.6 (same color)</p>
+      <p>Border-radius: <span class="wf-token">radius-sm</span> (2px) — precise</p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-GRID</div>
+      <p>Background: <span class="wf-token color">neutral-50</span></p>
+      <p>Grid: <code style="font-size:10px;">repeat(3, 1fr)</code> · gap 12px</p>
+      <p>@768px: <code style="font-size:10px;">repeat(2, 1fr)</code></p>
+      <p>@480px: <code style="font-size:10px;">1fr</code></p>
+      <p>Cards: bg <span class="wf-token color">neutral-0</span> · border 1px <span class="wf-token color">neutral-200</span></p>
+      <p>Card hover: border-color → <span class="wf-token color">primary-500</span> · <span class="wf-token">shadow-sm</span></p>
+      <p>Transition: border-color 150ms ease-out</p>
+      <p>Load more: ghost button, center-aligned</p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-EMPTY</div>
+      <p>Icon: ⊘ or custom SVG · <span class="wf-token color">neutral-200</span> · 48px</p>
+      <p>Heading: <span class="wf-token font">Space Grotesk</span> <span class="wf-token size">text-xl</span> · <span class="wf-token color">neutral-600</span></p>
+      <p>Query shown in <code style="font-size:10px;">code</code> chip</p>
+      <p>Clear link: <span class="wf-token color">primary-500</span></p>
+    </div>
+
+    <div class="wf-note">
+      <div class="wf-note-ref">WF-002-ANATOMY</div>
+      <p>Card width: fills grid column (minmax 280px)</p>
+      <p>Min-height: none — cards are variable height</p>
+      <p>Flex-direction: column</p>
+      <p>Description: <code style="font-size:10px;">-webkit-line-clamp: 3</code>. No "Read more" — truncate silently.</p>
+      <p>Skill pill overflow: show max 3, then +N chip in same style</p>
+    </div>
+
+    <div class="wf-note" style="background:#e0e7ff;">
+      <div class="wf-note-ref" style="color:#3730a3;">GLOBAL — CATALOG</div>
+      <p>All 3 catalog pages share this template.</p>
+      <p>Difference is: page title, description, card anatomy (see anatomy sections above).</p>
+      <p><strong>generate-hub.js</strong> must output the new template for all 3 pages.</p>
+      <p>search.js: filter by <code style="font-size:10px;">data-name</code> + <code style="font-size:10px;">data-category</code> + description text. No Fuse.js needed — simple substring match is fine.</p>
+      <p>⌘K shortcut → focus search input.</p>
+    </div>
+
+  </aside>
+
+</div><!-- /.wf-page -->
+
+</body>
+</html>

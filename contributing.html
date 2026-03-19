@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contributing — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Contributing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html" class="active">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main><div class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> › <a href="docs.html">Docs</a> › Contributing</p>
+    <h1 class="page-title">Contributing</h1>
+  </div>
+</div>
+<div class="doc-layout-wrapper">
+  <div class="container">
+    <div class="doc-layout">
+      <aside class="doc-sidebar">
+        <nav class="doc-nav" aria-label="Documentation navigation">
+          <span class="doc-nav-label">Documentation</span>
+          <ul>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="clarc-way.html">The clarc Way</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contributing.html" class="active">Contributing</a></li>
+          <li><a href="agents-reference.html">Agents Reference</a></li>
+          <li><a href="commands-reference.html">Commands Reference</a></li>
+          <li><a href="skills-reference.html">Skills Reference</a></li>
+          <li><a href="community.html">Community Patterns</a></li>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="mcp.html">MCP Guide</a></li>
+          </ul>
+        </nav>
+        <nav class="doc-toc" aria-label="Table of contents">
+  <p class="toc-label">On this page</p>
+  <ul>
+    <li class="toc-item toc-level-2"><a href="#what-you-can-contribute">What You Can Contribute</a></li>
+    <li class="toc-item toc-level-2"><a href="#prerequisites">Prerequisites</a></li>
+    <li class="toc-item toc-level-2"><a href="#setup">Setup</a></li>
+    <li class="toc-item toc-level-2"><a href="#creating-a-skill">Creating a Skill</a></li>
+    <li class="toc-item toc-level-2"><a href="#when-to-activate">When to Activate</a></li>
+    <li class="toc-item toc-level-2"><a href="#core-patterns">Core Patterns</a></li>
+    <li class="toc-item toc-level-2"><a href="#anti-patterns">Anti-Patterns</a></li>
+    <li class="toc-item toc-level-2"><a href="#creating-a-command">Creating a Command</a></li>
+    <li class="toc-item toc-level-2"><a href="#how-it-works">How It Works</a></li>
+    <li class="toc-item toc-level-2"><a href="#example">Example</a></li>
+    <li class="toc-item toc-level-2"><a href="#creating-an-agent">Creating an Agent</a></li>
+    <li class="toc-item toc-level-2"><a href="#running-tests">Running Tests</a></li>
+    <li class="toc-item toc-level-2"><a href="#validation">Validation</a></li>
+    <li class="toc-item toc-level-2"><a href="#pr-checklist">PR Checklist</a></li>
+    <li class="toc-item toc-level-2"><a href="#file-naming">File Naming</a></li>
+    <li class="toc-item toc-level-2"><a href="#questions">Questions</a></li>
+  </ul>
+</nav>
+      </aside>
+      <article class="doc-content">
+        <h1 id="contributing-to-clarc">Contributing to clarc</h1>
+<p>clarc is open to contributions of agents, skills, commands, bug fixes, and documentation improvements.</p>
+<h2 id="what-you-can-contribute">What You Can Contribute</h2>
+<table><thead><tr><th>Type</th><th>Where</th><th>Format</th></tr></thead><tbody><tr><td>Agent</td><td><code>agents/&lt;name&gt;.md</code></td><td>YAML frontmatter + instructions</td></tr><tr><td>Skill</td><td><code>skills/&lt;name&gt;/SKILL.md</code></td><td>Frontmatter + sections</td></tr><tr><td>Command</td><td><code>commands/&lt;name&gt;.md</code></td><td><code>description</code> frontmatter + Markdown</td></tr><tr><td>Bug fix</td><td>Any file</td><td>Standard PR</td></tr><tr><td>Documentation</td><td><code>docs/wiki/</code></td><td>Markdown</td></tr><tr><td>Community pattern</td><td>GitHub Discussions</td><td>See <a href="./community-patterns.md">community-patterns.md</a></td></tr></tbody></table>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul><li>Node.js 18+</li><li>Git</li><li>Claude Code (to test your contribution)</li></ul>
+<h2 id="setup">Setup</h2>
+<pre><code class="language-bash">git clone https://github.com/marvinrichter/clarc.git
+cd clarc
+npm install</code></pre>
+<h2 id="creating-a-skill">Creating a Skill</h2>
+<p>Skills encode domain knowledge. They're loaded on-demand when Claude detects relevance.</p>
+<pre><code class="language-bash">mkdir skills/my-skill</code></pre>
+<pre><code class="language-markdown">&lt;!-- skills/my-skill/SKILL.md --&gt;
+---
+name: my-skill
+description: &quot;One sentence: what this skill covers and when Claude activates it.&quot;
+---
+
+# My Skill
+
+## When to Activate
+
+- Clear trigger condition 1
+- Clear trigger condition 2
+
+## Core Patterns
+
+[Patterns, examples, code snippets]
+
+## Anti-Patterns
+
+[What NOT to do and why]</code></pre>
+<p><strong>Good skill checklist:</strong></p>
+<ul><li>[ ] <code>description</code> frontmatter is one sentence, specific about when it activates</li><li>[ ] &quot;When to Activate&quot; section has concrete triggers</li><li>[ ] Includes code examples (not just prose)</li><li>[ ] Has Anti-Patterns section</li><li>[ ] Under 600 lines</li></ul>
+<h2 id="creating-a-command">Creating a Command</h2>
+<p>Commands are slash commands users invoke in Claude Code.</p>
+<pre><code class="language-markdown">&lt;!-- commands/my-command.md --&gt;
+---
+description: &quot;One sentence description shown in command picker.&quot;
+---
+
+# My Command
+
+What this command does and when to use it.
+
+## How It Works
+
+Step-by-step explanation.
+
+## Example
+
+[Concrete usage example]</code></pre>
+<h2 id="creating-an-agent">Creating an Agent</h2>
+<p>Agents are Claude subagents that do specialized work.</p>
+<pre><code class="language-markdown">&lt;!-- agents/my-agent.md --&gt;
+---
+name: my-agent
+description: &quot;When to use this agent. Be specific about the trigger.&quot;
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
+# My Agent
+
+[Instructions for the agent]</code></pre>
+<h2 id="running-tests">Running Tests</h2>
+<pre><code class="language-bash">npm test</code></pre>
+<p>This validates agents, commands, skills, hooks, and runs unit tests.</p>
+<h2 id="validation">Validation</h2>
+<p>Before opening a PR, verify your contribution passes validation:</p>
+<pre><code class="language-bash">node scripts/ci/validate-agents.js      # if you added an agent
+node scripts/ci/validate-commands.js    # if you added a command
+node scripts/ci/validate-skills.js      # if you added a skill
+node scripts/ci/validate-hooks.js       # if you modified hooks</code></pre>
+<h2 id="pr-checklist">PR Checklist</h2>
+<ul><li>[ ] <code>npm test</code> passes</li><li>[ ] Skill/agent/command description is specific and actionable</li><li>[ ] No hardcoded secrets or personal data</li><li>[ ] Follows existing file naming (lowercase-with-hyphens)</li><li>[ ] PR description explains the use case</li></ul>
+<h2 id="file-naming">File Naming</h2>
+<p>All files use lowercase with hyphens:</p>
+<ul><li><code>my-new-skill/SKILL.md</code></li><li><code>my-command.md</code></li><li><code>my-agent.md</code></li></ul>
+<h2 id="questions">Questions</h2>
+<p>Use <a href="https://github.com/marvinrichter/clarc/discussions">GitHub Discussions → Q&amp;A</a> for questions before opening a PR.</p>
+      </article>
+    </div>
+  </div>
+</div></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>

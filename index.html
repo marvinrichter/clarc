@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clarc — Workflow OS for Claude Code</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. Install once. Works everywhere.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-brand">clarc</a>
+      <div class="nav-links"><a href="agents.html">Agents</a><a href="skills.html">Skills</a><a href="commands.html">Commands</a><a href="docs.html">Docs</a></div>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="nav-github">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="hero-section">
+  <div class="container">
+    <p class="hero-eyebrow">Workflow OS for Claude Code</p>
+    <h1 class="hero-title">Ship better code.<br><span class="accent">Every session.</span></h1>
+    <p class="hero-sub">Agents, skills, and commands that make Claude Code production-grade. Install once. Works everywhere.</p>
+    <div class="install-cmd">
+      <span class="install-prompt">$</span>
+      <span>npx github:marvinrichter/clarc typescript</span>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('npx github:marvinrichter/clarc typescript')">copy</button>
+    </div>
+    <div class="hero-cta">
+      <a href="agents.html" class="btn-primary">Browse Agents</a>
+      <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener" class="btn-ghost-hero">View on GitHub ↗</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat-block">
+        <div class="stat-num">63</div>
+        <div class="stat-label">Agents</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">249</div>
+        <div class="stat-label">Skills</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">178</div>
+        <div class="stat-label">Commands</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="concept-section">
+  <div class="container">
+    <div class="concept-grid">
+      <div class="concept-text">
+        <p class="section-eyebrow">How it works</p>
+        <h2>Structured intelligence,<br>always in context.</h2>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-arrow">→</span>
+            <div>
+              <div class="feature-title">Agents route automatically</div>
+              <div class="feature-desc">Write Go code → go-reviewer invoked. Build fails → build-error-resolver. No config required.</div>
+            </div>
+          </li>
+          <li>
+            <span class="feature-arrow">→</span>
+            <div>
+              <div class="feature-title">Skills load on demand</div>
+              <div class="feature-desc">249 deep workflow patterns. Only active when relevant. Zero context overhead otherwise.</div>
+            </div>
+          </li>
+          <li>
+            <span class="feature-arrow">→</span>
+            <div>
+              <div class="feature-title">Gets better with use</div>
+              <div class="feature-desc">Continuous learning flywheel extracts reusable patterns from every session.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="concept-terminal">
+        <div class="terminal">
+          <div class="t-bar">
+            <span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span>
+            <span class="t-title">clarc — zsh</span>
+          </div>
+          <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">npx github:marvinrichter/clarc typescript</span></div>
+          <div class="t-out"><span class="t-ok">✓</span> clarc v0.9.0 installed</div>
+          <div class="t-out"><span class="t-ok">✓</span> 63 agents → ~/.claude/agents/</div>
+          <div class="t-out"><span class="t-ok">✓</span> 249 skills → ~/.claude/skills/</div>
+          <div class="t-out"><span class="t-ok">✓</span> TypeScript rules active</div>
+          <div class="t-out"><span class="t-ok">✓</span> Hooks wired</div>
+          <div class="t-line" style="margin-top:12px"><span class="t-prompt">$</span> <span class="t-cmd">/tdd UserService</span></div>
+          <div class="t-out"><span class="t-blue">tdd-guide</span> invoked → writing tests first…</div>
+          <div class="t-out"><span class="t-ok">RED</span> → <span class="t-ok">GREEN</span> → <span class="t-ok">REFACTOR</span> ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="catalog-section">
+  <div class="container">
+    <div class="catalog-grid">
+      <a href="agents.html" class="catalog-card">
+        <div class="catalog-count">63</div>
+        <div class="catalog-name">Agents</div>
+        <div class="catalog-desc">Specialized subagents for code review, planning, testing, security, and more. Invoked automatically.</div>
+        <div class="catalog-link">Browse agents →</div>
+      </a>
+      <a href="skills.html" class="catalog-card">
+        <div class="catalog-count">249</div>
+        <div class="catalog-name">Skills</div>
+        <div class="catalog-desc">Deep workflow patterns for frameworks, languages, and engineering practices. Loaded on demand.</div>
+        <div class="catalog-link">Browse skills →</div>
+      </a>
+      <a href="commands.html" class="catalog-card">
+        <div class="catalog-count">178</div>
+        <div class="catalog-name">Commands</div>
+        <div class="catalog-desc">Slash commands that activate agents and skills directly in Claude Code. Use in any conversation.</div>
+        <div class="catalog-link">Browse commands →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Featured Agents</h2>
+      <a href="agents.html" class="section-link">View all 63 →</a>
+    </div>
+    <div class="grid">
+<div class="card" data-name="code-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-name">code-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">Code review orchestrator. Detects the language of changed files and routes to the appropriate specialist reviewer (typescript-reviewer, go-reviewer, python-reviewer, java-reviewer, swift-reviewer, ruby-reviewer, elixir-reviewer, rust-reviewer, cpp-reviewer). Falls back to universal security and quality checks when no specialist exists. Use immediately after writing or modifying code.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">security-review</span><span class="skill-pill">tdd-workflow</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/code-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="tdd-guide" data-category="Testing">
+  <div class="card-header">
+    <span class="card-name">tdd-guide</span>
+    <span class="badge cat-teal">Testing</span>
+  </div>
+  <p class="card-desc">Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage (configurable — check project's `.nycrc`, `vitest.config.ts`, or `pytest.ini` for the project's actual threshold).</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">tdd-workflow</span><span class="skill-pill">python-testing</span><span class="skill-pill">typescript-testing</span><span class="pill-more">+3</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/tdd-guide.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="planner" data-category="Architecture">
+  <div class="card-header">
+    <span class="card-name">planner</span>
+    <span class="badge cat-g">Architecture</span>
+  </div>
+  <p class="card-desc">Task decomposition and implementation planning specialist. Use PROACTIVELY when users need WHAT tasks to execute — produces PRDs, task breakdowns, timelines, and dependency maps. For HOW to structure the system (component design, ADRs, C4 diagrams), use the architect agent instead.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">api-design</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/planner.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="security-reviewer" data-category="Code Review">
+  <div class="card-header">
+    <span class="card-name">security-reviewer</span>
+    <span class="badge cat-b">Code Review</span>
+  </div>
+  <p class="card-desc">Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">auth-patterns</span><span class="skill-pill">supply-chain-security</span><span class="skill-pill">gdpr-privacy</span><span class="pill-more">+1</span></div>
+  <div class="card-footer">
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/security-reviewer.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="architect" data-category="Architecture">
+  <div class="card-header">
+    <span class="card-name">architect</span>
+    <span class="badge cat-g">Architecture</span>
+  </div>
+  <p class="card-desc">System design and architecture specialist. Use PROACTIVELY when users need HOW to structure the system — component boundaries, ADRs, C4/arc42 diagrams, scalability decisions. For task lists and implementation timelines (WHAT to build), use the planner agent instead.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">arc42-c4</span><span class="skill-pill">ddd-typescript</span><span class="skill-pill">hexagonal-typescript</span><span class="pill-more">+1</span></div>
+  <div class="card-footer">
+    <span class="model-badge opus"><span class="dot"></span>opus</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="build-error-resolver" data-category="CI / CD">
+  <div class="card-header">
+    <span class="card-name">build-error-resolver</span>
+    <span class="badge cat-v">CI / CD</span>
+  </div>
+  <p class="card-desc">Build error resolution specialist for any language — TypeScript, Go, Python, Java, and more. Use PROACTIVELY when builds fail, type errors occur, or compilation breaks. Fixes errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">verification-loop</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/build-error-resolver.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Start in 30 seconds.</h2>
+    <p class="cta-sub">Pick your stack and install. Updates via git pull.</p>
+    <div class="install-cmd">
+      <span class="install-prompt">$</span>
+      <span>npx github:marvinrichter/clarc typescript</span>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('npx github:marvinrichter/clarc typescript')">copy</button>
+    </div>
+    <div class="variants-row">
+      <code>typescript</code>
+      <code>python</code>
+      <code>golang</code>
+      <code>swift</code>
+      <code>java</code>
+    </div>
+  </div>
+</section></main>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">clarc</a>
+        <span class="footer-version">v0.9.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="agents.html">Agents</a>
+        <a href="skills.html">Skills</a>
+        <a href="commands.html">Commands</a>
+        <a href="docs.html">Docs</a>
+        <a href="https://github.com/marvinrichter/clarc" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="search.js"></script>
+</body>
+</html>
