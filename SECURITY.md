@@ -13,7 +13,7 @@
 Report vulnerabilities privately via one of:
 
 - **GitHub Security Advisories**: [Report a vulnerability](https://github.com/marvinrichter/clarc/security/advisories/new)
-- **Email**: marvin@marvinrichter.dev
+- **Email**: kontakt@marvin-richter.de
 
 Please include:
 - Description of the vulnerability
