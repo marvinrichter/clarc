@@ -48,9 +48,11 @@ jobs:
       - name: Post review comment
         if: always() && steps.review.outputs.comment != ''
         uses: actions/github-script@v8
+        env:
+          REVIEW_COMMENT: ${{ steps.review.outputs.comment }}
         with:
           script: |
-            const comment = `${{ steps.review.outputs.comment }}`;
+            const comment = process.env.REVIEW_COMMENT;
             if (!comment) return;
 
             // Find and update existing clarc comment, or create new one
@@ -121,9 +123,11 @@ jobs:
       - name: Post security comment
         if: always() && steps.security.outputs.comment != ''
         uses: actions/github-script@v8
+        env:
+          SECURITY_COMMENT: ${{ steps.security.outputs.comment }}
         with:
           script: |
-            const comment = `${{ steps.security.outputs.comment }}`;
+            const comment = process.env.SECURITY_COMMENT;
             if (!comment) return;
 
             const { data: comments } = await github.rest.issues.listComments({

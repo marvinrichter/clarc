@@ -3,8 +3,26 @@ name: CI
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'CODE_OF_CONDUCT.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
+      - 'docs/**'
+      - 'examples/**'
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'CODE_OF_CONDUCT.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
+      - 'docs/**'
+      - 'examples/**'
 
 # Prevent duplicate runs
 concurrency:
@@ -16,131 +34,28 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.pm }})
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node: ['20.x', '22.x', '24.x']
-        pm: [npm, pnpm, yarn, bun]
-        exclude:
-          # Bun has limited Windows support
-          - os: windows-latest
-            pm: bun
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js ${{ matrix.node }}
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '22.x'
 
-      # Package manager setup
-      - name: Setup pnpm
-        if: matrix.pm == 'pnpm'
-        uses: pnpm/action-setup@v5
-        with:
-          version: latest
-
-      - name: Setup Bun
-        if: matrix.pm == 'bun'
-        uses: oven-sh/setup-bun@v2
-
-      # Cache configuration
-      - name: Get npm cache directory
-        if: matrix.pm == 'npm'
-        id: npm-cache-dir
-        shell: bash
-        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
-
-      - name: Cache npm
-        if: matrix.pm == 'npm'
-        uses: actions/cache@v5
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ matrix.node }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-npm-
-
-      - name: Get pnpm store directory
-        if: matrix.pm == 'pnpm'
-        id: pnpm-cache-dir
-        shell: bash
-        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Cache pnpm
-        if: matrix.pm == 'pnpm'
-        uses: actions/cache@v5
-        with:
-          path: ${{ steps.pnpm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ matrix.node }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-pnpm-
-
-      - name: Get yarn cache directory
-        if: matrix.pm == 'yarn'
-        id: yarn-cache-dir
-        shell: bash
-        run: |
-          # Try Yarn Berry first, fall back to Yarn v1
-          if yarn config get cacheFolder >/dev/null 2>&1; then
-            echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-          else
-            echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Cache yarn
-        if: matrix.pm == 'yarn'
-        uses: actions/cache@v5
-        with:
-          path: ${{ steps.yarn-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-yarn-
-
-      - name: Cache bun
-        if: matrix.pm == 'bun'
-        uses: actions/cache@v5
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
-
-      # Install dependencies
       - name: Install dependencies
-        shell: bash
-        run: |
-          case "${{ matrix.pm }}" in
-            npm) npm ci ;;
-            pnpm) pnpm install ;;
-            # --ignore-engines required for Node 18 compat with some devDependencies (e.g., markdownlint-cli)
-            yarn) yarn install --ignore-engines ;;
-            bun) bun install ;;
-            *) echo "Unsupported package manager: ${{ matrix.pm }}" && exit 1 ;;
-          esac
+        run: npm ci
 
-      # Run tests
-      - name: Run tests
-        run: node tests/run-all.js
-        env:
-          CLAUDE_CODE_PACKAGE_MANAGER: ${{ matrix.pm }}
+      - name: Run ESLint
+        run: npx eslint scripts/**/*.js tests/**/*.js
 
-      # Upload test artifacts on failure
-      - name: Upload test artifacts
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-results-${{ matrix.os }}-node${{ matrix.node }}-${{ matrix.pm }}
-          path: |
-            tests/
-            !tests/node_modules/
+      - name: Run markdownlint
+        run: npx markdownlint "agents/**/*.md" "skills/**/*.md" "commands/**/*.md" "rules/**/*.md"
 
   validate:
     name: Validate Components
@@ -154,35 +69,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Validate agents
         run: node scripts/ci/validate-agents.js
-        continue-on-error: false
 
       - name: Validate hooks
         run: node scripts/ci/validate-hooks.js
-        continue-on-error: false
 
       - name: Validate commands
         run: node scripts/ci/validate-commands.js
-        continue-on-error: false
 
       - name: Validate skills
         run: node scripts/ci/validate-skills.js
-        continue-on-error: false
 
       - name: Validate rules
         run: node scripts/ci/validate-rules.js
-        continue-on-error: false
 
       - name: Validate wiring (cross-component references)
         run: node scripts/ci/validate-wiring.js
-        continue-on-error: false
 
       - name: Validate naming conventions
         run: node scripts/ci/validate-naming.js
-        continue-on-error: false
 
       - name: Generate coverage map (informational)
         run: node scripts/ci/generate-coverage-map.js
@@ -208,31 +116,161 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Run npm audit
         run: npm audit --audit-level=high
-        continue-on-error: true  # Allows PR to proceed, but marks job as failed if vulnerabilities found
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+  # Standard matrix — all OS × all Node versions × npm
+  # Runs on every push and PR for fast cross-platform feedback
+  test:
+    name: Test (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.pm }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['20.x', '22.x', '24.x']
+        pm: [npm]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node }}
+
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Cache npm
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ matrix.node }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-npm-
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run ESLint
-        run: npx eslint scripts/**/*.js tests/**/*.js
+      - name: Run tests
+        run: node tests/run-all.js
+        env:
+          CLAUDE_CODE_PACKAGE_MANAGER: ${{ matrix.pm }}
 
-      - name: Run markdownlint
-        run: npx markdownlint "agents/**/*.md" "skills/**/*.md" "commands/**/*.md" "rules/**/*.md"
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ matrix.os }}-node${{ matrix.node }}-${{ matrix.pm }}
+          path: |
+            tests/
+            !tests/node_modules/
+
+  # Extended PM matrix — ubuntu × LTS × pnpm/yarn/bun
+  # Runs on main push only — verifies alternative package managers after merge
+  test-pm-compat:
+    name: Test (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.pm }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: ['22.x']
+        pm: [pnpm, yarn, bun]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Setup pnpm
+        if: matrix.pm == 'pnpm'
+        uses: pnpm/action-setup@v5
+        with:
+          version: latest
+
+      - name: Setup Bun
+        if: matrix.pm == 'bun'
+        uses: oven-sh/setup-bun@v2
+
+      - name: Get pnpm store directory
+        if: matrix.pm == 'pnpm'
+        id: pnpm-cache-dir
+        shell: bash
+        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm
+        if: matrix.pm == 'pnpm'
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.pnpm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ matrix.node }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-pnpm-
+
+      - name: Get yarn cache directory
+        if: matrix.pm == 'yarn'
+        id: yarn-cache-dir
+        shell: bash
+        run: |
+          if yarn config get cacheFolder >/dev/null 2>&1; then
+            echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+          else
+            echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Cache yarn
+        if: matrix.pm == 'yarn'
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-yarn-
+
+      - name: Cache bun
+        if: matrix.pm == 'bun'
+        uses: actions/cache@v5
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          case "${{ matrix.pm }}" in
+            pnpm) pnpm install ;;
+            yarn) yarn install --ignore-engines ;;
+            bun)  bun install ;;
+          esac
+
+      - name: Run tests
+        run: node tests/run-all.js
+        env:
+          CLAUDE_CODE_PACKAGE_MANAGER: ${{ matrix.pm }}
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ matrix.os }}-node${{ matrix.node }}-${{ matrix.pm }}
+          path: |
+            tests/
+            !tests/node_modules/
