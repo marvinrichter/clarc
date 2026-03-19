@@ -1,6 +1,6 @@
 # clarc — Agent Instructions
 
-This is a **production-grade Claude Code workflow OS** providing 50 specialized agents, 193 skills, 115 commands, and automated hook workflows for software development.
+This is a **production-grade Claude Code workflow OS** providing 63 specialized agents, 249 skills, 178 commands, and automated hook workflows for software development.
 
 ## Install
 
@@ -131,9 +131,9 @@ Troubleshoot failures: check test isolation → verify mocks → fix implementat
 ## Project Structure
 
 ```
-agents/          — 20 specialized subagents
-skills/          — 122+ workflow skills and domain knowledge
-commands/        — 57 slash commands
+agents/          — 63 specialized subagents
+skills/          — 249 workflow skills and domain knowledge
+commands/        — 178 slash commands
 hooks/           — Trigger-based automations
 rules/           — Always-follow guidelines (common + per-language)
 scripts/         — Cross-platform Node.js utilities

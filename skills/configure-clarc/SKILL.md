@@ -31,7 +31,7 @@ rm -rf /tmp/clarc
 git clone https://github.com/marvinrichter/clarc.git /tmp/clarc
 ```
 
-Set `ECC_ROOT=/tmp/clarc` as the source for all subsequent copy operations.
+Set `CLARC_ROOT=/tmp/clarc` as the source for all subsequent copy operations.
 
 If the clone fails (network issues, etc.), use `AskUserQuestion` to ask the user to provide a local path to an existing clarc clone.
 
@@ -158,7 +158,7 @@ For each selected category, print the full list of skills below and ask the user
 
 For each selected skill, copy the entire skill directory:
 ```bash
-cp -r $ECC_ROOT/skills/<skill-name> $TARGET/skills/
+cp -r $CLARC_ROOT/skills/<skill-name> $TARGET/skills/
 ```
 
 Note: `continuous-learning-v2` has extra files (config.json, hooks, scripts) — ensure the entire directory is copied, not just SKILL.md.
@@ -181,12 +181,12 @@ Options:
 Execute installation:
 ```bash
 # Common rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/common/* $TARGET/rules/
+cp -r $CLARC_ROOT/rules/common/* $TARGET/rules/
 
 # Language-specific rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/typescript/* $TARGET/rules/   # if selected
-cp -r $ECC_ROOT/rules/python/* $TARGET/rules/        # if selected
-cp -r $ECC_ROOT/rules/go/* $TARGET/rules/            # if selected
+cp -r $CLARC_ROOT/rules/typescript/* $TARGET/rules/   # if selected
+cp -r $CLARC_ROOT/rules/python/* $TARGET/rules/        # if selected
+cp -r $CLARC_ROOT/rules/go/* $TARGET/rules/            # if selected
 ```
 
 **Important**: If the user selects any language-specific rules but NOT common rules, warn them:
@@ -269,7 +269,7 @@ Options:
    - Security requirements
 3. Edit the rule files in-place at the installation target
 
-**Critical**: Only modify files in the installation target (`$TARGET/`), NEVER modify files in the source clarc repository (`$ECC_ROOT/`).
+**Critical**: Only modify files in the installation target (`$TARGET/`), NEVER modify files in the source clarc repository (`$CLARC_ROOT/`).
 
 ---
 
