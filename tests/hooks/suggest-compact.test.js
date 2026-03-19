@@ -348,23 +348,22 @@ function runTests() {
 
   if (test('uses "default" session ID when CLAUDE_SESSION_ID is empty', () => {
     const defaultCounterFile = getCounterFilePath('default');
-    try { fs.unlinkSync(defaultCounterFile); } catch (_err) { /* ignore */ }
-    try {
-      // Pass empty CLAUDE_SESSION_ID — falsy, so script uses 'default'
-      const env = { ...process.env, CLAUDE_SESSION_ID: '' };
-      const result = spawnSync('node', [compactScript], {
-        encoding: 'utf8',
-        input: '{}',
-        timeout: 10000,
-        env,
-      });
-      assert.strictEqual(result.status || 0, 0, 'Should exit 0');
-      assert.ok(fs.existsSync(defaultCounterFile), 'Counter file should use "default" session ID');
-      const count = parseInt(fs.readFileSync(defaultCounterFile, 'utf8').trim(), 10);
-      assert.strictEqual(count, 1, 'Counter should be 1 for first run with default session');
-    } finally {
-      try { fs.unlinkSync(defaultCounterFile); } catch (_err) { /* ignore */ }
-    }
+    // Read count before (parallel tests may have already incremented it)
+    const countBefore = fs.existsSync(defaultCounterFile)
+      ? parseInt(fs.readFileSync(defaultCounterFile, 'utf8').trim(), 10) || 0
+      : 0;
+    // Pass empty CLAUDE_SESSION_ID — falsy, so script uses 'default'
+    const env = { ...process.env, CLAUDE_SESSION_ID: '' };
+    const result = spawnSync('node', [compactScript], {
+      encoding: 'utf8',
+      input: '{}',
+      timeout: 10000,
+      env,
+    });
+    assert.strictEqual(result.status || 0, 0, 'Should exit 0');
+    assert.ok(fs.existsSync(defaultCounterFile), 'Counter file should use "default" session ID');
+    const countAfter = parseInt(fs.readFileSync(defaultCounterFile, 'utf8').trim(), 10);
+    assert.strictEqual(countAfter, countBefore + 1, 'Counter should increment by 1 for default session');
   })) passed++;
   else failed++;
 
