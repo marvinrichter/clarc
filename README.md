@@ -3,6 +3,10 @@
 **The workflow OS for Claude Code.**
 62 agents · 248 skills · 172 commands · 20 language rule sets · continuous learning flywheel.
 
+[![CI](https://github.com/marvinrichter/clarc/actions/workflows/ci.yml/badge.svg)](https://github.com/marvinrichter/clarc/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js 20+](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
+
 ---
 
 clarc turns Claude Code from a coding assistant into a structured engineering system. It brings together agents that delegate work, skills that encode domain knowledge, commands that run repeatable workflows, hooks that automate the background, and a learning loop that improves itself over time.

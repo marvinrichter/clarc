@@ -1,0 +1,39 @@
+name: Feature Request
+description: Suggest a new agent, skill, command, or capability
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: What kind of addition?
+      options:
+        - New agent
+        - New skill
+        - New command
+        - New rule set
+        - Improvement to existing component
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the workflow gap or pain point.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What should the new agent/skill/command do? How would you invoke it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What workarounds exist today?
