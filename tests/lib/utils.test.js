@@ -1436,13 +1436,31 @@ function runTests() {
 
   if (
     test('getGitModifiedFiles with all-invalid patterns skips filtering (returns all files)', () => {
-      // When every pattern is invalid regex, compiled.length === 0 at line 386,
-      // so the filtering is skipped entirely and all modified files are returned.
-      // This differs from the mixed-valid test where at least one pattern compiles.
-      const allInvalid = utils.getGitModifiedFiles(['(unclosed', '[bad', '**invalid']);
-      const unfiltered = utils.getGitModifiedFiles();
-      // Both should return the same list — all-invalid patterns = no filtering
-      assert.deepStrictEqual(allInvalid, unfiltered, 'All-invalid patterns should return same result as no patterns (no filtering)');
+      // Use an isolated git repo so this test is immune to real-repo git state changes
+      // caused by parallel tests that temporarily modify repo files (e.g. evaluate-session.test.js).
+      const tmpDir = fs.mkdtempSync(utils.getTempDir() + '/clarc-r69-');
+      const origCwd = process.cwd();
+      try {
+        spawnSync('git', ['init'], { cwd: tmpDir });
+        spawnSync('git', ['config', 'user.email', 'test@test.com'], { cwd: tmpDir });
+        spawnSync('git', ['config', 'user.name', 'Test'], { cwd: tmpDir });
+        fs.writeFileSync(path.join(tmpDir, 'test.txt'), 'hello');
+        spawnSync('git', ['add', '.'], { cwd: tmpDir });
+        spawnSync('git', ['commit', '-m', 'init', '--no-gpg-sign'], { cwd: tmpDir });
+        // Modify the file without committing — git diff HEAD will report it
+        fs.writeFileSync(path.join(tmpDir, 'test.txt'), 'modified');
+
+        process.chdir(tmpDir);
+        // When every pattern is invalid regex, compiled.length === 0, so filtering is skipped
+        // and all modified files are returned — same as calling with no patterns at all.
+        const allInvalid = utils.getGitModifiedFiles(['(unclosed', '[bad', '**invalid']);
+        const unfiltered = utils.getGitModifiedFiles();
+        assert.deepStrictEqual(allInvalid, unfiltered, 'All-invalid patterns should return same result as no patterns (no filtering)');
+        assert(allInvalid.includes('test.txt'), 'Should include the modified file');
+      } finally {
+        process.chdir(origCwd);
+        fs.rmSync(tmpDir, { recursive: true, force: true });
+      }
     })
   )
     passed++;
