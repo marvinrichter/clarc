@@ -1,5 +1,5 @@
 /**
- * ECC Custom Tool: Lint Check
+ * clarc Tool: Lint Check
  *
  * Multi-language linter that auto-detects the project's linting tool.
  * Supports: ESLint/Biome (JS/TS), Pylint/Ruff (Python), golangci-lint (Go)

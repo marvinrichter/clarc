@@ -282,7 +282,7 @@ pytest -n auto
 pytest --lf
 ```
 
-## ECC Workflow
+## clarc Workflow
 
 ```bash
 # Planning

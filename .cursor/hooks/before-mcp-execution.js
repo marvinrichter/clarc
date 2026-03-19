@@ -5,7 +5,7 @@ readStdin().then(raw => {
     const input = JSON.parse(raw);
     const server = input.server || input.mcp_server || 'unknown';
     const tool = input.tool || input.mcp_tool || 'unknown';
-    console.error(`[ECC] MCP invocation: ${server}/${tool}`);
+    console.error(`[clarc] MCP invocation: ${server}/${tool}`);
   } catch {}
   process.stdout.write(raw);
 }).catch(() => process.exit(0));

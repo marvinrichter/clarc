@@ -10,16 +10,16 @@ readStdin().then(raw => {
     if (/gh pr create/.test(cmd)) {
       const m = output.match(/https:\/\/github\.com\/[^/]+\/[^/]+\/pull\/\d+/);
       if (m) {
-        console.error('[ECC] PR created: ' + m[0]);
+        console.error('[clarc] PR created: ' + m[0]);
         const repo = m[0].replace(/https:\/\/github\.com\/([^/]+\/[^/]+)\/pull\/\d+/, '$1');
         const pr = m[0].replace(/.+\/pull\/(\d+)/, '$1');
-        console.error('[ECC] To review: gh pr review ' + pr + ' --repo ' + repo);
+        console.error('[clarc] To review: gh pr review ' + pr + ' --repo ' + repo);
       }
     }
 
     // Build completion notice
     if (/(npm run build|pnpm build|yarn build)/.test(cmd)) {
-      console.error('[ECC] Build completed');
+      console.error('[clarc] Build completed');
     }
   } catch {}
   process.stdout.write(raw);

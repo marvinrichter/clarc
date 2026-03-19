@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>62 Agents — clarc hub</title>
-  <meta name="description" content="clarc — the workflow OS for Claude Code. 62 Agents.">
+  <title>63 Agents — clarc hub</title>
+  <meta name="description" content="clarc — the workflow OS for Claude Code. 63 Agents.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -23,7 +23,7 @@
 <section class="page-header">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">clarc</a> / <span aria-current="page">Agents</span></nav>
-    <h1 class="page-title">Agents <span class="page-count">62 total</span></h1>
+    <h1 class="page-title">Agents <span class="page-count">63 total</span></h1>
     <p class="page-desc">Specialized subagents delegated by Claude Code for code review, architecture, testing, security, and more.</p>
   </div>
 </section>
@@ -34,7 +34,7 @@
         <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
         <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-      <input id="search" type="search" class="search-input" placeholder="Search 62 agents…" autocomplete="off">
+      <input id="search" type="search" class="search-input" placeholder="Search 63 agents…" autocomplete="off">
       <kbd class="search-kbd">⌘K</kbd>
     </div>
   </div>
@@ -42,14 +42,14 @@
 <section class="filter-section">
   <div class="container">
     <div class="filter-scroll"><div class="filter-tabs">
-  <button class="filter-btn active" data-filter="all">All <span class="count-badge">(62)</span></button>
-  <button class="filter-btn" data-filter="Code Review">Code Review <span class="count-badge">(28)</span></button><button class="filter-btn" data-filter="Architecture">Architecture <span class="count-badge">(11)</span></button><button class="filter-btn" data-filter="General">General <span class="count-badge">(10)</span></button><button class="filter-btn" data-filter="clarc System">clarc System <span class="count-badge">(3)</span></button><button class="filter-btn" data-filter="AI / Agents">AI / Agents <span class="count-badge">(2)</span></button><button class="filter-btn" data-filter="CI / CD">CI / CD <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Documentation">Documentation <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Infrastructure">Infrastructure <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Go">Go <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Performance">Performance <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Product">Product <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Testing">Testing <span class="count-badge">(1)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="count-badge">(63)</span></button>
+  <button class="filter-btn" data-filter="Code Review">Code Review <span class="count-badge">(28)</span></button><button class="filter-btn" data-filter="Architecture">Architecture <span class="count-badge">(11)</span></button><button class="filter-btn" data-filter="General">General <span class="count-badge">(11)</span></button><button class="filter-btn" data-filter="clarc System">clarc System <span class="count-badge">(3)</span></button><button class="filter-btn" data-filter="AI / Agents">AI / Agents <span class="count-badge">(2)</span></button><button class="filter-btn" data-filter="CI / CD">CI / CD <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Documentation">Documentation <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="TypeScript / Frontend">TypeScript / Frontend <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Infrastructure">Infrastructure <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Go">Go <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Performance">Performance <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Product">Product <span class="count-badge">(1)</span></button><button class="filter-btn" data-filter="Testing">Testing <span class="count-badge">(1)</span></button>
 </div></div>
   </div>
 </section>
 <section class="grid-section">
   <div class="container">
-    <p class="grid-meta" id="grid-meta" aria-live="polite" aria-atomic="true">62 total · A–Z</p>
+    <p class="grid-meta" id="grid-meta" aria-live="polite" aria-atomic="true">63 total · A–Z</p>
     <div class="grid">
 <div class="card" data-name="agent-quality-reviewer" data-category="Code Review">
   <div class="card-header">
@@ -97,6 +97,18 @@
   <div class="card-footer">
     <span class="model-badge opus"><span class="dot"></span>opus</span>
     <a href="https://github.com/marvinrichter/clarc/blob/main/agents/architect.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
+  </div>
+</div>
+<div class="card" data-name="article-editor" data-category="General">
+  <div class="card-header">
+    <span class="card-name">article-editor</span>
+    <span class="badge cat-n">General</span>
+  </div>
+  <p class="card-desc">Editorial critique for blog posts, essays, guides, and long-form articles — evaluates structure, opening strength, voice consistency, evidence quality, banned patterns, and SEO basics. Use after writing a first draft to get structured, actionable improvement feedback before publishing.</p>
+  <div class="card-pills"><span class="deps-label">uses:</span><span class="skill-pill">article-writing</span><span class="skill-pill">article-strategy</span></div>
+  <div class="card-footer">
+    <span class="model-badge sonnet"><span class="dot"></span>sonnet</span>
+    <a href="https://github.com/marvinrichter/clarc/blob/main/agents/article-editor.md" target="_blank" rel="noopener" class="source-btn">Source ↗</a>
   </div>
 </div>
 <div class="card" data-name="bash-reviewer" data-category="Code Review">

@@ -1,5 +1,5 @@
 /**
- * Everything Claude Code (ECC) Plugin Hooks for OpenCode
+ * clarc Plugin Hooks for OpenCode
  *
  * This plugin translates Claude Code hooks to OpenCode's plugin system.
  * OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ events
@@ -44,7 +44,7 @@ export const ECCHooksPlugin = async ({
       if (event.path.match(/\.(ts|tsx|js|jsx)$/)) {
         try {
           await $`prettier --write ${event.path} 2>/dev/null`
-          log("info", `[ECC] Formatted: ${event.path}`)
+          log("info", `[clarc] Formatted: ${event.path}`)
         } catch {
           // Prettier not installed or failed - silently continue
         }
@@ -58,7 +58,7 @@ export const ECCHooksPlugin = async ({
             const lines = result.trim().split("\n").length
             log(
               "warn",
-              `[ECC] console.log found in ${event.path} (${lines} occurrence${lines > 1 ? "s" : ""})`
+              `[clarc] console.log found in ${event.path} (${lines} occurrence${lines > 1 ? "s" : ""})`
             )
           }
         } catch {
@@ -85,10 +85,10 @@ export const ECCHooksPlugin = async ({
       ) {
         try {
           await $`npx tsc --noEmit 2>&1`
-          log("info", "[ECC] TypeScript check passed")
+          log("info", "[clarc] TypeScript check passed")
         } catch (error: unknown) {
           const err = error as { stdout?: string }
-          log("warn", "[ECC] TypeScript errors detected:")
+          log("warn", "[clarc] TypeScript errors detected:")
           if (err.stdout) {
             // Log first few errors
             const errors = err.stdout.split("\n").slice(0, 5)
@@ -99,7 +99,7 @@ export const ECCHooksPlugin = async ({
 
       // PR creation logging
       if (input.tool === "bash" && input.args?.toString().includes("gh pr create")) {
-        log("info", "[ECC] PR created - check GitHub Actions status")
+        log("info", "[clarc] PR created - check GitHub Actions status")
       }
     },
 
@@ -120,7 +120,7 @@ export const ECCHooksPlugin = async ({
       ) {
         log(
           "info",
-          "[ECC] Remember to review changes before pushing: git diff origin/main...HEAD"
+          "[clarc] Remember to review changes before pushing: git diff origin/main...HEAD"
         )
       }
 
@@ -140,7 +140,7 @@ export const ECCHooksPlugin = async ({
         ) {
           log(
             "warn",
-            `[ECC] Creating ${filePath} - consider if this documentation is necessary`
+            `[clarc] Creating ${filePath} - consider if this documentation is necessary`
           )
         }
       }
@@ -155,7 +155,7 @@ export const ECCHooksPlugin = async ({
         ) {
           log(
             "info",
-            "[ECC] Long-running command detected - consider using background execution"
+            "[clarc] Long-running command detected - consider using background execution"
           )
         }
       }
@@ -169,13 +169,13 @@ export const ECCHooksPlugin = async ({
      * Action: Loads context and displays welcome message
      */
     "session.created": async () => {
-      log("info", "[ECC] Session started - Everything Claude Code hooks active")
+      log("info", "[clarc] Session started - clarc hooks active")
 
       // Check for project-specific context files
       try {
         const hasClaudeMd = await $`test -f ${worktree}/CLAUDE.md && echo "yes"`.text()
         if (hasClaudeMd.trim() === "yes") {
-          log("info", "[ECC] Found CLAUDE.md - loading project context")
+          log("info", "[clarc] Found CLAUDE.md - loading project context")
         }
       } catch {
         // No CLAUDE.md found
@@ -192,7 +192,7 @@ export const ECCHooksPlugin = async ({
     "session.idle": async () => {
       if (editedFiles.size === 0) return
 
-      log("info", "[ECC] Session idle - running console.log audit")
+      log("info", "[clarc] Session idle - running console.log audit")
 
       let totalConsoleLogCount = 0
       const filesWithConsoleLogs: string[] = []
@@ -215,19 +215,19 @@ export const ECCHooksPlugin = async ({
       if (totalConsoleLogCount > 0) {
         log(
           "warn",
-          `[ECC] Audit: ${totalConsoleLogCount} console.log statement(s) in ${filesWithConsoleLogs.length} file(s)`
+          `[clarc] Audit: ${totalConsoleLogCount} console.log statement(s) in ${filesWithConsoleLogs.length} file(s)`
         )
         filesWithConsoleLogs.forEach((f) =>
           log("warn", `  - ${f}`)
         )
-        log("warn", "[ECC] Remove console.log statements before committing")
+        log("warn", "[clarc] Remove console.log statements before committing")
       } else {
-        log("info", "[ECC] Audit passed: No console.log statements found")
+        log("info", "[clarc] Audit passed: No console.log statements found")
       }
 
       // Desktop notification (macOS)
       try {
-        await $`osascript -e 'display notification "Task completed!" with title "OpenCode ECC"' 2>/dev/null`
+        await $`osascript -e 'display notification "Task completed!" with title "OpenCode clarc"' 2>/dev/null`
       } catch {
         // Notification not supported or failed
       }
@@ -244,7 +244,7 @@ export const ECCHooksPlugin = async ({
      * Action: Final cleanup and state saving
      */
     "session.deleted": async () => {
-      log("info", "[ECC] Session ended - cleaning up")
+      log("info", "[clarc] Session ended - cleaning up")
       editedFiles.clear()
     },
 
@@ -272,7 +272,7 @@ export const ECCHooksPlugin = async ({
       const completed = event.todos.filter((t) => t.done).length
       const total = event.todos.length
       if (total > 0) {
-        log("info", `[ECC] Progress: ${completed}/${total} tasks completed`)
+        log("info", `[clarc] Progress: ${completed}/${total} tasks completed`)
       }
     },
 
@@ -337,13 +337,13 @@ export const ECCHooksPlugin = async ({
      * OpenCode-specific: Control context compaction behavior
      *
      * Triggers: Before context compaction
-     * Action: Push ECC context block and custom compaction prompt
+     * Action: Push clarc context block and custom compaction prompt
      */
     "experimental.session.compacting": async () => {
       const contextBlock = [
-        "# ECC Context (preserve across compaction)",
+        "# clarc Context (preserve across compaction)",
         "",
-        "## Active Plugin: Everything Claude Code v1.6.0",
+        "## Active Plugin: clarc",
         "- Hooks: file.edited, tool.execute.before/after, session.created/idle/deleted, shell.env, compacting, permission.ask",
         "- Tools: run-tests, check-coverage, security-audit, format-code, lint-check, git-summary",
         "- Agents: 13 specialized (planner, architect, tdd-guide, code-reviewer, security-reviewer, build-error-resolver, e2e-runner, refactor-cleaner, doc-updater, go-reviewer, go-build-resolver, database-reviewer, python-reviewer)",
@@ -378,7 +378,7 @@ export const ECCHooksPlugin = async ({
      * Action: Auto-approve reads, formatters, and test commands; log all for audit
      */
     "permission.ask": async (event: { tool: string; args: unknown }) => {
-      log("info", `[ECC] Permission requested for: ${event.tool}`)
+      log("info", `[clarc] Permission requested for: ${event.tool}`)
 
       const cmd = String((event.args as Record<string, unknown>)?.command || event.args || "")
 

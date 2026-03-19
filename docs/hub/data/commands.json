@@ -99,6 +99,60 @@
     "filename": "arch-design.md"
   },
   {
+    "name": "article",
+    "slash": "/article",
+    "description": "Full interactive article pipeline — from raw idea to publish-ready draft. Walks through idea → outline → draft → review → polish step by step, pausing for confirmation at each stage.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article.md",
+    "filename": "article.md"
+  },
+  {
+    "name": "article-draft",
+    "slash": "/article-draft",
+    "description": "Write a full article draft from an outline. Applies voice, banned-pattern rules, and section-by-section discipline. Third step of the article writing workflow.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article-draft.md",
+    "filename": "article-draft.md"
+  },
+  {
+    "name": "article-idea",
+    "slash": "/article-idea",
+    "description": "Turn a raw topic or notes into a structured article brief — defines audience, angle, core argument, competitive gap, and voice. First step of the article writing workflow.",
+    "category": "Product",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article-idea.md",
+    "filename": "article-idea.md"
+  },
+  {
+    "name": "article-outline",
+    "slash": "/article-outline",
+    "description": "Build a section-by-section article outline from a brief or topic. Each section gets a purpose, evidence slot, and transition. Second step of the article writing workflow.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article-outline.md",
+    "filename": "article-outline.md"
+  },
+  {
+    "name": "article-polish",
+    "slash": "/article-polish",
+    "description": "Final polish pass on an article draft — voice check, banned-pattern removal, SEO title/meta/headings, and formatting for the target platform. Fifth and final step before publishing.",
+    "category": "General",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article-polish.md",
+    "filename": "article-polish.md"
+  },
+  {
+    "name": "article-review",
+    "slash": "/article-review",
+    "description": "Editorial critique for an article draft — structure, opening, voice, evidence, banned patterns, SEO basics. Delegates to the article-editor agent. Fourth step of the article writing workflow.",
+    "category": "Code Review",
+    "whenToUse": "",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/commands/article-review.md",
+    "filename": "article-review.md"
+  },
+  {
     "name": "backstage-setup",
     "slash": "/backstage-setup",
     "description": "Install, configure, and deploy Backstage — from npx create-app to production with GitHub integration, TechDocs, and Docker Compose local dev",

@@ -65,9 +65,9 @@ export const PrettierPlugin = async ({ $ }) => {
 }
 ```
 
-### ECC Plugin Hooks Included
+### clarc Plugin Hooks Included
 
-The ECC OpenCode configuration includes translated hooks:
+The clarc OpenCode configuration includes translated hooks:
 
 | Hook | OpenCode Event | Purpose |
 |------|----------------|---------|
@@ -88,7 +88,7 @@ npm install -g opencode
 curl -fsSL https://opencode.ai/install | bash
 ```
 
-### 2. Use the ECC OpenCode Configuration
+### 2. Use the clarc OpenCode Configuration
 
 The `.opencode/` directory in this repository contains the translated configuration:
 
@@ -96,7 +96,7 @@ The `.opencode/` directory in this repository contains the translated configurat
 .opencode/
 ├── opencode.json              # Main configuration
 ├── plugins/                   # Hook plugins (translated from hooks.json)
-│   ├── ecc-hooks.ts           # All ECC hooks as plugins
+│   ├── ecc-hooks.ts           # All clarc hooks as plugins
 │   └── index.ts               # Plugin exports
 ├── tools/                     # Custom tools
 │   ├── run-tests.ts           # Run test suite
@@ -280,7 +280,7 @@ After migration, ALL 23 commands are available:
 
 ## Plugin Installation
 
-### Option 1: Use ECC Configuration Directly
+### Option 1: Use clarc Configuration Directly
 
 The `.opencode/` directory contains everything pre-configured.
 

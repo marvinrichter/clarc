@@ -197,11 +197,25 @@
     "dir": "arc42-c4"
   },
   {
+    "name": "article-strategy",
+    "description": "Turn a raw idea into a structured article brief — defines audience, angle, core argument, competitive gap, and voice. Use before writing an outline or draft. The output of this skill is a brief that feeds directly into article-writing.",
+    "category": "General",
+    "whenToUse": "- user has a topic but hasn't defined the audience or angle yet - user wants to write a blog post, essay, or guide but isn't sure what the core argument is - user wants to avoid writing something that already exists (competitive gap check)",
+    "usedByAgents": [
+      "article-editor"
+    ],
+    "installCmd": "npx github:marvinrichter/clarc --install-skill article-strategy",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/article-strategy/SKILL.md",
+    "dir": "article-strategy"
+  },
+  {
     "name": "article-writing",
     "description": "Write articles, guides, blog posts, tutorials, newsletter issues, and other long-form content in a distinctive voice derived from supplied examples or brand guidance. Use when the user wants polished written content longer than a paragraph, especially when voice consistency, structure, and credibility matter.",
     "category": "General",
     "whenToUse": "- drafting blog posts, essays, launch posts, guides, tutorials, or newsletter issues - turning notes, transcripts, or research into polished articles - matching an existing founder, operator, or brand voice from examples",
-    "usedByAgents": [],
+    "usedByAgents": [
+      "article-editor"
+    ],
     "installCmd": "npx github:marvinrichter/clarc --install-skill article-writing",
     "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/skills/article-writing/SKILL.md",
     "dir": "article-writing"

@@ -1,4 +1,4 @@
-# Everything Claude Code (ECC) — Codex CLI Reference Configuration
+# clarc — Codex CLI Reference Configuration
 #
 # Copy this file to ~/.codex/config.toml to apply globally.
 # Or keep it in your project root for project-level config.
@@ -18,14 +18,14 @@ sandbox_mode = "workspace-write"
 
 # Notifications (macOS)
 [notify]
-command = "terminal-notifier -title 'Codex ECC' -message 'Task completed!' -sound default"
+command = "terminal-notifier -title 'clarc' -message 'Task completed!' -sound default"
 on_complete = true
 
 # History - persistent instructions applied to every session
 [history]
 # These are prepended to every conversation
 persistent_instructions = """
-Follow ECC principles:
+Follow clarc principles:
 1. Test-Driven Development (TDD) - write tests first, 80%+ coverage required
 2. Immutability - always create new objects, never mutate
 3. Security-First - validate all inputs, no hardcoded secrets

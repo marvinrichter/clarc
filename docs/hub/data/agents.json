@@ -81,6 +81,24 @@
     "filename": "architect.md"
   },
   {
+    "name": "article-editor",
+    "description": "Editorial critique for blog posts, essays, guides, and long-form articles — evaluates structure, opening strength, voice consistency, evidence quality, banned patterns, and SEO basics. Use after writing a first draft to get structured, actionable improvement feedback before publishing.",
+    "tools": [
+      "Read",
+      "Glob"
+    ],
+    "model": "sonnet",
+    "usesSkills": [
+      "article-writing",
+      "article-strategy"
+    ],
+    "category": "General",
+    "whenToUse": "",
+    "installCmd": "npx github:marvinrichter/clarc --install-agent article-editor",
+    "sourceUrl": "https://github.com/marvinrichter/clarc/blob/main/agents/article-editor.md",
+    "filename": "article-editor.md"
+  },
+  {
     "name": "bash-reviewer",
     "description": "Reviews Bash/shell scripts for correctness, safety, idiomatic style, and portability. Checks set -euo pipefail, quoting, shellcheck issues, security (no eval, mktemp, path quoting), BATS test coverage, and formatting via shfmt. Invoked by code-reviewer for .sh/.bash/.zsh files.",
     "tools": [

@@ -212,6 +212,6 @@ Merge:   ~/.claude/skills/chatlog-to-article/SKILL.md → content-creation
 
 ## Notes
 
-- Evaluation is blind: the same checklist applies to all skills regardless of origin (ECC, self-authored, auto-extracted)
+- Evaluation is blind: the same checklist applies to all skills regardless of origin (clarc, self-authored, auto-extracted)
 - Archive / delete operations always require explicit user confirmation
 - No verdict branching by skill origin

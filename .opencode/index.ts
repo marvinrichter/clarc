@@ -1,5 +1,5 @@
 /**
- * Everything Claude Code (ECC) Plugin for OpenCode
+ * clarc Plugin for OpenCode
  *
  * This package provides a complete OpenCode plugin with:
  * - 13 specialized agents (planner, architect, code-reviewer, etc.)
@@ -24,8 +24,8 @@
  *
  * Option 2: Clone and use directly
  * ```bash
- * git clone https://github.com/affaan-m/everything-claude-code
- * cd everything-claude-code
+ * git clone https://github.com/marvinrichter/clarc
+ * cd clarc
  * opencode
  * ```
  *
@@ -45,7 +45,7 @@ export const VERSION = "1.6.0"
 export const metadata = {
   name: "ecc-universal",
   version: VERSION,
-  description: "Everything Claude Code plugin for OpenCode",
+  description: "clarc plugin for OpenCode",
   author: "affaan-m",
   features: {
     agents: 13,

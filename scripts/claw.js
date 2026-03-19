@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * NanoClaw — Barebones Agent REPL for Everything Claude Code
+ * NanoClaw — Barebones Agent REPL for clarc
  *
  * A persistent, session-aware AI agent loop that delegates to `claude -p`.
  * Zero external dependencies. Markdown-as-database. Synchronous REPL.

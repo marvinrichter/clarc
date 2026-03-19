@@ -1,4 +1,4 @@
-# ECC for Codex CLI
+# clarc for Codex CLI
 
 This supplements the root `AGENTS.md` with Codex-specific guidance.
 

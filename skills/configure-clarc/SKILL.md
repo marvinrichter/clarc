@@ -22,9 +22,9 @@ This skill must be accessible to Claude Code before activation. Two ways to boot
 
 ---
 
-## Step 0: Clone ECC Repository
+## Step 0: Clone clarc Repository
 
-Before any installation, clone the latest ECC source to `/tmp`:
+Before any installation, clone the latest clarc source to `/tmp`:
 
 ```bash
 rm -rf /tmp/clarc
@@ -33,7 +33,7 @@ git clone https://github.com/marvinrichter/clarc.git /tmp/clarc
 
 Set `ECC_ROOT=/tmp/clarc` as the source for all subsequent copy operations.
 
-If the clone fails (network issues, etc.), use `AskUserQuestion` to ask the user to provide a local path to an existing ECC clone.
+If the clone fails (network issues, etc.), use `AskUserQuestion` to ask the user to provide a local path to an existing clarc clone.
 
 ---
 

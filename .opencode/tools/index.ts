@@ -1,5 +1,5 @@
 /**
- * ECC Custom Tools for OpenCode
+ * clarc Tools for OpenCode
  *
  * These tools extend OpenCode with additional capabilities.
  */

@@ -13,8 +13,8 @@ readStdin().then(raw => {
     ];
     for (const pattern of secretPatterns) {
       if (pattern.test(prompt)) {
-        console.error('[ECC] WARNING: Potential secret detected in prompt!');
-        console.error('[ECC] Remove secrets before submitting. Use environment variables instead.');
+        console.error('[clarc] WARNING: Potential secret detected in prompt!');
+        console.error('[clarc] Remove secrets before submitting. Use environment variables instead.');
         break;
       }
     }

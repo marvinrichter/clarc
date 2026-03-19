@@ -10,7 +10,7 @@ description: "[Requires codeagent-wrapper] Multi-model collaborative planning â€
 > ls ~/.claude/bin/codeagent-wrapper 2>/dev/null && echo "OK" || echo "MISSING"
 > ```
 > If `codeagent-wrapper` is **MISSING**: stop immediately and inform the user:
-> *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard ECC setup. Use `/plan` instead for a native Claude planning workflow."*
+> *"This command requires `~/.claude/bin/codeagent-wrapper` and the `ace-tool` MCP server. These are not part of the standard clarc setup. Use `/plan` instead for a native Claude planning workflow."*
 > Do **not** attempt to execute any subsequent phases without this binary present.
 
 Multi-model collaborative planning - Context retrieval + Dual-model analysis â†’ Generate step-by-step implementation plan.
