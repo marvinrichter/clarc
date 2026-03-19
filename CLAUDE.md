@@ -90,6 +90,44 @@ When developing clarc itself, ALWAYS use these agents after modifying the corres
 
 These checks are MANDATORY — not optional. Do not mark any task complete without running the relevant agent first.
 
+## Documentation Maintenance (MANDATORY)
+
+Whenever components are added or removed, update counts in **both** `README.md` and `AGENTS.md` immediately. Do not defer this — stale counts in docs are a recurring source of confusion.
+
+### Count update triggers
+
+| Change | Counts to update |
+|---|---|
+| Add/remove file in `agents/` | `README.md` tagline, `README.md` What's inside table, `AGENTS.md` intro + structure table |
+| Add/remove directory in `skills/` | Same as above (count skill *directories* only — exclude `INDEX.md`, `SKILL_AGENTS.md`) |
+| Add/remove file in `commands/` | Same as above |
+| Add/remove directory in `rules/` | Same as above (count language dirs only — exclude `common/`, `README.md`, `CHANGELOG.md`, `RULES_VERSION`) |
+| Add/remove file in `.opencode/commands/` | `README.md` multi-editor section OpenCode count |
+| Add/remove file in `.cursor/rules/` | `README.md` multi-editor section Cursor count |
+| Add/remove file in `codex/commands/` | `README.md` multi-editor section Codex count |
+
+### How to get accurate counts
+
+```bash
+# Primary component counts
+ls agents/*.md | wc -l                           # agents
+ls -d skills/*/ | wc -l                          # skills (dirs only)
+ls commands/*.md | wc -l                         # commands
+ls -d rules/*/ | grep -v common | wc -l          # language rule sets
+
+# Multi-editor counts
+ls .opencode/commands/*.md | wc -l              # opencode commands
+ls .cursor/rules/*.md | wc -l                   # cursor rules
+ls codex/commands/*.md | wc -l                  # codex commands
+```
+
+### Other doc update rules
+
+- **Rename or restructure a directory**: update any path references in `README.md`, `AGENTS.md`, `CLAUDE.md`, and relevant `SKILL.md` files
+- **Change branding or variable names**: grep the entire repo for old names and update all occurrences (docs, comments, skill files, example code)
+- **Add a new multi-editor target**: add an entry to the multi-editor section of `README.md`
+- **Change install behavior**: update the Install section of `README.md` and `CLAUDE.md`
+
 For new scripts (`scripts/*.js`): follow TDD — write the test in `tests/` before implementing.
 
 ## Versioning
