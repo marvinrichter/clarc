@@ -20,13 +20,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Build & Deploy Hub
+  build:
+    name: Build Hub
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-
-
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v6
@@ -35,21 +35,30 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Generate Hub
         run: node scripts/ci/generate-hub.js
 
-      - name: Show generated files
-        run: |
-          echo "Generated files in docs/hub/:"
-          find docs/hub -type f | sort
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/hub
-          commit_message: 'chore: update hub [skip ci]'
-          # Preserve CNAME and other custom files from gh-pages branch
-          keep_files: false
-          # Enable Jekyll processing false — we generate plain HTML
-          enable_jekyll: false
+          path: ./docs/hub
+
+  deploy:
+    name: Deploy Hub
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
