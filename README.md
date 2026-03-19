@@ -184,36 +184,36 @@ Agents are delegated automatically based on what you're doing. You can also invo
 ### Engineering operations
 
 ```
-/slo               Define SLIs, SLOs, and error budget alerts
-/instrument        Add analytics event tracking to code
-/experiment        Design a statistically valid A/B test
-/incident          Open and manage a production incident
-/deps              Dependency audit and upgrade planner
-/setup-ci          Generate GitHub Actions CI/CD pipeline
-/security          Full DevSecOps scan — SAST, secrets, deps, DAST, OPA
-/gitops-review     Review GitOps config — sync, secrets, drift, progressive delivery
-/finops-audit      Cloud cost audit — tagging, rightsizing, anomalies, Infracost
-/zero-trust-review Service mesh & mTLS review — identity, NetworkPolicies, east-west
-/iac-review        IaC code review — Pulumi/CDK/Terraform abstractions, compliance
-/mlops-review      MLOps audit — experiment tracking, serving, drift detection
-/privacy-audit     Privacy engineering audit — PII scan, retention, RTBF, consent
-/android-review    Android/Compose review — UDF, Hilt, Room, Coroutines
-/mobile-release    Mobile release workflow — signing, beta, store submission
-/webrtc-review     WebRTC architecture review — TURN, signaling, simulcast, security
+/slo                   Define SLIs, SLOs, and error budget alerts
+/instrument            Add analytics event tracking to code
+/experiment            Design a statistically valid A/B test
+/incident              Open and manage a production incident
+/deps                  Dependency audit and upgrade planner
+/setup-ci              Generate GitHub Actions CI/CD pipeline
+/security              Full DevSecOps scan — SAST, secrets, deps, DAST, OPA
+/gitops-review         Review GitOps config — sync, secrets, drift, progressive delivery
+/finops-audit          Cloud cost audit — tagging, rightsizing, anomalies, Infracost
+/zero-trust-review     Service mesh & mTLS review — identity, NetworkPolicies, east-west
+/iac-review            IaC code review — Pulumi/CDK/Terraform abstractions, compliance
+/mlops-review          MLOps audit — experiment tracking, serving, drift detection
+/privacy-audit         Privacy engineering audit — PII scan, retention, RTBF, consent
+/android-review        Android/Compose review — UDF, Hilt, Room, Coroutines
+/mobile-release        Mobile release workflow — signing, beta, store submission
+/webrtc-review         WebRTC architecture review — TURN, signaling, simulcast, security
 /frontend-arch-review  Micro-frontend architecture review — federation, routing, DX
-/data-mesh-review  Data Mesh review — domain boundaries, contracts, quality, lineage
-/sdk-review        SDK design review — ergonomics, backward compat, error design
-/docs-review       API documentation audit — completeness, playground, changelog
-/onboard           Generate onboarding materials — CONTRIBUTING.md, architecture tour
+/data-mesh-review      Data Mesh review — domain boundaries, contracts, quality, lineage
+/sdk-review            SDK design review — ergonomics, backward compat, error design
+/docs-review           API documentation audit — completeness, playground, changelog
+/onboard               Generate onboarding materials — CONTRIBUTING.md, architecture tour
 ```
 
 ### Learning & evolution
 
 ```
-/learn-eval    Extract reusable patterns with quality gate + save-location decision
-/evolve        Promote instincts into permanent skills
-/instinct-status   Show what the system has learned
-/sessions      Browse session history and snapshots
+/learn-eval         Extract reusable patterns with quality gate + save-location decision
+/evolve             Promote instincts into permanent skills
+/instinct-status    Show what the system has learned
+/sessions           Browse session history and snapshots
 ```
 
 ---
