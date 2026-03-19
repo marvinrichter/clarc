@@ -660,7 +660,7 @@ function runTests() {
 
   if (
     test('isGitRepo returns true in a git repo', () => {
-      // We're running from within the ECC repo, so this should be true
+      // We're running from within the clarc repo, so this should be true
       assert.strictEqual(utils.isGitRepo(), true);
     })
   )

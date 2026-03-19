@@ -14,9 +14,9 @@ import { fileURLToPath, pathToFileURL } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const clawPath = path.join(__dirname, '..', '..', 'scripts', 'claw.js');
-const { getClawDir, getSessionPath, listSessions, loadHistory, appendTurn, loadECCContext, buildPrompt, askClaude, isValidSessionName, handleClear } = await import(pathToFileURL(clawPath).href);
+const { getClawDir, getSessionPath, listSessions, loadHistory, appendTurn, loadClarcContext, buildPrompt, askClaude, isValidSessionName, handleClear } = await import(pathToFileURL(clawPath).href);
 
-// Test helper — matches ECC's custom test pattern
+// Test helper — matches clarc's custom test pattern
 function test(name, fn) {
   try {
     fn();
@@ -141,8 +141,8 @@ async function runTests() {
   console.log('\nContext:');
 
   if (
-    test('loadECCContext() returns "" when no skills specified', () => {
-      const result = loadECCContext('');
+    test('loadClarcContext() returns "" when no skills specified', () => {
+      const result = loadClarcContext('');
       assert.strictEqual(result, '');
     })
   )
@@ -150,8 +150,8 @@ async function runTests() {
   else failed++;
 
   if (
-    test('loadECCContext() skips missing skill directories gracefully', () => {
-      const result = loadECCContext('nonexistent-skill-xyz');
+    test('loadClarcContext() skips missing skill directories gracefully', () => {
+      const result = loadClarcContext('nonexistent-skill-xyz');
       assert.strictEqual(result, '');
     })
   )
@@ -159,8 +159,8 @@ async function runTests() {
   else failed++;
 
   if (
-    test('loadECCContext() concatenates multiple skill files', () => {
-      // Use real skills from the ECC repo if they exist
+    test('loadClarcContext() concatenates multiple skill files', () => {
+      // Use real skills from the clarc repo if they exist
       const skillsDir = path.join(process.cwd(), 'skills');
       if (!fs.existsSync(skillsDir)) {
         console.log('    (skipped — no skills/ directory in CWD)');
@@ -175,7 +175,7 @@ async function runTests() {
         return;
       }
       const twoSkills = available.slice(0, 2).join(',');
-      const result = loadECCContext(twoSkills);
+      const result = loadClarcContext(twoSkills);
       assert.ok(result.length > 0, 'Should return non-empty context');
       // Should contain content from both skills
       for (const name of available.slice(0, 2)) {
@@ -240,7 +240,7 @@ async function runTests() {
   if (
     await asyncTest('module exports all required functions', async () => {
       const claw = await import(pathToFileURL(clawPath).href);
-      const required = ['getClawDir', 'getSessionPath', 'listSessions', 'loadHistory', 'appendTurn', 'loadECCContext', 'askClaude', 'main'];
+      const required = ['getClawDir', 'getSessionPath', 'listSessions', 'loadHistory', 'appendTurn', 'loadClarcContext', 'askClaude', 'main'];
       for (const fn of required) {
         assert.strictEqual(typeof claw[fn], 'function', `Should export function ${fn}`);
       }
