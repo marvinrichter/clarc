@@ -17,11 +17,11 @@ jobs:
       pull-requests: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: Post review comment
         if: always() && steps.review.outputs.comment != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const comment = `${{ steps.review.outputs.comment }}`;
@@ -94,11 +94,11 @@ jobs:
       pull-requests: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -120,7 +120,7 @@ jobs:
 
       - name: Post security comment
         if: always() && steps.security.outputs.comment != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const comment = `${{ steps.security.outputs.comment }}`;
