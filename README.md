@@ -1,7 +1,7 @@
 # clarc
 
 **The workflow OS for Claude Code.**
-62 agents · 248 skills · 172 commands · 20 language rule sets · continuous learning flywheel.
+63 agents · 251 skills · 178 commands · 22 language rule sets · continuous learning flywheel.
 
 [![CI](https://github.com/marvinrichter/clarc/actions/workflows/ci.yml/badge.svg)](https://github.com/marvinrichter/clarc/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -112,10 +112,10 @@ git clone git@github.com:marvinrichter/clarc.git ~/.clarc
 
 | Component | Count | Purpose |
 |-----------|------:|---------|
-| **Agents** | 62 | Specialized subagents — delegate planning, review, testing, debugging |
-| **Skills** | 248 | Domain knowledge — patterns, conventions, examples for specific tasks |
-| **Commands** | 172 | Slash commands — repeatable workflows triggered by `/command` |
-| **Rules** | 20 | Language rule sets — always-on coding standards and checklists |
+| **Agents** | 63 | Specialized subagents — delegate planning, review, testing, debugging |
+| **Skills** | 251 | Domain knowledge — patterns, conventions, examples for specific tasks |
+| **Commands** | 178 | Slash commands — repeatable workflows triggered by `/command` |
+| **Rules** | 22 | Language rule sets — always-on coding standards and checklists |
 | **Hooks** | — | Background automations — format, lint, persist state, weekly digests |
 
 ---
@@ -300,8 +300,8 @@ rules/
 clarc ships configurations for multiple editors alongside the primary Claude Code integration:
 
 - **Claude Code** — agents, skills, commands, hooks, rules (full support)
-- **Cursor** — 50+ language rules in `.cursor/rules/` + `.cursorrules` global config (`--target cursor`)
-- **OpenCode** — full command parity (57 commands) + agent prompts under `.opencode/` (`--target opencode`)
+- **Cursor** — 96 language rules in `.cursor/rules/` + `.cursorrules` global config (`--target cursor`)
+- **OpenCode** — 65 commands + agent prompts under `.opencode/` (`--target opencode`)
 - **Codex CLI** — instructions + 14 commands under `codex/` (`--target codex`)
 
 ### clarc as MCP server
