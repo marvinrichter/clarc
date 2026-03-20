@@ -168,7 +168,8 @@ function runTests() {
       );
     } catch (err) {
       throw new Error(
-        `Real project validation failed:\n${err.stderr || ''}\n${err.stdout || ''}`
+        `Real project validation failed:\n${err.stderr || ''}\n${err.stdout || ''}`,
+        { cause: err }
       );
     }
   })) passed++; else failed++;
