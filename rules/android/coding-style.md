@@ -3,6 +3,11 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
   - "**/AndroidManifest.xml"
+globs:
+  - "**/*.{kt,kts}"
+  - "**/AndroidManifest.xml"
+  - "**/build.gradle.kts"
+alwaysApply: false
 ---
 # Android Coding Style
 

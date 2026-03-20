@@ -514,7 +514,7 @@ async function main() {
       parts.push(`frameworks: ${projectInfo.frameworks.join(', ')}`);
     }
     log(`[SessionStart] Project detected — ${parts.join('; ')}`);
-    output(`Project type: ${JSON.stringify(projectInfo)}`);
+    output(`Detected: ${parts.join(' / ')}`);
 
     // Suggest relevant skills based on detected stack
     const detected = [...projectInfo.frameworks, ...projectInfo.languages];
@@ -587,8 +587,8 @@ function loadMemoryBank(cwd) {
     try {
       const content = fs.readFileSync(filePath, 'utf8').trim();
       if (!content) continue;
-      // Cap each file at 2000 chars to avoid flooding context
-      const capped = content.length > 2000 ? content.slice(0, 2000) + '\n...(truncated)' : content;
+      // Cap each file at 1200 chars to keep Memory Bank within ~900 token total
+      const capped = content.length > 1200 ? content.slice(0, 1200) + '\n...(truncated)' : content;
       combined += `### ${label}\n${capped}\n\n`;
       loaded.push(name);
     } catch {
@@ -716,10 +716,14 @@ function loadAgentInstinctOverlays() {
     .join(', ');
   log(`[SessionStart] Agent instinct overlays loaded: ${summary}`);
 
+  const MAX_OVERLAY_CHARS = 800;
   let combined = '--- Agent Learned Instincts ---\n';
   combined += 'When invoking these agents, apply the following learned instincts:\n';
   for (const { agentName, content } of overlays) {
-    combined += `\n### ${agentName}\n${content}\n`;
+    const body = content.length > MAX_OVERLAY_CHARS
+      ? content.slice(0, MAX_OVERLAY_CHARS) + '\n...(truncated)'
+      : content;
+    combined += `\n### ${agentName}\n${body}\n`;
   }
   combined += '\n---';
   output(combined);

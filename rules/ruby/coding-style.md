@@ -5,6 +5,10 @@ paths:
   - "**/*.gemspec"
   - "**/Gemfile"
   - "**/Gemfile.lock"
+globs:
+  - "**/*.{rb,rake,gemspec}"
+  - "**/Gemfile{,.lock}"
+alwaysApply: false
 ---
 > This file extends [common/coding-style.md](../common/coding-style.md) with Ruby-specific content.
 

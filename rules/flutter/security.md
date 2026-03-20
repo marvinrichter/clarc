@@ -4,6 +4,10 @@ paths:
   - "**/pubspec.yaml"
   - "**/AndroidManifest.xml"
   - "**/Info.plist"
+globs:
+  - "**/*.dart"
+  - "**/pubspec.{yaml,lock}"
+alwaysApply: false
 ---
 # Flutter / Dart Security
 

@@ -1,6 +1,10 @@
 ---
 paths:
   - "**/*.dart"
+globs:
+  - "**/*.dart"
+  - "**/pubspec.{yaml,lock}"
+alwaysApply: false
 ---
 # Flutter / Dart Hooks
 

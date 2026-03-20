@@ -2,6 +2,10 @@
 paths:
   - "**/*.py"
   - "**/*.pyi"
+globs:
+  - "**/*.py"
+  - "**/*.pyi"
+alwaysApply: false
 ---
 # Python Security
 

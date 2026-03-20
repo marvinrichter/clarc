@@ -1,6 +1,11 @@
 ---
 paths:
   - "**/*.c"
+globs:
+  - "**/*.{c,h}"
+  - "**/Makefile"
+  - "**/CMakeLists.txt"
+alwaysApply: false
 ---
 
 # C Testing

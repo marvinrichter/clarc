@@ -4,6 +4,12 @@ paths:
   - "**/pom.xml"
   - "**/build.gradle"
   - "**/build.gradle.kts"
+globs:
+  - "**/*.java"
+  - "**/pom.xml"
+  - "**/build.gradle{,.kts}"
+  - "**/settings.gradle{,.kts}"
+alwaysApply: false
 ---
 # Java Testing
 

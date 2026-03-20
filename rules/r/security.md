@@ -4,6 +4,11 @@ paths:
   - "**/*.r"
   - "**/*.Rmd"
   - "**/*.qmd"
+globs:
+  - "**/*.{R,r,Rmd,qmd}"
+  - "**/DESCRIPTION"
+  - "**/renv.lock"
+alwaysApply: false
 ---
 
 # R Security

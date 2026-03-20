@@ -3,6 +3,11 @@ paths:
   - "**/*.kt"
   - "**/*Test.kt"
   - "**/*Test.java"
+globs:
+  - "**/*.{kt,kts}"
+  - "**/AndroidManifest.xml"
+  - "**/build.gradle.kts"
+alwaysApply: false
 ---
 # Android Testing Requirements
 

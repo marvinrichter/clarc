@@ -3,6 +3,11 @@ paths:
   - "**/*.scala"
   - "**/*.sc"
   - "**/build.sbt"
+globs:
+  - "**/*.{scala,sc}"
+  - "**/build.sbt"
+  - "**/settings.sbt"
+alwaysApply: false
 ---
 
 # Scala Patterns

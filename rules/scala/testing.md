@@ -2,6 +2,11 @@
 paths:
   - "**/*.scala"
   - "**/*.sc"
+globs:
+  - "**/*.{scala,sc}"
+  - "**/build.sbt"
+  - "**/settings.sbt"
+alwaysApply: false
 ---
 
 # Scala Testing

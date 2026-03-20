@@ -4,6 +4,10 @@ paths:
   - "**/*.bash"
   - "**/*.zsh"
   - "**/Makefile"
+globs:
+  - "**/*.{sh,bash,zsh}"
+  - "**/Makefile"
+alwaysApply: false
 ---
 
 # Bash Coding Style

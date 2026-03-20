@@ -3,6 +3,11 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
   - "**/build.gradle.kts"
+globs:
+  - "**/*.{kt,kts}"
+  - "**/build.gradle.kts"
+  - "**/settings.gradle.kts"
+alwaysApply: false
 ---
 
 # Kotlin Hooks

@@ -6,6 +6,12 @@ paths:
   - "**/build.gradle.kts"
   - "**/settings.gradle"
   - "**/settings.gradle.kts"
+globs:
+  - "**/*.java"
+  - "**/pom.xml"
+  - "**/build.gradle{,.kts}"
+  - "**/settings.gradle{,.kts}"
+alwaysApply: false
 ---
 # Java Coding Style
 

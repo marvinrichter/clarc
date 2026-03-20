@@ -3,6 +3,10 @@ paths:
   - "**/*.rs"
   - "**/Cargo.toml"
   - "**/Cargo.lock"
+globs:
+  - "**/*.rs"
+  - "**/Cargo.{toml,lock}"
+alwaysApply: false
 ---
 # Rust Security
 

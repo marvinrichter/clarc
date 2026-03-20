@@ -4,6 +4,10 @@ paths:
   - "**/*.exs"
   - "**/mix.exs"
   - "**/mix.lock"
+globs:
+  - "**/*.{ex,exs}"
+  - "**/mix.{exs,lock}"
+alwaysApply: false
 ---
 > This file extends [common/hooks.md](../common/hooks.md) with Elixir-specific content.
 
