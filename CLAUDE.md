@@ -6,17 +6,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **clarc** is a production-grade Claude Code workflow OS — agents, skills, hooks, commands, rules, and a continuous learning flywheel for modern software engineering.
 
-## Running Tests
+## Running Tests and Linting
 
 ```bash
-# Run all tests
+# Lint (ESLint + markdownlint) — run before every commit
+npm run lint
+
+# Full validation: component validators + full test suite
+npm test
+
+# Tests only (faster — skips component validators)
 node tests/run-all.js
 
-# Run individual test files
-node tests/lib/utils.test.js
-node tests/lib/package-manager.test.js
+# Run a single test file
+node tests/ci/language-rule-globs.test.js
 node tests/hooks/hooks.test.js
 ```
+
+Node.js ≥22 required (`"engines": { "node": ">=22" }` in package.json).
 
 ## Architecture
 
@@ -61,19 +68,18 @@ Update: `cd ~/.clarc && git pull` — symlinks update instantly, no re-install.
 
 - Package manager detection: npm, pnpm, yarn, bun (configurable via `CLAUDE_PACKAGE_MANAGER` env var or project config)
 - Cross-platform: Windows, macOS, Linux support via Node.js scripts
-- Agent format: Markdown with YAML frontmatter (name, description, tools, model)
-- Skill format: Markdown with clear sections for when to use, how it works, examples
-- Hook format: JSON with matcher conditions and command/notification hooks
 - Install wizard: `scripts/setup-wizard.js` — bin entry for `npx github:marvinrichter/clarc`
+- ESLint enforces `preserve-caught-error` — re-thrown errors must include `{ cause: err }`
 
 ## File formats
 
-- Agents: Markdown with YAML frontmatter (name, description, tools, model)
-- Skills: `SKILL.md` with frontmatter + sections (When to Activate, patterns, examples)
-- Commands: Markdown with `description` frontmatter
-- Hooks: JSON with matcher and hooks array
-
 File naming: lowercase with hyphens (e.g., `python-reviewer.md`, `tdd-workflow.md`)
+
+- **Agents**: YAML frontmatter (`name`, `description`, `tools`, `model`) + instruction body
+- **Skills**: `SKILL.md` with frontmatter + sections (When to Activate, patterns, examples)
+- **Commands**: Markdown with `description` frontmatter
+- **Hooks**: JSON with `matcher` and `hooks` array
+- **Language rules**: YAML frontmatter must include `globs:` (file patterns) and `alwaysApply: false` — enforced by `scripts/ci/validate-language-rule-globs.js`. `common/` rules are exempt (they always apply).
 
 ## Self-Development Workflow (Clarc-on-Clarc)
 
@@ -86,7 +92,8 @@ When developing clarc itself, ALWAYS use these agents after modifying the corres
 | `commands/*.md` | `command-auditor` agent |
 | `scripts/*.js` | `code-reviewer` agent (routes to `typescript-reviewer`) |
 | `hooks/hooks.json` | `hook-auditor` agent |
-| `rules/**/*.md` | `node scripts/ci/validate-rule-format.js` |
+| `rules/common/**/*.md` | `node scripts/ci/validate-rule-format.js` |
+| `rules/<lang>/**/*.md` | `node scripts/ci/validate-language-rule-globs.js` |
 
 These checks are MANDATORY — not optional. Do not mark any task complete without running the relevant agent first.
 
