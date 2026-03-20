@@ -3,6 +3,10 @@ paths:
   - "**/*_test.dart"
   - "**/test/**/*.dart"
   - "**/integration_test/**/*.dart"
+globs:
+  - "**/*.dart"
+  - "**/pubspec.{yaml,lock}"
+alwaysApply: false
 ---
 # Flutter / Dart Testing
 

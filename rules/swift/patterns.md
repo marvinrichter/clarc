@@ -2,6 +2,10 @@
 paths:
   - "**/*.swift"
   - "**/Package.swift"
+globs:
+  - "**/*.swift"
+  - "**/Package.swift"
+alwaysApply: false
 ---
 # Swift Patterns
 

@@ -3,6 +3,11 @@ paths:
   - "**/*.sql"
   - "**/migrations/**"
   - "**/*.prisma"
+globs:
+  - "**/*.sql"
+  - "**/*.prisma"
+  - "**/migrations/**"
+alwaysApply: false
 ---
 
 # SQL Security Guidelines

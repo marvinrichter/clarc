@@ -2,6 +2,10 @@
 paths:
   - "**/*.dart"
   - "**/pubspec.yaml"
+globs:
+  - "**/*.dart"
+  - "**/pubspec.{yaml,lock}"
+alwaysApply: false
 ---
 # Flutter Architecture Patterns
 

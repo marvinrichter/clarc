@@ -7,6 +7,11 @@ paths:
   - "**/*.hpp"
   - "**/CMakeLists.txt"
   - "**/Makefile"
+globs:
+  - "**/*.{cpp,cc,cxx,h,hpp}"
+  - "**/CMakeLists.txt"
+  - "**/Makefile"
+alwaysApply: false
 ---
 > This file extends [common/patterns.md](../common/patterns.md) with C++ specific design patterns.
 

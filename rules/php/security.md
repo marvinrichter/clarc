@@ -1,6 +1,10 @@
 ---
 paths:
   - "**/*.php"
+globs:
+  - "**/*.php"
+  - "**/composer.{json,lock}"
+alwaysApply: false
 ---
 
 # PHP Security

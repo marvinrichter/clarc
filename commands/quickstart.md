@@ -125,6 +125,26 @@ npx github:marvinrichter/clarc doctor
 
 ---
 
+## Keep context lean — install only what you need
+
+Language rules activate automatically when you open matching files (via `globs:`
+frontmatter), but installing fewer rule sets keeps your session overhead lower.
+
+```bash
+# Install only the languages you actively use
+npx github:marvinrichter/clarc typescript
+npx github:marvinrichter/clarc typescript python
+npx github:marvinrichter/clarc go
+
+# Check what's currently installed
+/doctor
+```
+
+If you installed clarc without specifying languages and want to trim it down,
+re-run the installer with only the language sets you need.
+
+---
+
 ## Learn more
 
 - `/clarc-way` — interactive workflow guide (the methodology behind clarc)

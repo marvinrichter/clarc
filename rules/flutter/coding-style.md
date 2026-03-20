@@ -3,6 +3,10 @@ paths:
   - "**/*.dart"
   - "**/pubspec.yaml"
   - "**/pubspec.lock"
+globs:
+  - "**/*.dart"
+  - "**/pubspec.{yaml,lock}"
+alwaysApply: false
 ---
 # Flutter / Dart Coding Style
 

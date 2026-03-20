@@ -4,6 +4,11 @@ paths:
   - "**/*.sc"
   - "**/build.sbt"
   - "**/settings.sbt"
+globs:
+  - "**/*.{scala,sc}"
+  - "**/build.sbt"
+  - "**/settings.sbt"
+alwaysApply: false
 ---
 
 # Scala Coding Style

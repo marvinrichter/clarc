@@ -267,7 +267,9 @@ Before context compaction, clarc reads the session transcript and persists a str
 
 ## Language rules
 
-Rules are always-on guidelines loaded into every session. They complement skills: rules define *what* to do, skills show *how*.
+Rules are guidelines that complement skills: rules define *what* to do, skills show *how*. `common/` rules are always active. Language rules activate automatically when you open files of that type (via `globs:` frontmatter) — they don't add overhead for projects that don't use them.
+
+**Performance tip:** install only the language sets you need to keep context lean.
 
 ```
 rules/

@@ -2,6 +2,11 @@
 paths:
   - "**/*.sql"
   - "**/migrations/**"
+globs:
+  - "**/*.sql"
+  - "**/*.prisma"
+  - "**/migrations/**"
+alwaysApply: false
 ---
 
 # SQL Hooks

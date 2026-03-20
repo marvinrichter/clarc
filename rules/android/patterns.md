@@ -2,6 +2,11 @@
 paths:
   - "**/*.kt"
   - "**/*.kts"
+globs:
+  - "**/*.{kt,kts}"
+  - "**/AndroidManifest.xml"
+  - "**/build.gradle.kts"
+alwaysApply: false
 ---
 # Android Architecture Patterns
 

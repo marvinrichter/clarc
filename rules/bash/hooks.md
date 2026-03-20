@@ -3,6 +3,10 @@ paths:
   - "**/*.sh"
   - "**/*.bash"
   - "**/*.zsh"
+globs:
+  - "**/*.{sh,bash,zsh}"
+  - "**/Makefile"
+alwaysApply: false
 ---
 
 # Bash Hooks

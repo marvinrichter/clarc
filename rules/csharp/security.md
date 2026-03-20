@@ -3,6 +3,11 @@ paths:
   - "**/*.cs"
   - "**/*.csx"
   - "**/*.razor"
+globs:
+  - "**/*.{cs,csx,razor}"
+  - "**/*.csproj"
+  - "**/*.sln"
+alwaysApply: false
 ---
 
 # C# Security
