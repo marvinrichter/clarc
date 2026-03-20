@@ -6,6 +6,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ---
 
+## [1.0.1](https://github.com/marvinrichter/clarc/compare/v1.0.0...v1.0.1) (2026-03-20)
+
+
+### Performance Improvements
+
+* conditional language rules and session-start output trimming ([#40](https://github.com/marvinrichter/clarc/issues/40)) ([772dcff](https://github.com/marvinrichter/clarc/commit/772dcff5a04347c5c9769c001e07f7bc39147978))
+
 ## 1.0.0 (2026-03-19)
 
 
