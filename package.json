@@ -106,7 +106,7 @@
     "evals:behavior": "node tests/evals/behavior/runner.js"
   },
   "optionalDependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0"
+    "@modelcontextprotocol/sdk": "^1.28.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
